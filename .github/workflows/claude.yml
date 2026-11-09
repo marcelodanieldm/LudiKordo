@@ -33,7 +33,7 @@ jobs:
       id-token: write
       actions: read
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       # Dependencias instaladas para que Claude pueda correr npm run verify
