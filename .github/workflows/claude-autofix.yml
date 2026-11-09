@@ -1,0 +1,64 @@
+name: claude-autofix
+
+# Cuando CI falla en un PR con la etiqueta `agent:autofix`, Claude intenta
+# arreglarlo una vez (skill fix-ci) y empuja a la misma rama.
+# Para evitar bucles, al terminar se quita la etiqueta: para otro intento, volver a ponerla.
+on:
+  workflow_run:
+    workflows: [ci]
+    types: [completed]
+
+concurrency:
+  group: claude-autofix-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: false
+
+jobs:
+  autofix:
+    if: >
+      github.event.workflow_run.conclusion == 'failure' &&
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.head_repository.full_name == github.repository &&
+      github.event.workflow_run.head_branch != 'main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+      actions: read
+    steps:
+      - name: ¿El PR pidió autofix?
+        id: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
+        run: |
+          pr=$(gh pr list -R "$GITHUB_REPOSITORY" --head "$BRANCH" --state open --json number,labels \
+            --jq '.[0] | select(.labels | map(.name) | index("agent:autofix")) | .number')
+          echo "number=$pr" >> "$GITHUB_OUTPUT"
+      - if: steps.pr.outputs.number != ''
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+          fetch-depth: 0
+      - if: steps.pr.outputs.number != ''
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - if: steps.pr.outputs.number != ''
+        run: npm ci
+      - if: steps.pr.outputs.number != ''
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: "/fix-ci El PR es #${{ steps.pr.outputs.number }} en la rama ${{ github.event.workflow_run.head_branch }}; la corrida fallida es ${{ github.event.workflow_run.html_url }}."
+          claude_args: |
+            --max-turns 30
+            --allowedTools "Read,Edit,Write,Glob,Grep,Bash(npm test:*),Bash(npm run verify:*),Bash(npm run typecheck:*),Bash(npm run check:i18n:*),Bash(npm run check:agents:*),Bash(npm run sync:skills:*),Bash(gh pr checks:*),Bash(gh run view:*),Bash(gh pr comment:*),Bash(git status:*),Bash(git diff:*),Bash(git add:*),Bash(git commit:*),Bash(git push origin HEAD:*)"
+      - name: Quitar la etiqueta (un intento por etiqueta)
+        if: always() && steps.pr.outputs.number != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr edit ${{ steps.pr.outputs.number }} -R "$GITHUB_REPOSITORY" --remove-label agent:autofix

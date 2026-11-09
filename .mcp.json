@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp"
+    },
+    "expo": {
+      "type": "http",
+      "url": "https://mcp.expo.dev/mcp"
+    },
+    "mobile": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@mobilenext/mobile-mcp@latest"]
+    },
+    "lottiefiles": {
+      "type": "http",
+      "url": "https://mcp.lottiefiles.com/mcp"
+    }
+  }
+}

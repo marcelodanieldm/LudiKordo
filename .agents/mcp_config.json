@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "context7": {
+      "serverUrl": "https://mcp.context7.com/mcp"
+    },
+    "expo": {
+      "serverUrl": "https://mcp.expo.dev/mcp"
+    },
+    "mobile": {
+      "command": "npx",
+      "args": ["-y", "@mobilenext/mobile-mcp@latest"]
+    },
+    "lottiefiles": {
+      "serverUrl": "https://mcp.lottiefiles.com/mcp"
+    },
+    "github": {
+      "serverUrl": "https://api.githubcopilot.com/mcp/"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+# Estas rutas requieren la aprobación de su dueño en cada PR.
+# Reemplazar REEMPLAZAR-usuario por el usuario de GitHub (o un equipo de la organización).
+
+/.github/                         @REEMPLAZAR-usuario
+/eas.json                         @REEMPLAZAR-usuario
+/app.json                         @REEMPLAZAR-usuario
+/src/billing/                     @REEMPLAZAR-usuario
+/app/paywall.tsx                  @REEMPLAZAR-usuario
+/modules/pitch-detector/          @REEMPLAZAR-usuario
+/AGENTS.md                        @REEMPLAZAR-usuario
+/CLAUDE.md                        @REEMPLAZAR-usuario
+/.claude/settings.json            @REEMPLAZAR-usuario
+/.agents/rules/                   @REEMPLAZAR-usuario

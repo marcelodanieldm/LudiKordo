@@ -1,0 +1,48 @@
+name: native-android
+
+# Compila la app Android completa (incluye el módulo Kotlin de detección).
+# Corre solo cuando cambia algo nativo, porque tarda unos 15 minutos.
+on:
+  pull_request:
+    paths:
+      - "modules/**"
+      - "src/audio/**"
+      - "package.json"
+      - "package-lock.json"
+      - "app.json"
+      - ".github/workflows/native-android.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: native-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  assemble-debug:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - run: npm ci
+      - name: Generar el proyecto Android
+        run: npx expo prebuild --platform android --no-install
+      - name: Compilar (debug)
+        working-directory: android
+        run: ./gradlew :app:assembleDebug --no-daemon --stacktrace
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-debug-apk
+          path: android/app/build/outputs/apk/debug/*.apk
+          retention-days: 7

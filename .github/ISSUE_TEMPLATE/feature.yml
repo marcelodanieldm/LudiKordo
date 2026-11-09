@@ -1,0 +1,41 @@
+name: Funcionalidad o tarea
+description: Algo nuevo para construir. Escrito para que un agente pueda tomarlo sin preguntar.
+labels: ["feature"]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Objetivo
+      description: Qué tiene que poder hacer el alumno o el equipo cuando esto esté listo.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Criterios de aceptación
+      description: Lista verificable. Cada punto debería poder comprobarse con una prueba o en el emulador.
+      placeholder: |
+        - [ ] En la pantalla Ruta, ...
+        - [ ] Textos en en/es/pt
+        - [ ] Prueba en tests/... para ...
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Archivos o áreas probables
+      description: Opcional. Ayuda al agente a empezar por el lugar correcto.
+  - type: textarea
+    id: out
+    attributes:
+      label: Fuera de alcance
+  - type: dropdown
+    id: agent
+    attributes:
+      label: ¿Quién lo toma?
+      options:
+        - Antigravity
+        - Claude Code local
+        - Claude en GitHub (mencionar @claude en un comentario)
+        - Persona
+        - A definir

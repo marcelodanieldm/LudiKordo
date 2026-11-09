@@ -1,0 +1,42 @@
+name: eas-preview
+
+# APK de prueba para instalar en teléfonos y tablets.
+# Se dispara al poner la etiqueta `build:preview` en un PR (y en cada push mientras la tenga).
+on:
+  pull_request:
+    types: [labeled, synchronize]
+
+concurrency:
+  group: eas-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    if: contains(github.event.pull_request.labels.*.name, 'build:preview') && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - run: npm ci
+      - name: Build de preview en EAS (APK, distribución interna)
+        run: eas build --platform android --profile preview --non-interactive --json > build.json
+      - name: Comentar el enlace en el PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          url=$(jq -r '.[0].artifacts.buildUrl // empty' build.json)
+          id=$(jq -r '.[0].id' build.json)
+          body="APK de preview listo para instalar: ${url:-'(ver en expo.dev)'}
+          Build EAS: \`$id\` · commit ${{ github.event.pull_request.head.sha }}"
+          gh pr comment ${{ github.event.pull_request.number }} --body "$body"

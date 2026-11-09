@@ -1,0 +1,73 @@
+name: promote
+
+# Mueve un build ya subido entre pistas de Google Play, o ajusta el porcentaje
+# de un lanzamiento escalonado en producción. Manual y con aprobación del entorno
+# `play-production` (configurar revisores obligatorios en Settings > Environments).
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "promote = pasar de una pista a otra · rollout = cambiar el % en producción"
+        type: choice
+        options: [promote, rollout]
+        default: promote
+      version_code:
+        description: "versionCode del build (figura en el Release de GitHub)"
+        required: true
+      from_track:
+        description: "Pista de origen (solo promote)"
+        type: choice
+        options: [internal, alpha, beta]
+        default: internal
+      to_track:
+        description: "Pista de destino (solo promote). alpha = prueba cerrada, beta = prueba abierta"
+        type: choice
+        options: [alpha, beta, production]
+        default: alpha
+      rollout:
+        description: "Fracción de usuarios en producción (0.05 a 1)"
+        default: "0.1"
+
+concurrency:
+  group: promote
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: play-production
+    steps:
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+      - run: gem install fastlane --no-document
+      - name: Clave de la cuenta de servicio
+        env:
+          KEY: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+        run: printf '%s' "$KEY" > "$RUNNER_TEMP/play.json"
+      - name: Ejecutar
+        env:
+          ACTION: ${{ inputs.action }}
+          VC: ${{ inputs.version_code }}
+          FROM: ${{ inputs.from_track }}
+          TO: ${{ inputs.to_track }}
+          ROLLOUT: ${{ inputs.rollout }}
+        run: |
+          common=(--package_name app.ludikordo --json_key "$RUNNER_TEMP/play.json"
+            --skip_upload_apk true --skip_upload_aab true --skip_upload_metadata true
+            --skip_upload_changelogs true --skip_upload_images true --skip_upload_screenshots true)
+          if [ "$ACTION" = "rollout" ]; then
+            fastlane supply "${common[@]}" --track production --version_code "$VC" --rollout "$ROLLOUT"
+          elif [ "$TO" = "production" ]; then
+            fastlane supply "${common[@]}" --track "$FROM" --track_promote_to production \
+              --version_code "$VC" --rollout "$ROLLOUT" --track_promote_release_status inProgress
+          else
+            fastlane supply "${common[@]}" --track "$FROM" --track_promote_to "$TO" --version_code "$VC"
+          fi
+      - name: Borrar la clave
+        if: always()
+        run: rm -f "$RUNNER_TEMP/play.json"

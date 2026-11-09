@@ -1,0 +1,47 @@
+{
+  "name": "ludikordo",
+  "version": "0.1.0",
+  "private": true,
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "check:i18n": "node scripts/check-i18n.mjs",
+    "check:agents": "node scripts/agents/check-config.mjs",
+    "sync:skills": "node scripts/agents/sync-skills.mjs",
+    "verify": "npm run check:i18n && npm run check:agents && npm run typecheck && npm test",
+    "start:mcp": "EXPO_UNSTABLE_MCP_SERVER=1 expo start --dev-client",
+    "skills:external": "node scripts/agents/install-external-skills.mjs",
+    "mcp:optional": "node scripts/agents/mcp-optional.mjs",
+    "e2e": "maestro test .maestro/"
+  },
+  "dependencies": {
+    "expo": "~54.0.0",
+    "expo-constants": "~18.0.0",
+    "expo-dev-client": "~6.0.0",
+    "expo-linking": "~8.0.0",
+    "expo-localization": "~17.0.0",
+    "expo-router": "~6.0.0",
+    "expo-status-bar": "~3.0.0",
+    "i18next": "^25.0.0",
+    "react": "19.1.0",
+    "react-i18next": "^15.0.0",
+    "react-native": "0.81.4",
+    "react-native-audio-api": "^0.8.0",
+    "react-native-mmkv": "^3.2.0",
+    "react-native-purchases": "^9.0.0",
+    "react-native-safe-area-context": "~5.6.0",
+    "react-native-screens": "~4.16.0",
+    "react-native-svg": "15.12.1",
+    "rive-react-native": "^9.0.0",
+    "zustand": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "~19.1.0",
+    "tsx": "^4.20.0",
+    "typescript": "~5.9.0"
+  }
+}

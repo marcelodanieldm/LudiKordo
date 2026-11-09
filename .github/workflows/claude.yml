@@ -1,0 +1,53 @@
+name: claude
+
+# Claude responde cuando alguien con permiso de escritura menciona @claude
+# en un issue, un PR o una revisión. Puede implementar, abrir PRs y arreglar CI
+# siguiendo CLAUDE.md, AGENTS.md y las skills del repo (por ejemplo "@claude /fix-ci").
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  pull_request_review:
+    types: [submitted]
+  issues:
+    types: [opened, assigned]
+
+concurrency:
+  group: claude-${{ github.event.issue.number || github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  claude:
+    if: |
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
+      (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      # Dependencias instaladas para que Claude pueda correr npm run verify
+      # (y para que funcione el hook Stop de .claude/settings.json).
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: anthropics/claude-code-action@v1
+        with:
+          # Con suscripción de Claude: reemplazar por
+          # claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_args: |
+            --max-turns 40
+            --allowedTools "Bash(npm test:*),Bash(npm run verify:*),Bash(npm run typecheck:*),Bash(npm run check:i18n:*),Bash(npm run check:agents:*),Bash(npm run sync:skills:*),Bash(gh pr checks:*),Bash(gh run view:*),Bash(gh issue view:*),Bash(gh pr view:*),Bash(gh pr diff:*)"

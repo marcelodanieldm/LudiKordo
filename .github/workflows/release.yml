@@ -1,0 +1,71 @@
+name: release
+
+# Una persona crea el tag vX.Y.Z sobre main (después de mergear el PR de release).
+# Esto verifica, construye en EAS y envía a la pista INTERNA de Google Play.
+# La promoción a prueba cerrada o producción es manual: promote.yml.
+on:
+  push:
+    tags: ["v*.*.*"]
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: El tag apunta a un commit de main
+        run: git merge-base --is-ancestor "$GITHUB_SHA" origin/main || { echo "El tag no está sobre main"; exit 1; }
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run verify
+      - name: El tag coincide con app.json
+        run: |
+          v=$(node -p "require('./app.json').expo.version")
+          test "v$v" = "$GITHUB_REF_NAME" || { echo "app.json dice $v y el tag es $GITHUB_REF_NAME"; exit 1; }
+
+  build-and-submit:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    environment: play-internal
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - run: npm ci
+      # La clave de la cuenta de servicio de Google Play vive en las credenciales de EAS
+      # (cargada una vez con `eas credentials`), no en GitHub.
+      - name: Build de producción y envío a la pista interna
+        run: eas build --platform android --profile production --non-interactive --auto-submit-with-profile internal --json > build.json
+      - name: Release de GitHub
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          vc=$(jq -r '.[0].appBuildVersion // "?"' build.json)
+          notes_file=release-notes/${GITHUB_REF_NAME}/es-419.txt
+          {
+            echo "versionCode: $vc (usar este número en promote.yml)"
+            echo
+            [ -f "$notes_file" ] && cat "$notes_file"
+          } > notes.md
+          gh release create "$GITHUB_REF_NAME" --verify-tag --title "$GITHUB_REF_NAME" --notes-file notes.md --generate-notes

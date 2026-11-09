@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "LudiKordo",
+    "slug": "ludikordo",
+    "scheme": "ludikordo",
+    "version": "0.1.0",
+    "orientation": "default",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "platforms": ["android"],
+    "android": {
+      "package": "app.ludikordo",
+      "versionCode": 1,
+      "permissions": ["android.permission.RECORD_AUDIO", "com.android.vending.BILLING"],
+      "adaptiveIcon": { "backgroundColor": "#C2410C" }
+    },
+    "plugins": ["expo-router", "expo-localization"],
+    "extra": {
+      "revenueCatAndroidKey": "REEMPLAZAR_CON_TU_CLAVE_PUBLICA_DE_REVENUECAT"
+    }
+  }
+}

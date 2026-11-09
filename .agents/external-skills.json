@@ -1,0 +1,72 @@
+{
+  "$comment": "Skills de terceros que se copian a .agents/skills (y de ahí a .claude/skills). Instalar o actualizar con `npm run skills:external`. Cada copia queda fijada al commit en external-skills.lock.json y se revisa por PR como cualquier código.",
+  "skills": [
+    {
+      "name": "expo-overview",
+      "repo": "https://github.com/expo/skills",
+      "path": "plugins/expo/skills/expo-overview",
+      "why": "Punto de entrada oficial de Expo: elige la skill de Expo o EAS adecuada para cada tarea."
+    },
+    {
+      "name": "expo-router",
+      "repo": "https://github.com/expo/skills",
+      "path": "plugins/expo/skills/expo-router",
+      "why": "Navegación con Expo Router: pestañas, stacks, modales (nuestro app/)."
+    },
+    {
+      "name": "expo-animation",
+      "repo": "https://github.com/expo/skills",
+      "path": "plugins/expo/skills/expo-animation",
+      "why": "Animaciones fluidas en React Native: hilos, springs, gestos, rendimiento."
+    },
+    {
+      "name": "expo-design-system",
+      "repo": "https://github.com/expo/skills",
+      "path": "plugins/expo/skills/expo-design-system",
+      "why": "Tokens de tema, componentes reutilizables y consistencia visual (src/theme.ts, src/components/ui.tsx)."
+    },
+    {
+      "name": "expo-module",
+      "repo": "https://github.com/expo/skills",
+      "path": "plugins/expo/skills/expo-module",
+      "why": "Expo Modules API en Kotlin: nuestro modules/pitch-detector."
+    },
+    {
+      "name": "expo-dev-client",
+      "repo": "https://github.com/expo/skills",
+      "path": "plugins/expo/skills/expo-dev-client",
+      "why": "Development builds (la app no corre en Expo Go por el módulo nativo)."
+    },
+    {
+      "name": "expo-upgrade",
+      "repo": "https://github.com/expo/skills",
+      "path": "plugins/expo/skills/expo-upgrade",
+      "why": "Subir de SDK de Expo y resolver dependencias."
+    },
+    {
+      "name": "eas-app-stores",
+      "repo": "https://github.com/expo/skills",
+      "path": "plugins/expo/skills/eas-app-stores",
+      "why": "Builds y envíos a Google Play con EAS (referencia para release.yml; los agentes no publican)."
+    },
+    {
+      "name": "eas-observe",
+      "repo": "https://github.com/expo/skills",
+      "path": "plugins/expo/skills/eas-observe",
+      "why": "Métricas y reporte de errores en producción con EAS."
+    },
+    {
+      "name": "react-native-best-practices",
+      "repo": "https://github.com/callstackincubator/agent-skills",
+      "path": "skills/react-native-best-practices",
+      "why": "Rendimiento en React Native (FPS, re-renders, memoria, animaciones) de Callstack."
+    },
+    {
+      "name": "remotion-best-practices",
+      "repo": "https://github.com/remotion-dev/skills",
+      "path": "skills/remotion-best-practices",
+      "why": "Videos en React con Remotion: video promocional de Google Play y redes. No se usa dentro de la app.",
+      "optional": true
+    }
+  ]
+}

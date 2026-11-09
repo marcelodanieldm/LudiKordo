@@ -1,0 +1,34 @@
+name: Lección nueva
+description: Pedir una o varias lecciones del roadmap (se escriben con la skill add-lesson).
+labels: ["content"]
+body:
+  - type: input
+    id: ids
+    attributes:
+      label: Lecciones
+      description: Ids del roadmap, máximo 5 por issue.
+      placeholder: 1.3.2, 1.3.3
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: Habilidad que enseña cada una
+      placeholder: |
+        1.3.2: la araña en las 4 cuerdas, cambio de cuerda sin cortar el sonido
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notas pedagógicas
+      description: Errores comunes a mostrar en el cartoon, tempo inicial, figuras de diapasón.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Requisitos
+      options:
+        - label: Textos en en, es y pt-BR con el glosario
+          required: true
+        - label: Solo música original
+          required: true

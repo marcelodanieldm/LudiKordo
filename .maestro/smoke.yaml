@@ -1,0 +1,27 @@
+# Prueba de humo E2E: instalación limpia → onboarding → planes → Hoy → primera lección.
+# Usa testID (no textos), así funciona en cualquier idioma del teléfono.
+# Local: maestro test .maestro/   ·   CI: workflow e2e-android (etiqueta test:e2e)
+appId: app.ludikordo
+---
+- launchApp:
+    clearState: true
+- tapOn:
+    id: "onboarding-start"
+- scrollUntilVisible:
+    element:
+      id: "onboarding-finish"
+- tapOn:
+    id: "onboarding-finish"
+- extendedWaitUntil:
+    visible:
+      id: "paywall-free"
+    timeout: 15000
+- tapOn:
+    id: "paywall-free"
+- assertVisible:
+    id: "today-continue"
+- tapOn:
+    id: "today-continue"
+- assertVisible:
+    id: "lesson-next"
+- takeScreenshot: smoke-leccion-1-1-1
