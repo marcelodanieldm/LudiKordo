@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { Text } from '../Text';
 import { useTranslation } from 'react-i18next';
 import { Button, Stars } from '../ui';
-import { colors, radius } from '../../theme';
+import { colors, radius, fonts } from '../../theme';
 import { listenNotes, listenPitch, requestMic, type Listener, type MicStatus } from '../../audio/mic';
 import { nowMs, startMetronome, type MetronomeHandle } from '../../audio/engine';
 import { centsOff, midiAt, noteName, type Locale } from '../../music/notes';
@@ -116,7 +117,7 @@ export function PlayAlongExercise({ exercise, onDone, mastery }: { exercise: Pla
 
   return (
     <View style={{ gap: 14 }}>
-      <Text style={{ fontSize: 22, fontWeight: '700', color: colors.ink }}>{t(exercise.promptKey)}</Text>
+      <Text style={{ fontFamily: fonts.display, fontSize: 24, lineHeight: 30, color: colors.ink }}>{t(exercise.promptKey)}</Text>
       <Text style={{ color: colors.muted }}>
         {bpm !== null ? `${t('ui.exercise.tempo', { bpm })} · ` : ''}
         {t('ui.exercise.headphones')}
@@ -137,7 +138,7 @@ export function PlayAlongExercise({ exercise, onDone, mastery }: { exercise: Pla
                 backgroundColor: phase === 'running' && k === index ? colors.accent : k < index ? colors.tealSoft : colors.track,
               }}
             >
-              <Text style={{ fontWeight: '800', color: phase === 'running' && k === index ? '#FFFFFF' : colors.ink }}>
+              <Text style={{ fontWeight: '800', color: phase === 'running' && k === index ? colors.onAccent : colors.ink }}>
                 {n.string}
                 {n.fret}
               </Text>
@@ -147,7 +148,7 @@ export function PlayAlongExercise({ exercise, onDone, mastery }: { exercise: Pla
         {phase === 'running' ? (
           <>
             <Text style={{ fontSize: 16, fontWeight: '800', color: colors.teal }}>{t('ui.exercise.listening')}</Text>
-            <Text style={{ fontSize: 28, fontWeight: '700', color: colors.ink }}>{t('ui.exercise.waitingFor', { note: label(current) })}</Text>
+            <Text style={{ fontFamily: fonts.display, fontSize: 28, lineHeight: 34, color: colors.accentInk, textAlign: 'center' }}>{t('ui.exercise.waitingFor', { note: label(current) })}</Text>
             {bpm === null && cents !== null ? (
               <Text style={{ color: Math.abs(cents) <= (exercise.toleranceCents ?? PITCH_TOLERANCE_CENTS) ? colors.tealInk : colors.accentInk, fontWeight: '700' }}>
                 {cents > 0 ? '+' : ''}

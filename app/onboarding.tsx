@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
+import { Text } from '../src/components/Text';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { Button, Pill, Card } from '../src/components/ui';
+import { Button, Pill, Card, Eyebrow, H2 } from '../src/components/ui';
 import { Kordi } from '../src/components/Kordi';
 import { useSettings } from '../src/state/settings';
-import { colors } from '../src/theme';
+import { colors, fonts, radius } from '../src/theme';
 import type { Locale } from '../src/music/notes';
 
 const LANGS: [Locale, string][] = [
@@ -33,19 +34,36 @@ export default function Onboarding() {
       <ScrollView contentContainerStyle={{ padding: 24, gap: 20, flexGrow: 1, maxWidth: 560, width: '100%', alignSelf: 'center' }}>
         {page === 0 ? (
           <>
-            <View style={{ alignItems: 'center' }}>
-              <Kordi size={200} />
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Text style={{ fontFamily: fonts.displayBold, fontSize: 22 }}>
+                Ludi<Text style={{ fontFamily: fonts.displayBold, fontSize: 22, color: colors.accent }}>Kordo</Text>
+              </Text>
+              <View accessibilityRole="radiogroup" accessibilityLabel={t('ui.onboarding.language')} style={{ flexDirection: 'row', gap: 4, padding: 4, borderRadius: radius.md, backgroundColor: colors.card }}>
+                {LANGS.map(([code, name]) => {
+                  const on = i18n.language === code;
+                  return (
+                    <Pressable
+                      key={code}
+                      accessibilityRole="radio"
+                      accessibilityLabel={name}
+                      accessibilityState={{ checked: on }}
+                      onPress={() => s.setLocale(code)}
+                      style={{ minWidth: 48, minHeight: 44, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: on ? colors.raised : 'transparent' }}
+                    >
+                      <Text style={{ fontSize: 13, fontWeight: '900', color: on ? colors.ink : colors.muted }}>{code.toUpperCase()}</Text>
+                    </Pressable>
+                  );
+                })}
+              </View>
             </View>
-            <Text style={{ fontSize: 14, fontWeight: '800', color: colors.accent, textTransform: 'uppercase' }}>{t('ui.onboarding.appTag')}</Text>
-            <Text style={{ fontSize: 32, fontWeight: '700', color: colors.ink }}>{t('ui.onboarding.welcomeTitle')}</Text>
-            <Text style={{ fontSize: 16, lineHeight: 24, color: colors.muted }}>{t('ui.onboarding.welcomeBody')}</Text>
-            <Text style={{ fontWeight: '700', color: colors.muted }}>{t('ui.onboarding.language')}</Text>
-            <View style={{ flexDirection: 'row', gap: 8 }}>
-              {LANGS.map(([code, name]) => (
-                <Pill key={code} label={name} selected={i18n.language === code} onPress={() => s.setLocale(code)} />
-              ))}
+            <View style={{ flex: 1, minHeight: 300, alignItems: 'center', justifyContent: 'flex-end' }}>
+              <Kordi size={200} light="beam" />
             </View>
-            <View style={{ flex: 1 }} />
+            <View style={{ gap: 10 }}>
+              <Eyebrow color={colors.gold}>{t('ui.onboarding.appTag')}</Eyebrow>
+              <Text style={{ fontFamily: fonts.display, fontSize: 34, lineHeight: 38 }}>{t('ui.onboarding.welcomeTitle')}</Text>
+              <Text style={{ fontSize: 16, lineHeight: 23, color: colors.muted }}>{t('ui.onboarding.welcomeBody')}</Text>
+            </View>
             <Button testID="onboarding-start" label={t('ui.common.start')} onPress={() => setPage(1)} />
           </>
         ) : (
@@ -85,7 +103,7 @@ export default function Onboarding() {
 function Question({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <Card>
-      <Text style={{ fontSize: 17, fontWeight: '800', color: colors.ink }}>{title}</Text>
+      <H2 style={{ fontSize: 19 }}>{title}</H2>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>{children}</View>
     </Card>
   );

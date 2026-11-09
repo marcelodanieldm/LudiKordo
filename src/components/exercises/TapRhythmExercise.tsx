@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
+import { Text } from '../Text';
 import { useTranslation } from 'react-i18next';
 import { nowMs, startMetronome, type MetronomeHandle } from '../../audio/engine';
 import { expectedTimes, scoreTiming, starsFor, TAP_TOLERANCE_MS } from '../../music/scoring';
 import { Button, Stars } from '../ui';
-import { colors, radius } from '../../theme';
+import { colors, radius, fonts } from '../../theme';
 import type { TapRhythmExercise as TapEx } from '../../content/types';
 
 /**
@@ -53,7 +54,7 @@ export function TapRhythmExercise({ exercise, onDone, mastery }: { exercise: Tap
 
   return (
     <View style={{ gap: 14 }}>
-      <Text style={{ fontSize: 22, fontWeight: '700', color: colors.ink }}>{t(exercise.promptKey)}</Text>
+      <Text style={{ fontFamily: fonts.display, fontSize: 24, lineHeight: 30, color: colors.ink }}>{t(exercise.promptKey)}</Text>
       <Text style={{ color: colors.muted }}>
         {t('ui.exercise.tapHint')} · {t('ui.exercise.tempo', { bpm: exercise.bpm })}
       </Text>
@@ -66,7 +67,7 @@ export function TapRhythmExercise({ exercise, onDone, mastery }: { exercise: Tap
             onPressIn={() => tap(i)}
             style={{ flex: 1, height: 140, borderRadius: radius.xl, backgroundColor: padColors[i % 2], alignItems: 'center', justifyContent: 'center', opacity: phase === 'running' ? 1 : 0.6 }}
           >
-            <Text style={{ color: '#FFFFFF', fontSize: 40, fontWeight: '800' }}>{p}</Text>
+            <Text style={{ color: colors.onAccent, fontSize: 40, fontWeight: '800' }}>{p}</Text>
           </Pressable>
         ))}
       </View>

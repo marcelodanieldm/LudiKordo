@@ -34,6 +34,8 @@
       "courseDone": "Você terminou o curso! Revise seus módulos favoritos."
     },
     "path": {
+      "inProgress": "Em andamento",
+      "lessonsDone": "{{done}} de {{total}} aulas",
       "title": "Sua trilha",
       "levelProgress": "{{pct}}% concluído",
       "weeks": "Semanas {{from}}–{{to}}",
@@ -42,6 +44,9 @@
       "checkpoint": "Checkpoint"
     },
     "lesson": {
+      "scene": "Cena {{n}} de {{total}}",
+      "play": "Reproduzir",
+      "pause": "Pausar",
       "steps": { "watch": "Assista", "learn": "Entenda", "noBass": "Sem baixo", "withBass": "Com baixo" },
       "objective": "Objetivo",
       "subtitles": "Legendas",
@@ -75,6 +80,9 @@
       "result": "{{hits}} de {{total}} no tempo"
     },
     "practice": {
+      "bpmUnit": "bpm",
+      "tempoDown": "Diminuir andamento",
+      "tempoUp": "Aumentar andamento",
       "title": "Praticar",
       "tuner": "Afinador",
       "tunerHint": "Toque uma corda solta",

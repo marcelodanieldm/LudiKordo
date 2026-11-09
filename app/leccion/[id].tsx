@@ -1,5 +1,6 @@
 import React, { useMemo, useRef, useState } from 'react';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { Text } from '../../src/components/Text';
 import { router, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -12,8 +13,9 @@ import { useLayout } from '../../src/hooks/useLayout';
 import { CartoonPlayer } from '../../src/components/CartoonPlayer';
 import { Figure } from '../../src/components/Figure';
 import { ExerciseView } from '../../src/components/exercises/ExerciseView';
-import { Button, Card, Muted, Stars } from '../../src/components/ui';
-import { colors, radius } from '../../src/theme';
+import { Button, Card, CloseButton, Eyebrow, Muted, Stars } from '../../src/components/ui';
+import { Kordi } from '../../src/components/Kordi';
+import { colors, fonts, radius } from '../../src/theme';
 import { xpFor } from '../../src/music/scoring';
 
 type Step = 'watch' | 'learn' | 'noBass' | 'withBass' | 'result';
@@ -85,8 +87,14 @@ export default function LessonScreen() {
     <View style={{ gap: 16 }}>
       {step === 'watch' ? (
         <>
-          <Text style={{ fontSize: 24, fontWeight: '700', color: colors.ink }}>{t(lesson.titleKey)}</Text>
+          {!isTablet ? (
+            <View style={{ gap: 4 }}>
+              <Muted>{t('ui.common.lesson', { id: lesson.id })}</Muted>
+              <Text style={{ fontFamily: fonts.display, fontSize: 28, lineHeight: 33 }}>{t(lesson.titleKey)}</Text>
+            </View>
+          ) : null}
           <CartoonPlayer lesson={lesson} />
+          {!isTablet ? <Objective text={t(lesson.objectiveKey)} /> : null}
           <Button testID="lesson-next" label={t('ui.common.next')} onPress={advanceStep} />
         </>
       ) : null}
@@ -94,13 +102,13 @@ export default function LessonScreen() {
       {step === 'learn' ? (
         <>
           <Card>
-            <Text style={{ fontSize: 20, fontWeight: '700', color: colors.ink }}>{t(lesson.cards[card].titleKey)}</Text>
+            <Text style={{ fontFamily: fonts.display, fontSize: 24, lineHeight: 29 }}>{t(lesson.cards[card].titleKey)}</Text>
             {lesson.cards[card].figure ? <Figure id={lesson.cards[card].figure!} width={contentWidth - 34} /> : null}
             <Text style={{ fontSize: 16, lineHeight: 24, color: colors.ink }}>{t(lesson.cards[card].bodyKey)}</Text>
           </Card>
           <View style={{ flexDirection: 'row', justifyContent: 'center', gap: 6 }}>
             {lesson.cards.map((_, i) => (
-              <View key={i} style={{ width: 8, height: 8, borderRadius: 4, backgroundColor: i === card ? colors.accent : colors.border }} />
+              <View key={i} style={{ width: i === card ? 22 : 8, height: 8, borderRadius: 4, backgroundColor: i === card ? colors.accent : colors.line }} />
             ))}
           </View>
           <View style={{ flexDirection: 'row', gap: 10 }}>
@@ -122,14 +130,15 @@ export default function LessonScreen() {
       ) : null}
 
       {step === 'result' ? (
-        <View style={{ alignItems: 'center', gap: 14, paddingVertical: 24 }} accessibilityLiveRegion="polite">
-          <Stars count={lessonStars()} size={56} />
-          <Text style={{ fontSize: 28, fontWeight: '700', color: colors.ink }}>{lessonStars() >= 1 ? t('ui.lesson.resultTitle') : t('ui.lesson.resultRetry')}</Text>
-          <Text style={{ fontSize: 22, fontWeight: '800', color: colors.teal }}>
-            {t('ui.lesson.xp', { xp: stars.current.reduce((a, s) => a + xpFor(s), 0) })}
-          </Text>
-          {lessonStars() === 3 ? <Muted>{t('ui.lesson.mastered')}</Muted> : null}
-          <Button style={{ alignSelf: 'stretch' }} label={t('ui.lesson.backToToday')} onPress={() => router.replace('/(tabs)')} />
+        <View style={{ alignItems: 'center', gap: 14, paddingVertical: 12 }} accessibilityLiveRegion="polite">
+          <Kordi size={190} mood={lessonStars() >= 1 ? 'happy' : 'normal'} light="glow" />
+          <Stars count={lessonStars()} size={48} />
+          <Text style={{ fontFamily: fonts.display, fontSize: 30, lineHeight: 36, textAlign: 'center' }}>{lessonStars() >= 1 ? t('ui.lesson.resultTitle') : t('ui.lesson.resultRetry')}</Text>
+          {lessonStars() === 3 ? <Muted style={{ fontSize: 16 }}>{t('ui.lesson.mastered')}</Muted> : null}
+          <View style={{ paddingHorizontal: 16, paddingVertical: 8, borderRadius: 14, backgroundColor: colors.goldSoft }}>
+            <Text style={{ fontSize: 18, fontWeight: '900', color: colors.gold }}>{t('ui.lesson.xp', { xp: stars.current.reduce((a, s) => a + xpFor(s), 0) })}</Text>
+          </View>
+          <Button style={{ alignSelf: 'stretch', marginTop: 12 }} label={t('ui.lesson.backToToday')} onPress={() => router.replace('/(tabs)')} />
         </View>
       ) : null}
     </View>
@@ -138,34 +147,28 @@ export default function LessonScreen() {
   const stepBar = (
     <View style={{ flexDirection: isTablet ? 'column' : 'row', gap: 8, flex: isTablet ? undefined : 1 }}>
       {STEPS.map((s, i) => {
-        const reached = STEPS.indexOf(step as (typeof STEPS)[number]) >= i || step === 'result';
+        const at = step === 'result' ? STEPS.length : STEPS.indexOf(step as (typeof STEPS)[number]);
+        const current = i === at;
         return (
-          <View key={s} style={{ flex: isTablet ? undefined : 1, gap: 4 }}>
-            <View style={{ height: 6, borderRadius: 3, backgroundColor: reached ? colors.accent : colors.border }} />
-            <Text style={{ fontSize: 12, fontWeight: '800', color: step === s ? colors.ink : colors.muted }}>{t(`ui.lesson.steps.${s}`)}</Text>
+          <View key={s} accessibilityState={{ selected: current }} style={{ flex: isTablet ? undefined : 1, gap: 5 }}>
+            <View style={{ height: 6, borderRadius: 3, backgroundColor: i < at ? colors.teal : current ? colors.accent : colors.line }} />
+            <Text style={{ fontSize: 11, fontWeight: current ? '900' : '800', color: current ? colors.accentInk : colors.muted }}>{t(`ui.lesson.steps.${s}`)}</Text>
           </View>
         );
       })}
     </View>
   );
 
-  const closeButton = (
-    <Pressable accessibilityRole="button" accessibilityLabel={t('ui.common.close')} onPress={() => router.back()} style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center' }}>
-      <Text style={{ fontSize: 20, color: colors.ink }}>✕</Text>
-    </Pressable>
-  );
+  const closeButton = <CloseButton label={t('ui.common.close')} onPress={() => router.back()} />;
 
   if (isTablet) {
     return (
       <SafeAreaView style={{ flex: 1, flexDirection: 'row', backgroundColor: colors.bg }}>
         <View style={{ width: 320, padding: 24, gap: 20, borderRightWidth: 1, borderColor: colors.border }}>
           {closeButton}
-          <Text style={{ fontSize: 13, fontWeight: '800', color: colors.muted }}>{t('ui.common.lesson', { id: lesson.id })}</Text>
-          <Text style={{ fontSize: 26, fontWeight: '700', color: colors.ink }}>{t(lesson.titleKey)}</Text>
-          <View style={{ backgroundColor: colors.tealSoft, borderRadius: radius.md, padding: 14, gap: 4 }}>
-            <Text style={{ fontWeight: '800', color: colors.tealInk }}>{t('ui.lesson.objective')}</Text>
-            <Text style={{ color: colors.tealInk, lineHeight: 20 }}>{t(lesson.objectiveKey)}</Text>
-          </View>
+          <Muted>{t('ui.common.lesson', { id: lesson.id })}</Muted>
+          <Text style={{ fontFamily: fonts.display, fontSize: 28, lineHeight: 33 }}>{t(lesson.titleKey)}</Text>
+          <Objective text={t(lesson.objectiveKey)} />
           {stepBar}
         </View>
         <ScrollView contentContainerStyle={{ padding: 32, maxWidth: 900 }}>{body}</ScrollView>
@@ -184,11 +187,22 @@ export default function LessonScreen() {
   );
 }
 
+function Objective({ text }: { text: string }) {
+  const { t } = useTranslation();
+  return (
+    <View style={{ backgroundColor: colors.tealSoft, borderRadius: radius.lg, padding: 14, gap: 4 }}>
+      <Eyebrow color={colors.teal}>{t('ui.lesson.objective')}</Eyebrow>
+      <Text style={{ fontSize: 15, fontWeight: '700', lineHeight: 21 }}>{text}</Text>
+    </View>
+  );
+}
+
 function Message({ text, action, actionLabel }: { text: string; action?: () => void; actionLabel?: string }) {
   const { t } = useTranslation();
   return (
     <SafeAreaView style={{ flex: 1, padding: 24, gap: 16, justifyContent: 'center', backgroundColor: colors.bg }}>
-      <Text style={{ fontSize: 20, fontWeight: '700', color: colors.ink, textAlign: 'center' }}>{text}</Text>
+      <Kordi size={140} />
+      <Text style={{ fontFamily: fonts.display, fontSize: 24, lineHeight: 30, textAlign: 'center' }}>{text}</Text>
       {action && actionLabel ? <Button label={actionLabel} onPress={action} /> : null}
       <Button variant="secondary" label={t('ui.common.back')} onPress={() => router.back()} />
     </SafeAreaView>
