@@ -359,7 +359,7 @@
       "c2t": "Os números",
       "c2b": "O número diz qual casa pressionar. 0 quer dizer corda solta.",
       "c3t": "Em ordem",
-      "c3b": "Lê-se da esquerda para a direita, como um texto. As barras verticais separam os compassos.",
+      "c3b": "Lê-se da esquerda para a direita, como um texto. As barras verticais dividem a linha em compassos: logo você vai ver o que são.",
       "q1": "Na tablatura, qual corda é a linha de baixo?",
       "q1o1": "Mi (E), a mais grossa",
       "q1o2": "Lá (A)",
@@ -370,7 +370,7 @@
       "q2o2": "Corda Ré, casa 2",
       "q2o3": "Corda Lá solta, com o dedo 2",
       "tab": "Leia a tablatura e toque cada nota na escala.",
-      "play": "Agora no baixo: a mesma tablatura em semínimas."
+      "play": "Agora no baixo: a mesma tablatura, uma nota por clique."
     },
     "l142": {
       "title": "O pulso",
@@ -386,12 +386,12 @@
       "q": "Quantos pulsos você conta em cada compasso destas aulas?",
       "click": "Marque o pulso com o metrônomo durante 4 compassos.",
       "alone": "Agora o clique para na metade. Continue marcando o pulso.",
-      "play": "Quatro semínimas em cada corda solta: Mi, Lá, Ré e Sol."
+      "play": "Quatro pulsos em cada corda solta: Mi, Lá, Ré e Sol."
     },
     "l143": {
       "title": "Semibreve, mínima e semínima",
       "objective": "Reconhecer a semibreve, a mínima e a semínima e tocá-las com a sua duração.",
-      "s1": "“Algumas notas passam rápido e outras ficam para descansar.”",
+      "s1": "“Algumas notas passam rápido e outras ficam soando um tempo.”",
       "s2": "A semínima dura 1 pulso, a mínima 2 e a semibreve 4: ocupa o compasso inteiro.",
       "s3": "“A mínima não é uma semínima com pressa: deixe soar dois pulsos.”",
       "s4": "Semínima 1, mínima 2, semibreve 4. Conte enquanto soa.",
@@ -430,11 +430,11 @@
       "title": "Pulso firme",
       "objective": "Manter o pulso por 24 pulsos sem metrônomo e tocar uma linha de 4 compassos lida na tablatura.",
       "s1": "“Hoje o metrônomo tira uma folga. Você segura o pulso?”",
-      "s2": "Primeiro 8 pulsos com clique; depois 24 sem clique. Conte por dentro.",
+      "s2": "Primeiro 8 pulsos com clique; depois 24 sem clique. Conte mentalmente.",
       "s3": "“Se você correr, tudo bem: respire e volte para o pulso.”",
       "s4": "Com pulso firme e a tablatura, você já pode ler as suas primeiras linhas.",
       "c1t": "O pulso interno",
-      "c1b": "Conte por dentro e marque com o pé. O metrônomo é uma ajuda, não uma muleta.",
+      "c1b": "Conte mentalmente e marque com o pé. O metrônomo é uma ajuda, não uma muleta.",
       "c2t": "Ler e tocar",
       "c2b": "Enquanto toca um compasso, olhe o seguinte.",
       "pulse": "8 pulsos com clique e 24 sem clique. Mantenha o pulso.",
