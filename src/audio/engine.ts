@@ -35,13 +35,10 @@ export interface MetronomeHandle {
 }
 
 /**
- * Programa `countIn` pulsos de cuenta y `beats` pulsos del ejercicio.
- * Programar todo por adelantado evita el jitter de los timers de JavaScript.
- */
-/**
- * Programa los clics del metrónomo. La cuenta (`countIn`) siempre suena; de los
- * `beats` siguientes solo suenan los primeros `audibleBeats` (por defecto todos),
- * para entrenar el pulso interno.
+ * Programa los clics del metrónomo por adelantado (evita el jitter de los timers
+ * de JavaScript). La cuenta (`countIn`) siempre suena; de los `beats` siguientes
+ * solo suenan los primeros `audibleBeats` (por defecto todos), para entrenar el
+ * pulso interno.
  */
 export function startMetronome(bpm: number, beats: number, countIn = 4, beatsPerBar = 4, audibleBeats = beats): MetronomeHandle {
   const c = context();

@@ -18,7 +18,7 @@ export function TempoTrainerExercise({ exercise, onDone, mastery }: { exercise: 
   const { t } = useTranslation();
   const [phase, setPhase] = useState<'idle' | 'running' | 'done'>('idle');
   const [beat, setBeat] = useState(-COUNT_IN - 1);
-  const [result, setResult] = useState<{ hits: number; total: number; stars: number; advice: 'early' | 'late' | 'steady' } | null>(null);
+  const [result, setResult] = useState<{ hits: number; total: number; stars: number; advice: 'early' | 'late' | 'steady' | 'missing' } | null>(null);
   const metro = useRef<MetronomeHandle | null>(null);
   const taps = useRef<number[]>([]);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -55,6 +55,7 @@ export function TempoTrainerExercise({ exercise, onDone, mastery }: { exercise: 
     metro.current?.stop();
     taps.current = [];
     setResult(null);
+    setBeat(-COUNT_IN - 1);
     metro.current = startMetronome(exercise.bpm, exercise.beats, COUNT_IN, 4, exercise.audibleBeats);
     const startMs = metro.current.startMs;
     setPhase('running');
@@ -67,16 +68,19 @@ export function TempoTrainerExercise({ exercise, onDone, mastery }: { exercise: 
     if (phase === 'running') taps.current.push(nowMs());
   };
 
+  // Antes del primer clic de la cuenta no se muestra nada.
+  const waiting = beat < -COUNT_IN;
   const counting = beat < 0;
   const silent = beat >= exercise.audibleBeats;
   const beatInBar = ((beat % 4) + 4) % 4;
-  const status = phase !== 'running' ? '' : counting ? t('ui.exercise.countIn', { n: COUNT_IN + beat + 1 }) : silent ? t('ui.exercise.tempoSilent') : t('ui.exercise.tempoWithClick');
+  const status = phase !== 'running' || waiting ? '' : counting ? t('ui.exercise.countIn', { n: COUNT_IN + beat + 1 }) : silent ? t('ui.exercise.tempoSilent') : t('ui.exercise.tempoWithClick');
 
   return (
     <View style={{ gap: 14 }}>
       <Text style={{ fontFamily: fonts.display, fontSize: 24, lineHeight: 30 }}>{t(exercise.promptKey)}</Text>
       <Muted>
-        {t('ui.exercise.tempoHint', { n: exercise.audibleBeats })} · {t('ui.exercise.tempo', { bpm: exercise.bpm })}
+        {exercise.audibleBeats >= exercise.beats ? t('ui.exercise.tempoHintAll') : t('ui.exercise.tempoHint', { n: exercise.audibleBeats })} ·{' '}
+        {t('ui.exercise.tempo', { bpm: exercise.bpm })}
       </Muted>
       <View style={{ flexDirection: 'row', gap: 10, justifyContent: 'center' }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
         {[0, 1, 2, 3].map((i) => {
@@ -99,7 +103,9 @@ export function TempoTrainerExercise({ exercise, onDone, mastery }: { exercise: 
         <View style={{ alignItems: 'center', gap: 8 }} accessibilityLiveRegion="polite">
           <Stars count={result.stars} size={36} />
           <Text style={{ fontWeight: '800' }}>{t('ui.exercise.result', { hits: result.hits, total: result.total })}</Text>
-          <Text style={{ fontWeight: '700', color: result.advice === 'steady' ? colors.teal : colors.accentInk, textAlign: 'center' }}>{t(`ui.exercise.drift.${result.advice}`)}</Text>
+          {exercise.audibleBeats < exercise.beats ? (
+            <Text style={{ fontWeight: '700', color: result.advice === 'steady' ? colors.teal : colors.accentInk, textAlign: 'center' }}>{t(`ui.exercise.drift.${result.advice}`)}</Text>
+          ) : null}
         </View>
       ) : null}
       {phase === 'done' && result ? (

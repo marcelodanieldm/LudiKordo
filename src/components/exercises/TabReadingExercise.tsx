@@ -13,7 +13,7 @@ import { useSettings } from '../../state/settings';
 import { colors, fonts } from '../../theme';
 import type { TabReadingExercise as TabEx } from '../../content/types';
 
-/** Duración de un pulso al hacer sonar cada nota (60 bpm): la redonda dura 4 veces la negra. */
+/** Duración de un pulso al hacer sonar cada nota (120 bpm, para no hacer esperar): la redonda dura 4 veces la negra. */
 const BEAT_SEC = 0.5;
 
 /**
@@ -54,7 +54,7 @@ export function TabReadingExercise({ exercise, onDone, width, mastery }: { exerc
           ? t('ui.exercise.tabDone', { count: mistakes })
           : t('ui.exercise.tabNow', {
               figure: t(`ui.exercise.figure.${figureOf(current.beats)}`),
-              count: countFor(current).join(' '),
+              beats: countFor(current).join(' '),
             })}
       </Text>
       <Fretboard
