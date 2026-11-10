@@ -13,7 +13,7 @@ import { colors, fonts } from '../../theme';
 import type { Exercise } from '../../content/types';
 
 /**
- * Elige el componente de cada tipo de ejercicio. 6 de los 9 tipos están
+ * Elige el componente de cada tipo de ejercicio. 6 de los 8 tipos están
  * implementados; el resto muestra «próximamente» y deja seguir.
  */
 export function ExerciseView({ exercise, onDone, width, mastery }: { exercise: Exercise; onDone: (stars: number) => void; width: number; mastery: number }) {

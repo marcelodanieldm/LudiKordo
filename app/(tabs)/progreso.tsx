@@ -18,6 +18,7 @@ const BADGE_LABEL: Record<string, Record<string, string>> = {
   'days-7': { es: '7 días', en: '7 days', pt: '7 dias' },
   'days-30': { es: '30 días', en: '30 days', pt: '30 dias' },
   'days-100': { es: '100 días', en: '100 days', pt: '100 dias' },
+  'checkpoint-1': { es: 'Nivel 1 aprobado', en: 'Level 1 passed', pt: 'Nível 1 aprovado' },
 };
 
 export default function Progress() {

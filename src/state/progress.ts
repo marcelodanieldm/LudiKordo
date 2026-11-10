@@ -21,11 +21,18 @@ interface ProgressState {
   skippedLevels: number[];
   /** Tempo desbloqueado por ejercicio (bpm). */
   tempo: Record<string, number>;
+  /** Mejor resultado de cada checkpoint aprobado, por nivel. */
+  checkpoints: Record<number, { stars: number; passedAt: string }>;
 
   recordExercise: (id: string, stars: number, skills: Skill[]) => void;
   completeLesson: (id: string, stars: 0 | 1 | 2 | 3) => void;
   addMinutes: (minutes: number) => void;
   unlockTempo: (exerciseId: string, bpm: number) => void;
+  /**
+   * Guarda un checkpoint aprobado. Si el nivel no estaba terminado, se marca
+   * como saltado para desbloquear el siguiente.
+   */
+  passCheckpoint: (level: number, stars: number, levelCompleted: boolean) => void;
   completedSet: () => Set<string>;
   practiceDays: () => string[];
 }
@@ -49,6 +56,7 @@ export const useProgress = create<ProgressState>()(
       badges: [],
       skippedLevels: [],
       tempo: {},
+      checkpoints: {},
 
       recordExercise: (id, stars, skills) =>
         set((s) => {
@@ -91,6 +99,22 @@ export const useProgress = create<ProgressState>()(
         }),
 
       unlockTempo: (exerciseId, bpm) => set((s) => ({ tempo: { ...s.tempo, [exerciseId]: Math.max(s.tempo[exerciseId] ?? 0, bpm) } })),
+
+      passCheckpoint: (level, stars, levelCompleted) =>
+        set((s) => {
+          const prev = s.checkpoints[level];
+          const badges = new Set(s.badges);
+          badges.add(`checkpoint-${level}`);
+          const skipped = new Set(s.skippedLevels);
+          if (!levelCompleted) skipped.add(level);
+          return {
+            checkpoints: { ...s.checkpoints, [level]: { stars: Math.max(prev?.stars ?? 0, stars), passedAt: prev?.passedAt ?? isoDate() } },
+            // El bono de XP del checkpoint se gana una sola vez.
+            xp: s.xp + (prev ? 0 : xpFor(stars, true)),
+            badges: [...badges],
+            skippedLevels: [...skipped],
+          };
+        }),
 
       completedSet: () => new Set(Object.entries(get().lessons).filter(([, r]) => r.stars >= 1).map(([id]) => id)),
       practiceDays: () => Object.keys(get().minutesByDay),

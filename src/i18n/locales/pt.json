@@ -64,6 +64,19 @@
       "open": "Corda {{string}} solta",
       "fret": "Corda {{string}}, casa {{fret}}"
     },
+    "checkpoint": {
+      "title": "Checkpoint {{level}}",
+      "notReady": "Este checkpoint ainda não está pronto.",
+      "premium": "O checkpoint {{level}} faz parte do Premium.",
+      "rules": "São {{count}} provas seguidas. Para passar você precisa de pelo menos 1 estrela em cada uma e {{avg}} de média.",
+      "skipNote": "Já sabe tudo isso? Se passar, o nível {{next}} é desbloqueado mesmo sem fazer todas as aulas.",
+      "start": "Começar o checkpoint",
+      "part": "Prova {{n}} de {{total}}",
+      "passed": "Checkpoint aprovado!",
+      "failed": "Ainda não. Revise as aulas e tente de novo.",
+      "unlocked": "O nível {{next}} foi desbloqueado.",
+      "backToPath": "Voltar para a trilha"
+    },
     "exercise": {
       "tempoHintAll": "Toque o botão em cada pulso, junto com o clique",
       "tabHint": "Leia a tablatura da esquerda para a direita e toque cada nota na escala. O número é a casa; 0 é a corda solta.",
@@ -672,6 +685,14 @@
       "qh": "O groove passa por I, IV, V e I.",
       "tab": "Leia os primeiros 4 compassos do groove.",
       "groove": "O Kordi Groove 1 completo: 8 compassos."
+    },
+    "cp1": {
+      "intro": "Mostre o que você aprendeu no nível 1: ouvido, tablatura, pulso, a aranha e o Kordi Groove 1 a 80 bpm.",
+      "ear": "Primeiro soa o Mi solto e depois outra corda solta. Qual é a segunda?",
+      "tab": "Leia a tablatura de 4 compassos e toque cada nota na escala.",
+      "pulse": "80 bpm: 8 pulsos com clique e 24 sem clique.",
+      "spider": "A aranha completa: suba pelas 4 cordas e volte descendo.",
+      "groove": "O Kordi Groove 1 completo a 80 bpm."
     }
   }
 }

@@ -199,3 +199,38 @@ test('módulos 1.1 y 1.2: solo cuerdas al aire y oído con referencia', async ()
   const changes = ea.notes.slice(1).filter((n, i) => n.string !== ea.notes[i].string).length;
   assert.ok(changes >= 14);
 });
+
+test('checkpoints: reglas de aprobación y contenido del nivel 1', async () => {
+  const { CHECKPOINTS, checkpointResult } = await import('../src/content/checkpoints');
+  const { barsAreComplete } = await import('../src/music/tab');
+  const { freqToMidi, midiAt } = await import('../src/music/notes');
+  // Aprobar: al menos 1 estrella en cada prueba y 2 de promedio.
+  assert.deepEqual(checkpointResult([3, 3, 2, 2, 3]), { stars: 2, passed: true });
+  assert.deepEqual(checkpointResult([3, 3, 3, 3, 3]), { stars: 3, passed: true });
+  assert.equal(checkpointResult([3, 3, 3, 3, 0]).passed, false); // una prueba en 0
+  assert.equal(checkpointResult([2, 2, 1, 2, 2]).passed, false); // promedio 1,8
+  assert.deepEqual(checkpointResult([]), { stars: 0, passed: false });
+
+  const cp1 = CHECKPOINTS[1];
+  assert.ok(cp1.parts.length >= 4);
+  assert.ok(lookup(locales.es, cp1.titleKey));
+  for (const ex of cp1.parts) {
+    assert.ok(lookup(locales.es, ex.promptKey) && lookup(locales.en, ex.promptKey) && lookup(locales.pt, ex.promptKey), ex.id);
+    if (ex.kind === 'tabReading') {
+      assert.ok(barsAreComplete(ex.notes), ex.id);
+      for (const n of ex.notes) assert.ok(n.fret <= ex.frets, ex.id);
+    }
+    if (ex.kind === 'ear') {
+      const answer = ex.options[ex.correctIndex].slice(1) as 'E' | 'A' | 'D' | 'G';
+      assert.equal(freqToMidi(ex.tones![1]), midiAt(answer, 0));
+    }
+  }
+  // El hito del documento de producto: Kordi Groove 1 completo a 80 bpm.
+  const groove = cp1.parts.find((e) => e.id === 'cp1-groove')!;
+  if (groove.kind !== 'playAlong') throw new Error('playAlong');
+  assert.equal(groove.bpm, 80);
+  assert.equal(groove.notes.reduce((a, n) => a + (n.beats ?? 1), 0), 32);
+  // Cada id de prueba es único en todo el contenido (el progreso se guarda por id).
+  const ids = [...Object.values(LESSONS).flatMap((l) => l.exercises.map((e) => e.id)), ...cp1.parts.map((e) => e.id)];
+  assert.equal(new Set(ids).size, ids.length);
+});
