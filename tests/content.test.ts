@@ -116,3 +116,29 @@ test('módulo 1.3: la araña usa un dedo por traste y la teoría es correcta', a
   assert.deepEqual(full.notes.slice(16, 20), [4, 3, 2, 1].map((fret) => ({ string: 'G', fret })));
   assert.deepEqual(full.notes.at(-1), { string: 'E', fret: 1 });
 });
+
+test('tablaturas y líneas con figuras: compases completos en todas las lecciones', async () => {
+  const { barsAreComplete } = await import('../src/music/tab');
+  for (const lesson of Object.values(LESSONS)) {
+    for (const ex of lesson.exercises) {
+      if (ex.kind === 'tabReading') assert.ok(barsAreComplete(ex.notes), ex.id);
+      if (ex.kind === 'playAlong' && ex.notes.some((n) => n.beats && n.beats !== 1)) {
+        assert.ok(barsAreComplete(ex.notes.map((n) => ({ ...n, beats: n.beats ?? 1 }))), ex.id);
+      }
+      if (ex.kind === 'tempoTrainer') assert.ok(ex.audibleBeats >= 4 && ex.audibleBeats <= ex.beats, ex.id);
+    }
+  }
+});
+
+test('módulo 1.4: respuestas de ritmo correctas', () => {
+  const opt = (id: string) => {
+    const ex = Object.values(LESSONS).flatMap((l) => l.exercises).find((e) => e.id === id)!;
+    if (ex.kind !== 'quiz') throw new Error(`${id} debería ser un quiz`);
+    return ex.options[ex.correctIndex];
+  };
+  assert.equal(opt('1.4.2-q'), '=4'); // compás de 4
+  assert.equal(opt('1.4.3-half'), '=2'); // la blanca dura 2
+  assert.equal(lookup(locales.es, opt('1.4.3-whole')), 'Redonda');
+  assert.equal(opt('1.4.4-q'), '=4'); // blanca (1-2), negra (3), negra (4)
+  assert.equal(lookup(locales.es, opt('1.4.1-line')), 'Mi (E), la más gruesa');
+});
