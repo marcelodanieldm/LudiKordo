@@ -61,6 +61,25 @@
       "premiumLocked": "This lesson is part of Premium."
     },
     "exercise": {
+      "tabHint": "Read the tab from left to right and tap each note on the fretboard. The number is the fret; 0 is the open string.",
+      "tabLabel": "Tab with {{count}} notes",
+      "tabNow": "{{figure}}: count {{count}}",
+      "tabDone": "You read the whole tab! Mistakes: {{count}}",
+      "tempoHint": "Tap the button on every beat. After {{n}} beats the click goes quiet: keep going",
+      "tempoTap": "Beat",
+      "countIn": "Count-in: {{n}}",
+      "tempoWithClick": "With click",
+      "tempoSilent": "No click now: keep going",
+      "figure": {
+        "whole": "Whole note",
+        "half": "Half note",
+        "quarter": "Quarter note"
+      },
+      "drift": {
+        "early": "You are rushing: wait a little longer each beat.",
+        "late": "You are dragging: anticipate the beat a little.",
+        "steady": "Steady beat!"
+      },
       "correct": "Exactly!",
       "wrong": "Close. Try another option.",
       "listen": "Listen",

@@ -100,3 +100,31 @@ export const XP_CHECKPOINT = 50;
 export function xpFor(stars: number, isCheckpoint = false): number {
   return XP_PER_EXERCISE + XP_PER_STAR * stars + (isCheckpoint ? XP_CHECKPOINT : 0);
 }
+
+export interface TempoResult extends TimingResult {
+  /** Desvío promedio de los aciertos sin clic (ms, + = tarde). */
+  driftMs: number;
+}
+
+/**
+ * Entrenador de tempo: con clic se exige la tolerancia de tocar la pantalla;
+ * sin clic, la de tocar el instrumento, porque el alumno lleva el pulso solo.
+ * El desvío promedio de la parte sin clic dice si apura o se atrasa.
+ */
+export function scoreTempoTrainer(expected: number[], taps: number[], audibleBeats: number): TempoResult {
+  const withClick = scoreTiming(expected.slice(0, audibleBeats), taps, TAP_TOLERANCE_MS);
+  const used = taps.filter((t) => !withClick.offsets.some((o, i) => o !== null && expected[i] + o === t));
+  const silent = scoreTiming(expected.slice(audibleBeats), used, TIMING_TOLERANCE_MS);
+  const offsets = [...withClick.offsets, ...silent.offsets];
+  const hits = withClick.hits + silent.hits;
+  const silentHits = silent.offsets.filter((o): o is number => o !== null);
+  const driftMs = silentHits.length ? silentHits.reduce((a, b) => a + b, 0) / silentHits.length : 0;
+  return { hits, total: expected.length, accuracy: expected.length ? hits / expected.length : 0, offsets, driftMs };
+}
+
+/** Consejo según el desvío promedio: más de 25 ms antes o después del pulso. */
+export function driftAdvice(driftMs: number): 'early' | 'late' | 'steady' {
+  if (driftMs < -25) return 'early';
+  if (driftMs > 25) return 'late';
+  return 'steady';
+}

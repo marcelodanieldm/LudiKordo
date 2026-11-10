@@ -118,3 +118,44 @@ test('los colores de texto del tema cumplen contraste 4,5:1 sobre las superficie
   assert.ok(ratio(colors.teal, colors.tealSoft) >= 4.5);
   assert.ok(ratio(colors.gold, colors.goldSoft) >= 4.5);
 });
+
+test('tablatura: compases completos, posición y conteo de cada figura', async () => {
+  const { barsAreComplete, countFor, figureOf, placeNotes, totalBeats } = await import('../src/music/tab');
+  const bar1 = [
+    { string: 'E' as const, fret: 0, beats: 4 as const },
+    { string: 'A' as const, fret: 0, beats: 2 as const },
+    { string: 'A' as const, fret: 2, beats: 2 as const },
+    { string: 'D' as const, fret: 0, beats: 1 as const },
+    { string: 'D' as const, fret: 0, beats: 1 as const },
+    { string: 'D' as const, fret: 2, beats: 2 as const },
+  ];
+  assert.equal(totalBeats(bar1), 12);
+  assert.ok(barsAreComplete(bar1));
+  const placed = placeNotes(bar1);
+  assert.deepEqual(placed.map((n) => [n.bar, n.beatInBar]), [[0, 0], [1, 0], [1, 2], [2, 0], [2, 1], [2, 2]]);
+  assert.deepEqual(countFor(placed[0]), [1, 2, 3, 4]);
+  assert.deepEqual(countFor(placed[2]), [3, 4]);
+  assert.deepEqual(['whole', 'half', 'quarter'], [4, 2, 1].map((b) => figureOf(b as 1 | 2 | 4)));
+  // Una blanca en el pulso 4 cruza la barra; tres negras no completan el compás.
+  assert.ok(!barsAreComplete([{ string: 'E', fret: 0, beats: 1 }, { string: 'E', fret: 0, beats: 2 }, { string: 'E', fret: 0, beats: 2 }, { string: 'E', fret: 0, beats: 1 }]));
+  assert.ok(!barsAreComplete([{ string: 'E', fret: 0, beats: 1 }, { string: 'E', fret: 0, beats: 1 }, { string: 'E', fret: 0, beats: 1 }]));
+  assert.ok(!barsAreComplete([]));
+});
+
+test('entrenador de tempo: sin clic se tolera más y se mide si el alumno apura', async () => {
+  const { driftAdvice, expectedTimes, scoreTempoTrainer } = await import('../src/music/scoring');
+  const expected = expectedTimes(8, 60); // 0, 1000, …, 7000
+  // 4 pulsos con clic perfectos; 4 sin clic, 70 ms antes cada uno (apurado pero dentro de ±80).
+  const taps = [0, 1000, 2000, 3000, 3930, 4930, 5930, 6930];
+  const r = scoreTempoTrainer(expected, taps, 4);
+  assert.equal(r.hits, 8);
+  assert.equal(Math.round(r.driftMs), -70);
+  assert.equal(driftAdvice(r.driftMs), 'early');
+  // Con clic, 70 ms de desvío ya no cuenta (tolerancia de pantalla, ±60).
+  const r2 = scoreTempoTrainer(expected, [70, 1000, 2000, 3000, 4000, 5000, 6000, 7000], 4);
+  assert.equal(r2.hits, 7);
+  assert.equal(driftAdvice(r2.driftMs), 'steady');
+  assert.equal(driftAdvice(40), 'late');
+  // Un mismo toque no cuenta para dos pulsos.
+  assert.equal(scoreTempoTrainer(expected, [3990], 4).hits, 1);
+});

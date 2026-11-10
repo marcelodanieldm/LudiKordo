@@ -61,6 +61,25 @@
       "premiumLocked": "Esta aula faz parte do Premium."
     },
     "exercise": {
+      "tabHint": "Leia a tablatura da esquerda para a direita e toque cada nota na escala. O número é a casa; 0 é a corda solta.",
+      "tabLabel": "Tablatura de {{count}} notas",
+      "tabNow": "{{figure}}: conte {{count}}",
+      "tabDone": "Você leu a tablatura inteira! Erros: {{count}}",
+      "tempoHint": "Toque o botão em cada pulso. Depois de {{n}} pulsos o clique para: continue você",
+      "tempoTap": "Pulso",
+      "countIn": "Contagem: {{n}}",
+      "tempoWithClick": "Com clique",
+      "tempoSilent": "Agora sem clique: continue você",
+      "figure": {
+        "whole": "Semibreve",
+        "half": "Mínima",
+        "quarter": "Semínima"
+      },
+      "drift": {
+        "early": "Você está correndo: espere um pouco mais a cada pulso.",
+        "late": "Você está atrasando: antecipe um pouco o pulso.",
+        "steady": "Pulso firme!"
+      },
       "correct": "Isso!",
       "wrong": "Quase. Tente outra opção.",
       "listen": "Ouvir",
