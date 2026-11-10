@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
+import { Text } from '../src/components/Text';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import type { PurchasesPackage } from 'react-native-purchases';
-import { Button } from '../src/components/ui';
+import Svg, { Path } from 'react-native-svg';
+import { Button, Chip, CloseButton } from '../src/components/ui';
 import { useBilling, purchase, restore } from '../src/billing/purchases';
 import { annualSavingsPct, formatMoney, TRIAL_DAYS, trialEndDate } from '../src/billing/access';
-import { colors, radius } from '../src/theme';
+import { colors, fonts, radius } from '../src/theme';
 
 type Plan = 'annual' | 'semiannual';
 
@@ -44,12 +46,23 @@ export default function Paywall() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
       <ScrollView contentContainerStyle={{ padding: 24, gap: 16, maxWidth: 560, width: '100%', alignSelf: 'center' }}>
-        <Text style={{ fontSize: 28, fontWeight: '700', color: colors.ink }}>{t('ui.paywall.title')}</Text>
-        {['b1', 'b2', 'b3'].map((b) => (
-          <Text key={b} style={{ fontSize: 15, color: colors.ink }}>
-            ✓ {t(`ui.paywall.${b}`)}
-          </Text>
-        ))}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Chip label={t('ui.path.premium')} color={colors.gold} bg={colors.goldSoft} />
+          <CloseButton label={t('ui.common.close')} onPress={close} />
+        </View>
+        <Text style={{ fontFamily: fonts.display, fontSize: 32, lineHeight: 36 }}>{t('ui.paywall.title')}</Text>
+        <View style={{ gap: 12 }}>
+          {BENEFITS.map((b) => (
+            <View key={b.key} style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+              <View style={{ width: 32, height: 32, borderRadius: 10, backgroundColor: colors.raised, alignItems: 'center', justifyContent: 'center' }}>
+                <Svg width={18} height={18} viewBox="0 0 24 24">
+                  <Path d={b.d} stroke={b.color} strokeWidth={2.4} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                </Svg>
+              </View>
+              <Text style={{ flex: 1, fontSize: 16, fontWeight: '700' }}>{t(`ui.paywall.${b.key}`)}</Text>
+            </View>
+          ))}
+        </View>
 
         {annual && semiannual ? (
           <>
@@ -73,7 +86,7 @@ export default function Paywall() {
                 ? t('ui.paywall.termsTrial', { date: trialEndDate(new Date(), i18n.language), price: annual.product.priceString })
                 : t('ui.paywall.termsSemi')}
             </Text>
-            {error ? <Text style={{ color: colors.accentInk, fontWeight: '700' }}>{error}</Text> : null}
+            {error ? <Text style={{ color: colors.danger, fontWeight: '700' }}>{error}</Text> : null}
             <Button
               disabled={busy}
               label={plan === 'annual' && hasTrial ? t('ui.paywall.ctaTrial', { count: TRIAL_DAYS }) : t('ui.paywall.ctaSubscribe')}
@@ -97,18 +110,37 @@ function PlanCard(p: { selected: boolean; onPress: () => void; name: string; pri
       accessibilityRole="radio"
       accessibilityState={{ checked: p.selected }}
       onPress={p.onPress}
-      style={{ padding: 16, gap: 4, borderRadius: radius.lg, backgroundColor: colors.card, borderWidth: p.selected ? 3 : 2, borderColor: p.selected ? colors.accent : colors.border }}
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 14,
+        padding: 16,
+        marginTop: p.badge ? 8 : 0,
+        borderRadius: radius.xl,
+        borderWidth: 2,
+        borderColor: p.selected ? colors.accent : colors.line,
+        backgroundColor: p.selected ? colors.accentSoft : colors.card,
+      }}
     >
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Text style={{ fontSize: 17, fontWeight: '800', color: colors.ink }}>{p.name}</Text>
-        {p.badge ? (
-          <Text style={{ fontSize: 12, fontWeight: '800', color: '#FFFFFF', backgroundColor: colors.teal, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 999, overflow: 'hidden' }}>
-            {p.badge}
-          </Text>
-        ) : null}
+      <View style={{ width: 22, height: 22, borderRadius: 11, borderWidth: 2, borderColor: p.selected ? colors.accent : colors.muted, alignItems: 'center', justifyContent: 'center' }}>
+        {p.selected ? <View style={{ width: 12, height: 12, borderRadius: 6, backgroundColor: colors.accent }} /> : null}
       </View>
-      <Text style={{ fontSize: 20, fontWeight: '800', color: colors.ink }}>{p.price}</Text>
-      <Text style={{ fontSize: 14, color: colors.muted }}>{p.sub}</Text>
+      <View style={{ flex: 1, gap: 2 }}>
+        <Text style={{ fontSize: 15, fontWeight: '800', color: colors.muted }}>{p.name}</Text>
+        <Text style={{ fontFamily: fonts.display, fontSize: 21, lineHeight: 26 }}>{p.price}</Text>
+        <Text style={{ fontSize: 14, fontWeight: '700', color: colors.muted }}>{p.sub}</Text>
+      </View>
+      {p.badge ? (
+        <View style={{ position: 'absolute', top: -12, right: 16, paddingHorizontal: 10, paddingVertical: 4, borderRadius: 10, backgroundColor: colors.gold }}>
+          <Text style={{ fontSize: 12, fontWeight: '900', color: colors.onAccent }}>{p.badge}</Text>
+        </View>
+      ) : null}
     </Pressable>
   );
 }
+
+const BENEFITS = [
+  { key: 'b1', color: colors.accentInk, d: 'M6 21a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM18 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM8 19h6.5a3.5 3.5 0 0 0 0-7h-5a3.5 3.5 0 0 1 0-7H16' },
+  { key: 'b2', color: colors.teal, d: 'M12 3a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3zM5 11a7 7 0 0 0 14 0M12 18v3' },
+  { key: 'b3', color: colors.gold, d: 'M12 15a6 6 0 1 0 0-12 6 6 0 0 0 0 12zM8.5 14 7 21l5-3 5 3-1.5-7' },
+] as const;

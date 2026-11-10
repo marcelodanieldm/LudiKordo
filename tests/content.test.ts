@@ -86,3 +86,116 @@ test('las respuestas correctas de los quiz apuntan a una opción válida', () =>
   if (q2.kind !== 'quiz') throw new Error('1.3.1-q debería ser un quiz');
   assert.equal(q2.options[q2.correctIndex], '=3');
 });
+
+test('módulo 1.3: la araña usa un dedo por traste y la teoría es correcta', async () => {
+  const { freqToMidi, midiAt, noteName } = await import('../src/music/notes');
+  // Las 5 lecciones del módulo existen y solo usan los trastes 1 a 4.
+  for (const id of ['1.3.1', '1.3.2', '1.3.3', '1.3.4', '1.3.5']) {
+    const lesson = LESSONS[id];
+    assert.ok(lesson, id);
+    for (const ex of lesson.exercises) {
+      const notes = ex.kind === 'playAlong' ? ex.notes : ex.kind === 'fretboardTap' ? ex.sequence : [];
+      for (const n of notes) assert.ok(n.fret >= 1 && n.fret <= 4, `${ex.id}: traste ${n.fret}`);
+    }
+  }
+  // 1.3.5: el tono del ejercicio de oído es la opción correcta (cuerda Mi, traste 3 = Sol).
+  const ear = LESSONS['1.3.5'].exercises.find((e) => e.id === '1.3.5-ear')!;
+  if (ear.kind !== 'ear' || !ear.tones) throw new Error('1.3.5-ear debería ser de oído con tono');
+  assert.equal(ear.tones.length, 2, 'primero la referencia (Mi al aire), después la nota');
+  assert.equal(freqToMidi(ear.tones[0]) % 12, midiAt('E', 0) % 12);
+  const midi = freqToMidi(ear.tones[1]);
+  assert.equal(midi % 12, midiAt('E', 3) % 12);
+  assert.equal(lookup(locales.en, ear.options[ear.correctIndex]), noteName(midi, 'en', 'letters'));
+  // Las cuatro opciones son los trastes 1 a 4 de la cuerda Mi, en orden.
+  ear.options.forEach((key, i) => assert.equal(lookup(locales.en, key), noteName(midiAt('E', i + 1), 'en', 'letters')));
+  // 1.3.5: la araña completa sube por las 4 cuerdas y vuelve a bajar (32 notas).
+  const full = LESSONS['1.3.5'].exercises.find((e) => e.id === '1.3.5-full')!;
+  if (full.kind !== 'playAlong') throw new Error('1.3.5-full debería ser playAlong');
+  assert.equal(full.notes.length, 32);
+  assert.deepEqual(full.notes.slice(0, 4).map((n) => n.fret), [1, 2, 3, 4]);
+  assert.deepEqual(full.notes.slice(16, 20), [4, 3, 2, 1].map((fret) => ({ string: 'G', fret })));
+  assert.deepEqual(full.notes.at(-1), { string: 'E', fret: 1 });
+});
+
+test('tablaturas y líneas con figuras: compases completos en todas las lecciones', async () => {
+  const { barsAreComplete } = await import('../src/music/tab');
+  for (const lesson of Object.values(LESSONS)) {
+    for (const ex of lesson.exercises) {
+      if (ex.kind === 'tabReading') {
+        assert.ok(barsAreComplete(ex.notes), ex.id);
+        // Cada nota tiene que poder tocarse en el diapasón del ejercicio.
+        for (const n of ex.notes) assert.ok(n.fret >= 0 && n.fret <= ex.frets, `${ex.id}: traste ${n.fret}`);
+      }
+      if (ex.kind === 'fretboardTap') for (const n of ex.sequence) assert.ok(n.fret >= 1 && n.fret <= ex.frets, ex.id);
+      if (ex.kind === 'playAlong' && ex.notes.some((n) => n.beats && n.beats !== 1)) {
+        assert.ok(barsAreComplete(ex.notes.map((n) => ({ ...n, beats: n.beats ?? 1 }))), ex.id);
+      }
+      if (ex.kind === 'tempoTrainer') assert.ok(ex.audibleBeats >= 4 && ex.audibleBeats <= ex.beats, ex.id);
+    }
+  }
+});
+
+test('módulo 1.4: respuestas de ritmo correctas', () => {
+  const opt = (id: string) => {
+    const ex = Object.values(LESSONS).flatMap((l) => l.exercises).find((e) => e.id === id)!;
+    if (ex.kind !== 'quiz') throw new Error(`${id} debería ser un quiz`);
+    return ex.options[ex.correctIndex];
+  };
+  assert.equal(opt('1.4.2-q'), '=4'); // compás de 4
+  assert.equal(opt('1.4.3-half'), '=2'); // la blanca dura 2
+  assert.equal(lookup(locales.es, opt('1.4.3-whole')), 'Redonda');
+  assert.equal(opt('1.4.4-q'), '=4'); // blanca (1-2), negra (3), negra (4)
+  assert.equal(lookup(locales.es, opt('1.4.1-line')), 'Mi (E), la más gruesa');
+});
+
+test('módulo 1.5: raíces de I–IV–V correctas y Kordi Groove 1 de 8 compases', async () => {
+  const { midiAt, noteName } = await import('../src/music/notes');
+  const { totalBeats } = await import('../src/music/tab');
+  const name = (s: 'E' | 'A' | 'D' | 'G', f: number) => noteName(midiAt(s, f), 'en', 'letters');
+  // Tono de Mi: I = E, IV = A, V = B (cuerda La, traste 2).
+  assert.deepEqual([name('E', 0), name('A', 0), name('A', 2)], ['E', 'A', 'B']);
+  // Tono de La: I = A, IV = D, V = E.
+  assert.deepEqual([name('A', 0), name('D', 0), name('E', 0)], ['A', 'D', 'E']);
+  const ex = (id: string) => Object.values(LESSONS).flatMap((l) => l.exercises).find((e) => e.id === id)!;
+  const where = ex('1.5.2-where');
+  if (where.kind !== 'quiz') throw new Error('quiz');
+  assert.equal(lookup(locales.en, where.options[where.correctIndex]), 'A string, fret 2');
+  const iv = ex('1.5.4-q');
+  if (iv.kind !== 'quiz') throw new Error('quiz');
+  assert.equal(lookup(locales.en, iv.options[iv.correctIndex]), 'D');
+  const groove = ex('1.5.5-groove');
+  if (groove.kind !== 'playAlong') throw new Error('playAlong');
+  const notes = groove.notes.map((n) => ({ ...n, beats: n.beats ?? 1 }));
+  assert.equal(totalBeats(notes), 32);
+  // Compás 3 = Si (V): cuerda La, traste 2.
+  assert.deepEqual(notes.slice(6, 9).map((n) => [n.string, n.fret]), [['A', 2], ['A', 2], ['A', 2]]);
+  // Solo raíces de I, IV y V en tono de Mi.
+  for (const n of notes) assert.ok(['E0', 'A0', 'A2'].includes(`${n.string}${n.fret}`));
+});
+
+test('nivel 1 completo: las 25 lecciones de la ruta tienen contenido', async () => {
+  const { lessonIdsOf } = await import('../src/content/curriculum');
+  const level1 = LEVELS[0].modules.flatMap((m) => lessonIdsOf(m));
+  assert.equal(level1.length, 25);
+  for (const id of level1) assert.ok(LESSONS[id], `falta la lección ${id}`);
+});
+
+test('módulos 1.1 y 1.2: solo cuerdas al aire y oído con referencia', async () => {
+  const { freqToMidi, midiAt } = await import('../src/music/notes');
+  for (const id of ['1.1.2', '1.1.3', '1.1.5', '1.2.2', '1.2.3', '1.2.4', '1.2.5']) {
+    for (const ex of LESSONS[id].exercises) {
+      // La mano izquierda se enseña en el módulo 1.3: antes, todo es al aire.
+      if (ex.kind === 'playAlong') for (const n of ex.notes) assert.equal(n.fret, 0, `${ex.id}`);
+      if (ex.kind === 'ear') {
+        assert.equal(freqToMidi(ex.tones![0]), midiAt('E', 0), `${ex.id}: referencia Mi`);
+        const answer = ex.options[ex.correctIndex].slice(1) as 'E' | 'A' | 'D' | 'G';
+        assert.equal(freqToMidi(ex.tones![1]), midiAt(answer, 0), ex.id);
+      }
+    }
+  }
+  // Cruzar de cuerda: en 1.2.3 cada nota cambia de cuerda respecto de la anterior (salvo los extremos de la escalera).
+  const ea = LESSONS['1.2.3'].exercises.find((e) => e.id === '1.2.3-EA')!;
+  if (ea.kind !== 'playAlong') throw new Error('playAlong');
+  const changes = ea.notes.slice(1).filter((n, i) => n.string !== ea.notes[i].string).length;
+  assert.ok(changes >= 14);
+});
