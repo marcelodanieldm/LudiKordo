@@ -47,7 +47,8 @@ export function CartoonPlayer({ lesson }: { lesson: Lesson }) {
   const [setRiveRef, riveRef] = useRive();
   const voice = voiceFor(lesson.id, locale, scene);
 
-  const rive = lesson.cartoon.riveResource && RIVE_READY.includes(lesson.cartoon.riveResource);
+  const riveResource = lesson.cartoon.riveResource;
+  const rive = riveResource !== undefined && RIVE_READY.includes(riveResource) ? riveResource : undefined;
 
   // Avance de escenas: por la voz si existe, si no por el tiempo de lectura.
   useEffect(() => {
