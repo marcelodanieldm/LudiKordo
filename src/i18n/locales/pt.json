@@ -60,7 +60,33 @@
       "notFound": "Esta aula ainda não foi escrita.",
       "premiumLocked": "Esta aula faz parte do Premium."
     },
+    "fretboard": {
+      "open": "Corda {{string}} solta",
+      "fret": "Corda {{string}}, casa {{fret}}"
+    },
     "exercise": {
+      "tempoHintAll": "Toque o botão em cada pulso, junto com o clique",
+      "tabHint": "Leia a tablatura da esquerda para a direita e toque cada nota na escala. O número é a casa; 0 é a corda solta.",
+      "tabLabel_one": "Tablatura de {{count}} nota",
+      "tabLabel_other": "Tablatura de {{count}} notas",
+      "tabNow": "{{figure}}: conte {{beats}}",
+      "tabDone": "Você leu a tablatura inteira! Erros: {{count}}",
+      "tempoHint": "Toque o botão em cada pulso. Depois de {{n}} pulsos o clique para: continue você",
+      "tempoTap": "Pulso",
+      "countIn": "Contagem: {{n}}",
+      "tempoWithClick": "Com clique",
+      "tempoSilent": "Agora sem clique: continue você",
+      "figure": {
+        "whole": "Semibreve",
+        "half": "Mínima",
+        "quarter": "Semínima"
+      },
+      "drift": {
+        "early": "Você está correndo: espere um pouco mais a cada pulso.",
+        "late": "Você está atrasando: antecipe um pouco o pulso.",
+        "steady": "Pulso firme!",
+        "missing": "Você parou de marcar quando o clique parou. Continue mesmo sem ouvir!"
+      },
       "correct": "Isso!",
       "wrong": "Quase. Tente outra opção.",
       "listen": "Ouvir",

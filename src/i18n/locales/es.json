@@ -60,7 +60,33 @@
       "notFound": "Esta lección todavía no está escrita.",
       "premiumLocked": "Esta lección es parte de Premium."
     },
+    "fretboard": {
+      "open": "Cuerda {{string}} al aire",
+      "fret": "Cuerda {{string}}, traste {{fret}}"
+    },
     "exercise": {
+      "tempoHintAll": "Toca el botón en cada pulso, junto con el clic",
+      "tabHint": "Lee la tablatura de izquierda a derecha y toca cada nota en el diapasón. El número es el traste; 0 es la cuerda al aire.",
+      "tabLabel_one": "Tablatura de {{count}} nota",
+      "tabLabel_other": "Tablatura de {{count}} notas",
+      "tabNow": "{{figure}}: cuenta {{beats}}",
+      "tabDone": "¡Leíste toda la tablatura! Errores: {{count}}",
+      "tempoHint": "Toca el botón en cada pulso. Después de {{n}} pulsos el clic se calla: sigue tú",
+      "tempoTap": "Pulso",
+      "countIn": "Cuenta: {{n}}",
+      "tempoWithClick": "Con clic",
+      "tempoSilent": "Ahora sin clic: sigue tú",
+      "figure": {
+        "whole": "Redonda",
+        "half": "Blanca",
+        "quarter": "Negra"
+      },
+      "drift": {
+        "early": "Vas apurado: espera un poco más cada pulso.",
+        "late": "Vas atrasado: anticipa un poco el pulso.",
+        "steady": "¡Pulso firme!",
+        "missing": "No marcaste el pulso cuando el clic se calló. ¡Sigue marcando aunque no lo oigas!"
+      },
       "correct": "¡Exacto!",
       "wrong": "Casi. Prueba otra opción.",
       "listen": "Escuchar",
