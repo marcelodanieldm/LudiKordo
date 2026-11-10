@@ -1033,6 +1033,16 @@ const l115: Lesson = {
       tones: [midiToFreq(28), midiToFreq(38)],
     },
     {
+      id: '1.1.5-earA',
+      kind: 'ear',
+      needsBass: false,
+      skills: ['ear'],
+      promptKey: k('1.1.5', 'ear'),
+      options: ['=E', '=A', '=D', '=G'],
+      correctIndex: 1,
+      tones: [midiToFreq(28), midiToFreq(33)],
+    },
+    {
       id: '1.1.5-earG',
       kind: 'ear',
       needsBass: false,
