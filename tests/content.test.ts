@@ -172,3 +172,30 @@ test('módulo 1.5: raíces de I–IV–V correctas y Kordi Groove 1 de 8 compase
   // Solo raíces de I, IV y V en tono de Mi.
   for (const n of notes) assert.ok(['E0', 'A0', 'A2'].includes(`${n.string}${n.fret}`));
 });
+
+test('nivel 1 completo: las 25 lecciones de la ruta tienen contenido', async () => {
+  const { lessonIdsOf } = await import('../src/content/curriculum');
+  const level1 = LEVELS[0].modules.flatMap((m) => lessonIdsOf(m));
+  assert.equal(level1.length, 25);
+  for (const id of level1) assert.ok(LESSONS[id], `falta la lección ${id}`);
+});
+
+test('módulos 1.1 y 1.2: solo cuerdas al aire y oído con referencia', async () => {
+  const { freqToMidi, midiAt } = await import('../src/music/notes');
+  for (const id of ['1.1.2', '1.1.3', '1.1.5', '1.2.2', '1.2.3', '1.2.4', '1.2.5']) {
+    for (const ex of LESSONS[id].exercises) {
+      // La mano izquierda se enseña en el módulo 1.3: antes, todo es al aire.
+      if (ex.kind === 'playAlong') for (const n of ex.notes) assert.equal(n.fret, 0, `${ex.id}`);
+      if (ex.kind === 'ear') {
+        assert.equal(freqToMidi(ex.tones![0]), midiAt('E', 0), `${ex.id}: referencia Mi`);
+        const answer = ex.options[ex.correctIndex].slice(1) as 'E' | 'A' | 'D' | 'G';
+        assert.equal(freqToMidi(ex.tones![1]), midiAt(answer, 0), ex.id);
+      }
+    }
+  }
+  // Cruzar de cuerda: en 1.2.3 cada nota cambia de cuerda respecto de la anterior (salvo los extremos de la escalera).
+  const ea = LESSONS['1.2.3'].exercises.find((e) => e.id === '1.2.3-EA')!;
+  if (ea.kind !== 'playAlong') throw new Error('playAlong');
+  const changes = ea.notes.slice(1).filter((n, i) => n.string !== ea.notes[i].string).length;
+  assert.ok(changes >= 14);
+});
