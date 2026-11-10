@@ -21,6 +21,8 @@ export interface TimingResult {
   accuracy: number;
   /** Desvío de cada nota esperada (ms, + = tarde), null si no se tocó. */
   offsets: (number | null)[];
+  /** Índice del ataque real emparejado con cada nota esperada, null si ninguno. */
+  matched: (number | null)[];
 }
 
 /** Tiempos esperados (ms) para `count` notas a un tempo, con `perBeat` notas por pulso. */
@@ -53,7 +55,7 @@ export function noteIndexAt(times: number[], nowMs: number): number {
  */
 export function scoreTiming(expected: number[], actual: number[], toleranceMs = TIMING_TOLERANCE_MS): TimingResult {
   const used = new Set<number>();
-  const offsets: (number | null)[] = expected.map((e) => {
+  const matched: (number | null)[] = expected.map((e) => {
     let best = -1;
     let bestDist = Infinity;
     actual.forEach((a, j) => {
@@ -66,10 +68,11 @@ export function scoreTiming(expected: number[], actual: number[], toleranceMs = 
     });
     if (best === -1 || bestDist > toleranceMs) return null;
     used.add(best);
-    return actual[best] - e;
+    return best;
   });
+  const offsets = matched.map((j, i) => (j === null ? null : actual[j] - expected[i]));
   const hits = offsets.filter((o) => o !== null).length;
-  return { hits, total: expected.length, accuracy: expected.length ? hits / expected.length : 0, offsets };
+  return { hits, total: expected.length, accuracy: expected.length ? hits / expected.length : 0, offsets, matched };
 }
 
 /** Igual que scoreTiming, pero además la nota tiene que ser la correcta. */
@@ -80,7 +83,7 @@ export function scorePlayAlong(
   toleranceCents = PITCH_TOLERANCE_CENTS,
 ): TimingResult {
   const used = new Set<number>();
-  const offsets = targets.map((t) => {
+  const matched: (number | null)[] = targets.map((t) => {
     let best = -1;
     let bestDist = Infinity;
     detected.forEach((d, j) => {
@@ -94,10 +97,11 @@ export function scorePlayAlong(
     });
     if (best === -1 || bestDist > toleranceMs) return null;
     used.add(best);
-    return detected[best].timeMs - t.timeMs;
+    return best;
   });
+  const offsets = matched.map((j, i) => (j === null ? null : detected[j].timeMs - targets[i].timeMs));
   const hits = offsets.filter((o) => o !== null).length;
-  return { hits, total: targets.length, accuracy: targets.length ? hits / targets.length : 0, offsets };
+  return { hits, total: targets.length, accuracy: targets.length ? hits / targets.length : 0, offsets, matched };
 }
 
 /**
@@ -120,28 +124,52 @@ export function xpFor(stars: number, isCheckpoint = false): number {
 }
 
 export interface TempoResult extends TimingResult {
-  /** Desvío promedio de los aciertos sin clic (ms, + = tarde). */
-  driftMs: number;
+  /**
+   * Cuánto se corrió el pulso sin clic respecto de cómo tocaba con clic (ms,
+   * + = tarde). Comparar con la propia parte con clic descuenta la latencia del
+   * audio y de la pantalla. null si no hubo toques sin clic.
+   */
+  driftMs: number | null;
+}
+
+/** Media de los números que no son null, o null si no hay ninguno. */
+function mean(xs: (number | null)[]): number | null {
+  const v = xs.filter((x): x is number => x !== null);
+  return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null;
 }
 
 /**
  * Entrenador de tempo: con clic se exige la tolerancia de tocar la pantalla;
  * sin clic, la de tocar el instrumento, porque el alumno lleva el pulso solo.
- * El desvío promedio de la parte sin clic dice si apura o se atrasa.
+ * El desvío de la parte sin clic se mide contra el toque más cercano a cada
+ * pulso (hasta medio pulso), aunque esté fuera de tolerancia, para que apurarse
+ * mucho no parezca «pulso firme».
  */
 export function scoreTempoTrainer(expected: number[], taps: number[], audibleBeats: number): TempoResult {
   const withClick = scoreTiming(expected.slice(0, audibleBeats), taps, TAP_TOLERANCE_MS);
-  const used = taps.filter((t) => !withClick.offsets.some((o, i) => o !== null && expected[i] + o === t));
-  const silent = scoreTiming(expected.slice(audibleBeats), used, TIMING_TOLERANCE_MS);
+  const usedIdx = new Set(withClick.matched.filter((j): j is number => j !== null));
+  const remaining = taps.filter((_, j) => !usedIdx.has(j));
+  const silentExpected = expected.slice(audibleBeats);
+  const silent = scoreTiming(silentExpected, remaining, TIMING_TOLERANCE_MS);
+  const halfBeat = expected.length > 1 ? (expected[1] - expected[0]) / 2 : 500;
+  const loose = scoreTiming(silentExpected, remaining, halfBeat);
+  const silentMean = mean(loose.offsets);
+  const clickMean = mean(withClick.offsets) ?? 0;
   const offsets = [...withClick.offsets, ...silent.offsets];
   const hits = withClick.hits + silent.hits;
-  const silentHits = silent.offsets.filter((o): o is number => o !== null);
-  const driftMs = silentHits.length ? silentHits.reduce((a, b) => a + b, 0) / silentHits.length : 0;
-  return { hits, total: expected.length, accuracy: expected.length ? hits / expected.length : 0, offsets, driftMs };
+  return {
+    hits,
+    total: expected.length,
+    accuracy: expected.length ? hits / expected.length : 0,
+    offsets,
+    matched: [...withClick.matched, ...silent.matched],
+    driftMs: silentMean === null ? null : silentMean - clickMean,
+  };
 }
 
-/** Consejo según el desvío promedio: más de 25 ms antes o después del pulso. */
-export function driftAdvice(driftMs: number): 'early' | 'late' | 'steady' {
+/** Consejo según el desvío: más de 25 ms antes o después; «missing» si no marcó sin clic. */
+export function driftAdvice(driftMs: number | null): 'early' | 'late' | 'steady' | 'missing' {
+  if (driftMs === null) return 'missing';
   if (driftMs < -25) return 'early';
   if (driftMs > 25) return 'late';
   return 'steady';

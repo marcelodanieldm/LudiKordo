@@ -1,14 +1,13 @@
 import React from 'react';
-import { View } from 'react-native';
+import { ScrollView } from 'react-native';
 import Svg, { Ellipse, Line, Rect, Text as SvgText } from 'react-native-svg';
 import { useTranslation } from 'react-i18next';
-import { BEATS_PER_BAR, figureOf, placeNotes } from '../music/tab';
+import { BEATS_PER_BAR, TAB_LABEL_W, figureOf, layoutTab, placeNotes } from '../music/tab';
 import { STRINGS } from '../music/notes';
 import { colors, fonts } from '../theme';
 import type { TabNote } from '../content/types';
 
-const LABEL_W = 26;
-const MIN_BEAT_W = 24;
+const LABEL_W = TAB_LABEL_W;
 const LINE_GAP = 18;
 const STAFF_TOP = 14;
 const STAFF_H = LINE_GAP * 3;
@@ -25,20 +24,18 @@ type NoteState = 'done' | 'current' | 'next';
 export function TabStaff({ notes, width, current = -1 }: { notes: TabNote[]; width: number; current?: number }) {
   const { t } = useTranslation();
   const placed = placeNotes(notes);
-  const bars = placed.length ? placed[placed.length - 1].bar + 1 : 0;
-  const barsPerRow = Math.max(1, Math.floor((width - LABEL_W - 8) / (BEATS_PER_BAR * MIN_BEAT_W)));
-  const rows = Math.ceil(bars / barsPerRow);
-  const beatW = (width - LABEL_W - 8) / (barsPerRow * BEATS_PER_BAR);
+  const layout = layoutTab(notes, width);
+  const { rows, beatW } = layout;
   // En la tablatura la cuerda 1 (Sol) va arriba.
   const lineY = (string: TabNote['string']) => STAFF_TOP + (3 - STRINGS.findIndex((s) => s.id === string)) * LINE_GAP;
   const stateOf = (i: number): NoteState => (i < current ? 'done' : i === current ? 'current' : 'next');
 
   return (
-    <View accessibilityRole="image" accessibilityLabel={t('ui.exercise.tabLabel', { count: notes.length })}>
-      <Svg width={width} height={rows * ROW_H}>
+    <ScrollView horizontal scrollEnabled={layout.width > width} accessibilityRole="image" accessibilityLabel={t('ui.exercise.tabLabel', { count: notes.length })}>
+      <Svg width={layout.width} height={rows * ROW_H}>
         {Array.from({ length: rows }, (_, r) => {
           const y0 = r * ROW_H;
-          const rowBars = Math.min(barsPerRow, bars - r * barsPerRow);
+          const rowBars = layout.barsInRow[r];
           const x1 = LABEL_W + rowBars * BEATS_PER_BAR * beatW;
           return (
             <React.Fragment key={`r${r}`}>
@@ -57,10 +54,8 @@ export function TabStaff({ notes, width, current = -1 }: { notes: TabNote[]; wid
           );
         })}
         {placed.map((n, i) => {
-          const row = Math.floor(n.bar / barsPerRow);
+          const { row, x } = layout.notes[i];
           const y0 = row * ROW_H;
-          const beatInRow = (n.bar % barsPerRow) * BEATS_PER_BAR + n.beatInBar;
-          const x = LABEL_W + beatInRow * beatW + beatW / 2;
           const y = y0 + lineY(n.string);
           const st = stateOf(i);
           const color = st === 'done' ? colors.teal : st === 'current' ? colors.accentInk : colors.ink;
@@ -77,7 +72,7 @@ export function TabStaff({ notes, width, current = -1 }: { notes: TabNote[]; wid
           );
         })}
       </Svg>
-    </View>
+    </ScrollView>
   );
 }
 
