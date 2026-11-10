@@ -1,5 +1,6 @@
 import React from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { Text } from '../../src/components/Text';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -15,7 +16,7 @@ export default function Profile() {
   const isPremium = useBilling((b) => b.isPremium);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
       <ScrollView contentContainerStyle={{ padding: 20, gap: 14, maxWidth: 720, width: '100%', alignSelf: 'center' }}>
         <H1>{t('ui.profile.title')}</H1>
         <Row title={t('ui.profile.language')}>
@@ -72,7 +73,7 @@ export default function Profile() {
 function Row({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <Card>
-      <Text style={{ fontSize: 14, fontWeight: '700', color: colors.muted }}>{title}</Text>
+      <Text style={{ fontSize: 14, fontWeight: '800', color: colors.muted }}>{title}</Text>
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>{children}</View>
     </Card>
   );

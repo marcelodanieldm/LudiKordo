@@ -69,7 +69,7 @@ tests/                    Pruebas de lógica (node:test + tsx)
 | --- | --- |
 | Curriculum completo (123 lecciones, 3 idiomas) | Hecho: títulos de niveles, módulos, checkpoints y ejercicios estrella |
 | Lecciones redactadas | 4 de 123: 1.1.1, 1.1.4, 1.2.1 y 1.3.1 |
-| Tipos de ejercicio | 4 de 10: quiz/oído, tocar el ritmo, diapasón virtual, tocar con el bajo. Los otros 6 muestran «próximamente» |
+| Tipos de ejercicio | 6 de 8: quiz/oído, tocar el ritmo, diapasón virtual, tocar con el bajo, leer tablatura y entrenador de tempo. Seguir la mano y grabarte muestran «próximamente». Los checkpoints de nivel combinan estos tipos (`src/content/checkpoints.ts`) |
 | Detección por micrófono | Hecho: módulo Kotlin + autoevaluación de respaldo. Falta probarlo en teléfonos reales (fase 0) y calibrar la latencia |
 | Afinador y metrónomo | Hechos |
 | Progreso, estrellas, XP, racha semanal, radar, insignias | Hechos (guardado local) |

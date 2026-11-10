@@ -10,3 +10,4 @@ Cosas que ya salieron mal (o casi) y la regla que quedó. Una entrada por tema, 
 - **2026-11-09 · i18n** · En Brasil el espacio donde se pisa es «casa»; «traste» es la barra de metal. **Regla**: glosario en `src/i18n/GLOSSARY.md`.
 - **2026-11-09 · audio** · El micrófono de un teléfono capta mal la fundamental del Mi grave (41,2 Hz). **Regla**: las pruebas de detección incluyen una señal con fundamental débil; la fase 0 mide en 10 teléfonos reales.
 - **2026-11-09 · github** · GitHub no deja aprobar tus propios PR, y los agentes los abren con tu cuenta. **Regla**: con un solo desarrollador, 0 aprobaciones requeridas; CI sigue siendo obligatorio.
+- **2026-11-09 · ui** · En Android, con fuentes propias cada peso es una familia distinta: `fontWeight` sin `fontFamily` cae en la fuente del sistema. **Regla**: usar el `Text` de `src/components/Text.tsx`, que traduce `fontWeight` a la familia de Nunito.

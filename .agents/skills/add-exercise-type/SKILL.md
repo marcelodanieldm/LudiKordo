@@ -1,6 +1,6 @@
 ---
 name: add-exercise-type
-description: Implement one of the pending LudiKordo exercise types (tabReading, followHand, tempoTrainer, checkpoint, recordYourself) or a new one, from type definition to component and tests. Use when asked to build a new kind of exercise.
+description: Implement one of the pending LudiKordo exercise types (followHand, recordYourself) or a new one, from type definition to component and tests. Use when asked to build a new kind of exercise.
 ---
 
 # Implementar un tipo de ejercicio

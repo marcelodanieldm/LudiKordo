@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { Text } from '../Text';
 import { useTranslation } from 'react-i18next';
 import { Fretboard } from '../Fretboard';
 import { Button } from '../ui';
@@ -7,7 +8,7 @@ import { playTone } from '../../audio/engine';
 import { midiAt, midiToFreq, type StringId } from '../../music/notes';
 import { starsFor } from '../../music/scoring';
 import { useSettings } from '../../state/settings';
-import { colors } from '../../theme';
+import { colors, fonts } from '../../theme';
 import type { FretboardTapExercise as FbEx } from '../../content/types';
 
 /** Tocar en orden las notas de una secuencia sobre el diapasón virtual. Suena cada nota. */
@@ -34,14 +35,14 @@ export function FretboardTapExercise({ exercise, onDone, width, mastery }: { exe
 
   const accuracy = exercise.sequence.length / (exercise.sequence.length + mistakes);
   const dots = [
-    ...exercise.sequence.slice(0, pos).map((n, i) => ({ ...n, label: String(i + 1), color: colors.teal })),
-    ...(done ? [] : [{ ...exercise.sequence[pos], label: '?', color: colors.accent }]),
-    ...(flash ? [{ ...flash, label: '×', color: colors.muted }] : []),
+    ...exercise.sequence.slice(0, pos).map((n, i) => ({ ...n, label: String(i + 1), color: colors.teal, labelColor: colors.onTeal })),
+    ...(done ? [] : [{ ...exercise.sequence[pos], label: '?', color: colors.accent, glow: true }]),
+    ...(flash ? [{ ...flash, label: '×', color: colors.danger }] : []),
   ];
 
   return (
     <View style={{ gap: 14 }}>
-      <Text style={{ fontSize: 22, fontWeight: '700', color: colors.ink }}>{t(exercise.promptKey)}</Text>
+      <Text style={{ fontFamily: fonts.display, fontSize: 24, lineHeight: 30, color: colors.ink }}>{t(exercise.promptKey)}</Text>
       <Text style={{ color: colors.muted }}>{t('ui.exercise.fretboardHint')}</Text>
       <Fretboard width={width} frets={exercise.frets} leftHanded={hand === 'left'} dots={dots} onTap={onTap} />
       <Button label={t('ui.common.next')} disabled={!done} onPress={() => onDone(starsFor(accuracy, mastery))} />

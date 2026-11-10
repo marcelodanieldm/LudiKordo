@@ -5,16 +5,17 @@
     "scheme": "ludikordo",
     "version": "0.1.0",
     "orientation": "default",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#14121F",
     "newArchEnabled": true,
     "platforms": ["android"],
     "android": {
       "package": "app.ludikordo",
       "versionCode": 1,
       "permissions": ["android.permission.RECORD_AUDIO", "com.android.vending.BILLING"],
-      "adaptiveIcon": { "backgroundColor": "#C2410C" }
+      "adaptiveIcon": { "backgroundColor": "#14121F" }
     },
-    "plugins": ["expo-router", "expo-localization"],
+    "plugins": ["expo-router", "expo-localization", "expo-font"],
     "extra": {
       "revenueCatAndroidKey": "REEMPLAZAR_CON_TU_CLAVE_PUBLICA_DE_REVENUECAT"
     }

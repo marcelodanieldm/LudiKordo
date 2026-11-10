@@ -16,7 +16,6 @@ export type ExerciseKind =
   | 'followHand'
   | 'playAlong'
   | 'tempoTrainer'
-  | 'checkpoint'
   | 'recordYourself';
 
 interface BaseExercise {
@@ -60,8 +59,11 @@ export interface FretboardTapExercise extends BaseExercise {
 export interface PlayAlongExercise extends BaseExercise {
   kind: 'playAlong';
   needsBass: true;
-  /** Notas objetivo en orden. */
-  notes: { string: StringId; fret: number }[];
+  /**
+   * Notas objetivo en orden. `beats` (4 redonda, 2 blanca, 1 negra; por defecto 1)
+   * permite tocar figuras de distinta duración; entonces se muestra como tablatura.
+   */
+  notes: { string: StringId; fret: number; beats?: 1 | 2 | 4 }[];
   /** null = sin tempo (por ejemplo, para afinar o tocar una cuerda cuando se ilumina). */
   bpm: number | null;
   toleranceCents?: number;
@@ -69,12 +71,45 @@ export interface PlayAlongExercise extends BaseExercise {
   tempoSteps?: number[];
 }
 
-/** Tipos todavía no implementados en el código base; se muestran como «próximamente». */
-export interface PendingExercise extends BaseExercise {
-  kind: 'tabReading' | 'followHand' | 'tempoTrainer' | 'checkpoint' | 'recordYourself';
+/** Nota de tablatura: cuerda, traste (0 = al aire) y duración en pulsos (4 redonda, 2 blanca, 1 negra). */
+export interface TabNote {
+  string: StringId;
+  fret: number;
+  beats: 1 | 2 | 4;
 }
 
-export type Exercise = QuizExercise | TapRhythmExercise | FretboardTapExercise | PlayAlongExercise | PendingExercise;
+export interface TabReadingExercise extends BaseExercise {
+  kind: 'tabReading';
+  needsBass: false;
+  /** Compases de 4/4 completos: la duración de cada compás suma 4. */
+  notes: TabNote[];
+  /** Trastes que muestra el diapasón donde se responde. */
+  frets: number;
+}
+
+export interface TempoTrainerExercise extends BaseExercise {
+  kind: 'tempoTrainer';
+  needsBass: false;
+  bpm: number;
+  /** Pulsos a marcar, después de 4 de cuenta. */
+  beats: number;
+  /** Cuántos de esos pulsos tienen clic; después, el alumno sigue solo. */
+  audibleBeats: number;
+}
+
+/** Tipos todavía no implementados en el código base; se muestran como «próximamente». */
+export interface PendingExercise extends BaseExercise {
+  kind: 'followHand' | 'recordYourself';
+}
+
+export type Exercise =
+  | QuizExercise
+  | TapRhythmExercise
+  | FretboardTapExercise
+  | PlayAlongExercise
+  | TabReadingExercise
+  | TempoTrainerExercise
+  | PendingExercise;
 
 export type Figure = 'bass-parts' | 'strings' | 'tuner' | 'fret5' | 'right-hand' | 'fretboard-1234' | 'left-hand';
 
