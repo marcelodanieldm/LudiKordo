@@ -162,7 +162,6 @@ const l131: Lesson = {
   cartoon: { riveResource: 'kordi_1_3_1', durationSec: 150, sceneKeys: [1, 2, 3, 4].map((n) => k('1.3.1', `s${n}`)) },
   cards: [
     { titleKey: k('1.3.1', 'c1t'), bodyKey: k('1.3.1', 'c1b'), figure: 'left-hand' },
-    { titleKey: k('1.3.1', 'c2t'), bodyKey: k('1.3.1', 'c2b') },
     { titleKey: k('1.3.1', 'c3t'), bodyKey: k('1.3.1', 'c3b'), figure: 'fretboard-1234' },
   ],
   exercises: [
@@ -195,14 +194,215 @@ const l131: Lesson = {
       bpm: 60,
       tempoSteps: [60, 70, 80],
     },
+  ],
+  mastery: 0.8,
+};
+
+const spiderDown = (string: 'E' | 'A' | 'D' | 'G') => [4, 3, 2, 1].map((fret) => ({ string, fret }));
+const twice = <T,>(notes: T[]) => notes.flatMap((n) => [n, n]);
+
+const l132: Lesson = {
+  id: '1.3.2',
+  minutes: 10,
+  titleKey: k('1.3.2', 'title'),
+  objectiveKey: k('1.3.2', 'objective'),
+  cartoon: { riveResource: 'kordi_1_3_2', durationSec: 90, sceneKeys: [1, 2, 3, 4].map((n) => k('1.3.2', `s${n}`)) },
+  cards: [
+    { titleKey: k('1.3.2', 'c1t'), bodyKey: k('1.3.2', 'c1b'), figure: 'left-hand' },
+    { titleKey: k('1.3.2', 'c2t'), bodyKey: k('1.3.2', 'c2b') },
+    { titleKey: k('1.3.2', 'c3t'), bodyKey: k('1.3.2', 'c3b') },
+  ],
+  exercises: [
     {
-      id: '1.3.1-spider4',
+      id: '1.3.2-where',
+      kind: 'quiz',
+      needsBass: false,
+      skills: ['technique'],
+      promptKey: k('1.3.2', 'q1'),
+      options: [k('1.3.2', 'q1o1'), k('1.3.2', 'q1o2'), k('1.3.2', 'q1o3')],
+      correctIndex: 0,
+      hintKey: k('1.3.2', 'q1h'),
+    },
+    {
+      id: '1.3.2-buzz',
+      kind: 'quiz',
+      needsBass: false,
+      skills: ['technique'],
+      promptKey: k('1.3.2', 'q2'),
+      options: [k('1.3.2', 'q2o1'), k('1.3.2', 'q2o2'), k('1.3.2', 'q2o3')],
+      correctIndex: 0,
+    },
+    {
+      id: '1.3.2-fb',
+      kind: 'fretboardTap',
+      needsBass: false,
+      skills: ['fretboard'],
+      promptKey: k('1.3.2', 'fb'),
+      sequence: spider('A'),
+      frets: 5,
+    },
+    {
+      id: '1.3.2-clean',
       kind: 'playAlong',
       needsBass: true,
-      skills: ['technique', 'fretboard'],
-      promptKey: k('1.3.1', 'spider4'),
-      notes: [...spider('E'), ...spider('A'), ...spider('D'), ...spider('G')],
+      skills: ['technique'],
+      promptKey: k('1.3.2', 'play'),
+      notes: twice(spider('A')),
       bpm: 60,
+      tempoSteps: [60, 70],
+    },
+  ],
+  mastery: 0.8,
+};
+
+const l133: Lesson = {
+  id: '1.3.3',
+  minutes: 12,
+  titleKey: k('1.3.3', 'title'),
+  objectiveKey: k('1.3.3', 'objective'),
+  cartoon: { riveResource: 'kordi_1_3_3', durationSec: 90, sceneKeys: [1, 2, 3, 4].map((n) => k('1.3.3', `s${n}`)) },
+  cards: [
+    { titleKey: k('1.3.3', 'c1t'), bodyKey: k('1.3.3', 'c1b'), figure: 'fretboard-1234' },
+    { titleKey: k('1.3.3', 'c2t'), bodyKey: k('1.3.3', 'c2b') },
+  ],
+  exercises: [
+    {
+      id: '1.3.3-fb',
+      kind: 'fretboardTap',
+      needsBass: false,
+      skills: ['fretboard'],
+      promptKey: k('1.3.3', 'fb'),
+      sequence: spiderDown('E'),
+      frets: 5,
+    },
+    {
+      id: '1.3.3-q',
+      kind: 'quiz',
+      needsBass: false,
+      skills: ['technique'],
+      promptKey: k('1.3.3', 'q'),
+      options: [k('1.3.3', 'qo1'), k('1.3.3', 'qo2'), k('1.3.3', 'qo3')],
+      correctIndex: 0,
+    },
+    {
+      id: '1.3.3-down',
+      kind: 'playAlong',
+      needsBass: true,
+      skills: ['technique', 'rhythm'],
+      promptKey: k('1.3.3', 'down'),
+      notes: [...spiderDown('E'), ...spiderDown('E'), ...spiderDown('E'), ...spiderDown('E')],
+      bpm: 60,
+      tempoSteps: [60, 70, 80],
+    },
+    {
+      id: '1.3.3-updown',
+      kind: 'playAlong',
+      needsBass: true,
+      skills: ['technique', 'rhythm'],
+      promptKey: k('1.3.3', 'updown'),
+      notes: [...spider('E'), ...spiderDown('E'), ...spider('E'), ...spiderDown('E')],
+      bpm: 60,
+      tempoSteps: [60, 70, 80],
+    },
+  ],
+  mastery: 0.8,
+};
+
+const l134: Lesson = {
+  id: '1.3.4',
+  minutes: 12,
+  titleKey: k('1.3.4', 'title'),
+  objectiveKey: k('1.3.4', 'objective'),
+  cartoon: { riveResource: 'kordi_1_3_4', durationSec: 90, sceneKeys: [1, 2, 3, 4].map((n) => k('1.3.4', `s${n}`)) },
+  cards: [
+    { titleKey: k('1.3.4', 'c1t'), bodyKey: k('1.3.4', 'c1b'), figure: 'fretboard-1234' },
+    { titleKey: k('1.3.4', 'c2t'), bodyKey: k('1.3.4', 'c2b'), figure: 'right-hand' },
+  ],
+  exercises: [
+    {
+      id: '1.3.4-q',
+      kind: 'quiz',
+      needsBass: false,
+      skills: ['fretboard'],
+      promptKey: k('1.3.4', 'q'),
+      options: [k('1.3.4', 'qo1'), k('1.3.4', 'qo2'), k('1.3.4', 'qo3')],
+      correctIndex: 0,
+      hintKey: k('1.3.4', 'qh'),
+    },
+    {
+      id: '1.3.4-fb',
+      kind: 'fretboardTap',
+      needsBass: false,
+      skills: ['fretboard'],
+      promptKey: k('1.3.4', 'fb'),
+      sequence: [...spider('E'), ...spider('A')],
+      frets: 5,
+    },
+    {
+      id: '1.3.4-EA',
+      kind: 'playAlong',
+      needsBass: true,
+      skills: ['technique', 'rhythm'],
+      promptKey: k('1.3.4', 'EA'),
+      notes: [...spider('E'), ...spider('A'), ...spider('E'), ...spider('A')],
+      bpm: 60,
+      tempoSteps: [60, 70, 80],
+    },
+    {
+      id: '1.3.4-DG',
+      kind: 'playAlong',
+      needsBass: true,
+      skills: ['technique', 'rhythm'],
+      promptKey: k('1.3.4', 'DG'),
+      notes: [...spider('D'), ...spider('G'), ...spider('D'), ...spider('G')],
+      bpm: 60,
+      tempoSteps: [60, 70, 80],
+    },
+  ],
+  mastery: 0.8,
+};
+
+const l135: Lesson = {
+  id: '1.3.5',
+  minutes: 15,
+  titleKey: k('1.3.5', 'title'),
+  objectiveKey: k('1.3.5', 'objective'),
+  cartoon: { riveResource: 'kordi_1_3_5', durationSec: 90, sceneKeys: [1, 2, 3, 4].map((n) => k('1.3.5', `s${n}`)) },
+  cards: [
+    { titleKey: k('1.3.5', 'c1t'), bodyKey: k('1.3.5', 'c1b'), figure: 'fretboard-1234' },
+    { titleKey: k('1.3.5', 'c2t'), bodyKey: k('1.3.5', 'c2b') },
+  ],
+  exercises: [
+    {
+      id: '1.3.5-ear',
+      kind: 'ear',
+      needsBass: false,
+      skills: ['ear', 'fretboard'],
+      promptKey: k('1.3.5', 'ear'),
+      options: [k('1.3.5', 'n1'), k('1.3.5', 'n2'), k('1.3.5', 'n3'), k('1.3.5', 'n4')],
+      correctIndex: 2,
+      // Referencia: Mi al aire; después cuerda Mi, traste 3 = Sol. Una octava arriba
+      // (E2, G2) porque el parlante de un teléfono casi no reproduce 41–52 Hz.
+      tones: [midiToFreq(28 + 12), midiToFreq(31 + 12)],
+    },
+    {
+      id: '1.3.5-fb',
+      kind: 'fretboardTap',
+      needsBass: false,
+      skills: ['fretboard'],
+      promptKey: k('1.3.5', 'fb'),
+      sequence: [...spiderDown('G'), ...spiderDown('D')],
+      frets: 5,
+    },
+    {
+      id: '1.3.5-full',
+      kind: 'playAlong',
+      needsBass: true,
+      skills: ['technique', 'rhythm', 'fretboard'],
+      promptKey: k('1.3.5', 'full'),
+      notes: [...spider('E'), ...spider('A'), ...spider('D'), ...spider('G'), ...spiderDown('G'), ...spiderDown('D'), ...spiderDown('A'), ...spiderDown('E')],
+      bpm: 60,
+      tempoSteps: [60, 70],
     },
   ],
   mastery: 0.8,
@@ -213,6 +413,10 @@ export const LESSONS: Record<string, Lesson> = {
   [l114.id]: l114,
   [l121.id]: l121,
   [l131.id]: l131,
+  [l132.id]: l132,
+  [l133.id]: l133,
+  [l134.id]: l134,
+  [l135.id]: l135,
 };
 
 export function getLesson(id: string): Lesson | undefined {
