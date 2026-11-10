@@ -121,7 +121,12 @@ test('tablaturas y líneas con figuras: compases completos en todas las leccione
   const { barsAreComplete } = await import('../src/music/tab');
   for (const lesson of Object.values(LESSONS)) {
     for (const ex of lesson.exercises) {
-      if (ex.kind === 'tabReading') assert.ok(barsAreComplete(ex.notes), ex.id);
+      if (ex.kind === 'tabReading') {
+        assert.ok(barsAreComplete(ex.notes), ex.id);
+        // Cada nota tiene que poder tocarse en el diapasón del ejercicio.
+        for (const n of ex.notes) assert.ok(n.fret >= 0 && n.fret <= ex.frets, `${ex.id}: traste ${n.fret}`);
+      }
+      if (ex.kind === 'fretboardTap') for (const n of ex.sequence) assert.ok(n.fret >= 1 && n.fret <= ex.frets, ex.id);
       if (ex.kind === 'playAlong' && ex.notes.some((n) => n.beats && n.beats !== 1)) {
         assert.ok(barsAreComplete(ex.notes.map((n) => ({ ...n, beats: n.beats ?? 1 }))), ex.id);
       }
