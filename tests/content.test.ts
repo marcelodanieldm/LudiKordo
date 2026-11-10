@@ -147,3 +147,28 @@ test('módulo 1.4: respuestas de ritmo correctas', () => {
   assert.equal(opt('1.4.4-q'), '=4'); // blanca (1-2), negra (3), negra (4)
   assert.equal(lookup(locales.es, opt('1.4.1-line')), 'Mi (E), la más gruesa');
 });
+
+test('módulo 1.5: raíces de I–IV–V correctas y Kordi Groove 1 de 8 compases', async () => {
+  const { midiAt, noteName } = await import('../src/music/notes');
+  const { totalBeats } = await import('../src/music/tab');
+  const name = (s: 'E' | 'A' | 'D' | 'G', f: number) => noteName(midiAt(s, f), 'en', 'letters');
+  // Tono de Mi: I = E, IV = A, V = B (cuerda La, traste 2).
+  assert.deepEqual([name('E', 0), name('A', 0), name('A', 2)], ['E', 'A', 'B']);
+  // Tono de La: I = A, IV = D, V = E.
+  assert.deepEqual([name('A', 0), name('D', 0), name('E', 0)], ['A', 'D', 'E']);
+  const ex = (id: string) => Object.values(LESSONS).flatMap((l) => l.exercises).find((e) => e.id === id)!;
+  const where = ex('1.5.2-where');
+  if (where.kind !== 'quiz') throw new Error('quiz');
+  assert.equal(lookup(locales.en, where.options[where.correctIndex]), 'A string, fret 2');
+  const iv = ex('1.5.4-q');
+  if (iv.kind !== 'quiz') throw new Error('quiz');
+  assert.equal(lookup(locales.en, iv.options[iv.correctIndex]), 'D');
+  const groove = ex('1.5.5-groove');
+  if (groove.kind !== 'playAlong') throw new Error('playAlong');
+  const notes = groove.notes.map((n) => ({ ...n, beats: n.beats ?? 1 }));
+  assert.equal(totalBeats(notes), 32);
+  // Compás 3 = Si (V): cuerda La, traste 2.
+  assert.deepEqual(notes.slice(6, 9).map((n) => [n.string, n.fret]), [['A', 2], ['A', 2], ['A', 2]]);
+  // Solo raíces de I, IV y V en tono de Mi.
+  for (const n of notes) assert.ok(['E0', 'A0', 'A2'].includes(`${n.string}${n.fret}`));
+});
