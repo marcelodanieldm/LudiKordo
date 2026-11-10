@@ -60,8 +60,11 @@ export interface FretboardTapExercise extends BaseExercise {
 export interface PlayAlongExercise extends BaseExercise {
   kind: 'playAlong';
   needsBass: true;
-  /** Notas objetivo en orden. */
-  notes: { string: StringId; fret: number }[];
+  /**
+   * Notas objetivo en orden. `beats` (4 redonda, 2 blanca, 1 negra; por defecto 1)
+   * permite tocar figuras de distinta duración; entonces se muestra como tablatura.
+   */
+  notes: { string: StringId; fret: number; beats?: 1 | 2 | 4 }[];
   /** null = sin tempo (por ejemplo, para afinar o tocar una cuerda cuando se ilumina). */
   bpm: number | null;
   toleranceCents?: number;

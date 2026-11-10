@@ -159,3 +159,16 @@ test('entrenador de tempo: sin clic se tolera más y se mide si el alumno apura'
   // Un mismo toque no cuenta para dos pulsos.
   assert.equal(scoreTempoTrainer(expected, [3990], 4).hits, 1);
 });
+
+test('tocar con el bajo: figuras de distinta duración', async () => {
+  const { noteIndexAt, noteTimes } = await import('../src/music/scoring');
+  // Redonda, blanca, negra, negra a 60 bpm.
+  const times = noteTimes([4, 2, 1, 1], 60, 1000);
+  assert.deepEqual(times, [1000, 5000, 7000, 8000]);
+  assert.equal(noteIndexAt(times, 500), -1);
+  assert.equal(noteIndexAt(times, 4999), 0);
+  assert.equal(noteIndexAt(times, 5000), 1);
+  assert.equal(noteIndexAt(times, 9000), 3);
+  // Todas negras: igual que el pulso del metrónomo.
+  assert.deepEqual(noteTimes([1, 1, 1], 120), [0, 500, 1000]);
+});

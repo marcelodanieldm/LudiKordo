@@ -29,6 +29,24 @@ export function expectedTimes(count: number, bpm: number, startMs = 0, perBeat =
   return Array.from({ length: count }, (_, i) => startMs + i * step);
 }
 
+/** Tiempos de ataque (ms) de notas con duraciones en pulsos: cada una empieza cuando termina la anterior. */
+export function noteTimes(beats: number[], bpm: number, startMs = 0): number[] {
+  const step = 60000 / bpm;
+  let at = 0;
+  return beats.map((b) => {
+    const t = startMs + at * step;
+    at += b;
+    return t;
+  });
+}
+
+/** Índice de la nota que suena en `elapsedMs` (−1 antes de empezar). */
+export function noteIndexAt(times: number[], nowMs: number): number {
+  let i = -1;
+  while (i + 1 < times.length && times[i + 1] <= nowMs) i += 1;
+  return i;
+}
+
 /**
  * Empareja cada tiempo esperado con el ataque real más cercano todavía libre.
  * Un ataque solo puede usarse una vez.

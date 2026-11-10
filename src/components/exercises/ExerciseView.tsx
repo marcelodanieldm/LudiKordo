@@ -27,7 +27,7 @@ export function ExerciseView({ exercise, onDone, width, mastery }: { exercise: E
     case 'fretboardTap':
       return <FretboardTapExercise key={exercise.id} exercise={exercise} onDone={onDone} width={width} mastery={mastery} />;
     case 'playAlong':
-      return <PlayAlongExercise key={exercise.id} exercise={exercise} onDone={onDone} mastery={mastery} />;
+      return <PlayAlongExercise key={exercise.id} exercise={exercise} onDone={onDone} mastery={mastery} width={width} />;
     case 'tabReading':
       return <TabReadingExercise key={exercise.id} exercise={exercise} onDone={onDone} width={width} mastery={mastery} />;
     case 'tempoTrainer':

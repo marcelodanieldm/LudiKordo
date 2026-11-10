@@ -7,7 +7,8 @@ import { colors, radius, fonts } from '../../theme';
 import { listenNotes, listenPitch, requestMic, type Listener, type MicStatus } from '../../audio/mic';
 import { nowMs, startMetronome, type MetronomeHandle } from '../../audio/engine';
 import { centsOff, midiAt, noteName, type Locale } from '../../music/notes';
-import { expectedTimes, PITCH_TOLERANCE_CENTS, scorePlayAlong, starsFor, type DetectedNote } from '../../music/scoring';
+import { noteIndexAt, noteTimes, PITCH_TOLERANCE_CENTS, scorePlayAlong, starsFor, type DetectedNote } from '../../music/scoring';
+import { TabStaff } from '../TabStaff';
 import { useSettings } from '../../state/settings';
 import { useProgress } from '../../state/progress';
 import type { PlayAlongExercise as PlayEx } from '../../content/types';
@@ -22,7 +23,7 @@ const SELF_CHECK_STARS = 2;
  * Sin tempo: la app espera cada nota (o afinación) antes de pasar a la siguiente.
  * Si el micrófono no está disponible o falla dos veces seguidas, ofrece autoevaluación.
  */
-export function PlayAlongExercise({ exercise, onDone, mastery }: { exercise: PlayEx; onDone: (stars: number) => void; mastery: number }) {
+export function PlayAlongExercise({ exercise, onDone, mastery, width }: { exercise: PlayEx; onDone: (stars: number) => void; mastery: number; width: number }) {
   const { t, i18n } = useTranslation();
   const notation = useSettings((s) => s.notation);
   const unlocked = useProgress((s) => s.tempo[exercise.id]);
@@ -47,6 +48,10 @@ export function PlayAlongExercise({ exercise, onDone, mastery }: { exercise: Pla
   useEffect(() => stopAll, []);
 
   const targets = exercise.notes.map((n) => midiAt(n.string, n.fret));
+  const beats = exercise.notes.map((n) => n.beats ?? 1);
+  const totalBeats = beats.reduce((a, b) => a + b, 0);
+  // Con figuras de distinta duración, las notas se muestran como tablatura.
+  const asTab = exercise.notes.some((n) => (n.beats ?? 1) !== 1);
   const label = (midi: number) => noteName(midi, i18n.language as Locale, notation);
 
   const finishWith = (hits: number, total: number) => {
@@ -96,7 +101,7 @@ export function PlayAlongExercise({ exercise, onDone, mastery }: { exercise: Pla
 
     // Con tempo: metrónomo con cuenta de 4 y escucha de ataques.
     const detected: DetectedNote[] = [];
-    metro.current = startMetronome(bpm, targets.length);
+    metro.current = startMetronome(bpm, totalBeats);
     const startMs = metro.current.startMs;
     listener.current = await listenNotes((n) => detected.push(n));
     if (!listener.current) {
@@ -104,13 +109,13 @@ export function PlayAlongExercise({ exercise, onDone, mastery }: { exercise: Pla
       return;
     }
     const step = 60000 / bpm;
-    const tick = setInterval(() => setIndex(Math.max(0, Math.floor((nowMs() - startMs) / step))), 100);
+    const expected = noteTimes(beats, bpm, startMs);
+    const tick = setInterval(() => setIndex(Math.max(0, noteIndexAt(expected, nowMs()))), 100);
     setTimeout(() => {
       clearInterval(tick);
-      const expected = expectedTimes(targets.length, bpm, startMs);
       const r = scorePlayAlong(expected.map((timeMs, k) => ({ timeMs, midi: targets[k] })), detected);
       finishWith(r.hits, r.total);
-    }, startMs - nowMs() + targets.length * step + 800);
+    }, startMs - nowMs() + totalBeats * step + 800);
   };
 
   const current = targets[Math.min(index, targets.length - 1)];
@@ -124,27 +129,35 @@ export function PlayAlongExercise({ exercise, onDone, mastery }: { exercise: Pla
       </Text>
 
       <View style={{ backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1, borderRadius: radius.xl, padding: 16, gap: 10, alignItems: 'center' }}>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, justifyContent: 'center' }}>
-          {exercise.notes.map((n, k) => (
-            <View
-              key={k}
-              style={{
-                minWidth: 40,
-                paddingHorizontal: 8,
-                height: 40,
-                borderRadius: 10,
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: phase === 'running' && k === index ? colors.accent : k < index ? colors.tealSoft : colors.track,
-              }}
-            >
-              <Text style={{ fontWeight: '800', color: phase === 'running' && k === index ? colors.onAccent : colors.ink }}>
-                {n.string}
-                {n.fret}
-              </Text>
-            </View>
-          ))}
-        </View>
+        {asTab ? (
+          <TabStaff
+            notes={exercise.notes.map((n) => ({ string: n.string, fret: n.fret, beats: n.beats ?? 1 }))}
+            width={width - 34}
+            current={phase === 'running' ? index : -1}
+          />
+        ) : (
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, justifyContent: 'center' }}>
+            {exercise.notes.map((n, k) => (
+              <View
+                key={k}
+                style={{
+                  minWidth: 40,
+                  paddingHorizontal: 8,
+                  height: 40,
+                  borderRadius: 10,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: phase === 'running' && k === index ? colors.accent : k < index ? colors.tealSoft : colors.track,
+                }}
+              >
+                <Text style={{ fontWeight: '800', color: phase === 'running' && k === index ? colors.onAccent : colors.ink }}>
+                  {n.string}
+                  {n.fret}
+                </Text>
+              </View>
+            ))}
+          </View>
+        )}
         {phase === 'running' ? (
           <>
             <Text style={{ fontSize: 16, fontWeight: '800', color: colors.teal }}>{t('ui.exercise.listening')}</Text>
