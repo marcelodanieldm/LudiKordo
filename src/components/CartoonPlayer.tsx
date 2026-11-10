@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useReducer, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Text } from './Text';
 import { useTranslation } from 'react-i18next';
@@ -8,10 +8,11 @@ import { Kordi } from './Kordi';
 import { colors, radius } from '../theme';
 import type { Lesson } from '../content/types';
 import { RIVE_READY } from '../content/assets';
-import { SCENE_GAP_MS, nextScene, sceneDurationsMs } from '../content/cartoon';
+import { SCENE_GAP_MS, initialPlayer, playerReducer, sceneDurationsMs, voiceTimeoutMs, type PlayerAction, type PlayerState } from '../content/cartoon';
 import { voiceFor } from '../content/voices';
 import { playClip } from '../audio/voice';
-import type { Locale } from '../music/notes';
+import { noteName, type Locale } from '../music/notes';
+import { useSettings } from '../state/settings';
 
 const STAGE_H = 210;
 
@@ -26,58 +27,80 @@ const STAGE_H = 210;
 export function CartoonPlayer({ lesson }: { lesson: Lesson }) {
   const { t, i18n } = useTranslation();
   const locale = (['en', 'es', 'pt'].includes(i18n.language) ? i18n.language : 'en') as Locale;
+  const notation = useSettings((st) => st.notation);
   const scenes = lesson.cartoon.sceneKeys;
-  const [scene, setScene] = useState(0);
-  const [playing, setPlaying] = useState(true);
+  const [{ scene, playing }, dispatch] = useReducer(
+    (st: PlayerState, a: PlayerAction) => playerReducer(st, a, scenes.length),
+    initialPlayer,
+  );
   const [talking, setTalking] = useState(false);
   const [slow, setSlow] = useState(false);
   const [captions, setCaptions] = useState(true);
   const rate = slow ? 0.75 : 1;
-  const texts = useMemo(() => scenes.map((k) => t(k)), [scenes, t]);
+  // Nombres de las cuerdas al aire según el ajuste de notación (glosario: «Mi (E)»).
+  const texts = useMemo(() => {
+    const n = (midi: number) => noteName(midi, locale, notation);
+    const vars = { e: n(28), a: n(33), d: n(38), g: n(43) };
+    return scenes.map((k) => t(k, vars));
+  }, [scenes, t, locale, notation]);
   const readMs = useMemo(() => sceneDurationsMs(texts, rate), [texts, rate]);
   const [setRiveRef, riveRef] = useRive();
+  const voice = voiceFor(lesson.id, locale, scene);
 
   const rive = lesson.cartoon.riveResource && RIVE_READY.includes(lesson.cartoon.riveResource);
 
   // Avance de escenas: por la voz si existe, si no por el tiempo de lectura.
   useEffect(() => {
     if (!playing) return;
-    let timer: ReturnType<typeof setTimeout> | undefined;
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    let advanced = false;
     const advance = () => {
-      const n = nextScene(scene, scenes.length);
-      if (n === null) setPlaying(false);
-      else setScene(n);
+      if (advanced) return;
+      advanced = true;
+      dispatch({ type: 'sceneDone' });
     };
-    const voice = voiceFor(lesson.id, locale, scene);
     if (voice === undefined) {
-      timer = setTimeout(advance, readMs[scene]);
-      return () => clearTimeout(timer);
+      timers.push(setTimeout(advance, readMs[scene]));
+      return () => timers.forEach(clearTimeout);
     }
     setTalking(true);
     const clip = playClip(voice, rate, () => {
       setTalking(false);
-      timer = setTimeout(advance, SCENE_GAP_MS / rate);
+      timers.push(setTimeout(advance, SCENE_GAP_MS / rate));
     });
+    // Respaldo: si el audio no carga o no avisa el final, la escena sigue igual.
+    timers.push(
+      setTimeout(() => {
+        clip.stop();
+        setTalking(false);
+        advance();
+      }, voiceTimeoutMs(readMs[scene]) / rate),
+    );
     return () => {
       clip.stop();
       setTalking(false);
-      if (timer) clearTimeout(timer);
+      timers.forEach(clearTimeout);
     };
-  }, [playing, scene, scenes.length, lesson.id, locale, rate, readMs]);
+  }, [playing, scene, voice, rate, readMs]);
 
-  // Datos para la animación (view model `Cartoon` del .riv).
+  // Datos para la animación (view model `Cartoon` del .riv). useRive entrega la
+  // referencia cuando el archivo ya cargó (rive-react-native ≥ 9.3.1).
   useEffect(() => {
     if (!rive || !riveRef) return;
-    riveRef.setNumber?.('scene', scene + 1);
-    riveRef.setBoolean?.('talking', talking);
-    riveRef.setString?.('subtitle', texts[scene] ?? '');
-  }, [rive, riveRef, scene, talking, texts]);
+    riveRef.setNumber('scene', scene + 1);
+    riveRef.setBoolean('talking', talking);
+    // El globo de diálogo dentro del .riv obedece al botón CC.
+    riveRef.setString('subtitle', captions ? (texts[scene] ?? '') : '');
+  }, [rive, riveRef, scene, talking, texts, captions]);
 
-  const togglePlay = () => {
-    // Al terminar, «reproducir» vuelve a empezar.
-    if (!playing && nextScene(scene, scenes.length) === null) setScene(0);
-    setPlaying((p) => !p);
-  };
+  // Pausar también detiene la animación.
+  useEffect(() => {
+    if (!rive || !riveRef) return;
+    if (playing) riveRef.play();
+    else riveRef.pause();
+  }, [rive, riveRef, playing]);
+
+  const togglePlay = () => dispatch({ type: 'toggle' });
 
   return (
     <View style={styles.frame}>
@@ -113,7 +136,8 @@ export function CartoonPlayer({ lesson }: { lesson: Lesson }) {
         </View>
       </View>
       {captions ? (
-        <Text accessibilityLiveRegion="polite" style={styles.caption}>
+        // Sin voz, TalkBack lee el subtítulo; con voz, se pisarían.
+        <Text accessibilityLiveRegion={voice === undefined ? 'polite' : 'none'} style={styles.caption}>
           {texts[scene]}
         </Text>
       ) : null}
@@ -141,11 +165,8 @@ export function CartoonPlayer({ lesson }: { lesson: Lesson }) {
               key={i}
               accessibilityRole="button"
               accessibilityLabel={t('ui.lesson.scene', { n: i + 1, total: scenes.length })}
-              onPress={() => {
-                setScene(i);
-                setPlaying(true);
-              }}
-              hitSlop={{ top: 18, bottom: 18 }}
+              onPress={() => dispatch({ type: 'goto', scene: i })}
+              hitSlop={{ top: 19, bottom: 19 }}
               style={[styles.dot, i <= scene && { backgroundColor: colors.accent }]}
             />
           ))}

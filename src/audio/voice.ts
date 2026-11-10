@@ -21,12 +21,14 @@ export function playClip(source: number, rate: number, onEnd: () => void): Clip 
     player = null;
   };
   const sub = player.addListener('playbackStatusUpdate', (status: { didJustFinish?: boolean }) => {
-    if (status.didJustFinish) {
+    // `done`: un evento encolado después de stop() no debe avanzar la escena.
+    if (status.didJustFinish && !done) {
       finish();
       onEnd();
     }
   });
-  // A 0,75× la voz se oye más lenta sin cambiar el tono.
+  // A 0,75× la voz se oye más lenta sin cambiar el tono (verificar en Android).
+  player.shouldCorrectPitch = true;
   player.setPlaybackRate(rate, 'high');
   player.play();
   return { stop: finish };

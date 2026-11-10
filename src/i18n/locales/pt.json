@@ -183,7 +183,7 @@
       "objective": "Nomear 9 partes do baixo e identificar as 4 cordas pelo nome e pelo som.",
       "s1": "“O baixo liga o ritmo da bateria aos acordes. Sem baixo, a banda flutua.”",
       "s2": "Mão e tarraxas, braço, trastes e marcações, corpo, captadores, ponte, botões de volume e tom, e a entrada do cabo.",
-      "s3": "Da mais grossa para a mais fina: Mi, Lá, Ré e Sol. A mais grossa fica em cima.",
+      "s3": "Da mais grossa para a mais fina: {{e}}, {{a}}, {{d}} e {{g}}. A mais grossa fica em cima, perto do rosto.",
       "s4": "“A mais grossa soa mais grave. Em cima fica o grave, embaixo o agudo.”",
       "c1t": "As partes do baixo",
       "c1b": "Tarraxas para afinar, braço com trastes, corpo com captadores e ponte, os botões e a entrada do cabo.",

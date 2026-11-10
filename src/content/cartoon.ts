@@ -39,3 +39,40 @@ export function riveResourceFor(lessonId: string): string {
 export function audioFolderFor(lessonId: string): string {
   return lessonId.replace(/\./g, '');
 }
+
+/** Estado del reproductor: escena actual, si suena y si ya terminó. */
+export interface PlayerState {
+  scene: number;
+  playing: boolean;
+  ended: boolean;
+}
+
+export type PlayerAction = { type: 'toggle' } | { type: 'sceneDone' } | { type: 'goto'; scene: number };
+
+export const initialPlayer: PlayerState = { scene: 0, playing: true, ended: false };
+
+/**
+ * Transiciones del reproductor. «Reproducir» después del final vuelve a la
+ * escena 1; después de una pausa (aunque sea en la última escena) sigue donde iba.
+ */
+export function playerReducer(state: PlayerState, action: PlayerAction, count: number): PlayerState {
+  switch (action.type) {
+    case 'toggle':
+      if (state.playing) return { ...state, playing: false };
+      return state.ended ? { scene: 0, playing: true, ended: false } : { ...state, playing: true };
+    case 'sceneDone': {
+      const n = nextScene(state.scene, count);
+      return n === null ? { ...state, playing: false, ended: true } : { ...state, scene: n };
+    }
+    case 'goto':
+      return { scene: Math.max(0, Math.min(count - 1, action.scene)), playing: true, ended: false };
+  }
+}
+
+/**
+ * Tiempo máximo que se espera a que termine una voz antes de seguir igual
+ * (si el archivo no carga, la escena no se queda congelada).
+ */
+export function voiceTimeoutMs(readMs: number): number {
+  return Math.round(Math.max(readMs, 8000) * 2);
+}
