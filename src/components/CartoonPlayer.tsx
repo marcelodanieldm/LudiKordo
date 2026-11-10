@@ -109,7 +109,7 @@ export function CartoonPlayer({ lesson }: { lesson: Lesson }) {
         {rive ? (
           <Rive
             ref={setRiveRef}
-            resourceName={lesson.cartoon.riveResource}
+            resourceName={rive}
             stateMachineName="Lesson"
             dataBinding={AutoBind(true)}
             fit={Fit.Contain}
