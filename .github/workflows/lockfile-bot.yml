@@ -1,0 +1,51 @@
+# Temporal: genera package-lock.json en main y en las ramas de los PR abiertos,
+# en orden de la pila, y deja el resultado en ramas bot/<rama>. Se borra al terminar.
+name: lockfile-bot
+on:
+  push:
+    branches: [cc/lockfile-bot]
+permissions:
+  contents: write
+jobs:
+  lock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Lockfiles en orden de la pila
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898273+github-actions[bot]@users.noreply.github.com"
+          lock() { # rama base
+            local dst=$1 base=$2
+            echo "::group::$dst"
+            git checkout -q -B "$dst" "origin/bot/$dst"
+            if [ -n "$base" ]; then git merge --no-edit -q -X theirs "$base"; fi
+            npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+            git add package-lock.json
+            git diff --cached --quiet || git commit -q -m "chore(deps): update package-lock.json"
+            npm ci --ignore-scripts --no-audit --no-fund
+            npx expo install --check || echo "::warning::expo install --check en $dst"
+            npm run check:i18n || echo "::warning::RESULT check:i18n falla en $dst"
+            npm run typecheck || echo "::warning::RESULT typecheck falla en $dst"
+            npm test || echo "::warning::RESULT test falla en $dst"
+            rm -rf node_modules
+            git push -q origin "HEAD:refs/heads/bot/$dst"
+            echo "::endgroup::"
+          }
+          lock lockfile        ""
+          lock redesign        lockfile
+          lock cartoon         redesign
+          lock exercises       redesign
+          lock lessons-1-3     lockfile
+          lock lessons-1-4     exercises
+          lock lessons-1-5     lessons-1-4
+          lock lessons-1-1-1-2 lessons-1-5
+          lock checkpoint      lessons-1-1-1-2
+          lock dev-premium     lockfile
