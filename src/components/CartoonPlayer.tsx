@@ -1,44 +1,97 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Text } from './Text';
 import { useTranslation } from 'react-i18next';
-import Rive, { Fit } from 'rive-react-native';
+import Rive, { AutoBind, Fit, useRive } from 'rive-react-native';
 import Svg, { Defs, LinearGradient, Path, Rect, Stop } from 'react-native-svg';
 import { Kordi } from './Kordi';
 import { colors, radius } from '../theme';
 import type { Lesson } from '../content/types';
 import { RIVE_READY } from '../content/assets';
+import { SCENE_GAP_MS, nextScene, sceneDurationsMs } from '../content/cartoon';
+import { voiceFor } from '../content/voices';
+import { playClip } from '../audio/voice';
+import type { Locale } from '../music/notes';
 
 const STAGE_H = 210;
 
 /**
- * Reproductor de los video-cartoons. Cuando el archivo Rive de la lección está
- * en android/app/src/main/res/raw y listado en RIVE_READY, se reproduce la
- * animación; mientras tanto, Kordi bajo el foco con los subtítulos por escena.
- * La voz se agrega como pista de audio por idioma (docs/CARTOON_PIPELINE.md).
+ * Reproductor de los video-cartoons (contrato en docs/CARTOON_PIPELINE.md).
+ *
+ * - Con voz grabada para el idioma: cada escena dura lo que su audio, más una pausa.
+ * - Sin voz: cada escena dura su tiempo de lectura (src/content/cartoon.ts).
+ * - Con el .riv listo: se le pasan por data binding `scene` (1–4), `talking` y
+ *   `subtitle`. Sin él, Kordi bajo el foco con el subtítulo debajo.
  */
 export function CartoonPlayer({ lesson }: { lesson: Lesson }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = (['en', 'es', 'pt'].includes(i18n.language) ? i18n.language : 'en') as Locale;
   const scenes = lesson.cartoon.sceneKeys;
   const [scene, setScene] = useState(0);
   const [playing, setPlaying] = useState(true);
+  const [talking, setTalking] = useState(false);
   const [slow, setSlow] = useState(false);
   const [captions, setCaptions] = useState(true);
-  const perScene = (lesson.cartoon.durationSec / scenes.length) * (slow ? 1 / 0.75 : 1);
-
-  useEffect(() => {
-    if (!playing) return;
-    const id = setTimeout(() => setScene((s) => (s + 1 < scenes.length ? s + 1 : s)), perScene * 1000);
-    return () => clearTimeout(id);
-  }, [playing, scene, perScene, scenes.length]);
+  const rate = slow ? 0.75 : 1;
+  const texts = useMemo(() => scenes.map((k) => t(k)), [scenes, t]);
+  const readMs = useMemo(() => sceneDurationsMs(texts, rate), [texts, rate]);
+  const [setRiveRef, riveRef] = useRive();
 
   const rive = lesson.cartoon.riveResource && RIVE_READY.includes(lesson.cartoon.riveResource);
+
+  // Avance de escenas: por la voz si existe, si no por el tiempo de lectura.
+  useEffect(() => {
+    if (!playing) return;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const advance = () => {
+      const n = nextScene(scene, scenes.length);
+      if (n === null) setPlaying(false);
+      else setScene(n);
+    };
+    const voice = voiceFor(lesson.id, locale, scene);
+    if (voice === undefined) {
+      timer = setTimeout(advance, readMs[scene]);
+      return () => clearTimeout(timer);
+    }
+    setTalking(true);
+    const clip = playClip(voice, rate, () => {
+      setTalking(false);
+      timer = setTimeout(advance, SCENE_GAP_MS / rate);
+    });
+    return () => {
+      clip.stop();
+      setTalking(false);
+      if (timer) clearTimeout(timer);
+    };
+  }, [playing, scene, scenes.length, lesson.id, locale, rate, readMs]);
+
+  // Datos para la animación (view model `Cartoon` del .riv).
+  useEffect(() => {
+    if (!rive || !riveRef) return;
+    riveRef.setNumber?.('scene', scene + 1);
+    riveRef.setBoolean?.('talking', talking);
+    riveRef.setString?.('subtitle', texts[scene] ?? '');
+  }, [rive, riveRef, scene, talking, texts]);
+
+  const togglePlay = () => {
+    // Al terminar, «reproducir» vuelve a empezar.
+    if (!playing && nextScene(scene, scenes.length) === null) setScene(0);
+    setPlaying((p) => !p);
+  };
 
   return (
     <View style={styles.frame}>
       <View style={styles.stage}>
         {rive ? (
-          <Rive resourceName={lesson.cartoon.riveResource} fit={Fit.Contain} autoplay={playing} style={{ width: '100%', height: STAGE_H }} />
+          <Rive
+            ref={setRiveRef}
+            resourceName={lesson.cartoon.riveResource}
+            stateMachineName="Lesson"
+            dataBinding={AutoBind(true)}
+            fit={Fit.Contain}
+            autoplay
+            style={{ width: '100%', height: STAGE_H }}
+          />
         ) : (
           <>
             <Svg width="100%" height={STAGE_H} viewBox="0 0 350 210" preserveAspectRatio="xMidYMid slice" style={StyleSheet.absoluteFill}>
@@ -59,12 +112,16 @@ export function CartoonPlayer({ lesson }: { lesson: Lesson }) {
           <Text style={{ fontSize: 12, fontWeight: '900' }}>{t('ui.lesson.scene', { n: scene + 1, total: scenes.length })}</Text>
         </View>
       </View>
-      {captions ? <Text style={styles.caption}>{t(scenes[scene])}</Text> : null}
+      {captions ? (
+        <Text accessibilityLiveRegion="polite" style={styles.caption}>
+          {texts[scene]}
+        </Text>
+      ) : null}
       <View style={styles.controls}>
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={playing ? t('ui.lesson.pause') : t('ui.lesson.play')}
-          onPress={() => setPlaying((p) => !p)}
+          onPress={togglePlay}
           style={styles.play}
         >
           <Svg width={16} height={16} viewBox="0 0 24 24">
@@ -84,7 +141,10 @@ export function CartoonPlayer({ lesson }: { lesson: Lesson }) {
               key={i}
               accessibilityRole="button"
               accessibilityLabel={t('ui.lesson.scene', { n: i + 1, total: scenes.length })}
-              onPress={() => setScene(i)}
+              onPress={() => {
+                setScene(i);
+                setPlaying(true);
+              }}
               hitSlop={{ top: 18, bottom: 18 }}
               style={[styles.dot, i <= scene && { backgroundColor: colors.accent }]}
             />

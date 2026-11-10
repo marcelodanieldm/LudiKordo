@@ -118,3 +118,29 @@ test('los colores de texto del tema cumplen contraste 4,5:1 sobre las superficie
   assert.ok(ratio(colors.teal, colors.tealSoft) >= 4.5);
   assert.ok(ratio(colors.gold, colors.goldSoft) >= 4.5);
 });
+
+test('cartoon: cada escena dura su tiempo de lectura, con mínimo', async () => {
+  const { MIN_SCENE_MS, sceneDurationsMs, wordCount, nextScene, riveResourceFor, audioFolderFor } = await import('../src/content/cartoon');
+  assert.equal(wordCount('«El bajo une el ritmo de la batería con los acordes.»'), 11);
+  assert.equal(wordCount('Mi (E), La (A) — Re'), 5);
+  const short = sceneDurationsMs(['Hola', 'Dos palabras']);
+  assert.deepEqual(short, [MIN_SCENE_MS, MIN_SCENE_MS]);
+  const long = 'uno dos tres cuatro cinco seis siete ocho nueve diez once doce trece catorce quince dieciséis diecisiete dieciocho diecinueve veinte';
+  const [a, b] = sceneDurationsMs([long, 'corta']);
+  assert.ok(a > b, 'la escena con más texto dura más');
+  const slow = sceneDurationsMs(['Hola'], 0.75);
+  assert.equal(slow[0], Math.round(MIN_SCENE_MS / 0.75));
+  assert.deepEqual(sceneDurationsMs([]), []);
+  assert.equal(nextScene(0, 4), 1);
+  assert.equal(nextScene(3, 4), null);
+  assert.equal(riveResourceFor('1.1.1'), 'kordi_1_1_1');
+  assert.equal(audioFolderFor('1.3.1'), '131');
+});
+
+test('cartoon: las lecciones con .riv usan el nombre de recurso esperado', async () => {
+  const { LESSONS } = await import('../src/content/lessons');
+  const { riveResourceFor } = await import('../src/content/cartoon');
+  for (const l of Object.values(LESSONS)) {
+    if (l.cartoon.riveResource) assert.equal(l.cartoon.riveResource, riveResourceFor(l.id), l.id);
+  }
+});

@@ -92,6 +92,7 @@ export interface Lesson {
   cartoon: {
     /** Nombre del recurso Rive en android/app/src/main/res/raw. */
     riveResource?: string;
+    /** Duración objetivo de la animación completa (guía para el animador). */
     durationSec: number;
     /** Subtítulos por escena, en orden. */
     sceneKeys: string[];
