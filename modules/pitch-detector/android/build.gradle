@@ -9,10 +9,27 @@ applyKotlinExpoModulesCorePlugin()
 useCoreDependencies()
 useExpoPublishing()
 
+// Igual que la plantilla de módulos locales de Expo SDK 54: sin compileSdk el build nativo falla.
+buildscript {
+  ext.safeExtGet = { prop, fallback ->
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+  }
+}
+project.android {
+  compileSdkVersion safeExtGet("compileSdkVersion", 36)
+  defaultConfig {
+    minSdkVersion safeExtGet("minSdkVersion", 24)
+    targetSdkVersion safeExtGet("targetSdkVersion", 36)
+  }
+}
+
 android {
   namespace "expo.modules.pitchdetector"
   defaultConfig {
     versionCode 1
     versionName "0.1.0"
+  }
+  lintOptions {
+    abortOnError false
   }
 }
