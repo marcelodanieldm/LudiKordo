@@ -39,7 +39,7 @@ export function CartoonPlayer({ lesson }: { lesson: Lesson }) {
     <View style={styles.frame}>
       <View style={styles.stage}>
         {rive ? (
-          <Rive resourceName={lesson.cartoon.riveResource} fit={Fit.Contain} autoplay={playing} style={{ width: '100%', height: STAGE_H }} />
+          <Rive resourceName={rive} fit={Fit.Contain} autoplay={playing} style={{ width: '100%', height: STAGE_H }} />
         ) : (
           <>
             <Svg width="100%" height={STAGE_H} viewBox="0 0 350 210" preserveAspectRatio="xMidYMid slice" style={StyleSheet.absoluteFill}>
