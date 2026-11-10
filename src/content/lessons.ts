@@ -162,7 +162,6 @@ const l131: Lesson = {
   cartoon: { riveResource: 'kordi_1_3_1', durationSec: 150, sceneKeys: [1, 2, 3, 4].map((n) => k('1.3.1', `s${n}`)) },
   cards: [
     { titleKey: k('1.3.1', 'c1t'), bodyKey: k('1.3.1', 'c1b'), figure: 'left-hand' },
-    { titleKey: k('1.3.1', 'c2t'), bodyKey: k('1.3.1', 'c2b') },
     { titleKey: k('1.3.1', 'c3t'), bodyKey: k('1.3.1', 'c3b'), figure: 'fretboard-1234' },
   ],
   exercises: [
@@ -194,15 +193,6 @@ const l131: Lesson = {
       notes: [...spider('E'), ...spider('E'), ...spider('E'), ...spider('E')],
       bpm: 60,
       tempoSteps: [60, 70, 80],
-    },
-    {
-      id: '1.3.1-spider4',
-      kind: 'playAlong',
-      needsBass: true,
-      skills: ['technique', 'fretboard'],
-      promptKey: k('1.3.1', 'spider4'),
-      notes: [...spider('E'), ...spider('A'), ...spider('D'), ...spider('G')],
-      bpm: 60,
     },
   ],
   mastery: 0.8,
@@ -282,7 +272,7 @@ const l133: Lesson = {
       needsBass: false,
       skills: ['fretboard'],
       promptKey: k('1.3.3', 'fb'),
-      sequence: [...spiderDown('E'), ...spiderDown('A')],
+      sequence: spiderDown('E'),
       frets: 5,
     },
     {
@@ -391,8 +381,9 @@ const l135: Lesson = {
       promptKey: k('1.3.5', 'ear'),
       options: [k('1.3.5', 'n1'), k('1.3.5', 'n2'), k('1.3.5', 'n3'), k('1.3.5', 'n4')],
       correctIndex: 2,
-      // Cuerda Mi, traste 3: Sol (G1, MIDI 31).
-      tones: [midiToFreq(31)],
+      // Referencia: Mi al aire; después cuerda Mi, traste 3 = Sol. Una octava arriba
+      // (E2, G2) porque el parlante de un teléfono casi no reproduce 41–52 Hz.
+      tones: [midiToFreq(28 + 12), midiToFreq(31 + 12)],
     },
     {
       id: '1.3.5-fb',

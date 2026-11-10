@@ -101,8 +101,10 @@ test('módulo 1.3: la araña usa un dedo por traste y la teoría es correcta', a
   // 1.3.5: el tono del ejercicio de oído es la opción correcta (cuerda Mi, traste 3 = Sol).
   const ear = LESSONS['1.3.5'].exercises.find((e) => e.id === '1.3.5-ear')!;
   if (ear.kind !== 'ear' || !ear.tones) throw new Error('1.3.5-ear debería ser de oído con tono');
-  const midi = freqToMidi(ear.tones[0]);
-  assert.equal(midi, midiAt('E', 3));
+  assert.equal(ear.tones.length, 2, 'primero la referencia (Mi al aire), después la nota');
+  assert.equal(freqToMidi(ear.tones[0]) % 12, midiAt('E', 0) % 12);
+  const midi = freqToMidi(ear.tones[1]);
+  assert.equal(midi % 12, midiAt('E', 3) % 12);
   assert.equal(lookup(locales.en, ear.options[ear.correctIndex]), noteName(midi, 'en', 'letters'));
   // Las cuatro opciones son los trastes 1 a 4 de la cuerda Mi, en orden.
   ear.options.forEach((key, i) => assert.equal(lookup(locales.en, key), noteName(midiAt('E', i + 1), 'en', 'letters')));
