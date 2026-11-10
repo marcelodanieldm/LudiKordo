@@ -359,7 +359,7 @@
       "c2t": "The numbers",
       "c2b": "The number tells you which fret to press. 0 means open string.",
       "c3t": "In order",
-      "c3b": "Read it from left to right, like text. The vertical lines separate the bars.",
+      "c3b": "Read it from left to right, like text. The vertical lines split the line into bars: more on those soon.",
       "q1": "In tab, which string is the bottom line?",
       "q1o1": "E, the thickest",
       "q1o2": "A",
@@ -370,7 +370,7 @@
       "q2o2": "D string, fret 2",
       "q2o3": "Open A string with finger 2",
       "tab": "Read the tab and tap each note on the fretboard.",
-      "play": "Now on your bass: the same tab in quarter notes."
+      "play": "Now on your bass: the same tab, one note per click."
     },
     "l142": {
       "title": "The beat",
@@ -386,7 +386,7 @@
       "q": "How many beats do you count in each bar in these lessons?",
       "click": "Tap the beat with the metronome for 4 bars.",
       "alone": "Now the click stops halfway. Keep tapping the beat.",
-      "play": "Four quarter notes on each open string: E, A, D and G."
+      "play": "Four beats on each open string: E, A, D and G."
     },
     "l143": {
       "title": "Whole, half and quarter notes",
@@ -406,7 +406,7 @@
       "whole": "Whole note",
       "half": "Half note",
       "quarter": "Quarter note",
-      "tab": "Tap each note and listen to how long it lasts for its note value.",
+      "tab": "Tap each note and listen to how long it lasts.",
       "play": "A whole note, two half notes, four quarter notes and another whole note. Let each one ring."
     },
     "l144": {
