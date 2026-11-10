@@ -60,10 +60,16 @@
       "notFound": "This lesson hasn't been written yet.",
       "premiumLocked": "This lesson is part of Premium."
     },
+    "fretboard": {
+      "open": "Open {{string}} string",
+      "fret": "{{string}} string, fret {{fret}}"
+    },
     "exercise": {
+      "tempoHintAll": "Tap the button on every beat, along with the click",
       "tabHint": "Read the tab from left to right and tap each note on the fretboard. The number is the fret; 0 is the open string.",
-      "tabLabel": "Tab with {{count}} notes",
-      "tabNow": "{{figure}}: count {{count}}",
+      "tabLabel_one": "Tab with {{count}} note",
+      "tabLabel_other": "Tab with {{count}} notes",
+      "tabNow": "{{figure}}: count {{beats}}",
       "tabDone": "You read the whole tab! Mistakes: {{count}}",
       "tempoHint": "Tap the button on every beat. After {{n}} beats the click goes quiet: keep going",
       "tempoTap": "Beat",
@@ -78,7 +84,8 @@
       "drift": {
         "early": "You are rushing: wait a little longer each beat.",
         "late": "You are dragging: anticipate the beat a little.",
-        "steady": "Steady beat!"
+        "steady": "Steady beat!",
+        "missing": "You stopped tapping when the click went quiet. Keep going even when you can't hear it!"
       },
       "correct": "Exactly!",
       "wrong": "Close. Try another option.",

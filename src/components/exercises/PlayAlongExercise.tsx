@@ -38,14 +38,25 @@ export function PlayAlongExercise({ exercise, onDone, mastery, width }: { exerci
   const [failures, setFailures] = useState(0);
   const listener = useRef<Listener | null>(null);
   const metro = useRef<MetronomeHandle | null>(null);
+  const timers = useRef<{ tick?: ReturnType<typeof setInterval>; end?: ReturnType<typeof setTimeout> }>({});
+  const mounted = useRef(true);
 
   const stopAll = () => {
+    if (timers.current.tick) clearInterval(timers.current.tick);
+    if (timers.current.end) clearTimeout(timers.current.end);
+    timers.current = {};
     listener.current?.stop();
     listener.current = null;
     metro.current?.stop();
     metro.current = null;
   };
-  useEffect(() => stopAll, []);
+  useEffect(
+    () => () => {
+      mounted.current = false;
+      stopAll();
+    },
+    [],
+  );
 
   const targets = exercise.notes.map((n) => midiAt(n.string, n.fret));
   const beats = exercise.notes.map((n) => n.beats ?? 1);
@@ -56,6 +67,8 @@ export function PlayAlongExercise({ exercise, onDone, mastery, width }: { exerci
 
   const finishWith = (hits: number, total: number) => {
     stopAll();
+    // Si la pantalla ya se cerró, no se guarda progreso ni se cambia el estado.
+    if (!mounted.current) return;
     const stars = starsFor(total ? hits / total : 0, mastery);
     let next: number | undefined;
     if (stars === 3 && bpm !== null && exercise.tempoSteps) {
@@ -105,14 +118,15 @@ export function PlayAlongExercise({ exercise, onDone, mastery, width }: { exerci
     const startMs = metro.current.startMs;
     listener.current = await listenNotes((n) => detected.push(n));
     if (!listener.current) {
+      // Sin detección, el metrónomo ya programado no debe seguir sonando.
+      stopAll();
       setPhase('self');
       return;
     }
     const step = 60000 / bpm;
     const expected = noteTimes(beats, bpm, startMs);
-    const tick = setInterval(() => setIndex(Math.max(0, noteIndexAt(expected, nowMs()))), 100);
-    setTimeout(() => {
-      clearInterval(tick);
+    timers.current.tick = setInterval(() => setIndex(Math.max(0, noteIndexAt(expected, nowMs()))), 100);
+    timers.current.end = setTimeout(() => {
       const r = scorePlayAlong(expected.map((timeMs, k) => ({ timeMs, midi: targets[k] })), detected);
       finishWith(r.hits, r.total);
     }, startMs - nowMs() + totalBeats * step + 800);
