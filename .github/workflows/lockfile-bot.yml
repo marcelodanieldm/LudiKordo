@@ -27,8 +27,12 @@ jobs:
             echo "::group::$dst"
             git checkout -q -B "$dst" "origin/$src"
             if [ -n "$base" ]; then git merge --no-edit -q "$base"; fi
+            if [ "$dst" = lockfile ]; then
+              # Igual que la plantilla de Expo 54: sin esto npm toma react-dom 19.3 y choca con react 19.1.
+              npm pkg set dependencies.react-dom=19.1.0
+            fi
             npm install --package-lock-only --ignore-scripts --no-audit --no-fund
-            git add package-lock.json
+            git add package.json package-lock.json
             git diff --cached --quiet || git commit -q -m "chore(deps): add package-lock.json"
             if [ "$check" = 1 ]; then
               npm ci --ignore-scripts --no-audit --no-fund
