@@ -521,7 +521,7 @@
       "c1t": "The form",
       "c1b": "Bars 1 to 4: E, A, B, E. Bars 5 to 8: the same, ending with a whole note on E.",
       "c2t": "The rhythm",
-      "c2b": "Half, quarter, quarter: count “1 2, 3, 4”. In bar 4 it flips: “1, 2, 3 4”.",
+      "c2b": "Half, quarter, quarter: count “1-2, 3, 4”. In bar 4 it flips: “1, 2, 3-4”.",
       "q": "Which root do you play in bar 3?",
       "qo1": "B: A string, fret 2",
       "qo2": "A: open A string",
