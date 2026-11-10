@@ -32,7 +32,8 @@ export function CartoonPlayer({ lesson }: { lesson: Lesson }) {
     return () => clearTimeout(id);
   }, [playing, scene, perScene, scenes.length]);
 
-  const rive = lesson.cartoon.riveResource && RIVE_READY.includes(lesson.cartoon.riveResource);
+  const riveResource = lesson.cartoon.riveResource;
+  const rive = riveResource !== undefined && RIVE_READY.includes(riveResource) ? riveResource : undefined;
 
   return (
     <View style={styles.frame}>
