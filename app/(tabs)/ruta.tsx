@@ -3,6 +3,7 @@ import { Pressable, ScrollView, View } from 'react-native';
 import { Text } from '../../src/components/Text';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
+import { router } from 'expo-router';
 import Svg, { Path } from 'react-native-svg';
 import { Card, Chip, Eyebrow, H1, H2, Muted, PlayIcon, ProgressBar, StarIcon } from '../../src/components/ui';
 import { LEVELS, isUnlocked, lessonIdsOf, levelProgress, moduleOf, nextLesson } from '../../src/content/curriculum';
@@ -26,7 +27,7 @@ export default function PathScreen() {
   const progress = useProgress();
   const completed = progress.completedSet();
   const skipped = new Set(progress.skippedLevels);
-  const next = nextLesson(completed);
+  const next = nextLesson(completed, skipped);
   const [open, setOpen] = useState<string | null>(next ? moduleOf(next) : null);
 
   const stateOf = (mod: Module): NodeState => {
@@ -57,7 +58,16 @@ export default function PathScreen() {
                 </Text>
               </Card>
               {levelOpen ? (
-                <LevelPath level={level} states={states} open={open} onOpen={(id) => setOpen(open === id ? null : id)} completed={completed} skipped={skipped} next={next} />
+                <LevelPath
+                  level={level}
+                  states={states}
+                  open={open}
+                  onOpen={(id) => setOpen(open === id ? null : id)}
+                  completed={completed}
+                  skipped={skipped}
+                  next={next}
+                  checkpointStars={progress.checkpoints[level.id]?.stars}
+                />
               ) : null}
             </View>
           );
@@ -75,6 +85,7 @@ function LevelPath(p: {
   completed: Set<string>;
   skipped: Set<number>;
   next: string | null;
+  checkpointStars?: number;
 }) {
   const { t } = useTranslation();
   const [width, setWidth] = useState(0);
@@ -117,7 +128,15 @@ function LevelPath(p: {
                 />
               );
             })}
-            <Checkpoint x={xs[count - 1]} y={(count - 1) * ROW} width={width} label={t('ui.path.checkpoint')} detail={t(p.level.checkpointKey)} />
+            <Checkpoint
+              x={xs[count - 1]}
+              y={(count - 1) * ROW}
+              width={width}
+              label={t('ui.path.checkpoint')}
+              detail={t(p.level.checkpointKey)}
+              stars={p.checkpointStars}
+              onPress={() => router.push(`/checkpoint/${p.level.id}`)}
+            />
           </>
         ) : null}
       </View>
@@ -182,20 +201,36 @@ function ModuleNode(p: { x: number; y: number; width: number; state: NodeState; 
   );
 }
 
-function Checkpoint({ x, y, width, label, detail }: { x: number; y: number; width: number; label: string; detail: string }) {
+function Checkpoint({ x, y, width, label, detail, stars, onPress }: { x: number; y: number; width: number; label: string; detail: string; stars?: number; onPress: () => void }) {
+  const { t } = useTranslation();
+  const starsLabel = t('ui.common.starsOf', { n: stars ?? 0 });
   const labelLeft = x > width / 2;
+  const passed = stars !== undefined;
   return (
     <>
-      <View
-        accessible
-        accessibilityRole="text"
-        accessibilityLabel={`${label}: ${detail}`}
-        style={{ position: 'absolute', left: x - 40, top: y + 4, width: 80, height: 64, borderRadius: 20, borderWidth: 2, borderStyle: 'dashed', borderColor: colors.gold, backgroundColor: colors.card, alignItems: 'center', justifyContent: 'center' }}
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`${label}: ${detail}${passed ? ` · ${starsLabel}` : ''}`}
+        onPress={onPress}
+        style={{
+          position: 'absolute',
+          left: x - 40,
+          top: y + 4,
+          width: 80,
+          height: 64,
+          borderRadius: 20,
+          borderWidth: 2,
+          borderStyle: passed ? 'solid' : 'dashed',
+          borderColor: colors.gold,
+          backgroundColor: passed ? colors.gold : colors.card,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
       >
         <Svg width={28} height={28} viewBox="0 0 24 24">
-          <Path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3" stroke={colors.gold} strokeWidth={2.2} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          <Path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3" stroke={passed ? colors.onAccent : colors.gold} strokeWidth={2.2} fill="none" strokeLinecap="round" strokeLinejoin="round" />
         </Svg>
-      </View>
+      </Pressable>
       <View style={{ position: 'absolute', top: y + 14, width: Math.max(0, (labelLeft ? x : width - x) - 56), ...(labelLeft ? { right: width - x + 52, alignItems: 'flex-end' } : { left: x + 52 }) }}>
         <Text style={{ fontSize: 14, fontWeight: '900', color: colors.gold }}>{label}</Text>
         <Text numberOfLines={2} style={{ fontSize: 13, fontWeight: '700', color: colors.muted, textAlign: labelLeft ? 'right' : 'left' }}>

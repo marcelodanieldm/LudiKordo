@@ -2,6 +2,7 @@
   "ui": {
     "tabs": { "today": "Hoy", "path": "Ruta", "practice": "Practicar", "progress": "Progreso", "profile": "Perfil" },
     "common": {
+      "starsOf": "{{n}} de 3 estrellas",
       "continue": "Continuar", "next": "Siguiente", "back": "Atrás", "close": "Cerrar", "start": "Empezar",
       "done": "Listo", "comingSoon": "Este tipo de ejercicio llega en la próxima versión.", "minutes": "{{count}} min",
       "lesson": "Lección {{id}}", "skip": "Saltar"
@@ -63,6 +64,25 @@
     "fretboard": {
       "open": "Cuerda {{string}} al aire",
       "fret": "Cuerda {{string}}, traste {{fret}}"
+    },
+    "badge": {
+      "firstLesson": "Primera lección",
+      "inTune": "Afinado",
+      "days": "{{n}} días",
+      "checkpoint": "Nivel {{level}} aprobado"
+    },
+    "checkpoint": {
+      "title": "Checkpoint {{level}}",
+      "notReady": "Este checkpoint todavía no está listo.",
+      "premium": "El checkpoint {{level}} es parte de Premium.",
+      "rules": "Son {{count}} pruebas seguidas. Para aprobar necesitas al menos 1 estrella en cada una y {{avg}} de promedio.",
+      "skipNote": "¿Ya sabes todo esto? Si apruebas, se desbloquea el nivel {{next}} aunque no hayas hecho todas las lecciones.",
+      "start": "Empezar el checkpoint",
+      "part": "Prueba {{n}} de {{total}}",
+      "passed": "¡Checkpoint aprobado!",
+      "failed": "Todavía no. Repasa las lecciones y vuelve a intentarlo.",
+      "unlocked": "Se desbloqueó el nivel {{next}}.",
+      "backToPath": "Volver a la ruta"
     },
     "exercise": {
       "tempoHintAll": "Toca el botón en cada pulso, junto con el clic",
@@ -300,7 +320,7 @@
       "c2t": "Después, escuchar",
       "c2b": "Mi es la más grave y Sol la más aguda. Con la práctica las reconoces sin mirar.",
       "tune": "Afina las 4 cuerdas: Mi, La, Re y Sol.",
-      "ear": "Primero suena la Mi al aire y después otra cuerda al aire. ¿Cuál es la segunda?",
+      "ear": "Primero suena la cuerda Mi al aire y después otra cuerda al aire. ¿Cuál es la segunda?",
       "route": "Toca las cuerdas al aire de Mi a Sol y de vuelta a Mi."
     },
     "l121": {
@@ -672,6 +692,14 @@
       "qh": "El groove recorre I, IV, V y I.",
       "tab": "Lee los primeros 4 compases del groove.",
       "groove": "Kordi Groove 1 completo: 8 compases."
+    },
+    "cp1": {
+      "intro": "Demuestra lo que aprendiste en el nivel 1: oído, tablatura, pulso, la araña y el Kordi Groove 1 a 80 bpm.",
+      "ear": "Primero suena la cuerda Mi al aire y después otra cuerda al aire. ¿Cuál es la segunda?",
+      "tab": "Lee la tablatura de 4 compases y toca cada nota en el diapasón.",
+      "pulse": "80 bpm: 8 pulsos con clic y 24 sin clic.",
+      "spider": "La araña completa: sube por las 4 cuerdas y vuelve a bajar.",
+      "groove": "El Kordi Groove 1 completo a 80 bpm."
     }
   }
 }

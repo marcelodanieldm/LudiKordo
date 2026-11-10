@@ -2,6 +2,7 @@
   "ui": {
     "tabs": { "today": "Today", "path": "Path", "practice": "Practice", "progress": "Progress", "profile": "Profile" },
     "common": {
+      "starsOf": "{{n}} of 3 stars",
       "continue": "Continue", "next": "Next", "back": "Back", "close": "Close", "start": "Get started",
       "done": "Done", "comingSoon": "This exercise type arrives in the next version.", "minutes": "{{count}} min",
       "lesson": "Lesson {{id}}", "skip": "Skip"
@@ -63,6 +64,25 @@
     "fretboard": {
       "open": "Open {{string}} string",
       "fret": "{{string}} string, fret {{fret}}"
+    },
+    "badge": {
+      "firstLesson": "First lesson",
+      "inTune": "In tune",
+      "days": "{{n}} days",
+      "checkpoint": "Level {{level}} passed"
+    },
+    "checkpoint": {
+      "title": "Checkpoint {{level}}",
+      "notReady": "This checkpoint isn't ready yet.",
+      "premium": "Checkpoint {{level}} is part of Premium.",
+      "rules": "{{count}} tests in a row. To pass you need at least 1 star on each and an average of {{avg}}.",
+      "skipNote": "Already know all this? If you pass, level {{next}} unlocks even if you haven't done every lesson.",
+      "start": "Start the checkpoint",
+      "part": "Test {{n}} of {{total}}",
+      "passed": "Checkpoint passed!",
+      "failed": "Not yet. Review the lessons and try again.",
+      "unlocked": "Level {{next}} is now unlocked.",
+      "backToPath": "Back to your path"
     },
     "exercise": {
       "tempoHintAll": "Tap the button on every beat, along with the click",
@@ -672,6 +692,14 @@
       "qh": "The groove goes through I, IV, V and I.",
       "tab": "Read the first 4 bars of the groove.",
       "groove": "The full Kordi Groove 1: 8 bars."
+    },
+    "cp1": {
+      "intro": "Show what you learned in level 1: ear, tab, beat, the spider and Kordi Groove 1 at 80 bpm.",
+      "ear": "First you hear open E, then another open string. Which is the second one?",
+      "tab": "Read the 4-bar tab and tap each note on the fretboard.",
+      "pulse": "80 bpm: 8 beats with the click and 24 without.",
+      "spider": "The full spider: climb across all 4 strings and come back down.",
+      "groove": "The full Kordi Groove 1 at 80 bpm."
     }
   }
 }

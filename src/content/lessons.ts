@@ -678,7 +678,7 @@ const four = (string: 'E' | 'A' | 'D' | 'G', fret: number) => [n(string, fret), 
 const halfQQ = (string: 'E' | 'A' | 'D' | 'G', fret: number) => [n(string, fret, 2), n(string, fret), n(string, fret)];
 
 /** Kordi Groove 1: línea original de raíces sobre I–IV–V en Mi (Mi, La, Si). */
-const KORDI_GROOVE_1 = [
+export const KORDI_GROOVE_1 = [
   ...halfQQ('E', 0),
   ...halfQQ('A', 0),
   ...halfQQ('A', 2),

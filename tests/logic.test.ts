@@ -232,3 +232,35 @@ test('opciones de nota en letras se muestran según idioma y notación', async (
   assert.equal(letterNoteLabel('3', 'es', 'both'), null);
   assert.equal(letterNoteLabel('Mi', 'es', 'both'), null);
 });
+
+test('nivel saltado por checkpoint: abre su nivel y el siguiente empieza en orden', async () => {
+  const { isUnlocked, nextLesson } = await import('../src/content/curriculum');
+  const none = new Set<string>();
+  const skipped = new Set([1]);
+  // Todo el nivel 1 queda abierto para repasar.
+  assert.ok(isUnlocked('1.5.5', none, skipped));
+  assert.ok(isUnlocked('1.3.2', none, skipped));
+  // El nivel 2 empieza por su primera lección, no en cualquier orden.
+  assert.ok(isUnlocked('2.1.1', none, skipped));
+  assert.ok(!isUnlocked('2.1.2', none, skipped));
+  assert.ok(isUnlocked('2.1.2', new Set(['2.1.1']), skipped));
+  // Sin saltar, rige el orden normal.
+  assert.ok(!isUnlocked('2.1.1', none));
+  // La próxima lección ignora el nivel saltado.
+  assert.equal(nextLesson(none, skipped), '2.1.1');
+  assert.equal(nextLesson(none), '1.1.1');
+});
+
+test('aprobar un checkpoint: bono una vez, mejor puntaje y nivel saltado solo si no estaba terminado', async () => {
+  const { applyCheckpointPass } = await import('../src/state/rules');
+  const first = applyCheckpointPass(undefined, { level: 1, stars: 2, levelCompleted: false }, [], '2026-11-10', 50);
+  assert.deepEqual(first, { record: { stars: 2, passedAt: '2026-11-10' }, xp: 50, skippedLevels: [1] });
+  const again = applyCheckpointPass(first.record, { level: 1, stars: 3, levelCompleted: true }, first.skippedLevels, '2026-11-20', 50);
+  assert.deepEqual(again.record, { stars: 3, passedAt: '2026-11-10' });
+  assert.equal(again.xp, 0);
+  assert.deepEqual(again.skippedLevels, [1]);
+  const worse = applyCheckpointPass(again.record, { level: 1, stars: 2, levelCompleted: true }, [], '2026-12-01', 50);
+  assert.equal(worse.record.stars, 3);
+  // Con el nivel terminado no se marca como saltado.
+  assert.deepEqual(applyCheckpointPass(undefined, { level: 2, stars: 2, levelCompleted: true }, [1], 'x', 50).skippedLevels, [1]);
+});

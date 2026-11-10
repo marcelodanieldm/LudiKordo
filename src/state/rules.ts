@@ -70,3 +70,28 @@ export function needsReview(lastPracticed: string | undefined, today: string): b
   if (!lastPracticed) return false;
   return daysBetween(lastPracticed, today) > REVIEW_AFTER_DAYS;
 }
+
+export interface CheckpointRecord {
+  stars: number;
+  passedAt: string;
+}
+
+/**
+ * Efecto de aprobar un checkpoint: mejor puntaje, fecha del primer aprobado,
+ * bono de XP solo la primera vez, y nivel saltado si no estaba terminado.
+ */
+export function applyCheckpointPass(
+  prev: CheckpointRecord | undefined,
+  pass: { level: number; stars: number; levelCompleted: boolean },
+  skippedLevels: number[],
+  today: string,
+  bonusXp: number,
+): { record: CheckpointRecord; xp: number; skippedLevels: number[] } {
+  const skipped = new Set(skippedLevels);
+  if (!pass.levelCompleted) skipped.add(pass.level);
+  return {
+    record: { stars: Math.max(prev?.stars ?? 0, pass.stars), passedAt: prev?.passedAt ?? today },
+    xp: prev ? 0 : bonusXp,
+    skippedLevels: [...skipped].sort((a, b) => a - b),
+  };
+}
