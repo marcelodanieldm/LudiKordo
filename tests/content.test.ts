@@ -86,3 +86,31 @@ test('las respuestas correctas de los quiz apuntan a una opción válida', () =>
   if (q2.kind !== 'quiz') throw new Error('1.3.1-q debería ser un quiz');
   assert.equal(q2.options[q2.correctIndex], '=3');
 });
+
+test('módulo 1.3: la araña usa un dedo por traste y la teoría es correcta', async () => {
+  const { freqToMidi, midiAt, noteName } = await import('../src/music/notes');
+  // Las 5 lecciones del módulo existen y solo usan los trastes 1 a 4.
+  for (const id of ['1.3.1', '1.3.2', '1.3.3', '1.3.4', '1.3.5']) {
+    const lesson = LESSONS[id];
+    assert.ok(lesson, id);
+    for (const ex of lesson.exercises) {
+      const notes = ex.kind === 'playAlong' ? ex.notes : ex.kind === 'fretboardTap' ? ex.sequence : [];
+      for (const n of notes) assert.ok(n.fret >= 1 && n.fret <= 4, `${ex.id}: traste ${n.fret}`);
+    }
+  }
+  // 1.3.5: el tono del ejercicio de oído es la opción correcta (cuerda Mi, traste 3 = Sol).
+  const ear = LESSONS['1.3.5'].exercises.find((e) => e.id === '1.3.5-ear')!;
+  if (ear.kind !== 'ear' || !ear.tones) throw new Error('1.3.5-ear debería ser de oído con tono');
+  const midi = freqToMidi(ear.tones[0]);
+  assert.equal(midi, midiAt('E', 3));
+  assert.equal(lookup(locales.en, ear.options[ear.correctIndex]), noteName(midi, 'en', 'letters'));
+  // Las cuatro opciones son los trastes 1 a 4 de la cuerda Mi, en orden.
+  ear.options.forEach((key, i) => assert.equal(lookup(locales.en, key), noteName(midiAt('E', i + 1), 'en', 'letters')));
+  // 1.3.5: la araña completa sube por las 4 cuerdas y vuelve a bajar (32 notas).
+  const full = LESSONS['1.3.5'].exercises.find((e) => e.id === '1.3.5-full')!;
+  if (full.kind !== 'playAlong') throw new Error('1.3.5-full debería ser playAlong');
+  assert.equal(full.notes.length, 32);
+  assert.deepEqual(full.notes.slice(0, 4).map((n) => n.fret), [1, 2, 3, 4]);
+  assert.deepEqual(full.notes.slice(16, 20), [4, 3, 2, 1].map((fret) => ({ string: 'G', fret })));
+  assert.deepEqual(full.notes.at(-1), { string: 'E', fret: 1 });
+});
