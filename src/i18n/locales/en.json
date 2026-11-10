@@ -229,7 +229,7 @@
       "objective": "Name 9 parts of the bass and identify the 4 strings by name and by sound.",
       "s1": "“The bass ties the drums' rhythm to the chords. Without bass, the band floats.”",
       "s2": "Headstock and tuning pegs, neck, frets and markers, body, pickups, bridge, volume and tone knobs, and the cable jack.",
-      "s3": "From thickest to thinnest: E, A, D and G. The thickest is on top, closest to your face.",
+      "s3": "From thickest to thinnest: {{e}}, {{a}}, {{d}} and {{g}}. The thickest goes on top, nearest your face.",
       "s4": "“The thickest string sounds the lowest. Low is on top, high is at the bottom.”",
       "c1t": "Parts of the bass",
       "c1b": "Tuning pegs, a neck with frets, a body with pickups and bridge, the knobs and the cable jack.",

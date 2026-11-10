@@ -20,12 +20,16 @@ Los MCP `nanobanana`, `rive` y `elevenlabs` son opcionales: se activan con `node
 Para que la app pueda manejar cualquier cartoon sin código nuevo:
 
 - **Artboard** `Main`, 1600×900 (16:9), fondo transparente u opaco de la paleta.
-- **State machine** `Lesson` con:
-  - input numérico `scene` (1 a 4): la app lo cambia al avanzar;
-  - input booleano `talking`: la boca de Kordi se mueve mientras suena la voz.
-- **View model** `Cartoon` con propiedad de texto `subtitle` (la app la llena desde i18n; si el binding no está, la app dibuja el subtítulo debajo).
+- **State machine** `Lesson`.
+- **View model** `Cartoon`, con autobind al artboard, con tres propiedades que la app actualiza por data binding:
+  - `scene` (número, 1 a 4): la app lo cambia al avanzar; las transiciones de la state machine se condicionan a este valor;
+  - `talking` (booleano): la boca de Kordi se mueve mientras suena la voz;
+  - `subtitle` (texto): opcional dentro de la animación; la app siempre dibuja el subtítulo debajo.
+- No se usan *inputs* de state machine: Rive los marcó como obsoletos en React Native y el runtime nuevo (`@rive-app/react-native`) los rechaza.
 - Nada de texto horneado en la animación: todo texto visible viene de i18n.
 - Peso objetivo: menos de 300 KB por archivo.
+
+Ejemplo completo de lo que necesita un animador: [docs/cartoons/1.1.1.md](cartoons/1.1.1.md).
 
 ## Audio
 
@@ -39,9 +43,13 @@ Para que la app pueda manejar cualquier cartoon sin código nuevo:
 - Bocetos generados por IA: solo como referencia interna; la versión final es dibujo vectorial propio.
 - Voces: la voz elegida tiene que permitir uso comercial en el plan contratado.
 
-## Pendiente en el código
+## Cómo lo reproduce la app
 
-El reproductor (`src/components/CartoonPlayer.tsx`) ya avanza escenas y muestra subtítulos. Falta:
-1. Cambiar el input `scene` y `talking` de la state machine con `rive-react-native`.
-2. Reproducir la pista de voz de cada escena y sincronizar el avance con su duración.
-3. Vincular `subtitle` por data binding.
+`src/components/CartoonPlayer.tsx`:
+
+- **Con voz** registrada en `src/content/voices.ts` para el idioma: cada escena dura lo que su audio (con `expo-audio`), más una pausa de 0,6 s; mientras suena, `talking` = true.
+- **Sin voz**: cada escena dura su tiempo de lectura (`src/content/cartoon.ts`, con pruebas).
+- **Con el `.riv`** listado en `RIVE_READY`: se envían `scene`, `talking` y `subtitle` por data binding (`AutoBind(true)`). Sin él, Kordi bajo el foco.
+- A 0,75× la voz se oye más lenta sin cambiar el tono, y las escenas sin voz duran más.
+
+`cartoon.durationSec` de cada lección es la duración objetivo de la animación, para el animador; el reproductor no estira los subtítulos hasta ese número.
