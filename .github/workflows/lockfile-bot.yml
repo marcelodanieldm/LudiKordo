@@ -22,35 +22,30 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898273+github-actions[bot]@users.noreply.github.com"
-          lock() { # rama-destino rama-origen base-ya-procesada check
-            local dst=$1 src=$2 base=$3 check=$4
+          lock() { # rama base
+            local dst=$1 base=$2
             echo "::group::$dst"
-            git checkout -q -B "$dst" "origin/$src"
-            if [ -n "$base" ]; then git merge --no-edit -q "$base"; fi
-            if [ "$dst" = lockfile ]; then
-              # Igual que la plantilla de Expo 54: sin esto npm toma react-dom 19.3 y choca con react 19.1.
-              npm pkg set dependencies.react-dom=19.1.0
-            fi
+            git checkout -q -B "$dst" "origin/bot/$dst"
+            if [ -n "$base" ]; then git merge --no-edit -q -X theirs "$base"; fi
             npm install --package-lock-only --ignore-scripts --no-audit --no-fund
-            git add package.json package-lock.json
-            git diff --cached --quiet || git commit -q -m "chore(deps): add package-lock.json"
-            if [ "$check" = 1 ]; then
-              npm ci --ignore-scripts --no-audit --no-fund
-              npx expo install --check || echo "::warning::expo install --check en $dst"
-              npm run typecheck || echo "::warning::typecheck falla en $dst"
-              npm test || echo "::warning::test falla en $dst"
-              rm -rf node_modules
-            fi
-            git push -q -f origin "HEAD:refs/heads/bot/$dst"
+            git add package-lock.json
+            git diff --cached --quiet || git commit -q -m "chore(deps): update package-lock.json"
+            npm ci --ignore-scripts --no-audit --no-fund
+            npx expo install --check || echo "::warning::expo install --check en $dst"
+            npm run check:i18n || echo "::warning::RESULT check:i18n falla en $dst"
+            npm run typecheck || echo "::warning::RESULT typecheck falla en $dst"
+            npm test || echo "::warning::RESULT test falla en $dst"
+            rm -rf node_modules
+            git push -q origin "HEAD:refs/heads/bot/$dst"
             echo "::endgroup::"
           }
-          lock lockfile          main                 ""                         1
-          lock redesign          cc/redesign-stage-night lockfile                1
-          lock cartoon           cc/cartoon-1-1-1     redesign                   1
-          lock exercises         cc/exercises-tab-tempo redesign                 1
-          lock lessons-1-3       cc/lessons-1-3       lockfile                   0
-          lock lessons-1-4       cc/lessons-1-4       exercises                  0
-          lock lessons-1-5       cc/lessons-1-5       lessons-1-4                0
-          lock lessons-1-1-1-2   cc/lessons-1-1-1-2   lessons-1-5                0
-          lock checkpoint        cc/checkpoint        lessons-1-1-1-2            1
-          lock dev-premium       cc/dev-premium       lockfile                   0
+          lock lockfile        ""
+          lock redesign        lockfile
+          lock cartoon         redesign
+          lock exercises       redesign
+          lock lessons-1-3     lockfile
+          lock lessons-1-4     exercises
+          lock lessons-1-5     lessons-1-4
+          lock lessons-1-1-1-2 lessons-1-5
+          lock checkpoint      lessons-1-1-1-2
+          lock dev-premium     lockfile
