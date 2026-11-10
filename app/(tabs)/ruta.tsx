@@ -27,7 +27,7 @@ export default function PathScreen() {
   const progress = useProgress();
   const completed = progress.completedSet();
   const skipped = new Set(progress.skippedLevels);
-  const next = nextLesson(completed);
+  const next = nextLesson(completed, skipped);
   const [open, setOpen] = useState<string | null>(next ? moduleOf(next) : null);
 
   const stateOf = (mod: Module): NodeState => {
@@ -202,13 +202,15 @@ function ModuleNode(p: { x: number; y: number; width: number; state: NodeState; 
 }
 
 function Checkpoint({ x, y, width, label, detail, stars, onPress }: { x: number; y: number; width: number; label: string; detail: string; stars?: number; onPress: () => void }) {
+  const { t } = useTranslation();
+  const starsLabel = t('ui.common.starsOf', { n: stars ?? 0 });
   const labelLeft = x > width / 2;
   const passed = stars !== undefined;
   return (
     <>
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel={`${label}: ${detail}${passed ? ` · ${stars} / 3` : ''}`}
+        accessibilityLabel={`${label}: ${detail}${passed ? ` · ${starsLabel}` : ''}`}
         onPress={onPress}
         style={{
           position: 'absolute',

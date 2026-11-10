@@ -23,7 +23,20 @@ const SELF_CHECK_STARS = 2;
  * Sin tempo: la app espera cada nota (o afinación) antes de pasar a la siguiente.
  * Si el micrófono no está disponible o falla dos veces seguidas, ofrece autoevaluación.
  */
-export function PlayAlongExercise({ exercise, onDone, mastery, width }: { exercise: PlayEx; onDone: (stars: number) => void; mastery: number; width: number }) {
+export function PlayAlongExercise({
+  exercise,
+  onDone,
+  mastery,
+  width,
+  allowSelfCheck = true,
+}: {
+  exercise: PlayEx;
+  onDone: (stars: number) => void;
+  mastery: number;
+  width: number;
+  /** En un checkpoint no hay autoevaluación: aprobar exige que la app oiga las notas. */
+  allowSelfCheck?: boolean;
+}) {
   const { t, i18n } = useTranslation();
   const notation = useSettings((s) => s.notation);
   const unlocked = useProgress((s) => s.tempo[exercise.id]);
@@ -205,12 +218,12 @@ export function PlayAlongExercise({ exercise, onDone, mastery, width }: { exerci
             <Button style={{ flex: 1 }} variant="secondary" label={t('ui.exercise.retry')} onPress={() => void start()} />
             <Button style={{ flex: 1 }} label={t('ui.common.next')} disabled={result.stars === 0} onPress={() => onDone(result.stars)} />
           </View>
-          {failures >= 2 ? <Button variant="teal" label={t('ui.exercise.selfOk')} onPress={() => onDone(SELF_CHECK_STARS)} /> : null}
+          {allowSelfCheck && failures >= 2 ? <Button variant="teal" label={t('ui.exercise.selfOk')} onPress={() => onDone(SELF_CHECK_STARS)} /> : null}
         </View>
       ) : null}
       {phase === 'self' ? (
         <View style={{ flexDirection: 'row', gap: 10 }}>
-          <Button style={{ flex: 1 }} variant="teal" label={t('ui.exercise.selfOk')} onPress={() => onDone(SELF_CHECK_STARS)} />
+          {allowSelfCheck ? <Button style={{ flex: 1 }} variant="teal" label={t('ui.exercise.selfOk')} onPress={() => onDone(SELF_CHECK_STARS)} /> : null}
           <Button style={{ flex: 1 }} variant="secondary" label={t('ui.exercise.retry')} onPress={() => setPhase('intro')} />
         </View>
       ) : null}

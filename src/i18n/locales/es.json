@@ -2,6 +2,7 @@
   "ui": {
     "tabs": { "today": "Hoy", "path": "Ruta", "practice": "Practicar", "progress": "Progreso", "profile": "Perfil" },
     "common": {
+      "starsOf": "{{n}} de 3 estrellas",
       "continue": "Continuar", "next": "Siguiente", "back": "Atrás", "close": "Cerrar", "start": "Empezar",
       "done": "Listo", "comingSoon": "Este tipo de ejercicio llega en la próxima versión.", "minutes": "{{count}} min",
       "lesson": "Lección {{id}}", "skip": "Saltar"
@@ -63,6 +64,12 @@
     "fretboard": {
       "open": "Cuerda {{string}} al aire",
       "fret": "Cuerda {{string}}, traste {{fret}}"
+    },
+    "badge": {
+      "firstLesson": "Primera lección",
+      "inTune": "Afinado",
+      "days": "{{n}} días",
+      "checkpoint": "Nivel {{level}} aprobado"
     },
     "checkpoint": {
       "title": "Checkpoint {{level}}",
@@ -313,7 +320,7 @@
       "c2t": "Después, escuchar",
       "c2b": "Mi es la más grave y Sol la más aguda. Con la práctica las reconoces sin mirar.",
       "tune": "Afina las 4 cuerdas: Mi, La, Re y Sol.",
-      "ear": "Primero suena la Mi al aire y después otra cuerda al aire. ¿Cuál es la segunda?",
+      "ear": "Primero suena la cuerda Mi al aire y después otra cuerda al aire. ¿Cuál es la segunda?",
       "route": "Toca las cuerdas al aire de Mi a Sol y de vuelta a Mi."
     },
     "l121": {
@@ -688,7 +695,7 @@
     },
     "cp1": {
       "intro": "Demuestra lo que aprendiste en el nivel 1: oído, tablatura, pulso, la araña y el Kordi Groove 1 a 80 bpm.",
-      "ear": "Primero suena la Mi al aire y después otra cuerda al aire. ¿Cuál es la segunda?",
+      "ear": "Primero suena la cuerda Mi al aire y después otra cuerda al aire. ¿Cuál es la segunda?",
       "tab": "Lee la tablatura de 4 compases y toca cada nota en el diapasón.",
       "pulse": "80 bpm: 8 pulsos con clic y 24 sin clic.",
       "spider": "La araña completa: sube por las 4 cuerdas y vuelve a bajar.",

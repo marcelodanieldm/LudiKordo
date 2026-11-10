@@ -2,6 +2,7 @@
   "ui": {
     "tabs": { "today": "Today", "path": "Path", "practice": "Practice", "progress": "Progress", "profile": "Profile" },
     "common": {
+      "starsOf": "{{n}} of 3 stars",
       "continue": "Continue", "next": "Next", "back": "Back", "close": "Close", "start": "Get started",
       "done": "Done", "comingSoon": "This exercise type arrives in the next version.", "minutes": "{{count}} min",
       "lesson": "Lesson {{id}}", "skip": "Skip"
@@ -63,6 +64,12 @@
     "fretboard": {
       "open": "Open {{string}} string",
       "fret": "{{string}} string, fret {{fret}}"
+    },
+    "badge": {
+      "firstLesson": "First lesson",
+      "inTune": "In tune",
+      "days": "{{n}} days",
+      "checkpoint": "Level {{level}} passed"
     },
     "checkpoint": {
       "title": "Checkpoint {{level}}",

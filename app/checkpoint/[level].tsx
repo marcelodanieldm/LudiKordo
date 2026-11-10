@@ -66,6 +66,8 @@ export default function CheckpointScreen() {
   };
 
   const onPartDone = (s: number) => {
+    // Un doble toque en «Siguiente» no cuenta dos veces la misma prueba.
+    if (stars.current.length !== part) return;
     const ex = cp.parts[part];
     recordExercise(ex.id, s, ex.skills);
     stars.current.push(s);
@@ -109,7 +111,7 @@ export default function CheckpointScreen() {
             <Text style={{ fontSize: 13, fontWeight: '900', color: colors.muted }}>{t('ui.checkpoint.part', { n: part + 1, total: cp.parts.length })}</Text>
             <Segments total={cp.parts.length} done={part} current={part} color={colors.gold} />
           </View>
-          <ExerciseView key={cp.parts[part].id} exercise={cp.parts[part]} onDone={onPartDone} width={contentWidth} mastery={0.8} />
+          <ExerciseView key={cp.parts[part].id} exercise={cp.parts[part]} onDone={onPartDone} width={contentWidth} mastery={cp.mastery} allowSelfCheck={false} />
         </View>
       ) : null}
 
@@ -123,7 +125,7 @@ export default function CheckpointScreen() {
           {result.passed && !levelCompleted ? <Muted style={{ textAlign: 'center' }}>{t('ui.checkpoint.unlocked', { next: level + 1 })}</Muted> : null}
           <View style={{ flexDirection: 'row', gap: 10, alignSelf: 'stretch' }}>
             {!result.passed ? <Button style={{ flex: 1 }} variant="secondary" label={t('ui.exercise.retry')} onPress={start} /> : null}
-            <Button style={{ flex: 1 }} label={t('ui.checkpoint.backToPath')} onPress={() => router.replace('/ruta')} />
+            <Button style={{ flex: 1 }} label={t('ui.checkpoint.backToPath')} onPress={() => router.dismissTo('/ruta')} />
           </View>
         </View>
       ) : null}

@@ -12,17 +12,18 @@ import { colors, fonts } from '../../src/theme';
 import type { Skill } from '../../src/content/types';
 
 const SKILLS: Skill[] = ['technique', 'rhythm', 'fretboard', 'theory', 'ear'];
-const BADGE_LABEL: Record<string, Record<string, string>> = {
-  'first-lesson': { es: 'Primera lección', en: 'First lesson', pt: 'Primeira aula' },
-  'in-tune': { es: 'Afinado', en: 'In tune', pt: 'Afinado' },
-  'days-7': { es: '7 días', en: '7 days', pt: '7 dias' },
-  'days-30': { es: '30 días', en: '30 days', pt: '30 dias' },
-  'days-100': { es: '100 días', en: '100 days', pt: '100 dias' },
-  'checkpoint-1': { es: 'Nivel 1 aprobado', en: 'Level 1 passed', pt: 'Nível 1 aprovado' },
-};
+/** Clave y valores de traducción de una insignia guardada en el progreso («checkpoint-1», «days-7»…). */
+function badgeKey(id: string): { key: string; values?: Record<string, number> } | null {
+  const cp = /^checkpoint-(\d+)$/.exec(id);
+  if (cp) return { key: 'ui.badge.checkpoint', values: { level: Number(cp[1]) } };
+  const days = /^days-(\d+)$/.exec(id);
+  if (days) return { key: 'ui.badge.days', values: { n: Number(days[1]) } };
+  const key = ({ 'first-lesson': 'firstLesson', 'in-tune': 'inTune' } as Record<string, string>)[id];
+  return key ? { key: `ui.badge.${key}` } : null;
+}
 
 export default function Progress() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const p = useProgress();
   const weeklyDays = useSettings((s) => s.weeklyDays);
   const minutes = Object.values(p.minutesByDay).reduce((a, b) => a + b, 0);
@@ -71,7 +72,10 @@ export default function Progress() {
               {p.badges.map((b) => (
                 <View key={b} style={{ flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 14, backgroundColor: colors.goldSoft }}>
                   <StarIcon size={16} />
-                  <Text style={{ color: colors.gold, fontWeight: '900' }}>{BADGE_LABEL[b]?.[i18n.language] ?? b}</Text>
+                  <Text style={{ color: colors.gold, fontWeight: '900' }}>{(() => {
+                    const bk = badgeKey(b);
+                    return bk ? t(bk.key, bk.values) : b;
+                  })()}</Text>
                 </View>
               ))}
             </View>

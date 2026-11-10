@@ -2,6 +2,7 @@
   "ui": {
     "tabs": { "today": "Hoje", "path": "Trilha", "practice": "Praticar", "progress": "Progresso", "profile": "Perfil" },
     "common": {
+      "starsOf": "{{n}} de 3 estrelas",
       "continue": "Continuar", "next": "Próximo", "back": "Voltar", "close": "Fechar", "start": "Começar",
       "done": "Pronto", "comingSoon": "Este tipo de exercício chega na próxima versão.", "minutes": "{{count}} min",
       "lesson": "Aula {{id}}", "skip": "Pular"
@@ -63,6 +64,12 @@
     "fretboard": {
       "open": "Corda {{string}} solta",
       "fret": "Corda {{string}}, casa {{fret}}"
+    },
+    "badge": {
+      "firstLesson": "Primeira aula",
+      "inTune": "Afinado",
+      "days": "{{n}} dias",
+      "checkpoint": "Nível {{level}} aprovado"
     },
     "checkpoint": {
       "title": "Checkpoint {{level}}",

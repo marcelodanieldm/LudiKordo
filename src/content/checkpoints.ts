@@ -13,6 +13,8 @@ export interface Checkpoint {
   titleKey: string;
   introKey: string;
   parts: Exercise[];
+  /** Criterio de dominio de cada prueba (3 estrellas). */
+  mastery: number;
 }
 
 const k = (level: number, key: string) => `content.cp${level}.${key}`;
@@ -23,6 +25,7 @@ const cp1: Checkpoint = {
   level: 1,
   titleKey: 'content.checkpoint.1',
   introKey: k(1, 'intro'),
+  mastery: 0.8,
   parts: [
     {
       id: 'cp1-ear',

@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { zustandStorage } from './storage';
-import { isoDate } from './rules';
-import { xpFor } from '../music/scoring';
+import { applyCheckpointPass, isoDate } from './rules';
+import { XP_CHECKPOINT, xpFor } from '../music/scoring';
 import type { Skill } from '../content/types';
 
 export interface LessonRecord {
@@ -102,17 +102,15 @@ export const useProgress = create<ProgressState>()(
 
       passCheckpoint: (level, stars, levelCompleted) =>
         set((s) => {
-          const prev = s.checkpoints[level];
+          // Las partes ya sumaron XP y estrellas al registrarse; el bono es fijo y una sola vez.
+          const r = applyCheckpointPass(s.checkpoints[level], { level, stars, levelCompleted }, s.skippedLevels, isoDate(), XP_CHECKPOINT);
           const badges = new Set(s.badges);
           badges.add(`checkpoint-${level}`);
-          const skipped = new Set(s.skippedLevels);
-          if (!levelCompleted) skipped.add(level);
           return {
-            checkpoints: { ...s.checkpoints, [level]: { stars: Math.max(prev?.stars ?? 0, stars), passedAt: prev?.passedAt ?? isoDate() } },
-            // El bono de XP del checkpoint se gana una sola vez.
-            xp: s.xp + (prev ? 0 : xpFor(stars, true)),
+            checkpoints: { ...s.checkpoints, [level]: r.record },
+            xp: s.xp + r.xp,
             badges: [...badges],
-            skippedLevels: [...skipped],
+            skippedLevels: r.skippedLevels,
           };
         }),
 
