@@ -4,7 +4,7 @@ import { getLocales } from 'expo-localization';
 import en from './locales/en.json';
 import es from './locales/es.json';
 import pt from './locales/pt.json';
-import type { Locale } from '../music/notes';
+import { letterNoteLabel, type Locale, type Notation } from '../music/notes';
 
 export const SUPPORTED: Locale[] = ['en', 'es', 'pt'];
 
@@ -31,10 +31,13 @@ export function initI18n(locale: Locale) {
 
 /**
  * Resuelve una opción de ejercicio: las que empiezan con '=' son literales
- * (por ejemplo '=E' o '=3'); el resto son claves de traducción.
+ * (por ejemplo '=E' o '=3'); el resto son claves de traducción. Una letra de
+ * nota se muestra según el idioma y la notación («Mi (E)» por defecto en es/pt).
  */
-export function optionLabel(t: (k: string) => string, option: string): string {
-  return option.startsWith('=') ? option.slice(1) : t(option);
+export function optionLabel(t: (k: string) => string, option: string, note?: { locale: Locale; notation: Notation }): string {
+  if (!option.startsWith('=')) return t(option);
+  const literal = option.slice(1);
+  return (note && letterNoteLabel(literal, note.locale, note.notation)) ?? literal;
 }
 
 export default i18n;

@@ -3,6 +3,8 @@ import { Pressable, View } from 'react-native';
 import { Text } from '../Text';
 import { useTranslation } from 'react-i18next';
 import { optionLabel } from '../../i18n';
+import { useSettings } from '../../state/settings';
+import type { Locale } from '../../music/notes';
 import { playTones } from '../../audio/engine';
 import { Button } from '../ui';
 import { colors, radius, fonts } from '../../theme';
@@ -10,7 +12,9 @@ import type { QuizExercise as Quiz } from '../../content/types';
 
 /** Opción múltiple y ejercicios de oído (con tonos de referencia). */
 export function QuizExercise({ exercise, onDone }: { exercise: Quiz; onDone: (stars: number) => void }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const notation = useSettings((st) => st.notation);
+  const note = { locale: (['en', 'es', 'pt'].includes(i18n.language) ? i18n.language : 'en') as Locale, notation };
   const [picked, setPicked] = useState<number | null>(null);
   const [attempts, setAttempts] = useState(0);
   const correct = picked === exercise.correctIndex;
@@ -55,7 +59,7 @@ export function QuizExercise({ exercise, onDone }: { exercise: Quiz; onDone: (st
                 backgroundColor: ok ? colors.tealSoft : bad ? colors.accentSoft : colors.card,
               }}
             >
-              <Text style={{ fontSize: 18, fontWeight: '800', color: ok ? colors.tealInk : bad ? colors.accentInk : colors.ink }}>{optionLabel(t, opt)}</Text>
+              <Text style={{ fontSize: 18, fontWeight: '800', color: ok ? colors.tealInk : bad ? colors.accentInk : colors.ink }}>{optionLabel(t, opt, note)}</Text>
             </Pressable>
           );
         })}

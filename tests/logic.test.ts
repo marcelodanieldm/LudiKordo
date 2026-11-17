@@ -222,6 +222,17 @@ test('tablatura: renglones de compases enteros según el ancho', async () => {
   assert.equal(layoutTab([], 320).rows, 0);
 });
 
+test('opciones de nota en letras se muestran según idioma y notación', async () => {
+  const { letterNoteLabel, noteName } = await import('../src/music/notes');
+  assert.equal(letterNoteLabel('E', 'es', 'both'), noteName(28, 'es', 'both'));
+  assert.equal(letterNoteLabel('E', 'en', 'letters'), 'E');
+  assert.equal(letterNoteLabel('F♯', 'pt', 'letters'), noteName(30, 'pt', 'letters'));
+  assert.equal(letterNoteLabel('G', 'es', 'solfege'), noteName(31, 'es', 'solfege'));
+  // Los números y textos no son notas.
+  assert.equal(letterNoteLabel('3', 'es', 'both'), null);
+  assert.equal(letterNoteLabel('Mi', 'es', 'both'), null);
+});
+
 test('cartoon: cada escena dura su tiempo de lectura, con mínimo', async () => {
   const { MIN_SCENE_MS, sceneDurationsMs, wordCount, nextScene, riveResourceFor, audioFolderFor } = await import('../src/content/cartoon');
   assert.equal(wordCount('«El bajo une el ritmo de la batería con los acordes.»'), 11);
