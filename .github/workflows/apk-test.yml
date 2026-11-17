@@ -41,6 +41,8 @@ jobs:
         run: npm test
       - name: Generar el proyecto Android
         run: npx expo prebuild --platform android --no-install
+      - name: Módulos nativos que enlaza Expo (diagnóstico)
+        run: npx expo-modules-autolinking resolve --platform android --json | node -e "const d=JSON.parse(require('fs').readFileSync(0,'utf8'));for(const m of d.modules){console.log(m.packageName, m.packageVersion, JSON.stringify((m.projects||[]).map(p=>({name:p.name,publication:p.publication}))))}"
       - name: Compilar el APK (release, arm64)
         working-directory: android
         # La mayoría de los teléfonos de los últimos años son arm64: el APK queda más chico y compila más rápido.
