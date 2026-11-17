@@ -264,3 +264,55 @@ test('aprobar un checkpoint: bono una vez, mejor puntaje y nivel saltado solo si
   // Con el nivel terminado no se marca como saltado.
   assert.deepEqual(applyCheckpointPass(undefined, { level: 2, stars: 2, levelCompleted: true }, [1], 'x', 50).skippedLevels, [1]);
 });
+
+test('cartoon: cada escena dura su tiempo de lectura, con mínimo', async () => {
+  const { MIN_SCENE_MS, sceneDurationsMs, wordCount, nextScene, riveResourceFor, audioFolderFor } = await import('../src/content/cartoon');
+  assert.equal(wordCount('«El bajo une el ritmo de la batería con los acordes.»'), 11);
+  assert.equal(wordCount('Mi (E), La (A) — Re'), 5);
+  const short = sceneDurationsMs(['Hola', 'Dos palabras']);
+  assert.deepEqual(short, [MIN_SCENE_MS, MIN_SCENE_MS]);
+  const long = 'uno dos tres cuatro cinco seis siete ocho nueve diez once doce trece catorce quince dieciséis diecisiete dieciocho diecinueve veinte';
+  const [a, b] = sceneDurationsMs([long, 'corta']);
+  assert.ok(a > b, 'la escena con más texto dura más');
+  const slow = sceneDurationsMs(['Hola'], 0.75);
+  assert.equal(slow[0], Math.round(MIN_SCENE_MS / 0.75));
+  assert.deepEqual(sceneDurationsMs([]), []);
+  assert.equal(nextScene(0, 4), 1);
+  assert.equal(nextScene(3, 4), null);
+  assert.equal(riveResourceFor('1.1.1'), 'kordi_1_1_1');
+  assert.equal(audioFolderFor('1.3.1'), '131');
+});
+
+test('cartoon: las lecciones con .riv usan el nombre de recurso esperado', async () => {
+  const { LESSONS } = await import('../src/content/lessons');
+  const { riveResourceFor } = await import('../src/content/cartoon');
+  for (const l of Object.values(LESSONS)) {
+    if (l.cartoon.riveResource) assert.equal(l.cartoon.riveResource, riveResourceFor(l.id), l.id);
+  }
+});
+
+test('cartoon: el reproductor sigue después de una pausa y vuelve a empezar solo al terminar', async () => {
+  const { initialPlayer, playerReducer, voiceTimeoutMs } = await import('../src/content/cartoon');
+  const step = (s: typeof initialPlayer, a: Parameters<typeof playerReducer>[1]) => playerReducer(s, a, 4);
+  let s = step(step(step(initialPlayer, { type: 'sceneDone' }), { type: 'sceneDone' }), { type: 'sceneDone' });
+  assert.deepEqual(s, { scene: 3, playing: true, ended: false });
+  // Pausa en la última escena y reanuda: sigue en la 4, no vuelve a la 1.
+  s = step(step(s, { type: 'toggle' }), { type: 'toggle' });
+  assert.deepEqual(s, { scene: 3, playing: true, ended: false });
+  // Termina la última escena: se detiene y queda marcado como terminado.
+  s = step(s, { type: 'sceneDone' });
+  assert.deepEqual(s, { scene: 3, playing: false, ended: true });
+  // Reproducir después del final vuelve a la escena 1.
+  assert.deepEqual(step(s, { type: 'toggle' }), { scene: 0, playing: true, ended: false });
+  // Ir a una escena la reproduce, dentro de los límites.
+  assert.deepEqual(step(s, { type: 'goto', scene: 9 }), { scene: 3, playing: true, ended: false });
+  // El respaldo de la voz nunca es menor que el tiempo de lectura.
+  assert.ok(voiceTimeoutMs(5000) >= 5000);
+  assert.ok(voiceTimeoutMs(20_000) >= 20_000);
+});
+
+test('cartoon: sin voces registradas, voiceFor no devuelve audio', async () => {
+  const { voiceFor, VOICES } = await import('../src/content/voices');
+  assert.equal(voiceFor('1.1.1', 'es', 0), VOICES['1.1.1']?.es?.[0]);
+  assert.equal(voiceFor('9.9.9', 'en', 0), undefined);
+});

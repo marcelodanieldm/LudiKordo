@@ -229,7 +229,7 @@
       "objective": "Nombrar 9 partes del bajo e identificar las 4 cuerdas por nombre y por sonido.",
       "s1": "«El bajo une el ritmo de la batería con los acordes. Sin bajo, la banda flota.»",
       "s2": "Clavijero y clavijas, mástil, trastes y marcadores, cuerpo, pastillas, puente, perillas de volumen y tono, y entrada del cable.",
-      "s3": "De la más gruesa a la más fina: Mi (E), La (A), Re (D) y Sol (G). La más gruesa queda arriba, cerca de tu cara.",
+      "s3": "De la más gruesa a la más fina: {{e}}, {{a}}, {{d}} y {{g}}. La más gruesa va arriba, cerca de tu cara.",
       "s4": "«La más gruesa suena más grave. Arriba está lo grave, abajo lo agudo.»",
       "c1t": "Las partes del bajo",
       "c1b": "Clavijas para afinar, mástil con trastes, cuerpo con pastillas y puente, perillas y la entrada del cable.",
