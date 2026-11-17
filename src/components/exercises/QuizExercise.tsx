@@ -1,3 +1,4 @@
+import { Staff } from '../Staff';
 import React, { useEffect, useState } from 'react';
 import { Pressable, View } from 'react-native';
 import { Text } from '../Text';
@@ -11,7 +12,7 @@ import { colors, radius, fonts } from '../../theme';
 import type { QuizExercise as Quiz } from '../../content/types';
 
 /** Opción múltiple y ejercicios de oído (con tonos de referencia). */
-export function QuizExercise({ exercise, onDone }: { exercise: Quiz; onDone: (stars: number) => void }) {
+export function QuizExercise({ exercise, onDone, width = 300 }: { exercise: Quiz; onDone: (stars: number) => void; width?: number }) {
   const { t, i18n } = useTranslation();
   const notation = useSettings((st) => st.notation);
   const note = { locale: (['en', 'es', 'pt'].includes(i18n.language) ? i18n.language : 'en') as Locale, notation };
@@ -35,6 +36,7 @@ export function QuizExercise({ exercise, onDone }: { exercise: Quiz; onDone: (st
   return (
     <View style={{ gap: 14 }}>
       <Text style={{ fontFamily: fonts.display, fontSize: 24, lineHeight: 30, color: colors.ink }}>{t(exercise.promptKey)}</Text>
+      {exercise.staff ? <Staff events={exercise.staff} width={width} /> : null}
       {exercise.tones ? <Button variant="secondary" label={`▶ ${t('ui.exercise.listen')}`} onPress={() => void playTones(exercise.tones!)} /> : null}
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10 }}>
         {exercise.options.map((opt, i) => {

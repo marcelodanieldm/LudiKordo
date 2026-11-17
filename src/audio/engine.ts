@@ -81,3 +81,48 @@ export function playTone(freq: number, durationSec = 1.2, delaySec = 0): Promise
 export async function playTones(freqs: number[]): Promise<void> {
   for (const f of freqs) await playTone(f, 1, 0.15);
 }
+
+export interface SequenceHandle {
+  stop: () => void;
+}
+
+/**
+ * Toca un ejemplo sonoro ya calculado (src/music/listen.ts), con clic opcional.
+ * Todo queda programado en el reloj de audio; `stop` lo corta de inmediato.
+ */
+export function playSequence(
+  notes: { freq: number; startSec: number; durSec: number }[],
+  clickBeats?: { bpm: number; beats: number },
+): SequenceHandle {
+  const c = context();
+  const t0 = c.currentTime + 0.15;
+  if (clickBeats) {
+    const step = 60 / clickBeats.bpm;
+    for (let i = 0; i < clickBeats.beats; i++) click(t0 + i * step, i % 4 === 0);
+  }
+  for (const n of notes) {
+    const at = t0 + n.startSec;
+    const osc = c.createOscillator();
+    const gain = c.createGain();
+    osc.type = 'triangle';
+    osc.frequency.value = n.freq;
+    gain.gain.setValueAtTime(0, at);
+    gain.gain.linearRampToValueAtTime(0.45, at + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.001, at + Math.max(0.08, n.durSec));
+    osc.connect(gain);
+    gain.connect(c.destination);
+    osc.start(at);
+    osc.stop(at + Math.max(0.08, n.durSec) + 0.02);
+  }
+  let stopped = false;
+  return {
+    stop: () => {
+      if (stopped) return;
+      stopped = true;
+      // Igual que el metrónomo: cerrar el contexto corta lo ya programado.
+      const old = ctx;
+      ctx = null;
+      void old?.close();
+    },
+  };
+}

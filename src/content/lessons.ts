@@ -3,6 +3,7 @@
  * se agrega siguiendo exactamente este formato.
  */
 import type { Lesson } from './types';
+import { LESSONS_2_6 } from './lessons26';
 import { midiToFreq } from '../music/notes';
 
 const k = (lesson: string, key: string) => `content.l${lesson.replace(/\./g, '')}.${key}`;
@@ -1234,6 +1235,7 @@ const l125: Lesson = {
 };
 
 export const LESSONS: Record<string, Lesson> = {
+  ...Object.fromEntries(LESSONS_2_6.map((l) => [l.id, l])),
   [l111.id]: l111,
   [l112.id]: l112,
   [l113.id]: l113,

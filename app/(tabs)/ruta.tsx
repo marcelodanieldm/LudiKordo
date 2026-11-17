@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { router } from 'expo-router';
 import Svg, { Path } from 'react-native-svg';
-import { Card, Chip, Eyebrow, H1, H2, Muted, PlayIcon, ProgressBar, StarIcon } from '../../src/components/ui';
+import { Button, Card, Chip, Eyebrow, H1, H2, Muted, PlayIcon, ProgressBar, StarIcon } from '../../src/components/ui';
 import { LEVELS, isUnlocked, lessonIdsOf, levelProgress, moduleOf, nextLesson } from '../../src/content/curriculum';
 import { getLesson } from '../../src/content/lessons';
 import { isLessonFree } from '../../src/billing/access';
@@ -248,6 +248,10 @@ function LessonList({ mod, completed, skipped, next }: { mod: Module; completed:
   return (
     <Card style={{ gap: 6 }}>
       <H2 style={{ fontSize: 18 }}>{`${mod.id} · ${t(mod.titleKey)}`}</H2>
+      <Muted>{t(mod.goalKey)}</Muted>
+      {lessonIdsOf(mod).some((id) => getLesson(id)) ? (
+        <Button variant="ghost" label={t('ui.theory.open')} onPress={() => router.push(`/ficha/${mod.id}`)} testID={`ficha-${mod.id}`} />
+      ) : null}
       {lessonIdsOf(mod).map((id) => {
         const unlocked = isUnlocked(id, completed, skipped);
         const premium = !isPremium && !isLessonFree(id);

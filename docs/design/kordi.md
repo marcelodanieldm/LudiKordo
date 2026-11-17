@@ -1,6 +1,6 @@
 # Kordi · guía del personaje
 
-Kordi es un carpincho bajista, la mascota original de LudiKordo. Esta guía es la fuente de verdad para ilustradores, animadores, locutores y agentes que generen imágenes o voces: mantiene al personaje igual en las 123 lecciones y en los 3 idiomas.
+Kordi es un carpincho bajista, la mascota original de LudiKordo. Esta guía es la fuente de verdad para ilustradores, animadores, locutores y agentes que generen imágenes o voces: mantiene al personaje igual en todas las lecciones y en los 3 idiomas.
 
 ## Personalidad
 

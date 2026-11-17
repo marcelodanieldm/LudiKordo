@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { Text } from './Text';
 import { useTranslation } from 'react-i18next';
 import { Fretboard } from './Fretboard';
+import { Staff } from './Staff';
 import { Kordi } from './Kordi';
 import { colors } from '../theme';
 import { useSettings } from '../state/settings';
@@ -21,6 +22,8 @@ export function Figure({ id, width }: { id: FigureId; width: number }) {
   const left = hand === 'left';
 
   switch (id) {
+    case 'bass-clef':
+      return <Staff events={[]} width={width} highlightLine={6} />;
     case 'fretboard-1234':
       return (
         <Fretboard

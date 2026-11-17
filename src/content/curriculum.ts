@@ -1,6 +1,6 @@
 /**
- * Roadmap completo: 5 niveles, 25 módulos, 123 lecciones.
- * Coincide con la tabla del documento de producto.
+ * Roadmap completo: 5 niveles, 31 módulos, 151 lecciones (~60 semanas).
+ * Mapa de objetivos y plan de cada módulo: docs/CURRICULUM.md.
  */
 import type { Level, Module } from './types';
 
@@ -9,6 +9,7 @@ const m = (id: string, lessonCount: number): Module => ({
   titleKey: `content.module.${id.replace('.', '_')}`,
   lessonCount,
   starExerciseKey: `content.star.${id.replace('.', '_')}`,
+  goalKey: `content.goal.${id.replace('.', '_')}`,
 });
 
 export const LEVELS: Level[] = [
@@ -22,30 +23,30 @@ export const LEVELS: Level[] = [
   {
     id: 2,
     titleKey: 'content.level.2',
-    weeks: [7, 14],
+    weeks: [7, 16],
     checkpointKey: 'content.checkpoint.2',
-    modules: [m('2.1', 5), m('2.2', 5), m('2.3', 5), m('2.4', 4), m('2.5', 5)],
+    modules: [m('2.1', 5), m('2.2', 5), m('2.3', 5), m('2.4', 4), m('2.5', 5), m('2.6', 5)],
   },
   {
     id: 3,
     titleKey: 'content.level.3',
-    weeks: [15, 24],
+    weeks: [17, 27],
     checkpointKey: 'content.checkpoint.3',
-    modules: [m('3.1', 5), m('3.2', 5), m('3.3', 5), m('3.4', 5), m('3.5', 5)],
+    modules: [m('3.1', 5), m('3.2', 5), m('3.3', 5), m('3.4', 5), m('3.5', 5), m('3.6', 4)],
   },
   {
     id: 4,
     titleKey: 'content.level.4',
-    weeks: [25, 38],
+    weeks: [28, 45],
     checkpointKey: 'content.checkpoint.4',
-    modules: [m('4.1', 5), m('4.2', 5), m('4.3', 5), m('4.4', 5), m('4.5', 5)],
+    modules: [m('4.1', 5), m('4.2', 5), m('4.3', 5), m('4.4', 5), m('4.5', 5), m('4.6', 5), m('4.7', 5)],
   },
   {
     id: 5,
     titleKey: 'content.level.5',
-    weeks: [39, 52],
+    weeks: [46, 60],
     checkpointKey: 'content.checkpoint.5',
-    modules: [m('5.1', 5), m('5.2', 5), m('5.3', 5), m('5.4', 5), m('5.5', 4)],
+    modules: [m('5.1', 5), m('5.2', 5), m('5.3', 5), m('5.4', 5), m('5.5', 5), m('5.6', 4), m('5.7', 4)],
   },
 ];
 

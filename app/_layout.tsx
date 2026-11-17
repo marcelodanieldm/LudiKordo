@@ -56,6 +56,7 @@ export default function RootLayout() {
           <Stack.Screen name="paywall" options={{ presentation: 'modal' }} />
           <Stack.Screen name="leccion/[id]" />
           <Stack.Screen name="checkpoint/[level]" />
+          <Stack.Screen name="ficha/[module]" />
         </Stack>
       </SafeAreaProvider>
     </I18nextProvider>
