@@ -92,6 +92,15 @@ export interface SequenceHandle {
  */
 let activeSequence: { stop: () => void; onInterrupt?: () => void } | null = null;
 
+/** Corta el ejemplo sonoro que esté sonando, si hay uno (por ejemplo, al empezar una toma). */
+export function stopActiveSequence(): void {
+  if (!activeSequence) return;
+  const prev = activeSequence;
+  activeSequence = null;
+  prev.stop();
+  prev.onInterrupt?.();
+}
+
 export function playSequence(
   notes: { freq: number; startSec: number; durSec: number }[],
   clickBeats?: { bpm: number; beats: number },
@@ -99,12 +108,7 @@ export function playSequence(
   onInterrupt?: () => void,
 ): SequenceHandle {
   // Un solo ejemplo a la vez: el anterior se corta y se entera.
-  if (activeSequence) {
-    const prev = activeSequence;
-    activeSequence = null;
-    prev.stop();
-    prev.onInterrupt?.();
-  }
+  stopActiveSequence();
   const c = context();
   const t0 = c.currentTime + 0.15;
   if (clickBeats) {

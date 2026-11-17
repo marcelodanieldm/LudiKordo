@@ -10,7 +10,7 @@ import { STRINGS, centsOff, noteName, type Locale } from '../../src/music/notes'
 import { useSettings } from '../../src/state/settings';
 import { router } from 'expo-router';
 import { useSongbook } from '../../src/components/SongbookHooks';
-import { recommendedSong } from '../../src/content/songbook';
+import { firstSongModule, recommendedSong } from '../../src/content/songbook';
 import Svg, { Circle, Path, Text as SvgText } from 'react-native-svg';
 import { colors, fonts, radius } from '../../src/theme';
 
@@ -51,10 +51,12 @@ function SongbookCard() {
   const list = useSongbook();
   const open = list.filter((s) => s.state === 'open').length;
   const today = recommendedSong(list);
+  const allPremium = list.every((s) => s.state === 'premium');
   return (
     <Card style={{ gap: 10 }}>
       <H2>{t('ui.songbook.eyebrow')}</H2>
-      <Muted>{open > 0 ? t('ui.songbook.count', { open, total: list.length }) : t('ui.songbook.none')}</Muted>
+      <Muted>{open > 0 ? t('ui.songbook.count', { open, total: list.length }) : allPremium ? t('ui.songbook.premiumAll') : t('ui.songbook.none', { module: firstSongModule() })}</Muted>
+      {allPremium ? <Button label={t('ui.profile.seePlans')} onPress={() => router.push('/paywall')} /> : null}
       {today ? <Button label={t('ui.songbook.today', { title: t(today.song.titleKey) })} onPress={() => router.push(`/cancionero/${today.song.id}`)} /> : null}
       <Button variant="secondary" label={t('ui.songbook.open')} onPress={() => router.push('/cancionero')} testID="open-songbook" />
     </Card>

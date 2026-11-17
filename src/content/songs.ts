@@ -153,8 +153,9 @@ export const SONGS: Song[] = [
     level: 3,
     requires: ['3.4'],
     key: 'C',
-    bpm: 96,
-    tempoSteps: [96, 104, 112],
+    // Corcheas repetidas en la misma nota: tempo inicial moderado para que el micrófono distinga cada ataque.
+    bpm: 80,
+    tempoSteps: [80, 88, 96, 104],
     chords: ['Am', 'F', 'C', 'G', 'Am', 'F', 'G', 'C'],
     line: [...eight('A', 0), ...eight('E', 1), ...eight('A', 3), ...eight('E', 3), ...eight('A', 0), ...eight('E', 1), ...eight('E', 3), n('A', 3, 4)],
     notation: 'staff',
@@ -182,9 +183,9 @@ export const SONGS: Song[] = [
     level: 4,
     requires: ['4.2'],
     key: 'Em',
-    bpm: 100,
-    tempoSteps: [100, 110, 120],
-    chords: ['Em', 'Em', 'Am', 'Am', 'Em', 'Em', 'C', 'D'],
+    bpm: 80,
+    tempoSteps: [80, 90, 100, 110],
+    chords: ['Em', 'Em', 'Am', 'Am', 'Em', 'Em', 'C', 'D Em'],
     line: [
       e('E', 0), e('E', 0), e('E', 0), e('E', 0), e('E', 3), e('E', 0), e('A', 0), e('E', 0),
       e('E', 0), e('E', 0), e('E', 0), e('E', 0), e('E', 3), e('E', 0), e('A', 0), e('E', 0),
@@ -206,7 +207,8 @@ export const SONGS: Song[] = [
     key: 'A',
     bpm: 100,
     tempoSteps: [100, 110, 120, 132],
-    chords: ['A7', 'A7', 'A7', 'A7', 'D7', 'D7', 'A7', 'A7', 'E7', 'D7', 'A7', 'E7'],
+    // 12 compases y un compás final para resolver en La.
+    chords: ['A7', 'A7', 'A7', 'A7', 'D7', 'D7', 'A7', 'A7', 'E7', 'D7', 'A7', 'E7', 'A7'],
     line: [
       // Walking: arpegio y aproximaciones cromáticas al acorde siguiente.
       n('A', 0), n('A', 4), n('D', 2), n('D', 4),
@@ -221,6 +223,7 @@ export const SONGS: Song[] = [
       n('D', 0), n('D', 4), n('G', 2), n('E', 4),
       n('A', 0), n('A', 4), n('D', 2), n('D', 4),
       n('E', 0), n('E', 4), n('A', 2), n('A', 1),
+      n('A', 0, 4),
     ],
     notation: 'tab',
     skills: ['theory', 'fretboard', 'rhythm'],
@@ -276,8 +279,8 @@ export const SONGS: Song[] = [
     level: 4,
     requires: ['4.6'],
     key: 'C',
-    bpm: 92,
-    tempoSteps: [92, 100, 108],
+    bpm: 80,
+    tempoSteps: [80, 88, 96, 104],
     chords: ['C', 'F', 'G', 'C', 'Am', 'F', 'G', 'C'],
     line: [
       // Notas de paso: cada compás camina hacia la raíz del siguiente.

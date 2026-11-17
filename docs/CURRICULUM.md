@@ -117,11 +117,11 @@ Una canción se abre cuando el alumno termina los módulos que pide (o saltó es
 | Pop | Paseo de domingo (1.5) | Ciudad de neón (3.4) |
 | Rock | Motor en marcha (1.5) | Tormenta eléctrica (4.2) |
 | Baladas | Luz de vela (1.5) | Escalera de otoño (3.6) |
-| Blues | Blues del carpincho (1.5) | Walking del puerto (4.4) |
+| Blues | Blues del carpincho (1.5) | Walking de medianoche (4.4) |
 | Bossa nova | Brisa del puerto (2.3) | Atardecer bossa (4.5) |
 | Soul | Domingo soul (2.3 + 2.4) | Noche de soul (4.6) |
-| Reggae | Sol de la tarde (2.1 + 2.6) | Raíces (4.6) |
+| Reggae | Sol de la tarde (2.1 + 2.6) | Mañana de raíces (4.6) |
 
-Reglas: solo música original o de dominio público (nunca letras, cifrados ni líneas de canciones con derechos); un acorde por compás, con la raíz (o el bajo de la inversión) en la primera nota del compás; tablatura solo con negras, blancas y redondas; corcheas y silencios en pentagrama, después de 2.6. Las pruebas de `tests/songbook.test.ts` lo controlan.
+Reglas: solo música original o de dominio público (nunca letras, cifrados ni líneas de canciones con derechos); un acorde por compás (o dos, cambiando en el tercer tiempo), con la raíz (o el bajo de la inversión) en la primera nota de cada acorde; con corcheas, tempo inicial de 80 bpm o menos; tablatura solo con negras, blancas y redondas; corcheas y silencios en pentagrama, después de 2.6. Las pruebas de `tests/songbook.test.ts` lo controlan.
 
 Para sumar una canción: agregarla a `SONGS`, sus textos en `content.song.<id>` de los 3 idiomas y correr `npm test`.

@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { Text } from '../../src/components/Text';
 import { Button, Card, CloseButton, Eyebrow, H1, H2, Muted, Stars } from '../../src/components/ui';
 import { Listen } from '../../src/components/Listen';
-import { ExerciseView } from '../../src/components/exercises/ExerciseView';
-import { useSongbook } from '../../src/components/SongbookHooks';
+import { PlayAlongExercise as PlayAlong } from '../../src/components/exercises/PlayAlongExercise';
+import { useKeyLabel, useSongbook } from '../../src/components/SongbookHooks';
 import { songExerciseId } from '../../src/content/songbook';
 import { getSong } from '../../src/content/songs';
 import { isRest } from '../../src/music/staff';
@@ -25,6 +25,9 @@ export default function SongScreen() {
   const { isTablet, width } = useLayout();
   const song = getSong(String(id));
   const status = useSongbook().find((s) => s.song.id === song?.id);
+  const keyLabel = useKeyLabel();
+  const unlockedBpm = useProgress((s) => (song ? s.tempo[songExerciseId(song.id)] : undefined));
+  const [running, setRunning] = useState(false);
   const recordExercise = useProgress((s) => s.recordExercise);
   const addMinutes = useProgress((s) => s.addMinutes);
   const [round, setRound] = useState(0);
@@ -73,13 +76,13 @@ export default function SongScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
       <ScrollView contentContainerStyle={{ padding: 20, gap: 16, maxWidth: 860, width: '100%', alignSelf: 'center' }}>
         {close}
-        <Eyebrow>{t('ui.songbook.meta', { genre: t(`ui.songbook.genre.${song.genre}`), level: song.level, key: song.key, bpm: song.bpm })}</Eyebrow>
+        <Eyebrow>{t('ui.songbook.meta', { genre: t(`ui.songbook.genre.${song.genre}`), level: song.level, key: keyLabel(song.key), bpm: Math.max(song.bpm, unlockedBpm ?? 0) })}</Eyebrow>
         <H1>{t(song.titleKey)}</H1>
         <Text style={{ fontSize: 16, lineHeight: 24, color: colors.ink }}>{t(song.descriptionKey)}</Text>
 
         <Card style={{ gap: 10 }}>
           <H2 style={{ fontSize: 18 }}>{t('ui.songbook.chords')}</H2>
-          <View accessibilityLabel={t('ui.songbook.chordsLabel', { chords: song.chords.join(', ') })} style={{ gap: 6 }}>
+          <View accessible accessibilityRole="text" accessibilityLabel={t('ui.songbook.chordsLabel', { chords: song.chords.join(', ') })} style={{ gap: 6 }}>
             {rows.map((row, r) => (
               <View key={r} style={{ flexDirection: 'row', gap: 6 }}>
                 {row.map((c, i) => (
@@ -96,10 +99,13 @@ export default function SongScreen() {
 
         {status.state === 'open' ? (
           <>
-            <Card style={{ gap: 10 }}>
-              <H2 style={{ fontSize: 18 }}>{t('ui.songbook.listen')}</H2>
-              <Listen example={{ events: song.line, bpm: song.bpm, show: song.notation, click: true }} width={contentWidth - 34} testID={`listen-${song.id}`} />
-            </Card>
+            {/* Durante la toma no se muestra el ejemplo: el micrófono lo oiría. */}
+            {!running ? (
+              <Card style={{ gap: 10 }}>
+                <H2 style={{ fontSize: 18 }}>{t('ui.songbook.listen')}</H2>
+                <Listen example={{ events: song.line, bpm: song.bpm, show: song.notation, click: true }} width={contentWidth - 34} testID={`listen-${song.id}`} />
+              </Card>
+            ) : null}
             {saved !== null ? (
               <Card style={{ gap: 10, alignItems: 'center' }}>
                 <Stars count={saved} size={32} />
@@ -107,14 +113,17 @@ export default function SongScreen() {
                 <Button label={t('ui.songbook.again')} onPress={() => setSaved(null)} />
               </Card>
             ) : (
-              <ExerciseView
+              <PlayAlong
                 key={round}
                 exercise={exercise}
                 mastery={0.8}
                 width={contentWidth}
+                onRunningChange={setRunning}
                 onDone={(stars) => {
                   recordExercise(exercise.id, stars, song.skills);
-                  addMinutes(Math.max(1, Math.round(song.line.reduce((a, e) => a + e.beats, 0) / song.bpm)));
+                  // Minutos tocados de verdad (una toma corta no suma un minuto entero).
+                  const minutes = Math.round(song.line.reduce((a, e) => a + e.beats, 0) / Math.max(song.bpm, unlockedBpm ?? 0));
+                  if (minutes > 0) addMinutes(minutes);
                   setSaved(stars);
                   setRound((x) => x + 1);
                 }}

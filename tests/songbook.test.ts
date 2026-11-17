@@ -4,9 +4,9 @@ import en from '../src/i18n/locales/en.json';
 import es from '../src/i18n/locales/es.json';
 import pt from '../src/i18n/locales/pt.json';
 import { GENRES, SONGS } from '../src/content/songs';
-import { moduleLearned, recommendedSong, songbook, songStatus } from '../src/content/songbook';
+import { firstSongModule, keyParts, moduleLearned, recommendedSong, songbook, songStatus } from '../src/content/songbook';
 import { LEVELS, lessonIdsOf } from '../src/content/curriculum';
-import { isRest, noteEventIndexes, noteStartBeats, scoreBarsComplete, spell } from '../src/music/staff';
+import { eventAt, isRest, noteEventIndexes, noteStartBeats, scoreBarsComplete, spell } from '../src/music/staff';
 import { midiAt } from '../src/music/notes';
 import type { Genre } from '../src/content/types';
 
@@ -54,10 +54,19 @@ test('cancionero: la raíz de cada acorde suena en el primer tiempo de su compá
       if (!isRest(e) && !firstOfBar.has(bar)) firstOfBar.set(bar, midiAt(e.string, e.fret) % 12);
       beat += e.beats;
     }
+    // Nota que suena en el tercer tiempo de cada compás (para compases con dos acordes).
+    const atBeat3 = new Map<number, number>();
+    beat = 0;
+    for (const e of s.line) {
+      if (!isRest(e) && beat % 4 === 2) atBeat3.set(Math.floor(beat / 4), midiAt(e.string, e.fret) % 12);
+      beat += e.beats;
+    }
+    // Con barra (G/B) el bajo toca la nota después de la barra.
+    const bassOf = (c: string) => pc(c.includes('/') ? c.split('/')[1] : c);
     s.chords.forEach((c, bar) => {
-      // Con barra (G/B) el bajo toca la nota después de la barra.
-      const bass = c.includes('/') ? c.split('/')[1] : c;
-      assert.equal(firstOfBar.get(bar), pc(bass), `${s.id} compás ${bar + 1}: ${c}`);
+      const [first, second] = c.split(' ');
+      assert.equal(firstOfBar.get(bar), bassOf(first), `${s.id} compás ${bar + 1}: ${c}`);
+      if (second) assert.equal(atBeat3.get(bar), bassOf(second), `${s.id} compás ${bar + 1}, tercer tiempo: ${second}`);
     });
   }
 });
@@ -74,6 +83,8 @@ test('cancionero: desbloqueo por módulos aprendidos y por nivel saltado', () =>
   assert.equal(songStatus(pop, new Set(), new Set([1]), all).state, 'open');
   // Aprendido pero sin Premium.
   assert.equal(songStatus(pop, new Set(lessonsOf('1.5')), new Set(), () => false).state, 'premium');
+  // Sin Premium y sin progreso: se ofrece Premium, no «completa 1.5» (que tampoco podría abrir).
+  assert.equal(songStatus(pop, new Set(), new Set(), () => false).state, 'premium');
 });
 
 test('cancionero: orden y canción sugerida', () => {
@@ -96,6 +107,16 @@ test('cancionero: play-along con silencios toma el tiempo de cada nota', () => {
   const ev = [{ rest: true as const, beats: 1 as const }, { string: 'A' as const, fret: 0, beats: 0.5 as const }, { string: 'A' as const, fret: 0, beats: 0.5 as const }, { string: 'A' as const, fret: 3, beats: 2 as const }];
   assert.deepEqual(noteStartBeats(ev), [1, 1.5, 2]);
   assert.deepEqual(noteEventIndexes(ev), [1, 2, 3]);
+  // Evento que suena en cada pulso, silencios incluidos.
+  const starts = [0, 1, 1.5, 2];
+  assert.equal(eventAt(starts, 0.2), 0);
+  assert.equal(eventAt(starts, 1.6), 2);
+  assert.equal(eventAt(starts, 3.9), 3);
+});
+
+test('cancionero: corcheas a un tempo inicial que el micrófono pueda seguir', () => {
+  // El detector marca un ataque si el volumen sube 1,8× en ventanas de ~93 ms: corcheas por encima de 80 bpm se pierden.
+  for (const s of SONGS) if (s.line.some((e) => e.beats < 1)) assert.ok(s.bpm <= 80, `${s.id}: ${s.bpm} bpm con corcheas`);
 });
 
 test('cancionero: textos en los 3 idiomas y teoría de las canciones', () => {
@@ -110,4 +131,11 @@ test('cancionero: textos en los 3 idiomas y teoría de las canciones', () => {
   // Escalera de otoño: el bajo baja Do, Si, La, Sol, Fa, Mi.
   const b = SONGS.find((s) => s.id === 'ballad-2')!;
   assert.deepEqual(b.line.slice(0, 6).map((e) => (isRest(e) ? '-' : spell(midiAt(e.string, e.fret)).letter)), ['C', 'B', 'A', 'G', 'F', 'E']);
+});
+
+test('cancionero: tonalidad y primer módulo para el mensaje', () => {
+  assert.deepEqual(keyParts('Em'), { letter: 'E', minor: true });
+  assert.deepEqual(keyParts('C#m'), { letter: 'C♯', minor: true });
+  assert.deepEqual(keyParts('G'), { letter: 'G', minor: false });
+  assert.equal(firstSongModule(), '1.5');
 });

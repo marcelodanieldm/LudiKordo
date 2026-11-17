@@ -186,3 +186,10 @@ export function noteStartBeats(events: ScoreEvent[]): number[] {
 export function noteEventIndexes(events: ScoreEvent[]): number[] {
   return events.flatMap((e, i) => (isRest(e) ? [] : [i]));
 }
+
+/** Índice del evento que suena en el pulso `beat`, dados los inicios de cada evento. */
+export function eventAt(starts: number[], beat: number): number {
+  let i = 0;
+  while (i + 1 < starts.length && starts[i + 1] <= beat) i++;
+  return i;
+}

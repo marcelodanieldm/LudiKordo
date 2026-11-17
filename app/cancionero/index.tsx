@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { Text } from '../../src/components/Text';
 import { Chip, CloseButton, Eyebrow, H1, Muted, StarIcon } from '../../src/components/ui';
-import { useSongbook } from '../../src/components/SongbookHooks';
+import { useKeyLabel, useSongbook } from '../../src/components/SongbookHooks';
 import { GENRES } from '../../src/content/songs';
 import { colors, radius } from '../../src/theme';
 import type { Genre } from '../../src/content/types';
@@ -15,7 +15,7 @@ import type { SongStatus } from '../../src/content/songbook';
 export default function SongbookScreen() {
   const { t } = useTranslation();
   const [genre, setGenre] = useState<Genre | undefined>(undefined);
-  const list = useSongbook({ genre });
+  const list = useSongbook(genre);
   const options: (Genre | undefined)[] = [undefined, ...GENRES];
 
   return (
@@ -64,6 +64,7 @@ export default function SongbookScreen() {
 
 function SongRow({ status }: { status: SongStatus }) {
   const { t } = useTranslation();
+  const keyLabel = useKeyLabel();
   const { song, state, missing, stars } = status;
   const open = state === 'open';
   return (
@@ -80,20 +81,20 @@ function SongRow({ status }: { status: SongStatus }) {
         backgroundColor: colors.card,
         borderWidth: 1,
         borderColor: colors.border,
-        opacity: open ? 1 : 0.62,
+        borderStyle: open ? 'solid' : 'dashed',
       }}
     >
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
         <Text style={{ flex: 1, fontSize: 17, fontWeight: '900' }}>{t(song.titleKey)}</Text>
         {stars > 0 ? (
-          <View style={{ flexDirection: 'row' }} accessibilityLabel={t('ui.common.starsOf', { n: stars })}>
+          <View accessible accessibilityRole="text" style={{ flexDirection: 'row' }} accessibilityLabel={t('ui.common.starsOf', { n: stars })}>
             {Array.from({ length: stars }, (_, i) => (
               <StarIcon key={i} size={16} />
             ))}
           </View>
         ) : null}
       </View>
-      <Muted>{t('ui.songbook.meta', { genre: t(`ui.songbook.genre.${song.genre}`), level: song.level, key: song.key, bpm: song.bpm })}</Muted>
+      <Muted>{t('ui.songbook.meta', { genre: t(`ui.songbook.genre.${song.genre}`), level: song.level, key: keyLabel(song.key), bpm: song.bpm })}</Muted>
       {state === 'locked' ? (
         <Text style={{ fontSize: 14, color: colors.accentInk, fontWeight: '700' }}>
           {t('ui.songbook.needs', { modules: missing.map((m) => `${m} ${t(`content.module.${m.replace('.', '_')}`)}`).join(' · ') })}

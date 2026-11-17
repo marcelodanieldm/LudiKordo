@@ -45,7 +45,8 @@ export function songStatus(
 ): SongStatus {
   const missing = song.requires.filter((m) => !moduleLearned(m, completed, skippedLevels));
   const premium = song.requires.some((m) => !canOpenModule(m));
-  const state: SongState = missing.length > 0 ? 'locked' : premium ? 'premium' : 'open';
+  // Sin el plan, Premium manda aunque falten módulos: esos módulos tampoco se pueden abrir.
+  const state: SongState = premium ? 'premium' : missing.length > 0 ? 'locked' : 'open';
   return { song, state, missing, stars: bestStars(song.id) };
 }
 
@@ -81,4 +82,18 @@ export function recommendedSong(list: SongStatus[]): SongStatus | null {
 /** Id del ejercicio con el que se guarda el progreso de una canción. */
 export function songExerciseId(songId: string): string {
   return `song-${songId}`;
+}
+
+/** Primer módulo que desbloquea alguna canción (para el mensaje «completa el módulo…»). */
+export function firstSongModule(songs: Song[] = SONGS): string {
+  const all = songs.flatMap((s) => s.requires);
+  const order = LEVELS.flatMap((l) => l.modules.map((m) => m.id));
+  return all.sort((a, b) => order.indexOf(a) - order.indexOf(b))[0];
+}
+
+/** Tonalidad para mostrar: «Mi menor», «E minor», «Mi menor»… según idioma y notación. */
+export function keyParts(key: string): { letter: string; minor: boolean } {
+  const m = /^([A-G][#♯b♭]?)(m)?$/.exec(key);
+  if (!m) return { letter: key, minor: false };
+  return { letter: m[1].replace('#', '♯'), minor: m[2] === 'm' };
 }
