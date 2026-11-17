@@ -673,6 +673,240 @@ const l145: Lesson = {
   mastery: 0.8,
 };
 
+const four = (string: 'E' | 'A' | 'D' | 'G', fret: number) => [n(string, fret), n(string, fret), n(string, fret), n(string, fret)];
+/** Compás de blanca y dos negras sobre una raíz. */
+const halfQQ = (string: 'E' | 'A' | 'D' | 'G', fret: number) => [n(string, fret, 2), n(string, fret), n(string, fret)];
+
+/** Kordi Groove 1: línea original de raíces sobre I–IV–V en Mi (Mi, La, Si). */
+const KORDI_GROOVE_1 = [
+  ...halfQQ('E', 0),
+  ...halfQQ('A', 0),
+  ...halfQQ('A', 2),
+  n('E', 0), n('E', 0), n('E', 0, 2),
+  ...halfQQ('E', 0),
+  ...halfQQ('A', 0),
+  ...halfQQ('A', 2),
+  n('E', 0, 4),
+];
+
+const l151: Lesson = {
+  id: '1.5.1',
+  minutes: 10,
+  titleKey: k('1.5.1', 'title'),
+  objectiveKey: k('1.5.1', 'objective'),
+  cartoon: { riveResource: 'kordi_1_5_1', durationSec: 90, sceneKeys: [1, 2, 3, 4].map((x) => k('1.5.1', `s${x}`)) },
+  cards: [
+    { titleKey: k('1.5.1', 'c1t'), bodyKey: k('1.5.1', 'c1b') },
+    { titleKey: k('1.5.1', 'c2t'), bodyKey: k('1.5.1', 'c2b') },
+  ],
+  exercises: [
+    {
+      id: '1.5.1-q',
+      kind: 'quiz',
+      needsBass: false,
+      skills: ['theory'],
+      promptKey: k('1.5.1', 'q'),
+      options: [k('1.5.1', 'qo1'), k('1.5.1', 'qo2'), k('1.5.1', 'qo3')],
+      correctIndex: 0,
+      hintKey: k('1.5.1', 'qh'),
+    },
+    {
+      id: '1.5.1-tab',
+      kind: 'tabReading',
+      needsBass: false,
+      skills: ['theory'],
+      promptKey: k('1.5.1', 'tab'),
+      notes: [...four('E', 0), ...four('A', 0)],
+      frets: 5,
+    },
+    {
+      id: '1.5.1-play',
+      kind: 'playAlong',
+      needsBass: true,
+      skills: ['rhythm', 'technique'],
+      promptKey: k('1.5.1', 'play'),
+      notes: [...four('E', 0), ...four('A', 0), ...four('E', 0), ...four('A', 0)],
+      bpm: 70,
+      tempoSteps: [70, 80, 90],
+    },
+  ],
+  mastery: 0.8,
+};
+
+const l152: Lesson = {
+  id: '1.5.2',
+  minutes: 12,
+  titleKey: k('1.5.2', 'title'),
+  objectiveKey: k('1.5.2', 'objective'),
+  cartoon: { riveResource: 'kordi_1_5_2', durationSec: 90, sceneKeys: [1, 2, 3, 4].map((x) => k('1.5.2', `s${x}`)) },
+  cards: [
+    { titleKey: k('1.5.2', 'c1t'), bodyKey: k('1.5.2', 'c1b') },
+    { titleKey: k('1.5.2', 'c2t'), bodyKey: k('1.5.2', 'c2b') },
+  ],
+  exercises: [
+    {
+      id: '1.5.2-where',
+      kind: 'quiz',
+      needsBass: false,
+      skills: ['fretboard', 'theory'],
+      promptKey: k('1.5.2', 'q'),
+      options: [k('1.5.2', 'qo1'), k('1.5.2', 'qo2'), k('1.5.2', 'qo3')],
+      correctIndex: 0,
+    },
+    {
+      id: '1.5.2-tab',
+      kind: 'tabReading',
+      needsBass: false,
+      skills: ['theory'],
+      promptKey: k('1.5.2', 'tab'),
+      notes: [n('E', 0, 4), n('A', 0, 4), n('A', 2, 4), n('E', 0, 4)],
+      frets: 5,
+    },
+    {
+      id: '1.5.2-play',
+      kind: 'playAlong',
+      needsBass: true,
+      skills: ['rhythm', 'fretboard'],
+      promptKey: k('1.5.2', 'play'),
+      notes: [...four('E', 0), ...four('A', 0), ...four('A', 2), ...four('E', 0)],
+      bpm: 70,
+      tempoSteps: [70, 80, 90],
+    },
+  ],
+  mastery: 0.8,
+};
+
+const l153: Lesson = {
+  id: '1.5.3',
+  minutes: 12,
+  titleKey: k('1.5.3', 'title'),
+  objectiveKey: k('1.5.3', 'objective'),
+  cartoon: { riveResource: 'kordi_1_5_3', durationSec: 90, sceneKeys: [1, 2, 3, 4].map((x) => k('1.5.3', `s${x}`)) },
+  cards: [
+    { titleKey: k('1.5.3', 'c1t'), bodyKey: k('1.5.3', 'c1b') },
+    { titleKey: k('1.5.3', 'c2t'), bodyKey: k('1.5.3', 'c2b') },
+  ],
+  exercises: [
+    {
+      id: '1.5.3-q',
+      kind: 'quiz',
+      needsBass: false,
+      skills: ['rhythm'],
+      promptKey: k('1.5.3', 'q'),
+      options: ['=1', '=3', '=4'],
+      correctIndex: 2,
+    },
+    {
+      id: '1.5.3-quarters',
+      kind: 'playAlong',
+      needsBass: true,
+      skills: ['rhythm', 'technique'],
+      promptKey: k('1.5.3', 'quarters'),
+      notes: [...four('E', 0), ...four('A', 0), ...four('A', 2), ...four('E', 0)],
+      bpm: 80,
+      tempoSteps: [80, 90, 100],
+    },
+    {
+      id: '1.5.3-halves',
+      kind: 'playAlong',
+      needsBass: true,
+      skills: ['rhythm', 'technique'],
+      promptKey: k('1.5.3', 'halves'),
+      notes: [n('E', 0, 2), n('A', 0, 2), n('A', 2, 2), n('E', 0, 2), n('E', 0, 2), n('A', 0, 2), n('A', 2, 2), n('E', 0, 2)],
+      bpm: 70,
+      tempoSteps: [70, 80],
+    },
+  ],
+  mastery: 0.8,
+};
+
+const l154: Lesson = {
+  id: '1.5.4',
+  minutes: 12,
+  titleKey: k('1.5.4', 'title'),
+  objectiveKey: k('1.5.4', 'objective'),
+  cartoon: { riveResource: 'kordi_1_5_4', durationSec: 90, sceneKeys: [1, 2, 3, 4].map((x) => k('1.5.4', `s${x}`)) },
+  cards: [
+    { titleKey: k('1.5.4', 'c1t'), bodyKey: k('1.5.4', 'c1b') },
+    { titleKey: k('1.5.4', 'c2t'), bodyKey: k('1.5.4', 'c2b') },
+  ],
+  exercises: [
+    {
+      id: '1.5.4-q',
+      kind: 'quiz',
+      needsBass: false,
+      skills: ['theory'],
+      promptKey: k('1.5.4', 'q'),
+      options: [k('1.5.4', 'qo1'), k('1.5.4', 'qo2'), k('1.5.4', 'qo3')],
+      correctIndex: 0,
+    },
+    {
+      id: '1.5.4-tab',
+      kind: 'tabReading',
+      needsBass: false,
+      skills: ['theory'],
+      promptKey: k('1.5.4', 'tab'),
+      notes: [...four('A', 0), ...four('D', 0), ...four('E', 0), n('A', 0, 4)],
+      frets: 5,
+    },
+    {
+      id: '1.5.4-play',
+      kind: 'playAlong',
+      needsBass: true,
+      skills: ['rhythm', 'fretboard'],
+      promptKey: k('1.5.4', 'play'),
+      notes: [n('A', 0, 2), n('A', 0, 2), n('D', 0, 2), n('D', 0, 2), n('E', 0, 2), n('E', 0, 2), n('A', 0, 4)],
+      bpm: 70,
+      tempoSteps: [70, 80, 90],
+    },
+  ],
+  mastery: 0.8,
+};
+
+const l155: Lesson = {
+  id: '1.5.5',
+  minutes: 15,
+  titleKey: k('1.5.5', 'title'),
+  objectiveKey: k('1.5.5', 'objective'),
+  cartoon: { riveResource: 'kordi_1_5_5', durationSec: 90, sceneKeys: [1, 2, 3, 4].map((x) => k('1.5.5', `s${x}`)) },
+  cards: [
+    { titleKey: k('1.5.5', 'c1t'), bodyKey: k('1.5.5', 'c1b') },
+    { titleKey: k('1.5.5', 'c2t'), bodyKey: k('1.5.5', 'c2b') },
+  ],
+  exercises: [
+    {
+      id: '1.5.5-q',
+      kind: 'quiz',
+      needsBass: false,
+      skills: ['theory'],
+      promptKey: k('1.5.5', 'q'),
+      options: [k('1.5.5', 'qo1'), k('1.5.5', 'qo2'), k('1.5.5', 'qo3')],
+      correctIndex: 0,
+      hintKey: k('1.5.5', 'qh'),
+    },
+    {
+      id: '1.5.5-tab',
+      kind: 'tabReading',
+      needsBass: false,
+      skills: ['theory'],
+      promptKey: k('1.5.5', 'tab'),
+      notes: KORDI_GROOVE_1.slice(0, 12),
+      frets: 5,
+    },
+    {
+      id: '1.5.5-groove',
+      kind: 'playAlong',
+      needsBass: true,
+      skills: ['rhythm', 'technique', 'fretboard'],
+      promptKey: k('1.5.5', 'groove'),
+      notes: KORDI_GROOVE_1,
+      bpm: 70,
+      tempoSteps: [70, 80, 90],
+    },
+  ],
+  mastery: 0.8,
+};
+
 export const LESSONS: Record<string, Lesson> = {
   [l111.id]: l111,
   [l114.id]: l114,
@@ -687,6 +921,11 @@ export const LESSONS: Record<string, Lesson> = {
   [l143.id]: l143,
   [l144.id]: l144,
   [l145.id]: l145,
+  [l151.id]: l151,
+  [l152.id]: l152,
+  [l153.id]: l153,
+  [l154.id]: l154,
+  [l155.id]: l155,
 };
 
 export function getLesson(id: string): Lesson | undefined {
