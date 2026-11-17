@@ -16,7 +16,6 @@ export type ExerciseKind =
   | 'followHand'
   | 'playAlong'
   | 'tempoTrainer'
-  | 'checkpoint'
   | 'recordYourself';
 
 interface BaseExercise {
@@ -100,7 +99,7 @@ export interface TempoTrainerExercise extends BaseExercise {
 
 /** Tipos todavía no implementados en el código base; se muestran como «próximamente». */
 export interface PendingExercise extends BaseExercise {
-  kind: 'followHand' | 'checkpoint' | 'recordYourself';
+  kind: 'followHand' | 'recordYourself';
 }
 
 export type Exercise =

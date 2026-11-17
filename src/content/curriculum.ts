@@ -71,20 +71,23 @@ export function totalLessons(): number {
 }
 
 /**
- * Una lección se desbloquea cuando la anterior está completada (1 estrella o más),
- * o cuando su nivel se saltó aprobando el checkpoint del nivel anterior por test.
+ * Una lección se desbloquea cuando la anterior está completada (1 estrella o más).
+ * Un nivel saltado (checkpoint aprobado sin terminarlo) cuenta como completo:
+ * todas sus lecciones quedan abiertas para repasar y el nivel siguiente
+ * empieza por su primera lección, en orden.
  */
 export function isUnlocked(lessonId: string, completed: ReadonlySet<string>, skippedLevels: ReadonlySet<number> = new Set()): boolean {
   const ids = allLessonIds();
   const i = ids.indexOf(lessonId);
   if (i <= 0) return i === 0;
-  if (skippedLevels.has(levelOf(lessonId) - 1) || skippedLevels.has(levelOf(lessonId))) return true;
-  return completed.has(ids[i - 1]);
+  if (skippedLevels.has(levelOf(lessonId))) return true;
+  const prev = ids[i - 1];
+  return completed.has(prev) || skippedLevels.has(levelOf(prev));
 }
 
-/** La próxima lección pendiente, o null si terminó el curso. */
-export function nextLesson(completed: ReadonlySet<string>): string | null {
-  return allLessonIds().find((id) => !completed.has(id)) ?? null;
+/** La próxima lección pendiente (sin contar niveles saltados), o null si terminó el curso. */
+export function nextLesson(completed: ReadonlySet<string>, skippedLevels: ReadonlySet<number> = new Set()): string | null {
+  return allLessonIds().find((id) => !completed.has(id) && !skippedLevels.has(levelOf(id))) ?? null;
 }
 
 /** Porcentaje (0–1) de lecciones completadas en un nivel. */

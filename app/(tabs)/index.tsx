@@ -28,7 +28,7 @@ export default function Today() {
   const progress = useProgress();
   const today = isoDate();
   const completed = progress.completedSet();
-  const next = nextLesson(completed);
+  const next = nextLesson(completed, new Set(progress.skippedLevels));
   const lesson = next ? getLesson(next) : undefined;
   const mod = next ? LEVELS.flatMap((l) => l.modules).find((m) => m.id === moduleOf(next)) : undefined;
   const modIds = mod ? lessonIdsOf(mod) : [];
