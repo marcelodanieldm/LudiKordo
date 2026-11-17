@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
+import { Text } from '../Text';
 import { useTranslation } from 'react-i18next';
 import { optionLabel } from '../../i18n';
 import { playTones } from '../../audio/engine';
 import { Button } from '../ui';
-import { colors, radius } from '../../theme';
+import { colors, radius, fonts } from '../../theme';
 import type { QuizExercise as Quiz } from '../../content/types';
 
 /** Opción múltiple y ejercicios de oído (con tonos de referencia). */
@@ -29,7 +30,7 @@ export function QuizExercise({ exercise, onDone }: { exercise: Quiz; onDone: (st
 
   return (
     <View style={{ gap: 14 }}>
-      <Text style={{ fontSize: 22, fontWeight: '700', color: colors.ink }}>{t(exercise.promptKey)}</Text>
+      <Text style={{ fontFamily: fonts.display, fontSize: 24, lineHeight: 30, color: colors.ink }}>{t(exercise.promptKey)}</Text>
       {exercise.tones ? <Button variant="secondary" label={`▶ ${t('ui.exercise.listen')}`} onPress={() => void playTones(exercise.tones!)} /> : null}
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10 }}>
         {exercise.options.map((opt, i) => {

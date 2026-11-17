@@ -1,13 +1,14 @@
 import React from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { Text } from '../../src/components/Text';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
-import { Card, H1, Muted, ProgressBar } from '../../src/components/ui';
+import { Card, H1, H2, Muted, ProgressBar, StarIcon } from '../../src/components/ui';
 import { skillLevel, useProgress } from '../../src/state/progress';
 import { useSettings } from '../../src/state/settings';
 import { isoDate, weeklyStreak } from '../../src/state/rules';
 import { totalLessons } from '../../src/content/curriculum';
-import { colors } from '../../src/theme';
+import { colors, fonts } from '../../src/theme';
 import type { Skill } from '../../src/content/types';
 
 const SKILLS: Skill[] = ['technique', 'rhythm', 'fretboard', 'theory', 'ear'];
@@ -34,19 +35,19 @@ export default function Progress() {
   ];
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
       <ScrollView contentContainerStyle={{ padding: 20, gap: 14, maxWidth: 720, width: '100%', alignSelf: 'center' }}>
         <H1>{t('ui.progress.title')}</H1>
         <View style={{ flexDirection: 'row', gap: 10 }}>
           {stats.map((s) => (
             <Card key={s.label} style={{ flex: 1, gap: 4 }}>
-              <Text style={{ fontSize: 24, fontWeight: '700', color: colors.ink }}>{s.value}</Text>
+              <Text style={{ fontFamily: fonts.display, fontSize: 28, lineHeight: 32 }}>{s.value}</Text>
               <Muted>{s.label}</Muted>
             </Card>
           ))}
         </View>
         <Card>
-          <Text style={{ fontSize: 17, fontWeight: '800', color: colors.ink }}>{t('ui.progress.skills')}</Text>
+          <H2 style={{ fontSize: 19 }}>{t('ui.progress.skills')}</H2>
           {SKILLS.map((sk, i) => {
             const v = skillLevel(p.skills[sk].points);
             return (
@@ -55,21 +56,22 @@ export default function Progress() {
                   <Text style={{ fontWeight: '700', color: colors.ink }}>{t(`ui.progress.skill.${sk}`)}</Text>
                   <Muted>{`${v}%`}</Muted>
                 </View>
-                <ProgressBar value={v / 100} color={i % 2 === 0 ? colors.teal : colors.accent} />
+                <ProgressBar value={v / 100} height={8} color={[colors.accent, colors.teal, colors.gold, colors.fingerI, colors.fingerM][i % 5]} />
               </View>
             );
           })}
         </Card>
         <Card>
-          <Text style={{ fontSize: 17, fontWeight: '800', color: colors.ink }}>{t('ui.progress.badges')}</Text>
+          <H2 style={{ fontSize: 19 }}>{t('ui.progress.badges')}</H2>
           {p.badges.length === 0 ? (
             <Muted>{t('ui.progress.noBadges')}</Muted>
           ) : (
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
               {p.badges.map((b) => (
-                <Text key={b} style={{ paddingHorizontal: 12, paddingVertical: 8, borderRadius: 999, overflow: 'hidden', backgroundColor: colors.accentSoft, color: colors.accentInk, fontWeight: '700' }}>
-                  ★ {BADGE_LABEL[b]?.[i18n.language] ?? b}
-                </Text>
+                <View key={b} style={{ flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 12, paddingVertical: 8, borderRadius: 14, backgroundColor: colors.goldSoft }}>
+                  <StarIcon size={16} />
+                  <Text style={{ color: colors.gold, fontWeight: '900' }}>{BADGE_LABEL[b]?.[i18n.language] ?? b}</Text>
+                </View>
               ))}
             </View>
           )}

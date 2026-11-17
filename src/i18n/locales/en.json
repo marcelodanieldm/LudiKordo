@@ -34,6 +34,8 @@
       "courseDone": "You finished the course! Revisit your favorite modules."
     },
     "path": {
+      "inProgress": "In progress",
+      "lessonsDone": "{{done}} of {{total}} lessons",
       "title": "Your path",
       "levelProgress": "{{pct}}% complete",
       "weeks": "Weeks {{from}}–{{to}}",
@@ -42,6 +44,9 @@
       "checkpoint": "Checkpoint"
     },
     "lesson": {
+      "scene": "Scene {{n}} of {{total}}",
+      "play": "Play",
+      "pause": "Pause",
       "steps": { "watch": "Watch", "learn": "Learn", "noBass": "No bass", "withBass": "With bass" },
       "objective": "Goal",
       "subtitles": "Subtitles",
@@ -75,6 +80,9 @@
       "result": "{{hits}} of {{total}} on time"
     },
     "practice": {
+      "bpmUnit": "bpm",
+      "tempoDown": "Slower",
+      "tempoUp": "Faster",
       "title": "Practice",
       "tuner": "Tuner",
       "tunerHint": "Play an open string",

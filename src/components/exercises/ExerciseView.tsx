@@ -1,12 +1,13 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { Text } from '../Text';
 import { useTranslation } from 'react-i18next';
 import { QuizExercise } from './QuizExercise';
 import { TapRhythmExercise } from './TapRhythmExercise';
 import { FretboardTapExercise } from './FretboardTapExercise';
 import { PlayAlongExercise } from './PlayAlongExercise';
 import { Button } from '../ui';
-import { colors } from '../../theme';
+import { colors, fonts } from '../../theme';
 import type { Exercise } from '../../content/types';
 
 /**
@@ -28,7 +29,7 @@ export function ExerciseView({ exercise, onDone, width, mastery }: { exercise: E
     default:
       return (
         <View style={{ gap: 12 }}>
-          <Text style={{ fontSize: 20, fontWeight: '700', color: colors.ink }}>{t(exercise.promptKey)}</Text>
+          <Text style={{ fontFamily: fonts.display, fontSize: 24, lineHeight: 30, color: colors.ink }}>{t(exercise.promptKey)}</Text>
           <Text style={{ color: colors.muted }}>{t('ui.common.comingSoon')}</Text>
           <Button label={t('ui.common.next')} onPress={() => onDone(1)} />
         </View>

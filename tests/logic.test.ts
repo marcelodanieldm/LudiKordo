@@ -85,3 +85,36 @@ test('repaso después de 14 días sin practicar una habilidad', () => {
   assert.ok(needsReview('2026-10-31', '2026-11-15'));
   assert.ok(!needsReview(undefined, '2026-11-15'));
 });
+
+test('bodyFont elige la familia de Nunito según el peso', async () => {
+  const { bodyFont, fonts } = await import('../src/theme');
+  assert.equal(bodyFont(undefined), fonts.regular);
+  assert.equal(bodyFont('normal'), fonts.regular);
+  assert.equal(bodyFont('600'), fonts.semibold);
+  assert.equal(bodyFont('bold'), fonts.bold);
+  assert.equal(bodyFont('700'), fonts.bold);
+  assert.equal(bodyFont('800'), fonts.extrabold);
+  assert.equal(bodyFont(900), fonts.black);
+});
+
+test('los colores de texto del tema cumplen contraste 4,5:1 sobre las superficies', async () => {
+  const { colors } = await import('../src/theme');
+  const lum = (hex: string) => {
+    const c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  };
+  const ratio = (a: string, b: string) => (Math.max(lum(a), lum(b)) + 0.05) / (Math.min(lum(a), lum(b)) + 0.05);
+  for (const bg of [colors.bg, colors.card, colors.raised]) {
+    for (const fg of [colors.ink, colors.muted, colors.accentInk, colors.teal, colors.gold, colors.danger]) {
+      assert.ok(ratio(fg, bg) >= 4.5, `${fg} sobre ${bg}: ${ratio(fg, bg).toFixed(2)}`);
+    }
+  }
+  for (const bg of [colors.accent, colors.gold, colors.teal, colors.fingerI, colors.fingerM]) {
+    assert.ok(ratio(colors.onAccent, bg) >= 4.5, `onAccent sobre ${bg}`);
+  }
+  assert.ok(ratio(colors.accentInk, colors.accentSoft) >= 4.5);
+  assert.ok(ratio(colors.accentInk, colors.bar) >= 4.5, "pestaña activa");
+  assert.ok(ratio(colors.muted, colors.bar) >= 4.5, "pestaña inactiva");
+  assert.ok(ratio(colors.teal, colors.tealSoft) >= 4.5);
+  assert.ok(ratio(colors.gold, colors.goldSoft) >= 4.5);
+});
