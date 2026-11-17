@@ -7,6 +7,7 @@
  * - RevenueCat: permiso `premium` y una oferta `default` con los paquetes
  *   ANNUAL y SIX_MONTH apuntando a esos planes.
  */
+import { unlockWithoutStore } from './access';
 import { Linking } from 'react-native';
 import Constants from 'expo-constants';
 import Purchases, { type CustomerInfo, type PurchasesPackage, PACKAGE_TYPE } from 'react-native-purchases';
@@ -39,10 +40,14 @@ function applyCustomerInfo(info: CustomerInfo) {
 export async function initBilling(): Promise<void> {
   const apiKey = Constants.expoConfig?.extra?.revenueCatAndroidKey as string | undefined;
   if (!apiKey || apiKey.startsWith('REEMPLAZAR')) {
-    // Sin clave configurada (desarrollo): la app funciona en modo gratis, salvo
-    // que una compilación de desarrollo pida probar todo como Premium con
-    // EXPO_PUBLIC_DEV_PREMIUM=1. En una compilación de release __DEV__ es false.
-    useBilling.setState({ ready: true, isPremium: __DEV__ && process.env.EXPO_PUBLIC_DEV_PREMIUM === '1' });
+    // Sin clave configurada: la app funciona en modo gratis, salvo que una
+    // compilación de desarrollo o el APK de prueba (workflow apk-test) pidan
+    // probar todo como Premium. Las variables se leen literales para que Expo las
+    // incruste al compilar; la release de Google Play no las define.
+    useBilling.setState({
+      ready: true,
+      isPremium: unlockWithoutStore(__DEV__, process.env.EXPO_PUBLIC_DEV_PREMIUM, process.env.EXPO_PUBLIC_TEST_BUILD),
+    });
     return;
   }
   Purchases.configure({ apiKey });
