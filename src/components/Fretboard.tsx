@@ -2,6 +2,8 @@ import React from 'react';
 import { Pressable, View } from 'react-native';
 import Svg, { Circle, Line, Rect, Text as SvgText } from 'react-native-svg';
 import { STRINGS, midiAt, noteName, type Locale, type Notation, type StringId } from '../music/notes';
+import { useTranslation } from 'react-i18next';
+import { useSettings } from '../state/settings';
 import { colors } from '../theme';
 
 export interface Dot {
@@ -25,6 +27,8 @@ interface Props {
   showNoteNames?: { locale: Locale; notation: Notation };
   leftHanded?: boolean;
   onTap?: (string: StringId, fret: number) => void;
+  /** Permite tocar las cuerdas al aire (traste 0) antes de la cejuela. */
+  openStrings?: boolean;
 }
 
 const MARKERS = [3, 5, 7, 9, 15, 17, 19, 21];
@@ -34,14 +38,19 @@ const MARKERS = [3, 5, 7, 9, 15, 17, 19, 21];
  * Los trastes se achican hacia el cuerpo, como en un bajo real (regla del 17,817).
  * Para zurdos se espeja horizontalmente.
  */
-export function Fretboard({ frets = 5, width, dots = [], showNoteNames, leftHanded, onTap }: Props) {
+export function Fretboard({ frets = 5, width, dots = [], showNoteNames, leftHanded, onTap, openStrings }: Props) {
+  const { t, i18n } = useTranslation();
+  const notation = useSettings((st) => st.notation);
+  const locale = (['en', 'es', 'pt'].includes(i18n.language) ? i18n.language : 'en') as Locale;
   const top = 14;
-  const stringGap = width >= 560 ? 40 : 28;
+  // Con zonas táctiles, cada cuerda tiene 44 dp de alto propios (sin invadir la vecina).
+  const stringGap = onTap ? 44 : width >= 560 ? 40 : 28;
   const boardH = stringGap * 3 + 24;
   const height = top + boardH + 30;
-  const dotR = stringGap * 0.45;
+  const dotR = Math.min(16, stringGap * 0.45);
   // Margen izquierdo: número de cuerda + punto de cuerda al aire sin cortarse.
-  const padL = Math.max(24, dotR * 2 + 22);
+  // Con cuerdas al aire tocables, la zona antes de la cejuela mide al menos 48 dp.
+  const padL = Math.max(openStrings ? 48 : 24, dotR * 2 + 22);
   const nutX = padL;
   const boardW = width - padL - 8;
 
@@ -107,6 +116,17 @@ export function Fretboard({ frets = 5, width, dots = [], showNoteNames, leftHand
       {onTap ? (
         // Zonas táctiles invisibles por encima del dibujo: una por cuerda y traste.
         <View style={{ position: 'absolute', left: 0, top: 0, width, height }}>
+          {openStrings
+            ? STRINGS.map((s) => (
+                <Pressable
+                  key={`${s.id}0`}
+                  accessibilityRole="button"
+                  accessibilityLabel={t('ui.fretboard.open', { string: noteName(s.openMidi, locale, notation) })}
+                  onPress={() => onTap(s.id, 0)}
+                  style={{ position: 'absolute', left: leftHanded ? width - nutX : 0, width: nutX, top: stringY(s.id) - stringGap / 2, height: stringGap }}
+                />
+              ))
+            : null}
           {STRINGS.flatMap((s) =>
             Array.from({ length: frets }, (_, k) => {
               const f = k + 1;
@@ -116,10 +136,8 @@ export function Fretboard({ frets = 5, width, dots = [], showNoteNames, leftHand
                 <Pressable
                   key={`${s.id}${f}`}
                   accessibilityRole="button"
-                  accessibilityLabel={`${s.id} ${f}`}
+                  accessibilityLabel={t('ui.fretboard.fret', { string: noteName(s.openMidi, locale, notation), fret: f })}
                   onPress={() => onTap(s.id, f)}
-                  // Zona táctil de al menos 44 dp aunque las cuerdas estén más juntas.
-                  hitSlop={{ top: Math.max(0, (44 - stringGap) / 2), bottom: Math.max(0, (44 - stringGap) / 2) }}
                   style={{ position: 'absolute', left: Math.min(x0, x1), width: Math.abs(x1 - x0), top: stringY(s.id) - stringGap / 2, height: stringGap }}
                 />
               );

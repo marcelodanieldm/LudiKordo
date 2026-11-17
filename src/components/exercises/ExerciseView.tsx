@@ -6,12 +6,14 @@ import { QuizExercise } from './QuizExercise';
 import { TapRhythmExercise } from './TapRhythmExercise';
 import { FretboardTapExercise } from './FretboardTapExercise';
 import { PlayAlongExercise } from './PlayAlongExercise';
+import { TabReadingExercise } from './TabReadingExercise';
+import { TempoTrainerExercise } from './TempoTrainerExercise';
 import { Button } from '../ui';
 import { colors, fonts } from '../../theme';
 import type { Exercise } from '../../content/types';
 
 /**
- * Elige el componente de cada tipo de ejercicio. 4 de los 10 tipos están
+ * Elige el componente de cada tipo de ejercicio. 6 de los 9 tipos están
  * implementados; el resto muestra «próximamente» y deja seguir.
  */
 export function ExerciseView({ exercise, onDone, width, mastery }: { exercise: Exercise; onDone: (stars: number) => void; width: number; mastery: number }) {
@@ -25,7 +27,11 @@ export function ExerciseView({ exercise, onDone, width, mastery }: { exercise: E
     case 'fretboardTap':
       return <FretboardTapExercise key={exercise.id} exercise={exercise} onDone={onDone} width={width} mastery={mastery} />;
     case 'playAlong':
-      return <PlayAlongExercise key={exercise.id} exercise={exercise} onDone={onDone} mastery={mastery} />;
+      return <PlayAlongExercise key={exercise.id} exercise={exercise} onDone={onDone} mastery={mastery} width={width} />;
+    case 'tabReading':
+      return <TabReadingExercise key={exercise.id} exercise={exercise} onDone={onDone} width={width} mastery={mastery} />;
+    case 'tempoTrainer':
+      return <TempoTrainerExercise key={exercise.id} exercise={exercise} onDone={onDone} mastery={mastery} />;
     default:
       return (
         <View style={{ gap: 12 }}>
