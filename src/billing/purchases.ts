@@ -39,8 +39,10 @@ function applyCustomerInfo(info: CustomerInfo) {
 export async function initBilling(): Promise<void> {
   const apiKey = Constants.expoConfig?.extra?.revenueCatAndroidKey as string | undefined;
   if (!apiKey || apiKey.startsWith('REEMPLAZAR')) {
-    // Sin clave configurada (desarrollo): la app funciona en modo gratis.
-    useBilling.setState({ ready: true });
+    // Sin clave configurada (desarrollo): la app funciona en modo gratis, salvo
+    // que una compilación de desarrollo pida probar todo como Premium con
+    // EXPO_PUBLIC_DEV_PREMIUM=1. En una compilación de release __DEV__ es false.
+    useBilling.setState({ ready: true, isPremium: __DEV__ && process.env.EXPO_PUBLIC_DEV_PREMIUM === '1' });
     return;
   }
   Purchases.configure({ apiKey });
