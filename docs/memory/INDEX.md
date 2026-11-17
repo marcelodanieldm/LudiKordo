@@ -14,6 +14,7 @@ Memoria compartida por todos los agentes (Antigravity, Claude Code local y en Gi
 | [0004](decisions/0004-precios-hipotesis.md) | Precios USD 44,99 anual y 29,99 semestral como hipótesis | Propuesta |
 | [0005](decisions/0005-agentes-proponen-personas-publican.md) | Los agentes proponen por PR; las personas publican | Aceptada |
 | [0006](decisions/0006-tema-escenario-nocturno.md) | Interfaz oscura «escenario nocturno», Fredoka + Nunito | Aceptada |
+| [0007](decisions/0007-objetivos-y-lectura-temprana.md) | 6 módulos nuevos (151 lecciones), clave de fa en el nivel 2, ejemplos sonoros | Aceptada |
 
 ## Aprendizajes y trampas
 
@@ -23,5 +24,6 @@ Ver [learnings.md](learnings.md): errores que ya cometimos y cómo no repetirlos
 
 - [Rediseño escenario nocturno](../design/ui-redesign.md)
 - [Kordi: guía del personaje](../design/kordi.md)
+- [Currículo y mapa de objetivos](../CURRICULUM.md)
 - [Pipeline de cartoons](../CARTOON_PIPELINE.md)
 - [Herramientas, MCPs y skills](../TOOLING.md)

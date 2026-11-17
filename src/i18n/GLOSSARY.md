@@ -26,6 +26,16 @@ Usar siempre estos términos en interfaz y lecciones. Cambiarlos solo con acuerd
 | Ghost note | Nota fantasma | Nota fantasma |
 | Backing track | Pista de acompañamiento | Base (playback) |
 | Bass clef | Clave de fa | Clave de fá |
+| Staff | Pentagrama | Pentagrama |
+| Ledger line | Línea adicional | Linha suplementar |
+| Stem | Plica | Haste |
+| Rest | Silencio | Pausa |
+| Whole note | Redonda | Semibreve |
+| Half note | Blanca | Mínima |
+| Sharp | Sostenido | Sustenido |
+| Inversion | Inversión | Inversão |
+| Lick | Lick | Lick |
+| Theory sheet | Ficha teórica | Ficha teórica |
 | Lesson | Lección | Aula |
 | Path | Ruta | Trilha |
 | Streak | Racha | Sequência |

@@ -36,6 +36,8 @@ export interface QuizExercise extends BaseExercise {
   correctIndex: number;
   /** Para ejercicios de oído: tonos a reproducir antes de responder (Hz). */
   tones?: number[];
+  /** Pentagrama que se muestra con el enunciado (por ejemplo, «¿qué nota es?»). */
+  staff?: ScoreEvent[];
   hintKey?: string;
 }
 
@@ -69,6 +71,8 @@ export interface PlayAlongExercise extends BaseExercise {
   toleranceCents?: number;
   /** Tempos que se desbloquean al dominar el ejercicio. */
   tempoSteps?: number[];
+  /** Si las notas con duración se muestran en tablatura (por defecto) o en pentagrama. */
+  notation?: ScoreNotation;
 }
 
 /** Nota de tablatura: cuerda, traste (0 = al aire) y duración en pulsos (4 redonda, 2 blanca, 1 negra). */
@@ -78,9 +82,31 @@ export interface TabNote {
   beats: 1 | 2 | 4;
 }
 
+/** Cómo se escribe una lectura: tablatura (por defecto) o pentagrama en clave de fa. */
+export type ScoreNotation = 'tab' | 'staff';
+
+/** Duración en pulsos de 4/4: corchea, negra, blanca, redonda. */
+export type Beats = 0.5 | 1 | 2 | 4;
+
+/** Un evento de partitura: una nota (cuerda y traste) o un silencio. */
+export type ScoreEvent = { string: StringId; fret: number; beats: Beats } | { rest: true; beats: Beats };
+
+/** Ejemplo sonoro de una tarjeta: la app lo toca con un tono sintetizado. */
+export interface ListenExample {
+  events: ScoreEvent[];
+  bpm: number;
+  /** Qué se dibuja junto al botón «Escuchar». Por defecto, nada. */
+  show?: ScoreNotation;
+  /** Nombre de cada nota debajo del pentagrama (para las primeras lecturas). */
+  noteNames?: boolean;
+  /** Clic de metrónomo durante el ejemplo. */
+  click?: boolean;
+}
+
 export interface TabReadingExercise extends BaseExercise {
   kind: 'tabReading';
   needsBass: false;
+  notation?: ScoreNotation;
   /** Compases de 4/4 completos: la duración de cada compás suma 4. */
   notes: TabNote[];
   /** Trastes que muestra el diapasón donde se responde. */
@@ -111,12 +137,14 @@ export type Exercise =
   | TempoTrainerExercise
   | PendingExercise;
 
-export type Figure = 'bass-parts' | 'strings' | 'tuner' | 'fret5' | 'right-hand' | 'fretboard-1234' | 'left-hand';
+export type Figure = 'bass-parts' | 'strings' | 'tuner' | 'fret5' | 'right-hand' | 'fretboard-1234' | 'left-hand' | 'bass-clef';
 
 export interface Card {
   titleKey: string;
   bodyKey: string;
   figure?: Figure;
+  /** Ejemplo sonoro con botón «Escuchar». */
+  listen?: ListenExample;
 }
 
 export interface Lesson {
@@ -143,6 +171,8 @@ export interface Module {
   titleKey: string;
   lessonCount: number;
   starExerciseKey: string;
+  /** Objetivo del módulo en una frase, visible en la ruta. */
+  goalKey: string;
 }
 
 export interface Level {

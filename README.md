@@ -2,7 +2,7 @@
 
 App Android para teléfono y tablet que enseña bajo de 4 cuerdas desde cero hasta nivel intermedio, en inglés, español y portugués, con suscripción semestral y anual.
 
-Este repositorio es la base de la **fase 1 (MVP)** del documento de producto: estructura completa, curriculum de 123 lecciones, las 4 lecciones modelo escritas, 4 de los 10 tipos de ejercicio, detección de notas por micrófono, progreso, rachas y suscripciones.
+Este repositorio es la base de la **fase 1 (MVP)** del documento de producto: estructura completa, curriculum de 151 lecciones, las 4 lecciones modelo escritas, 4 de los 10 tipos de ejercicio, detección de notas por micrófono, progreso, rachas y suscripciones.
 
 ## Puesta en marcha
 
@@ -52,7 +52,7 @@ app/                      Pantallas (Expo Router)
                           (barra inferior en teléfono, lateral en tablet)
   leccion/[id].tsx        Lección en 4 pasos; dos paneles en tablet
 src/
-  content/                Curriculum (5 niveles, 25 módulos), lecciones modelo y tipos
+  content/                Curriculum (5 niveles, 31 módulos; mapa en docs/CURRICULUM.md), lecciones y tipos
   i18n/locales/           en.json, es.json, pt.json: interfaz + contenido
   music/                  Notas y frecuencias, YIN (referencia en TS), puntuación
   state/                  Ajustes y progreso (Zustand + MMKV), reglas de racha
@@ -67,8 +67,8 @@ tests/                    Pruebas de lógica (node:test + tsx)
 
 | Área | Estado |
 | --- | --- |
-| Curriculum completo (123 lecciones, 3 idiomas) | Hecho: títulos de niveles, módulos, checkpoints y ejercicios estrella |
-| Lecciones redactadas | 4 de 123: 1.1.1, 1.1.4, 1.2.1 y 1.3.1 |
+| Curriculum completo (151 lecciones, 3 idiomas) | Hecho: niveles, módulos con objetivo, checkpoints y ejercicios estrella (docs/CURRICULUM.md) |
+| Lecciones redactadas | 30 de 151: nivel 1 completo y el módulo 2.6 (pentagrama) |
 | Tipos de ejercicio | 6 de 8: quiz/oído, tocar el ritmo, diapasón virtual, tocar con el bajo, leer tablatura y entrenador de tempo. Seguir la mano y grabarte muestran «próximamente». Los checkpoints de nivel combinan estos tipos (`src/content/checkpoints.ts`) |
 | Detección por micrófono | Hecho: módulo Kotlin + autoevaluación de respaldo. Falta probarlo en teléfonos reales (fase 0) y calibrar la latencia |
 | Afinador y metrónomo | Hechos |

@@ -5,6 +5,7 @@ import es from '../src/i18n/locales/es.json';
 import pt from '../src/i18n/locales/pt.json';
 import { LESSONS } from '../src/content/lessons';
 import { LEVELS } from '../src/content/curriculum';
+import { midiToFreq } from '../src/music/notes';
 
 type Tree = { [k: string]: string | Tree };
 
@@ -48,6 +49,7 @@ test('cada clave usada por el currículo y las lecciones existe en los 3 idiomas
     for (const m of l.modules) {
       used.add(m.titleKey);
       used.add(m.starExerciseKey);
+      used.add(m.goalKey);
     }
   }
   for (const lesson of Object.values(LESSONS)) {
@@ -233,4 +235,82 @@ test('checkpoints: reglas de aprobación y contenido del nivel 1', async () => {
   // Cada id de prueba es único en todo el contenido (el progreso se guarda por id).
   const ids = [...Object.values(LESSONS).flatMap((l) => l.exercises.map((e) => e.id)), ...cp1.parts.map((e) => e.id)];
   assert.equal(new Set(ids).size, ids.length);
+});
+
+test('ejemplos sonoros y pentagramas: bien escritos y tocables', async () => {
+  const { scoreBarsComplete, isRest } = await import('../src/music/staff');
+  const { barsAreComplete } = await import('../src/music/tab');
+  for (const lesson of Object.values(LESSONS)) {
+    for (const card of lesson.cards) {
+      const ex = card.listen;
+      if (!ex) continue;
+      assert.ok(ex.events.length > 0 && ex.bpm >= 40 && ex.bpm <= 200, `${lesson.id}: ${card.titleKey}`);
+      for (const e of ex.events) if (!isRest(e)) assert.ok(e.fret >= 0 && e.fret <= 12, `${lesson.id}: traste ${e.fret}`);
+      if (ex.show) assert.ok(scoreBarsComplete(ex.events), `${lesson.id}: ${card.titleKey} con compases incompletos`);
+      // La tablatura solo dibuja negras, blancas y redondas sin silencios.
+      if (ex.show === 'tab') assert.ok(ex.events.every((e) => !isRest(e) && e.beats >= 1), `${lesson.id}: ejemplo en tablatura con corcheas o silencios`);
+    }
+    for (const ex of lesson.exercises) {
+      if (ex.kind === 'quiz' && ex.staff) assert.ok(scoreBarsComplete(ex.staff), `${ex.id}: pentagrama incompleto`);
+      if (ex.kind === 'playAlong' && ex.notation === 'staff') assert.ok(barsAreComplete(ex.notes.map((n) => ({ ...n, beats: n.beats ?? 1 }))), ex.id);
+    }
+  }
+});
+
+test('módulo 2.6: pentagrama con la teoría correcta', async () => {
+  const { staffPos, writtenMidi, spell } = await import('../src/music/staff');
+  const { CANON_BASS } = await import('../src/content/lessons26');
+  for (const id of ['2.6.1', '2.6.2', '2.6.3', '2.6.4', '2.6.5']) {
+    const l = LESSONS[id];
+    assert.ok(l, `falta ${id}`);
+    assert.ok(l.exercises.some((e) => e.needsBass) && l.exercises.some((e) => !e.needsBass), `${id}: con y sin bajo`);
+    assert.ok(l.cards.some((c) => c.listen || c.figure), `${id}: al menos un ejemplo o figura`);
+  }
+  const at = (id: string, exId: string) => LESSONS[id].exercises.find((e) => e.id === exId)!;
+  // 2.6.1: la nota de la línea de la clave es Fa.
+  const f = at('2.6.1', '2.6.1-f');
+  assert.ok(f.kind === 'quiz' && f.staff);
+  if (f.kind === 'quiz' && f.staff && !('rest' in f.staff[0])) {
+    assert.equal(staffPos(writtenMidi(f.staff[0].string, f.staff[0].fret)), 6);
+    assert.equal(f.options[f.correctIndex], '=F');
+  }
+  // 2.6.2 y 2.6.4: la respuesta es la nota que muestra el pentagrama.
+  const letterOf = (s: 'E' | 'A' | 'D' | 'G', fret: number) => {
+    const sp = spell(writtenMidi(s, fret));
+    return sp.letter + (sp.sharp ? '♯' : '');
+  };
+  for (const exId of ['2.6.4-c', '2.6.4-fsharp']) {
+    const ex = at('2.6.4', exId);
+    if (ex.kind === 'quiz' && ex.staff && !('rest' in ex.staff[0])) assert.equal(ex.options[ex.correctIndex], `=${letterOf(ex.staff[0].string, ex.staff[0].fret)}`, exId);
+  }
+  const stringKey = { A: 'oA', E: 'oE', D: 'oD', G: 'oG' } as const;
+  for (const exId of ['2.6.2-a', '2.6.2-g', '2.6.2-e']) {
+    const ex = at('2.6.2', exId);
+    if (ex.kind === 'quiz' && ex.staff && !('rest' in ex.staff[0])) assert.ok(ex.options[ex.correctIndex].endsWith(stringKey[ex.staff[0].string]), exId);
+  }
+  // 2.6.3: dos blancas = 2 pulsos cada una; negra-silencio-negra-silencio = 2 notas.
+  const half = at('2.6.3', '2.6.3-half');
+  assert.ok(half.kind === 'quiz' && half.options[half.correctIndex] === '=2');
+  // 2.6.4: el dictado suena Mi, Sol, La.
+  const dict = at('2.6.4', '2.6.4-dictation');
+  if (dict.kind === 'ear') assert.deepEqual(dict.tones!.map((hz) => Math.round(hz * 100)), [midiToFreq(28), midiToFreq(31), midiToFreq(33)].map((hz) => Math.round(hz * 100)));
+  // 2.6.5: el bajo del Canon es Re La Si Fa♯ Sol Re Sol La.
+  assert.deepEqual(CANON_BASS.map((n) => letterOf(n.string, n.fret)), ['D', 'A', 'B', 'F♯', 'G', 'D', 'G', 'A']);
+  const sharp = at('2.6.5', '2.6.5-sharp');
+  assert.ok(sharp.kind === 'quiz' && sharp.options[sharp.correctIndex] === '=F♯');
+});
+
+test('ficha teórica: junta las tarjetas del módulo y respeta Premium', async () => {
+  const { theorySheet } = await import('../src/content/theory');
+  const free = theorySheet('1.1', () => true)!;
+  assert.equal(free.sections.length, 5);
+  assert.equal(free.locked, 0);
+  const locked = theorySheet('2.6', () => false)!;
+  assert.equal(locked.sections.length, 0);
+  assert.equal(locked.locked, 5);
+  const open = theorySheet('2.6', () => true)!;
+  assert.ok(open.sections.flatMap((s) => s.cards).some((c) => c.listen));
+  assert.equal(theorySheet('9.9', () => true), null);
+  // Un módulo sin lecciones escritas da una ficha vacía, no un error.
+  assert.equal(theorySheet('4.7', () => true)!.sections.length, 0);
 });

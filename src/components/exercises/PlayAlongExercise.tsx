@@ -9,6 +9,7 @@ import { nowMs, startMetronome, type MetronomeHandle } from '../../audio/engine'
 import { centsOff, midiAt, noteName, type Locale } from '../../music/notes';
 import { noteIndexAt, noteTimes, PITCH_TOLERANCE_CENTS, scorePlayAlong, starsFor, type DetectedNote } from '../../music/scoring';
 import { TabStaff } from '../TabStaff';
+import { Staff } from '../Staff';
 import { useSettings } from '../../state/settings';
 import { useProgress } from '../../state/progress';
 import type { PlayAlongExercise as PlayEx } from '../../content/types';
@@ -156,7 +157,13 @@ export function PlayAlongExercise({
       </Text>
 
       <View style={{ backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1, borderRadius: radius.xl, padding: 16, gap: 10, alignItems: 'center' }}>
-        {asTab ? (
+        {exercise.notation === 'staff' ? (
+          <Staff
+            events={exercise.notes.map((n) => ({ string: n.string, fret: n.fret, beats: n.beats ?? 1 }))}
+            width={width - 34}
+            current={phase === 'running' ? index : -1}
+          />
+        ) : asTab ? (
           <TabStaff
             notes={exercise.notes.map((n) => ({ string: n.string, fret: n.fret, beats: n.beats ?? 1 }))}
             width={width - 34}

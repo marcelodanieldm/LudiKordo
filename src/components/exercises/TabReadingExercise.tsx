@@ -4,6 +4,7 @@ import { Text } from '../Text';
 import { useTranslation } from 'react-i18next';
 import { Fretboard } from '../Fretboard';
 import { TabStaff } from '../TabStaff';
+import { Staff } from '../Staff';
 import { Button, Muted, Stars } from '../ui';
 import { playTone } from '../../audio/engine';
 import { midiAt, midiToFreq, type StringId } from '../../music/notes';
@@ -47,11 +48,11 @@ export function TabReadingExercise({ exercise, onDone, width, mastery }: { exerc
   return (
     <View style={{ gap: 14 }}>
       <Text style={{ fontFamily: fonts.display, fontSize: 24, lineHeight: 30 }}>{t(exercise.promptKey)}</Text>
-      <Muted>{t('ui.exercise.tabHint')}</Muted>
-      <TabStaff notes={exercise.notes} width={width} current={pos} />
+      <Muted>{t(exercise.notation === 'staff' ? 'ui.exercise.staffHint' : 'ui.exercise.tabHint')}</Muted>
+      {exercise.notation === 'staff' ? <Staff events={exercise.notes} width={width} current={pos} /> : <TabStaff notes={exercise.notes} width={width} current={pos} />}
       <Text accessibilityLiveRegion="polite" style={{ fontSize: 15, fontWeight: '800', color: done ? colors.teal : colors.accentInk, minHeight: 22 }}>
         {done
-          ? t('ui.exercise.tabDone', { count: mistakes })
+          ? t(exercise.notation === 'staff' ? 'ui.exercise.staffDone' : 'ui.exercise.tabDone', { count: mistakes })
           : t('ui.exercise.tabNow', {
               figure: t(`ui.exercise.figure.${figureOf(current.beats)}`),
               beats: countFor(current).join(' '),

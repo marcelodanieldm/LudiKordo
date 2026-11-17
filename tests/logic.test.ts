@@ -6,12 +6,20 @@ import { currentWeekDays, needsReview, weeklyStreak, weekMet } from '../src/stat
 import { LEVELS, allLessonIds, isUnlocked, nextLesson, totalLessons, levelProgress } from '../src/content/curriculum';
 import { annualSavingsPct, canOpenLesson, isLessonFree } from '../src/billing/access';
 
-test('el currículo tiene 5 niveles, 25 módulos y 123 lecciones', () => {
+test('el currículo tiene 5 niveles, 31 módulos y 151 lecciones', () => {
   assert.equal(LEVELS.length, 5);
-  assert.equal(LEVELS.flatMap((l) => l.modules).length, 25);
-  assert.equal(totalLessons(), 123);
+  assert.equal(LEVELS.flatMap((l) => l.modules).length, 31);
+  assert.equal(totalLessons(), 151);
   assert.equal(allLessonIds()[0], '1.1.1');
-  assert.equal(allLessonIds().at(-1), '5.5.4');
+  // El proyecto final sigue siendo lo último de la ruta.
+  assert.equal(allLessonIds().at(-1), '5.7.4');
+  // Semanas consecutivas, sin huecos ni solapes.
+  LEVELS.forEach((l, i) => {
+    assert.ok(l.weeks[0] <= l.weeks[1]);
+    if (i > 0) assert.equal(l.weeks[0], LEVELS[i - 1].weeks[1] + 1);
+  });
+  // Los ids de módulo van en orden dentro de cada nivel.
+  for (const l of LEVELS) l.modules.forEach((m, i) => assert.equal(m.id, `${l.id}.${i + 1}`));
 });
 
 test('desbloqueo secuencial y salto de nivel', () => {

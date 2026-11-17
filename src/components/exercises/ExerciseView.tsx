@@ -33,7 +33,7 @@ export function ExerciseView({
   switch (exercise.kind) {
     case 'quiz':
     case 'ear':
-      return <QuizExercise key={exercise.id} exercise={exercise} onDone={onDone} />;
+      return <QuizExercise key={exercise.id} exercise={exercise} onDone={onDone} width={width} />;
     case 'tapRhythm':
       return <TapRhythmExercise key={exercise.id} exercise={exercise} onDone={onDone} mastery={mastery} />;
     case 'fretboardTap':
