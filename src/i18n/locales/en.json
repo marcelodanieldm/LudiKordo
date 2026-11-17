@@ -1,5 +1,30 @@
 {
   "ui": {
+    "songbook": {
+      "eyebrow": "Songbook",
+      "title": "Songs for your level",
+      "intro": "Original bass lines to play by genre. They unlock with the modules where you learn what they use.",
+      "all": "All",
+      "genre": {"pop": "Pop", "rock": "Rock", "ballad": "Ballads", "blues": "Blues", "bossa": "Bossa nova", "soul": "Soul", "reggae": "Reggae"},
+      "empty": "No songs in this genre yet.",
+      "lockedHint": "Locked: shows which modules you still need",
+      "meta": "{{genre}} · Level {{level}} · {{key}} · {{bpm}} bpm",
+      "needs": "To unlock it, complete: {{modules}}",
+      "notFound": "We couldn't find this song.",
+      "chords": "Chord chart",
+      "chordsLabel": "Chords, one per bar: {{chords}}",
+      "chordsHint": "One chord per bar. Your line plays the root and the notes that go with it.",
+      "listen": "Listen first",
+      "playPrompt": "Play it on your bass, in time with the metronome.",
+      "saved": "Saved to your progress. Once you master it, a faster tempo unlocks.",
+      "again": "Play again",
+      "premium": "This song uses Premium modules.",
+      "toPath": "Go to the path",
+      "open": "Open the songbook",
+      "today": "For today: {{title}}",
+      "none": "Complete module 1.5 to unlock your first songs.",
+      "count": "{{open}} of {{total}} songs unlocked"
+    },
     "figure": { "bassClef": "Staff in bass clef with the fourth line, F, highlighted" },
     "listen": {"play": "Listen to the example", "stop": "Stop"},
     "theory": {
@@ -209,6 +234,22 @@
     }
   },
   "content": {
+    "song": {
+      "pop_1": { "title": "Sunday Stroll", "desc": "Pop in E over the I–V–vi–IV progression. A half note and two quarters per bar: practice changing chords without losing the beat." },
+      "rock_1": { "title": "Engine Running", "desc": "Rock in A with steady quarter notes on open strings. The secret: every note equally strong and even." },
+      "ballad_1": { "title": "Candlelight", "desc": "Slow ballad in D: whole and half notes that let each note ring. Listen to how long each one lasts." },
+      "blues_1": { "title": "Capybara Blues", "desc": "Your first 12-bar blues, in E: learn the I–IV–V form you'll find everywhere." },
+      "bossa_1": { "title": "Harbor Breeze", "desc": "Bossa nova with root and fifth in half notes over seventh chords. Play softly and let the line breathe." },
+      "soul_1": { "title": "Soul Sunday", "desc": "Soul in G: root, fifth and octave in quarter notes. Mute each note before the next one to keep the groove clean." },
+      "reggae_1": { "title": "Afternoon Sun", "desc": "Reggae in A minor, read from the staff: beat one stays silent and the line comes in with two eighth notes." },
+      "pop_2": { "title": "Neon City", "desc": "Pop with steady eighth notes over vi–IV–I–V in C. Keep your plucking hand relaxed to last the whole song." },
+      "ballad_2": { "title": "Autumn Staircase", "desc": "Ballad in C where the bass steps down one note at a time thanks to inversions: C, B, A, G, F, E." },
+      "rock_2": { "title": "Electric Storm", "desc": "Rock riff in E minor with eighth notes: the open string drives the pulse and the higher notes shape it." },
+      "blues_2": { "title": "Harbor Walk", "desc": "Walking bass over a blues in A: quarter-note arpeggios and a chromatic note that leads into the next chord." },
+      "bossa_2": { "title": "Bossa Sunset", "desc": "Bossa nova in C over ii–V–I: the fifth comes in one eighth note before beat three, as in the style." },
+      "reggae_2": { "title": "Roots", "desc": "One drop in E minor: a rest on one and a phrase that climbs the scale toward the next chord." },
+      "soul_2": { "title": "Soul Night", "desc": "Sixties soul in C: passing notes that walk toward the root of the next chord. Play short and with intent." }
+    },
     "l261": {
       "title": "The staff and the bass clef",
       "objective": "Recognize the staff, the bass clef and the note F.",

@@ -7,9 +7,12 @@ import { colors, radius, fonts } from '../../theme';
 import { listenNotes, listenPitch, requestMic, type Listener, type MicStatus } from '../../audio/mic';
 import { nowMs, startMetronome, type MetronomeHandle } from '../../audio/engine';
 import { centsOff, midiAt, noteName, type Locale } from '../../music/notes';
-import { noteIndexAt, noteTimes, PITCH_TOLERANCE_CENTS, scorePlayAlong, starsFor, type DetectedNote } from '../../music/scoring';
+import { noteIndexAt, PITCH_TOLERANCE_CENTS, scorePlayAlong, starsFor, type DetectedNote } from '../../music/scoring';
 import { TabStaff } from '../TabStaff';
 import { Staff } from '../Staff';
+import { Score } from '../Listen';
+import { isRest, noteEventIndexes, noteStartBeats } from '../../music/staff';
+import type { ScoreEvent } from '../../content/types';
 import { useSettings } from '../../state/settings';
 import { useProgress } from '../../state/progress';
 import type { PlayAlongExercise as PlayEx } from '../../content/types';
@@ -72,9 +75,13 @@ export function PlayAlongExercise({
     [],
   );
 
-  const targets = exercise.notes.map((n) => midiAt(n.string, n.fret));
-  const beats = exercise.notes.map((n) => n.beats ?? 1);
-  const totalBeats = beats.reduce((a, b) => a + b, 0);
+  // Una canción trae su partitura con silencios y corcheas; si no, las notas son negras, blancas o redondas.
+  const events: ScoreEvent[] = exercise.score ?? exercise.notes.map((n) => ({ string: n.string, fret: n.fret, beats: n.beats ?? 1 }));
+  const noteEvents = events.filter((ev): ev is Extract<ScoreEvent, { string: unknown }> => !isRest(ev));
+  const targets = noteEvents.map((n) => midiAt(n.string, n.fret));
+  const startBeats = noteStartBeats(events);
+  const eventIndexes = noteEventIndexes(events);
+  const totalBeats = events.reduce((a, ev) => a + ev.beats, 0);
   // Con figuras de distinta duración, las notas se muestran como tablatura.
   const asTab = exercise.notes.some((n) => (n.beats ?? 1) !== 1);
   const label = (midi: number) => noteName(midi, i18n.language as Locale, notation);
@@ -138,7 +145,7 @@ export function PlayAlongExercise({
       return;
     }
     const step = 60000 / bpm;
-    const expected = noteTimes(beats, bpm, startMs);
+    const expected = startBeats.map((b) => startMs + b * step);
     timers.current.tick = setInterval(() => setIndex(Math.max(0, noteIndexAt(expected, nowMs()))), 100);
     timers.current.end = setTimeout(() => {
       const r = scorePlayAlong(expected.map((timeMs, k) => ({ timeMs, midi: targets[k] })), detected);
@@ -157,7 +164,14 @@ export function PlayAlongExercise({
       </Text>
 
       <View style={{ backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1, borderRadius: radius.xl, padding: 16, gap: 10, alignItems: 'center' }}>
-        {exercise.notation === 'staff' ? (
+        {exercise.score ? (
+          <Score
+            events={exercise.score}
+            notation={exercise.notation ?? 'tab'}
+            width={width - 34}
+            current={phase === 'running' ? eventIndexes[Math.min(index, eventIndexes.length - 1)] : -1}
+          />
+        ) : exercise.notation === 'staff' ? (
           <Staff
             events={exercise.notes.map((n) => ({ string: n.string, fret: n.fret, beats: n.beats ?? 1 }))}
             width={width - 34}
