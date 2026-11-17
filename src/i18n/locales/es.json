@@ -1,5 +1,33 @@
 {
   "ui": {
+    "songbook": {
+      "eyebrow": "Cancionero",
+      "title": "Canciones para tu nivel",
+      "intro": "Líneas de bajo originales para tocar por género. Se desbloquean con los módulos donde aprendes lo que usan.",
+      "all": "Todas",
+      "genre": {"pop": "Pop", "rock": "Rock", "ballad": "Baladas", "blues": "Blues", "bossa": "Bossa nova", "soul": "Soul", "reggae": "Reggae"},
+      "empty": "No hay canciones de este género todavía.",
+      "lockedHint": "Bloqueada: muestra qué módulos te faltan",
+      "meta": "{{genre}} · Nivel {{level}} · {{key}} · {{bpm}} bpm",
+      "needs": "Para desbloquearla, completa: {{modules}}",
+      "notFound": "No encontramos esta canción.",
+      "chords": "Cifrado",
+      "chordsLabel": "Acordes, compás por compás: {{chords}}",
+      "chordsHint": "Un acorde por compás (dos, si el compás cambia en el tercer tiempo). Tu línea toca la raíz y las notas que lo acompañan.",
+      "listen": "Escúchala primero",
+      "playPrompt": "Tócala con el bajo, a tempo con el metrónomo.",
+      "saved": "Guardado en tu progreso. Cuando la domines, se desbloquea un tempo más rápido.",
+      "again": "Tocar otra vez",
+      "premium": "Esta canción usa módulos Premium.",
+      "toPath": "Ir a la ruta",
+      "open": "Abrir el cancionero",
+      "today": "Para hoy: {{title}}",
+      "none": "Completa el módulo {{module}} para desbloquear tus primeras canciones.",
+      "count": "{{open}} de {{total}} canciones desbloqueadas",
+      "keyMinor": "{{note}} menor",
+      "keyMajor": "{{note}} mayor",
+      "premiumAll": "Las canciones son parte de Premium: se abren a medida que avanzas en la ruta."
+    },
     "figure": { "bassClef": "Pentagrama en clave de fa con la cuarta línea, Fa, resaltada" },
     "listen": {"play": "Escuchar ejemplo", "stop": "Detener"},
     "theory": {
@@ -209,6 +237,22 @@
     }
   },
   "content": {
+    "song": {
+      "pop_1": { "title": "Paseo de domingo", "desc": "Pop en Mi con la progresión I–V–vi–IV. Blanca y dos negras por compás: practica cambiar de acorde sin perder el pulso." },
+      "rock_1": { "title": "Motor en marcha", "desc": "Rock en La con negras constantes en las cuerdas al aire. El secreto: que todas suenen igual de fuertes y parejas." },
+      "ballad_1": { "title": "Luz de vela", "desc": "Balada lenta en Re: redondas y blancas que dejan sonar cada nota. Escucha cuánto dura cada una." },
+      "blues_1": { "title": "Blues del carpincho", "desc": "Tu primer blues de 12 compases, en Mi: aprende la forma I–IV–V que vas a encontrar en todas partes." },
+      "bossa_1": { "title": "Brisa del puerto", "desc": "Bossa nova en Mi menor con raíz y quinta en blancas, sobre acordes de séptima. Toca suave y deja que la línea respire." },
+      "soul_1": { "title": "Domingo soul", "desc": "Soul en Sol: raíz, quinta y octava en negras, y raíz y quinta en los compases de Re. Apaga cada nota antes de la siguiente para que el groove quede limpio." },
+      "reggae_1": { "title": "Sol de la tarde", "desc": "Reggae en La menor, leído en pentagrama: el primer tiempo queda en silencio y la línea entra con dos corcheas." },
+      "pop_2": { "title": "Ciudad de neón", "desc": "Pop con corcheas continuas sobre vi–IV–I–V en Do. Mantén relajada la mano que pulsa para aguantar todo el tema." },
+      "ballad_2": { "title": "Escalera de otoño", "desc": "Balada en Do donde el bajo desciende escalón por escalón gracias a las inversiones: Do, Si, La, Sol, Fa, Mi." },
+      "rock_2": { "title": "Tormenta eléctrica", "desc": "Riff de rock en Mi menor con corcheas: la cuerda al aire marca el pulso y las notas más agudas le dan la forma." },
+      "blues_2": { "title": "Walking de medianoche", "desc": "Walking bass en un blues en La: arpegios en negras y una nota cromática que lleva al acorde siguiente." },
+      "bossa_2": { "title": "Atardecer bossa", "desc": "Bossa nova en Do sobre ii–V–I: la quinta entra una corchea antes del tercer tiempo, como en el estilo." },
+      "reggae_2": { "title": "Mañana de raíces", "desc": "One drop en Mi menor: silencio en el uno y una frase que sube por la escala." },
+      "soul_2": { "title": "Noche de soul", "desc": "Soul de los 60 en Do: notas de paso que caminan hacia la raíz del acorde siguiente. Toca corto y con intención." }
+    },
     "l261": {
       "title": "El pentagrama y la clave de fa",
       "objective": "Reconocer el pentagrama, la clave de fa y la nota Fa.",

@@ -170,3 +170,26 @@ export function layoutScore(events: ScoreEvent[], width: number): ScoreLayout {
   });
   return { barsPerRow, rows, beatW, width: CLEF_W + barsPerRow * BEATS_PER_BAR * beatW + 8, items };
 }
+
+/** Pulso de inicio de cada nota (sin los silencios), para el play-along. */
+export function noteStartBeats(events: ScoreEvent[]): number[] {
+  let beat = 0;
+  const out: number[] = [];
+  for (const e of events) {
+    if (!isRest(e)) out.push(beat);
+    beat += e.beats;
+  }
+  return out;
+}
+
+/** Índice de evento (con silencios) de cada nota, para resaltar la nota actual. */
+export function noteEventIndexes(events: ScoreEvent[]): number[] {
+  return events.flatMap((e, i) => (isRest(e) ? [] : [i]));
+}
+
+/** Índice del evento que suena en el pulso `beat`, dados los inicios de cada evento. */
+export function eventAt(starts: number[], beat: number): number {
+  let i = 0;
+  while (i + 1 < starts.length && starts[i + 1] <= beat) i++;
+  return i;
+}

@@ -5,11 +5,14 @@ import { useTranslation } from 'react-i18next';
 import { Button, Stars } from '../ui';
 import { colors, radius, fonts } from '../../theme';
 import { listenNotes, listenPitch, requestMic, type Listener, type MicStatus } from '../../audio/mic';
-import { nowMs, startMetronome, type MetronomeHandle } from '../../audio/engine';
+import { nowMs, startMetronome, stopActiveSequence, type MetronomeHandle } from '../../audio/engine';
 import { centsOff, midiAt, noteName, type Locale } from '../../music/notes';
-import { noteIndexAt, noteTimes, PITCH_TOLERANCE_CENTS, scorePlayAlong, starsFor, type DetectedNote } from '../../music/scoring';
+import { noteIndexAt, PITCH_TOLERANCE_CENTS, scorePlayAlong, starsFor, type DetectedNote } from '../../music/scoring';
 import { TabStaff } from '../TabStaff';
 import { Staff } from '../Staff';
+import { Score } from '../Listen';
+import { eventAt, isRest, noteStartBeats } from '../../music/staff';
+import type { ScoreEvent } from '../../content/types';
 import { useSettings } from '../../state/settings';
 import { useProgress } from '../../state/progress';
 import type { PlayAlongExercise as PlayEx } from '../../content/types';
@@ -29,12 +32,15 @@ export function PlayAlongExercise({
   onDone,
   mastery,
   width,
+  onRunningChange,
   allowSelfCheck = true,
 }: {
   exercise: PlayEx;
   onDone: (stars: number) => void;
   mastery: number;
   width: number;
+  /** Avisa cuando empieza y termina la toma (por ejemplo, para callar otros sonidos). */
+  onRunningChange?: (running: boolean) => void;
   /** En un checkpoint no hay autoevaluación: aprobar exige que la app oiga las notas. */
   allowSelfCheck?: boolean;
 }) {
@@ -47,6 +53,8 @@ export function PlayAlongExercise({
   const [phase, setPhase] = useState<Phase>('intro');
   const [mic, setMic] = useState<MicStatus>('ok');
   const [index, setIndex] = useState(0);
+  /** Evento actual de la partitura (con silencios), o -1 durante la cuenta. Solo con `score`. */
+  const [eventPos, setEventPos] = useState(-1);
   const [cents, setCents] = useState<number | null>(null);
   const [result, setResult] = useState<{ hits: number; total: number; stars: number; next?: number } | null>(null);
   const [failures, setFailures] = useState(0);
@@ -72,9 +80,14 @@ export function PlayAlongExercise({
     [],
   );
 
-  const targets = exercise.notes.map((n) => midiAt(n.string, n.fret));
-  const beats = exercise.notes.map((n) => n.beats ?? 1);
-  const totalBeats = beats.reduce((a, b) => a + b, 0);
+  // Una canción trae su partitura con silencios y corcheas; si no, las notas son negras, blancas o redondas.
+  const events: ScoreEvent[] = exercise.score ?? exercise.notes.map((n) => ({ string: n.string, fret: n.fret, beats: n.beats ?? 1 }));
+  const noteEvents = events.filter((ev): ev is Extract<ScoreEvent, { string: unknown }> => !isRest(ev));
+  const targets = noteEvents.map((n) => midiAt(n.string, n.fret));
+  const startBeats = noteStartBeats(events);
+  const eventStarts = events.map((_, i) => events.slice(0, i).reduce((a, ev) => a + ev.beats, 0));
+  const inRest = exercise.score !== undefined && eventPos >= 0 && isRest(events[eventPos]);
+  const totalBeats = events.reduce((a, ev) => a + ev.beats, 0);
   // Con figuras de distinta duración, las notas se muestran como tablatura.
   const asTab = exercise.notes.some((n) => (n.beats ?? 1) !== 1);
   const label = (midi: number) => noteName(midi, i18n.language as Locale, notation);
@@ -94,7 +107,13 @@ export function PlayAlongExercise({
     setPhase('result');
   };
 
+  useEffect(() => {
+    onRunningChange?.(phase === 'running');
+  }, [phase]);
+
   const start = async () => {
+    // Un ejemplo sonoro de la misma pantalla no debe sonar durante la toma.
+    stopActiveSequence();
     const status = await requestMic();
     setMic(status);
     if (status !== 'ok') {
@@ -103,6 +122,7 @@ export function PlayAlongExercise({
     }
     setResult(null);
     setIndex(0);
+    setEventPos(-1);
     setPhase('running');
 
     if (bpm === null) {
@@ -138,8 +158,14 @@ export function PlayAlongExercise({
       return;
     }
     const step = 60000 / bpm;
-    const expected = noteTimes(beats, bpm, startMs);
-    timers.current.tick = setInterval(() => setIndex(Math.max(0, noteIndexAt(expected, nowMs()))), 100);
+    const expected = startBeats.map((b) => startMs + b * step);
+    timers.current.tick = setInterval(() => {
+      const now = nowMs();
+      setIndex(Math.max(0, noteIndexAt(expected, now)));
+      // Con partitura: el evento que toca ahora, silencios incluidos; -1 durante la cuenta.
+      const beat = (now - startMs) / step;
+      setEventPos(beat < 0 ? -1 : eventAt(eventStarts, beat));
+    }, 100);
     timers.current.end = setTimeout(() => {
       const r = scorePlayAlong(expected.map((timeMs, k) => ({ timeMs, midi: targets[k] })), detected);
       finishWith(r.hits, r.total);
@@ -157,7 +183,14 @@ export function PlayAlongExercise({
       </Text>
 
       <View style={{ backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1, borderRadius: radius.xl, padding: 16, gap: 10, alignItems: 'center' }}>
-        {exercise.notation === 'staff' ? (
+        {exercise.score ? (
+          <Score
+            events={exercise.score}
+            notation={exercise.notation ?? 'tab'}
+            width={width - 34}
+            current={phase === 'running' ? eventPos : -1}
+          />
+        ) : exercise.notation === 'staff' ? (
           <Staff
             events={exercise.notes.map((n) => ({ string: n.string, fret: n.fret, beats: n.beats ?? 1 }))}
             width={width - 34}
@@ -195,7 +228,7 @@ export function PlayAlongExercise({
         {phase === 'running' ? (
           <>
             <Text style={{ fontSize: 16, fontWeight: '800', color: colors.teal }}>{t('ui.exercise.listening')}</Text>
-            <Text style={{ fontFamily: fonts.display, fontSize: 28, lineHeight: 34, color: colors.accentInk, textAlign: 'center' }}>{t('ui.exercise.waitingFor', { note: label(current) })}</Text>
+            <Text style={{ fontFamily: fonts.display, fontSize: 28, lineHeight: 34, color: colors.accentInk, textAlign: 'center' }}>{inRest || (exercise.score !== undefined && eventPos < 0) ? '…' : t('ui.exercise.waitingFor', { note: label(current) })}</Text>
             {bpm === null && cents !== null ? (
               <Text style={{ color: Math.abs(cents) <= (exercise.toleranceCents ?? PITCH_TOLERANCE_CENTS) ? colors.tealInk : colors.accentInk, fontWeight: '700' }}>
                 {cents > 0 ? '+' : ''}

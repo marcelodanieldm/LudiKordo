@@ -73,6 +73,11 @@ export interface PlayAlongExercise extends BaseExercise {
   tempoSteps?: number[];
   /** Si las notas con duración se muestran en tablatura (por defecto) o en pentagrama. */
   notation?: ScoreNotation;
+  /**
+   * Partitura completa, con corcheas y silencios (canciones). Si está, manda sobre
+   * `notes` para el tiempo y el dibujo; `notes` tiene que ser sus notas sin silencios.
+   */
+  score?: ScoreEvent[];
 }
 
 /** Nota de tablatura: cuerda, traste (0 = al aire) y duración en pulsos (4 redonda, 2 blanca, 1 negra). */
@@ -181,4 +186,28 @@ export interface Level {
   weeks: [number, number];
   checkpointKey: string;
   modules: Module[];
+}
+
+export type Genre = 'reggae' | 'bossa' | 'soul' | 'blues' | 'rock' | 'pop' | 'ballad';
+
+/** Canción del cancionero: una línea de bajo original para tocar sobre su cifrado. */
+export interface Song {
+  id: string;
+  titleKey: string;
+  descriptionKey: string;
+  genre: Genre;
+  /** Nivel de la ruta al que corresponde. */
+  level: 1 | 2 | 3 | 4 | 5;
+  /** Módulos que hay que terminar para desbloquearla. */
+  requires: string[];
+  /** Tonalidad, en cifrado americano («E», «Am»). */
+  key: string;
+  bpm: number;
+  tempoSteps: number[];
+  /** Un acorde por compás, en cifrado americano. */
+  chords: string[];
+  /** Línea de bajo completa: compases de 4/4. */
+  line: ScoreEvent[];
+  notation: ScoreNotation;
+  skills: Skill[];
 }

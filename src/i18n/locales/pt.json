@@ -1,5 +1,33 @@
 {
   "ui": {
+    "songbook": {
+      "eyebrow": "Cancioneiro",
+      "title": "Músicas para o seu nível",
+      "intro": "Linhas de baixo originais para tocar por gênero. Elas são liberadas com os módulos em que você aprende o que elas usam.",
+      "all": "Todas",
+      "genre": {"pop": "Pop", "rock": "Rock", "ballad": "Baladas", "blues": "Blues", "bossa": "Bossa nova", "soul": "Soul", "reggae": "Reggae"},
+      "empty": "Ainda não há músicas deste gênero.",
+      "lockedHint": "Bloqueada: mostra quais módulos faltam",
+      "meta": "{{genre}} · Nível {{level}} · {{key}} · {{bpm}} bpm",
+      "needs": "Para liberar, conclua: {{modules}}",
+      "notFound": "Não encontramos esta música.",
+      "chords": "Cifra",
+      "chordsLabel": "Acordes, compasso a compasso: {{chords}}",
+      "chordsHint": "Um acorde por compasso (dois, se o compasso muda no terceiro tempo). Sua linha toca a tônica e as notas que o acompanham.",
+      "listen": "Ouça primeiro",
+      "playPrompt": "Toque no baixo, no tempo do metrônomo.",
+      "saved": "Salvo no seu progresso. Quando você dominar a música, um andamento mais rápido é liberado.",
+      "again": "Tocar de novo",
+      "premium": "Esta música usa módulos Premium.",
+      "toPath": "Ir para a trilha",
+      "open": "Abrir o cancioneiro",
+      "today": "Para hoje: {{title}}",
+      "none": "Conclua o módulo {{module}} para liberar suas primeiras músicas.",
+      "count": "{{open}} de {{total}} músicas liberadas",
+      "keyMinor": "{{note}} menor",
+      "keyMajor": "{{note}} maior",
+      "premiumAll": "As músicas fazem parte do Premium: elas são liberadas conforme você avança na trilha."
+    },
     "figure": { "bassClef": "Pentagrama em clave de fá com a quarta linha, Fá, destacada" },
     "listen": {"play": "Ouvir o exemplo", "stop": "Parar"},
     "theory": {
@@ -209,6 +237,22 @@
     }
   },
   "content": {
+    "song": {
+      "pop_1": { "title": "Passeio de domingo", "desc": "Pop em Mi sobre a progressão I–V–vi–IV. Uma mínima e duas semínimas por compasso: pratique trocar de acorde sem perder o pulso." },
+      "rock_1": { "title": "Motor ligado", "desc": "Rock em Lá com semínimas constantes nas cordas soltas. O segredo: todas as notas igualmente fortes e regulares." },
+      "ballad_1": { "title": "Luz de vela", "desc": "Balada lenta em Ré: semibreves e mínimas que deixam cada nota soar. Ouça quanto dura cada uma." },
+      "blues_1": { "title": "Blues da capivara", "desc": "Seu primeiro blues de 12 compassos, em Mi: aprenda a forma I–IV–V que você vai encontrar em todo lugar." },
+      "bossa_1": { "title": "Brisa do porto", "desc": "Bossa nova em Mi menor com tônica e quinta em mínimas sobre acordes com sétima. Toque suave e deixe a linha respirar." },
+      "soul_1": { "title": "Domingo soul", "desc": "Soul em Sol: tônica, quinta e oitava em semínimas, e tônica e quinta nos compassos de Ré. Abafe cada nota antes da próxima para o groove ficar limpo." },
+      "reggae_1": { "title": "Sol da tarde", "desc": "Reggae em Lá menor, lido no pentagrama: o primeiro tempo fica vazio e a linha entra com duas colcheias." },
+      "pop_2": { "title": "Cidade neon", "desc": "Pop com colcheias constantes sobre vi–IV–I–V em Dó. Mantenha relaxada a mão que toca para aguentar a música inteira." },
+      "ballad_2": { "title": "Escada de outono", "desc": "Balada em Dó em que o baixo desce degrau por degrau graças às inversões: Dó, Si, Lá, Sol, Fá, Mi." },
+      "rock_2": { "title": "Tempestade elétrica", "desc": "Riff de rock em Mi menor com colcheias: a corda solta marca o pulso e as notas mais agudas dão a forma." },
+      "blues_2": { "title": "Walking da meia-noite", "desc": "Walking bass num blues em Lá: arpejos em semínimas e uma nota cromática que leva ao próximo acorde." },
+      "bossa_2": { "title": "Entardecer bossa", "desc": "Bossa nova em Dó sobre ii–V–I: a quinta entra uma colcheia antes do terceiro tempo, como no estilo." },
+      "reggae_2": { "title": "Manhã de raízes", "desc": "One drop em Mi menor: pausa no um e uma frase que sobe pela escala." },
+      "soul_2": { "title": "Noite de soul", "desc": "Soul dos anos 60 em Dó: notas de passagem que caminham até a tônica do próximo acorde. Toque curto e com intenção." }
+    },
     "l261": {
       "title": "O pentagrama e a clave de fá",
       "objective": "Reconhecer o pentagrama, a clave de fá e a nota Fá.",

@@ -15,6 +15,7 @@ Memoria compartida por todos los agentes (Antigravity, Claude Code local y en Gi
 | [0005](decisions/0005-agentes-proponen-personas-publican.md) | Los agentes proponen por PR; las personas publican | Aceptada |
 | [0006](decisions/0006-tema-escenario-nocturno.md) | Interfaz oscura «escenario nocturno», Fredoka + Nunito | Aceptada |
 | [0007](decisions/0007-objetivos-y-lectura-temprana.md) | 6 módulos nuevos (151 lecciones), clave de fa en el nivel 2, ejemplos sonoros | Aceptada |
+| [0008](decisions/0008-cancionero-original.md) | Cancionero propio con líneas originales por género y nivel | Aceptada |
 
 ## Aprendizajes y trampas
 

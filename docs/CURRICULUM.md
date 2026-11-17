@@ -105,3 +105,23 @@ Mismo formato que las lecciones modelo. Solo música original o de dominio públ
 - Intensidad por nota en los ejemplos sonoros: 4.6.4 (dinámica).
 - Timbres en el motor de audio (filtro, saturación, chorus): ejemplos de 5.6.
 - Ligaduras y puntillos en el pentagrama: lectura de 5.3.
+
+## Cancionero
+
+Canciones para practicar lo aprendido, por género y nivel (`src/content/songs.ts`, pantalla `app/cancionero/`, acceso desde Practicar). Cada canción es una **línea de bajo original** con su cifrado, un ejemplo sonoro y un play-along a tempo con el micrófono, con tempos que se desbloquean al dominarla.
+
+Una canción se abre cuando el alumno termina los módulos que pide (o saltó ese nivel por test). Si alguno de esos módulos es Premium, la canción también lo es. La lista muestra primero lo que puede tocar y todavía no domina, y después qué le falta para el resto.
+
+| Género | Nivel 1–2 | Nivel 3–4 |
+| --- | --- | --- |
+| Pop | Paseo de domingo (1.5) | Ciudad de neón (3.4) |
+| Rock | Motor en marcha (1.5) | Tormenta eléctrica (4.2) |
+| Baladas | Luz de vela (1.5) | Escalera de otoño (3.6) |
+| Blues | Blues del carpincho (1.5) | Walking de medianoche (4.4) |
+| Bossa nova | Brisa del puerto (2.3) | Atardecer bossa (4.5) |
+| Soul | Domingo soul (2.3 + 2.4) | Noche de soul (4.6) |
+| Reggae | Sol de la tarde (2.1 + 2.6) | Mañana de raíces (4.6) |
+
+Reglas: solo música original o de dominio público (nunca letras, cifrados ni líneas de canciones con derechos); un acorde por compás (o dos, cambiando en el tercer tiempo), con la raíz (o el bajo de la inversión) en la primera nota de cada acorde; con corcheas, tempo inicial de 80 bpm o menos; tablatura solo con negras, blancas y redondas; corcheas y silencios en pentagrama, después de 2.6. Las pruebas de `tests/songbook.test.ts` lo controlan.
+
+Para sumar una canción: agregarla a `SONGS`, sus textos en `content.song.<id>` de los 3 idiomas y correr `npm test`.
