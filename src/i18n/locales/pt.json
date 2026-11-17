@@ -34,6 +34,8 @@
       "courseDone": "Você terminou o curso! Revise seus módulos favoritos."
     },
     "path": {
+      "inProgress": "Em andamento",
+      "lessonsDone": "{{done}} de {{total}} aulas",
       "title": "Sua trilha",
       "levelProgress": "{{pct}}% concluído",
       "weeks": "Semanas {{from}}–{{to}}",
@@ -42,6 +44,9 @@
       "checkpoint": "Checkpoint"
     },
     "lesson": {
+      "scene": "Cena {{n}} de {{total}}",
+      "play": "Reproduzir",
+      "pause": "Pausar",
       "steps": { "watch": "Assista", "learn": "Entenda", "noBass": "Sem baixo", "withBass": "Com baixo" },
       "objective": "Objetivo",
       "subtitles": "Legendas",
@@ -55,7 +60,33 @@
       "notFound": "Esta aula ainda não foi escrita.",
       "premiumLocked": "Esta aula faz parte do Premium."
     },
+    "fretboard": {
+      "open": "Corda {{string}} solta",
+      "fret": "Corda {{string}}, casa {{fret}}"
+    },
     "exercise": {
+      "tempoHintAll": "Toque o botão em cada pulso, junto com o clique",
+      "tabHint": "Leia a tablatura da esquerda para a direita e toque cada nota na escala. O número é a casa; 0 é a corda solta.",
+      "tabLabel_one": "Tablatura de {{count}} nota",
+      "tabLabel_other": "Tablatura de {{count}} notas",
+      "tabNow": "{{figure}}: conte {{beats}}",
+      "tabDone": "Você leu a tablatura inteira! Erros: {{count}}",
+      "tempoHint": "Toque o botão em cada pulso. Depois de {{n}} pulsos o clique para: continue você",
+      "tempoTap": "Pulso",
+      "countIn": "Contagem: {{n}}",
+      "tempoWithClick": "Com clique",
+      "tempoSilent": "Agora sem clique: continue você",
+      "figure": {
+        "whole": "Semibreve",
+        "half": "Mínima",
+        "quarter": "Semínima"
+      },
+      "drift": {
+        "early": "Você está correndo: espere um pouco mais a cada pulso.",
+        "late": "Você está atrasando: antecipe um pouco o pulso.",
+        "steady": "Pulso firme!",
+        "missing": "Você parou de marcar quando o clique parou. Continue mesmo sem ouvir!"
+      },
       "correct": "Isso!",
       "wrong": "Quase. Tente outra opção.",
       "listen": "Ouvir",
@@ -75,6 +106,9 @@
       "result": "{{hits}} de {{total}} no tempo"
     },
     "practice": {
+      "bpmUnit": "bpm",
+      "tempoDown": "Diminuir andamento",
+      "tempoUp": "Aumentar andamento",
       "title": "Praticar",
       "tuner": "Afinador",
       "tunerHint": "Toque uma corda solta",
@@ -175,7 +209,7 @@
       "objective": "Nomear 9 partes do baixo e identificar as 4 cordas pelo nome e pelo som.",
       "s1": "“O baixo liga o ritmo da bateria aos acordes. Sem baixo, a banda flutua.”",
       "s2": "Mão e tarraxas, braço, trastes e marcações, corpo, captadores, ponte, botões de volume e tom, e a entrada do cabo.",
-      "s3": "Da mais grossa para a mais fina: Mi (E), Lá (A), Ré (D) e Sol (G). A mais grossa fica em cima, perto do seu rosto.",
+      "s3": "Da mais grossa para a mais fina: {{e}}, {{a}}, {{d}} e {{g}}. A mais grossa fica em cima, perto do rosto.",
       "s4": "“A mais grossa soa mais grave. Em cima fica o grave, embaixo o agudo.”",
       "c1t": "As partes do baixo",
       "c1b": "Tarraxas para afinar, braço com trastes, corpo com captadores e ponte, os botões e a entrada do cabo.",

@@ -34,6 +34,8 @@
       "courseDone": "You finished the course! Revisit your favorite modules."
     },
     "path": {
+      "inProgress": "In progress",
+      "lessonsDone": "{{done}} of {{total}} lessons",
       "title": "Your path",
       "levelProgress": "{{pct}}% complete",
       "weeks": "Weeks {{from}}–{{to}}",
@@ -42,6 +44,9 @@
       "checkpoint": "Checkpoint"
     },
     "lesson": {
+      "scene": "Scene {{n}} of {{total}}",
+      "play": "Play",
+      "pause": "Pause",
       "steps": { "watch": "Watch", "learn": "Learn", "noBass": "No bass", "withBass": "With bass" },
       "objective": "Goal",
       "subtitles": "Subtitles",
@@ -55,7 +60,33 @@
       "notFound": "This lesson hasn't been written yet.",
       "premiumLocked": "This lesson is part of Premium."
     },
+    "fretboard": {
+      "open": "Open {{string}} string",
+      "fret": "{{string}} string, fret {{fret}}"
+    },
     "exercise": {
+      "tempoHintAll": "Tap the button on every beat, along with the click",
+      "tabHint": "Read the tab from left to right and tap each note on the fretboard. The number is the fret; 0 is the open string.",
+      "tabLabel_one": "Tab with {{count}} note",
+      "tabLabel_other": "Tab with {{count}} notes",
+      "tabNow": "{{figure}}: count {{beats}}",
+      "tabDone": "You read the whole tab! Mistakes: {{count}}",
+      "tempoHint": "Tap the button on every beat. After {{n}} beats the click goes quiet: keep going",
+      "tempoTap": "Beat",
+      "countIn": "Count-in: {{n}}",
+      "tempoWithClick": "With click",
+      "tempoSilent": "No click now: keep going",
+      "figure": {
+        "whole": "Whole note",
+        "half": "Half note",
+        "quarter": "Quarter note"
+      },
+      "drift": {
+        "early": "You are rushing: wait a little longer each beat.",
+        "late": "You are dragging: anticipate the beat a little.",
+        "steady": "Steady beat!",
+        "missing": "You stopped tapping when the click went quiet. Keep going even when you can't hear it!"
+      },
       "correct": "Exactly!",
       "wrong": "Close. Try another option.",
       "listen": "Listen",
@@ -75,6 +106,9 @@
       "result": "{{hits}} of {{total}} on time"
     },
     "practice": {
+      "bpmUnit": "bpm",
+      "tempoDown": "Slower",
+      "tempoUp": "Faster",
       "title": "Practice",
       "tuner": "Tuner",
       "tunerHint": "Play an open string",
@@ -175,7 +209,7 @@
       "objective": "Name 9 parts of the bass and identify the 4 strings by name and by sound.",
       "s1": "“The bass ties the drums' rhythm to the chords. Without bass, the band floats.”",
       "s2": "Headstock and tuning pegs, neck, frets and markers, body, pickups, bridge, volume and tone knobs, and the cable jack.",
-      "s3": "From thickest to thinnest: E, A, D and G. The thickest is on top, closest to your face.",
+      "s3": "From thickest to thinnest: {{e}}, {{a}}, {{d}} and {{g}}. The thickest goes on top, nearest your face.",
       "s4": "“The thickest string sounds the lowest. Low is on top, high is at the bottom.”",
       "c1t": "Parts of the bass",
       "c1b": "Tuning pegs, a neck with frets, a body with pickups and bridge, the knobs and the cable jack.",

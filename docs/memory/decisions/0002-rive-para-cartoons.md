@@ -7,8 +7,8 @@ Hay 123 lecciones, cada una con un cartoon de 1 a 3 minutos, en 3 idiomas. Produ
 
 ## Decisión
 Cada cartoon es un archivo Rive (`.riv`) con:
-- una *state machine* con un input numérico `scene` (1–4) que avanza las escenas;
-- un *view model* con una propiedad de texto `subtitle` que la app llena desde i18n;
+- una *state machine* `Lesson` que avanza las escenas;
+- un *view model* `Cartoon` con `scene` (número), `talking` (booleano) y `subtitle` (texto) que la app actualiza por data binding (actualizado 2026-11-10: antes `scene` y `talking` eran inputs de state machine, que Rive marcó como obsoletos);
 - la voz como pista de audio separada por idioma.
 
 Una animación sirve para los 3 idiomas. El reproductor (`src/components/CartoonPlayer.tsx`) cae en Kordi estático con subtítulos mientras no exista el `.riv`.
