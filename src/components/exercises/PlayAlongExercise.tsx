@@ -1,12 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { Text } from '../Text';
 import { useTranslation } from 'react-i18next';
 import { Button, Stars } from '../ui';
-import { colors, radius } from '../../theme';
+import { colors, radius, fonts } from '../../theme';
 import { listenNotes, listenPitch, requestMic, type Listener, type MicStatus } from '../../audio/mic';
-import { nowMs, startMetronome, type MetronomeHandle } from '../../audio/engine';
+import { nowMs, startMetronome, stopActiveSequence, type MetronomeHandle } from '../../audio/engine';
 import { centsOff, midiAt, noteName, type Locale } from '../../music/notes';
-import { expectedTimes, PITCH_TOLERANCE_CENTS, scorePlayAlong, starsFor, type DetectedNote } from '../../music/scoring';
+import { noteIndexAt, PITCH_TOLERANCE_CENTS, scorePlayAlong, starsFor, type DetectedNote } from '../../music/scoring';
+import { TabStaff } from '../TabStaff';
+import { Staff } from '../Staff';
+import { Score } from '../Listen';
+import { eventAt, isRest, noteStartBeats } from '../../music/staff';
+import type { ScoreEvent } from '../../content/types';
 import { useSettings } from '../../state/settings';
 import { useProgress } from '../../state/progress';
 import type { PlayAlongExercise as PlayEx } from '../../content/types';
@@ -21,7 +27,23 @@ const SELF_CHECK_STARS = 2;
  * Sin tempo: la app espera cada nota (o afinación) antes de pasar a la siguiente.
  * Si el micrófono no está disponible o falla dos veces seguidas, ofrece autoevaluación.
  */
-export function PlayAlongExercise({ exercise, onDone, mastery }: { exercise: PlayEx; onDone: (stars: number) => void; mastery: number }) {
+export function PlayAlongExercise({
+  exercise,
+  onDone,
+  mastery,
+  width,
+  onRunningChange,
+  allowSelfCheck = true,
+}: {
+  exercise: PlayEx;
+  onDone: (stars: number) => void;
+  mastery: number;
+  width: number;
+  /** Avisa cuando empieza y termina la toma (por ejemplo, para callar otros sonidos). */
+  onRunningChange?: (running: boolean) => void;
+  /** En un checkpoint no hay autoevaluación: aprobar exige que la app oiga las notas. */
+  allowSelfCheck?: boolean;
+}) {
   const { t, i18n } = useTranslation();
   const notation = useSettings((s) => s.notation);
   const unlocked = useProgress((s) => s.tempo[exercise.id]);
@@ -31,25 +53,49 @@ export function PlayAlongExercise({ exercise, onDone, mastery }: { exercise: Pla
   const [phase, setPhase] = useState<Phase>('intro');
   const [mic, setMic] = useState<MicStatus>('ok');
   const [index, setIndex] = useState(0);
+  /** Evento actual de la partitura (con silencios), o -1 durante la cuenta. Solo con `score`. */
+  const [eventPos, setEventPos] = useState(-1);
   const [cents, setCents] = useState<number | null>(null);
   const [result, setResult] = useState<{ hits: number; total: number; stars: number; next?: number } | null>(null);
   const [failures, setFailures] = useState(0);
   const listener = useRef<Listener | null>(null);
   const metro = useRef<MetronomeHandle | null>(null);
+  const timers = useRef<{ tick?: ReturnType<typeof setInterval>; end?: ReturnType<typeof setTimeout> }>({});
+  const mounted = useRef(true);
 
   const stopAll = () => {
+    if (timers.current.tick) clearInterval(timers.current.tick);
+    if (timers.current.end) clearTimeout(timers.current.end);
+    timers.current = {};
     listener.current?.stop();
     listener.current = null;
     metro.current?.stop();
     metro.current = null;
   };
-  useEffect(() => stopAll, []);
+  useEffect(
+    () => () => {
+      mounted.current = false;
+      stopAll();
+    },
+    [],
+  );
 
-  const targets = exercise.notes.map((n) => midiAt(n.string, n.fret));
+  // Una canción trae su partitura con silencios y corcheas; si no, las notas son negras, blancas o redondas.
+  const events: ScoreEvent[] = exercise.score ?? exercise.notes.map((n) => ({ string: n.string, fret: n.fret, beats: n.beats ?? 1 }));
+  const noteEvents = events.filter((ev): ev is Extract<ScoreEvent, { string: unknown }> => !isRest(ev));
+  const targets = noteEvents.map((n) => midiAt(n.string, n.fret));
+  const startBeats = noteStartBeats(events);
+  const eventStarts = events.map((_, i) => events.slice(0, i).reduce((a, ev) => a + ev.beats, 0));
+  const inRest = exercise.score !== undefined && eventPos >= 0 && isRest(events[eventPos]);
+  const totalBeats = events.reduce((a, ev) => a + ev.beats, 0);
+  // Con figuras de distinta duración, las notas se muestran como tablatura.
+  const asTab = exercise.notes.some((n) => (n.beats ?? 1) !== 1);
   const label = (midi: number) => noteName(midi, i18n.language as Locale, notation);
 
   const finishWith = (hits: number, total: number) => {
     stopAll();
+    // Si la pantalla ya se cerró, no se guarda progreso ni se cambia el estado.
+    if (!mounted.current) return;
     const stars = starsFor(total ? hits / total : 0, mastery);
     let next: number | undefined;
     if (stars === 3 && bpm !== null && exercise.tempoSteps) {
@@ -61,7 +107,13 @@ export function PlayAlongExercise({ exercise, onDone, mastery }: { exercise: Pla
     setPhase('result');
   };
 
+  useEffect(() => {
+    onRunningChange?.(phase === 'running');
+  }, [phase]);
+
   const start = async () => {
+    // Un ejemplo sonoro de la misma pantalla no debe sonar durante la toma.
+    stopActiveSequence();
     const status = await requestMic();
     setMic(status);
     if (status !== 'ok') {
@@ -70,6 +122,7 @@ export function PlayAlongExercise({ exercise, onDone, mastery }: { exercise: Pla
     }
     setResult(null);
     setIndex(0);
+    setEventPos(-1);
     setPhase('running');
 
     if (bpm === null) {
@@ -95,59 +148,87 @@ export function PlayAlongExercise({ exercise, onDone, mastery }: { exercise: Pla
 
     // Con tempo: metrónomo con cuenta de 4 y escucha de ataques.
     const detected: DetectedNote[] = [];
-    metro.current = startMetronome(bpm, targets.length);
+    metro.current = startMetronome(bpm, totalBeats);
     const startMs = metro.current.startMs;
     listener.current = await listenNotes((n) => detected.push(n));
     if (!listener.current) {
+      // Sin detección, el metrónomo ya programado no debe seguir sonando.
+      stopAll();
       setPhase('self');
       return;
     }
     const step = 60000 / bpm;
-    const tick = setInterval(() => setIndex(Math.max(0, Math.floor((nowMs() - startMs) / step))), 100);
-    setTimeout(() => {
-      clearInterval(tick);
-      const expected = expectedTimes(targets.length, bpm, startMs);
+    const expected = startBeats.map((b) => startMs + b * step);
+    timers.current.tick = setInterval(() => {
+      const now = nowMs();
+      setIndex(Math.max(0, noteIndexAt(expected, now)));
+      // Con partitura: el evento que toca ahora, silencios incluidos; -1 durante la cuenta.
+      const beat = (now - startMs) / step;
+      setEventPos(beat < 0 ? -1 : eventAt(eventStarts, beat));
+    }, 100);
+    timers.current.end = setTimeout(() => {
       const r = scorePlayAlong(expected.map((timeMs, k) => ({ timeMs, midi: targets[k] })), detected);
       finishWith(r.hits, r.total);
-    }, startMs - nowMs() + targets.length * step + 800);
+    }, startMs - nowMs() + totalBeats * step + 800);
   };
 
   const current = targets[Math.min(index, targets.length - 1)];
 
   return (
     <View style={{ gap: 14 }}>
-      <Text style={{ fontSize: 22, fontWeight: '700', color: colors.ink }}>{t(exercise.promptKey)}</Text>
+      <Text style={{ fontFamily: fonts.display, fontSize: 24, lineHeight: 30, color: colors.ink }}>{t(exercise.promptKey)}</Text>
       <Text style={{ color: colors.muted }}>
         {bpm !== null ? `${t('ui.exercise.tempo', { bpm })} · ` : ''}
         {t('ui.exercise.headphones')}
       </Text>
 
       <View style={{ backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1, borderRadius: radius.xl, padding: 16, gap: 10, alignItems: 'center' }}>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, justifyContent: 'center' }}>
-          {exercise.notes.map((n, k) => (
-            <View
-              key={k}
-              style={{
-                minWidth: 40,
-                paddingHorizontal: 8,
-                height: 40,
-                borderRadius: 10,
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: phase === 'running' && k === index ? colors.accent : k < index ? colors.tealSoft : colors.track,
-              }}
-            >
-              <Text style={{ fontWeight: '800', color: phase === 'running' && k === index ? '#FFFFFF' : colors.ink }}>
-                {n.string}
-                {n.fret}
-              </Text>
-            </View>
-          ))}
-        </View>
+        {exercise.score ? (
+          <Score
+            events={exercise.score}
+            notation={exercise.notation ?? 'tab'}
+            width={width - 34}
+            current={phase === 'running' ? eventPos : -1}
+          />
+        ) : exercise.notation === 'staff' ? (
+          <Staff
+            events={exercise.notes.map((n) => ({ string: n.string, fret: n.fret, beats: n.beats ?? 1 }))}
+            width={width - 34}
+            current={phase === 'running' ? index : -1}
+          />
+        ) : asTab ? (
+          <TabStaff
+            notes={exercise.notes.map((n) => ({ string: n.string, fret: n.fret, beats: n.beats ?? 1 }))}
+            width={width - 34}
+            current={phase === 'running' ? index : -1}
+          />
+        ) : (
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, justifyContent: 'center' }}>
+            {exercise.notes.map((n, k) => (
+              <View
+                key={k}
+                style={{
+                  minWidth: 40,
+                  paddingHorizontal: 8,
+                  height: 40,
+                  borderRadius: 10,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: phase === 'running' && k === index ? colors.accent : k < index ? colors.tealSoft : colors.track,
+                }}
+              >
+                <Text style={{ fontWeight: '800', color: phase === 'running' && k === index ? colors.onAccent : colors.ink }}>
+                  {n.string}
+                  {n.fret}
+                </Text>
+              </View>
+            ))}
+          </View>
+        )}
         {phase === 'running' ? (
           <>
             <Text style={{ fontSize: 16, fontWeight: '800', color: colors.teal }}>{t('ui.exercise.listening')}</Text>
-            <Text style={{ fontSize: 28, fontWeight: '700', color: colors.ink }}>{t('ui.exercise.waitingFor', { note: label(current) })}</Text>
+            <Text style={{ fontFamily: fonts.display, fontSize: 28, lineHeight: 34, color: colors.accentInk, textAlign: 'center' }}>{inRest || (exercise.score !== undefined && eventPos < 0) ? '…' : t('ui.exercise.waitingFor', { note: label(current) })}</Text>
             {bpm === null && cents !== null ? (
               <Text style={{ color: Math.abs(cents) <= (exercise.toleranceCents ?? PITCH_TOLERANCE_CENTS) ? colors.tealInk : colors.accentInk, fontWeight: '700' }}>
                 {cents > 0 ? '+' : ''}
@@ -177,12 +258,12 @@ export function PlayAlongExercise({ exercise, onDone, mastery }: { exercise: Pla
             <Button style={{ flex: 1 }} variant="secondary" label={t('ui.exercise.retry')} onPress={() => void start()} />
             <Button style={{ flex: 1 }} label={t('ui.common.next')} disabled={result.stars === 0} onPress={() => onDone(result.stars)} />
           </View>
-          {failures >= 2 ? <Button variant="teal" label={t('ui.exercise.selfOk')} onPress={() => onDone(SELF_CHECK_STARS)} /> : null}
+          {allowSelfCheck && failures >= 2 ? <Button variant="teal" label={t('ui.exercise.selfOk')} onPress={() => onDone(SELF_CHECK_STARS)} /> : null}
         </View>
       ) : null}
       {phase === 'self' ? (
         <View style={{ flexDirection: 'row', gap: 10 }}>
-          <Button style={{ flex: 1 }} variant="teal" label={t('ui.exercise.selfOk')} onPress={() => onDone(SELF_CHECK_STARS)} />
+          {allowSelfCheck ? <Button style={{ flex: 1 }} variant="teal" label={t('ui.exercise.selfOk')} onPress={() => onDone(SELF_CHECK_STARS)} /> : null}
           <Button style={{ flex: 1 }} variant="secondary" label={t('ui.exercise.retry')} onPress={() => setPhase('intro')} />
         </View>
       ) : null}

@@ -66,3 +66,16 @@ export function openStringFreqs(): Record<StringId, number> {
     G: midiToFreq(43),
   };
 }
+
+const LETTER_PC: Record<string, number> = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
+
+/**
+ * Nombre de nota para una opción literal de ejercicio escrita en letras («E»,
+ * «F♯»), según idioma y notación del alumno. Devuelve null si no es una nota.
+ */
+export function letterNoteLabel(text: string, locale: Locale, notation: Notation): string | null {
+  const m = /^([A-G])(♯)?$/.exec(text);
+  if (!m) return null;
+  const pc = (LETTER_PC[m[1]] + (m[2] ? 1 : 0)) % 12;
+  return noteName(24 + pc, locale, notation);
+}
