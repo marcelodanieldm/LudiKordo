@@ -1,5 +1,6 @@
 {
   "ui": {
+    "figure": { "bassClef": "Pentagrama em clave de fá com a quarta linha, Fá, destacada" },
     "listen": {"play": "Ouvir o exemplo", "stop": "Parar"},
     "theory": {
       "open": "Ficha teórica",

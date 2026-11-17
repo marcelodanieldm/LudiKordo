@@ -16,14 +16,14 @@ import type { Locale } from '../music/notes';
  * y se muestran aquí mismo. Mientras tanto, un marcador con Kordi.
  */
 export function Figure({ id, width }: { id: FigureId; width: number }) {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { notation, hand } = useSettings();
   const locale = i18n.language as Locale;
   const left = hand === 'left';
 
   switch (id) {
     case 'bass-clef':
-      return <Staff events={[]} width={width} highlightLine={6} />;
+      return <Staff events={[]} width={width} highlightLine={6} accessibilityLabel={t('ui.figure.bassClef')} />;
     case 'fretboard-1234':
       return (
         <Fretboard

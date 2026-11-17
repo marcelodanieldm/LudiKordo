@@ -30,7 +30,7 @@ export function Score({ events, notation, width, current, noteNames }: { events:
  * Ejemplo sonoro de una tarjeta: dibuja la notación (si corresponde) y lo toca
  * con un tono sintetizado. Se corta al desmontar o al tocar «Detener».
  */
-export function Listen({ example, width }: { example: ListenExample; width: number }) {
+export function Listen({ example, width, testID = 'listen' }: { example: ListenExample; width: number; testID?: string }) {
   const { t } = useTranslation();
   const [playing, setPlaying] = useState(false);
   const handle = useRef<SequenceHandle | null>(null);
@@ -51,7 +51,13 @@ export function Listen({ example, width }: { example: ListenExample; width: numb
     const offset = example.click ? LISTEN_COUNT_IN : 0;
     const notes = listenSchedule(example.events, example.bpm, offset);
     const beats = example.events.reduce((a, e) => a + e.beats, 0) + offset;
-    handle.current = playSequence(notes, example.click ? { bpm: example.bpm, beats } : undefined);
+    handle.current = playSequence(notes, example.click ? { bpm: example.bpm, beats } : undefined, () => {
+      // Otro ejemplo empezó a sonar y cortó este.
+      handle.current = null;
+      if (timer.current) clearTimeout(timer.current);
+      timer.current = null;
+      setPlaying(false);
+    });
     setPlaying(true);
     timer.current = setTimeout(() => {
       handle.current = null;
@@ -66,7 +72,7 @@ export function Listen({ example, width }: { example: ListenExample; width: numb
         variant="secondary"
         label={playing ? t('ui.listen.stop') : t('ui.listen.play')}
         onPress={playing ? stop : play}
-        testID="listen"
+        testID={testID}
       />
     </View>
   );

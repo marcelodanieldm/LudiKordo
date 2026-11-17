@@ -28,15 +28,17 @@ export function Staff({
   current = -1,
   noteNames = false,
   highlightLine,
+  accessibilityLabel,
 }: {
   events: ScoreEvent[];
   width: number;
   current?: number;
   noteNames?: boolean;
   highlightLine?: number;
+  accessibilityLabel?: string;
 }) {
   const { t, i18n } = useTranslation();
-  const { notation } = useSettings();
+  const notation = useSettings((s) => s.notation);
   const locale = i18n.language as Locale;
   const placed = placeScore(events);
   const layout = layoutScore(events, width);
@@ -54,7 +56,7 @@ export function Staff({
       horizontal
       scrollEnabled={svgW > width}
       accessibilityRole="image"
-      accessibilityLabel={t('ui.exercise.staffLabel', { count: notesCount })}
+      accessibilityLabel={accessibilityLabel ?? t('ui.exercise.staffLabel', { count: notesCount })}
     >
       <Svg width={svgW} height={rows * rowH}>
         {Array.from({ length: rows }, (_, r) => {
@@ -111,7 +113,7 @@ export function Staff({
           const y = yOf(row, pos);
           const up = p.stemUp!;
           const stemX = up ? x + 6 : x - 6;
-          const stemEnd = up ? y - 38 : y + 38;
+          const stemEnd = yOf(row, p.stemTip!);
           const hollow = fig === 'whole' || fig === 'half';
           const partner = p.beamWith !== undefined ? layout.items[p.beamWith] : undefined;
           const ev = p.event as { string: 'E' | 'A' | 'D' | 'G'; fret: number };
@@ -121,12 +123,8 @@ export function Staff({
               {ledgerLines(pos).map((lp) => (
                 <Line key={lp} x1={x - 11} x2={x + 11} y1={yOf(row, lp)} y2={yOf(row, lp)} stroke={colors.line} strokeWidth={1.5} />
               ))}
-              {p.sharp ? (
-                <SvgText x={x - 17} y={y + 6} fontSize={17} fill={c} textAnchor="middle" fontFamily={fonts.black}>
-                  ♯
-                </SvgText>
-              ) : null}
-              <G rotation={-20} origin={`${x}, ${y}`}>
+              {p.sharp ? <SharpGlyph x={x - 18} y={y} color={c} /> : null}
+              <G transform={`rotate(-20 ${x} ${y})`}>
                 <Ellipse cx={x} cy={y} rx={6.8} ry={4.8} fill={hollow ? "none" : c} stroke={c} strokeWidth={hollow ? 2.2 : 0} />
               </G>
               {fig !== 'whole' ? <Line x1={stemX} x2={stemX} y1={y} y2={stemEnd} stroke={c} strokeWidth={1.8} /> : null}
@@ -135,7 +133,7 @@ export function Staff({
                   x1={stemX}
                   x2={up ? partner.x + 6 : partner.x - 6}
                   y1={stemEnd}
-                  y2={stemEnd}
+                  y2={yOf(row, placed[p.beamWith!].stemTip!)}
                   stroke={c}
                   strokeWidth={5}
                 />
@@ -158,6 +156,18 @@ export function Staff({
         })}
       </Svg>
     </ScrollView>
+  );
+}
+
+/** Sostenido dibujado con trazos (no depende de que la fuente tenga ♯). */
+function SharpGlyph({ x, y, color }: { x: number; y: number; color: string }) {
+  return (
+    <G>
+      <Line x1={x - 2} x2={x - 2} y1={y - 10} y2={y + 11} stroke={color} strokeWidth={1.4} />
+      <Line x1={x + 2} x2={x + 2} y1={y - 11} y2={y + 10} stroke={color} strokeWidth={1.4} />
+      <Line x1={x - 5} x2={x + 5} y1={y - 2} y2={y - 5} stroke={color} strokeWidth={2.6} />
+      <Line x1={x - 5} x2={x + 5} y1={y + 5} y2={y + 2} stroke={color} strokeWidth={2.6} />
+    </G>
   );
 }
 

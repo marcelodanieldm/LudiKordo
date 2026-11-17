@@ -77,3 +77,13 @@ test('ejemplos sonoros: tiempos, silencios y octava de reproducción', () => {
   assert.equal(listenLengthSec(ev, 60), 4);
   assert.equal(listenLengthSec(ev, 60, true), 8);
 });
+
+test('pentagrama: dos corcheas unidas comparten la altura de la barra', () => {
+  // Sol (posición 0) y Re (posición 4): plica hacia arriba desde la más lejana del medio.
+  const p = placeScore([{ string: 'E', fret: 3, beats: 0.5 }, { string: 'D', fret: 0, beats: 0.5 }, { rest: true, beats: 1 }, { rest: true, beats: 2 }]);
+  assert.equal(p[0].stemUp, true);
+  assert.equal(p[1].stemUp, true);
+  assert.equal(p[0].stemTip, p[1].stemTip);
+  // Ninguna plica queda más corta que una normal.
+  assert.ok(p[0].stemTip! >= Math.max(p[0].pos!, p[1].pos!) + 7);
+});

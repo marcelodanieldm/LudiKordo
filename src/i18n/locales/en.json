@@ -1,5 +1,6 @@
 {
   "ui": {
+    "figure": { "bassClef": "Staff in bass clef with the fourth line, F, highlighted" },
     "listen": {"play": "Listen to the example", "stop": "Stop"},
     "theory": {
       "open": "Theory sheet",

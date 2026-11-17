@@ -40,12 +40,12 @@ export default function TheorySheetScreen() {
             {sheet.sections.map((sec) => (
               <View key={sec.lessonId} style={{ gap: 10 }}>
                 <Text style={{ fontFamily: fonts.display, fontSize: 20, lineHeight: 26, color: colors.gold }}>{`${sec.lessonId} · ${t(sec.titleKey)}`}</Text>
-                {sec.cards.map((c) => (
+                {sec.cards.map((c, i) => (
                   <Card key={c.titleKey} style={{ gap: 10 }}>
                     <Text style={{ fontFamily: fonts.display, fontSize: 18, lineHeight: 24 }}>{t(c.titleKey)}</Text>
                     {c.figure ? <Figure id={c.figure} width={cardInner} /> : null}
                     <Text style={{ fontSize: 16, lineHeight: 24, color: colors.ink }}>{t(c.bodyKey)}</Text>
-                    {c.listen ? <Listen example={c.listen} width={cardInner} /> : null}
+                    {c.listen ? <Listen example={c.listen} width={cardInner} testID={`listen-${sec.lessonId}-${i}`} /> : null}
                   </Card>
                 ))}
               </View>

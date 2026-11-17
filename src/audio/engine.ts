@@ -54,7 +54,7 @@ export function startMetronome(bpm: number, beats: number, countIn = 4, beatsPer
       stopped = true;
       // Cerrar y recrear el contexto corta los clics ya programados.
       void c.close();
-      ctx = null;
+      if (ctx === c) ctx = null;
     },
   };
 }
@@ -90,10 +90,21 @@ export interface SequenceHandle {
  * Toca un ejemplo sonoro ya calculado (src/music/listen.ts), con clic opcional.
  * Todo queda programado en el reloj de audio; `stop` lo corta de inmediato.
  */
+let activeSequence: { stop: () => void; onInterrupt?: () => void } | null = null;
+
 export function playSequence(
   notes: { freq: number; startSec: number; durSec: number }[],
   clickBeats?: { bpm: number; beats: number },
+  /** Se llama si otro ejemplo empieza y corta a este. */
+  onInterrupt?: () => void,
 ): SequenceHandle {
+  // Un solo ejemplo a la vez: el anterior se corta y se entera.
+  if (activeSequence) {
+    const prev = activeSequence;
+    activeSequence = null;
+    prev.stop();
+    prev.onInterrupt?.();
+  }
   const c = context();
   const t0 = c.currentTime + 0.15;
   if (clickBeats) {
@@ -115,14 +126,17 @@ export function playSequence(
     osc.stop(at + Math.max(0.08, n.durSec) + 0.02);
   }
   let stopped = false;
-  return {
+  const handle = {
+    onInterrupt,
     stop: () => {
       if (stopped) return;
       stopped = true;
-      // Igual que el metrónomo: cerrar el contexto corta lo ya programado.
-      const old = ctx;
-      ctx = null;
-      void old?.close();
+      if (activeSequence === handle) activeSequence = null;
+      // Igual que el metrónomo: cerrar su propio contexto corta lo ya programado.
+      void c.close();
+      if (ctx === c) ctx = null;
     },
   };
+  activeSequence = handle;
+  return { stop: handle.stop };
 }

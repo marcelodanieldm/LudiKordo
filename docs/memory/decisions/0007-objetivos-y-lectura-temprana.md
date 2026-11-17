@@ -16,5 +16,6 @@ Marcelo pidió sumar al curso los objetivos del programa de bajo de Rock School 
 
 ## Consecuencias
 - El id `5.5` cambió de significado: si alguien guardó progreso de 5.5 (nadie todavía, no hay lecciones escritas), habría que migrarlo.
+- Insertar un módulo en medio de un nivel cambia qué lección desbloquea a la siguiente (por ejemplo, 3.1.1 ahora pide 2.6.5). Hoy no hay progreso en el nivel 2; cuando haya lecciones publicadas, un cambio así exige migrar el progreso guardado.
 - Mapa de objetivos y plan de los módulos pendientes: `docs/CURRICULUM.md`.
 - Pendientes de código: semicorcheas en partitura, intensidad por nota, timbres y ligaduras (ver el mapa).

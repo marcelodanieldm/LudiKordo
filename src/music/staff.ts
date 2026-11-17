@@ -99,7 +99,12 @@ export interface PlacedEvent {
   stemUp?: boolean;
   /** Índice de la otra corchea con la que comparte barra (pares en el mismo pulso). */
   beamWith?: number;
+  /** Posición (en medias líneas) donde termina la plica; en corcheas unidas, la misma para las dos. */
+  stemTip?: number;
 }
+
+/** Largo de una plica: 3 espacios y medio. */
+export const STEM_POS = 7;
 
 export function placeScore(events: ScoreEvent[]): PlacedEvent[] {
   let beat = 0;
@@ -110,6 +115,7 @@ export function placeScore(events: ScoreEvent[]): PlacedEvent[] {
       p.pos = staffPos(w);
       p.sharp = spell(w).sharp;
       p.stemUp = stemUp(p.pos);
+      p.stemTip = p.stemUp ? p.pos + STEM_POS : p.pos - STEM_POS;
     }
     beat += e.beats;
     return p;
@@ -125,6 +131,10 @@ export function placeScore(events: ScoreEvent[]): PlacedEvent[] {
       const up = Math.abs(a.pos! - 4) >= Math.abs(b.pos! - 4) ? a.stemUp! : b.stemUp!;
       a.stemUp = up;
       b.stemUp = up;
+      // La barra queda a una altura común: ninguna plica más corta que lo normal.
+      const tip = up ? Math.max(a.pos!, b.pos!) + STEM_POS : Math.min(a.pos!, b.pos!) - STEM_POS;
+      a.stemTip = tip;
+      b.stemTip = tip;
       i++;
     }
   }
@@ -133,8 +143,8 @@ export function placeScore(events: ScoreEvent[]): PlacedEvent[] {
 
 /** Ancho fijo de la clave al comienzo de cada renglón. */
 export const CLEF_W = 46;
-/** Ancho mínimo de un pulso: entran dos corcheas con sostenido. */
-export const MIN_STAFF_BEAT_W = 34;
+/** Ancho mínimo de un pulso: entran dos corcheas, la segunda con sostenido. */
+export const MIN_STAFF_BEAT_W = 44;
 
 export interface ScoreLayout {
   barsPerRow: number;

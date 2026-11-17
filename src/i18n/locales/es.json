@@ -1,5 +1,6 @@
 {
   "ui": {
+    "figure": { "bassClef": "Pentagrama en clave de fa con la cuarta línea, Fa, resaltada" },
     "listen": {"play": "Escuchar ejemplo", "stop": "Detener"},
     "theory": {
       "open": "Ficha teórica",
@@ -269,7 +270,7 @@
       "c2t": "Los silencios",
       "c2b": "Cada figura tiene su silencio, que dura lo mismo. El de redonda cuelga de la 4.ª línea; el de blanca se apoya sobre la 3.ª. Durante un silencio, apaga la cuerda y sigue contando.",
       "c3t": "Plicas arriba y abajo",
-      "c3b": "Las notas de abajo llevan la plica hacia arriba, a la derecha. Desde la línea del medio, hacia abajo, a la izquierda. No cambia el sonido: solo hace la partitura más fácil de leer.",
+      "c3b": "Las notas de abajo llevan la plica hacia arriba, a la derecha. Desde la línea del medio hacia arriba, la plica va hacia abajo, a la izquierda. No cambia el sonido: solo hace la partitura más fácil de leer.",
       "q1": "¿Cuántos pulsos dura cada una de estas notas?",
       "q1h": "Hueca y con plica: es una blanca.",
       "q2": "¿Cuántas notas suenan en este compás?",
@@ -283,11 +284,11 @@
       "title": "Las notas de Mi y La en el pentagrama",
       "objective": "Leer y escribir las notas naturales de las cuerdas Mi y La, y el sostenido.",
       "s1": "«En la cuerda Mi ya conoces Fa y Sol. ¿Dónde se escriben? Subiendo, una por una.»",
-      "s2": "Mi, Fa, Sol: línea adicional, espacio de abajo, primera línea. Cada nota natural sube un escalón.",
+      "s2": "Mi, Fa, Sol: línea adicional, espacio debajo del pentagrama, primera línea. Cada nota natural sube un escalón.",
       "s3": "«¿Un numeral junto al Fa? No: es un sostenido. Sube medio tono, un traste.»",
       "s4": "Escribir es lo mismo al revés: escuchas la nota, ubicas el escalón y la dibujas.",
       "c1t": "Mi, Fa y Sol",
-      "c1b": "En la cuerda Mi: Mi al aire va en la línea adicional; Fa (traste 1), en el espacio de abajo del pentagrama; Sol (traste 3), en la primera línea.",
+      "c1b": "En la cuerda Mi: Mi al aire va en la línea adicional; Fa (traste 1), en el espacio debajo del pentagrama; Sol (traste 3), en la primera línea.",
       "c2t": "La, Si, Do y Re",
       "c2b": "En la cuerda La: La al aire en el primer espacio; Si (traste 2) en la 2.ª línea; Do (traste 3) en el 2.º espacio; Re (traste 5) en la línea del medio.",
       "c3t": "El sostenido",
@@ -356,7 +357,7 @@
     },
     "goal": {
       "1_1": "Conocer las partes del bajo y sus cuerdas, y afinarlo solo.",
-      "1_2": "Sentarte y pararte con buena postura y pulsar alternando i y m.",
+      "1_2": "Sentarte y ponerte de pie con buena postura y pulsar alternando i y m.",
       "1_3": "Pisar las notas con un dedo por traste y sin tensión.",
       "1_4": "Leer tablatura y tocar a tempo con el metrónomo.",
       "1_5": "Tocar tus primeras líneas de bajo completas sobre una base.",
