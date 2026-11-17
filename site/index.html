@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LudiKordo · Aprende bajo de cero a intermedio</title>
+<meta name="description" content="LudiKordo: la app para aprender bajo de 4 cuerdas, de cero a intermedio, con lecciones de 15 minutos, cartoons, ejercicios con y sin bajo y un cancionero por nivel.">
+<meta name="theme-color" content="#14121F">
+<meta property="og:title" content="LudiKordo · Aprende bajo de cero a intermedio">
+<meta property="og:description" content="Lecciones cortas, Kordi el carpincho bajista, ejercicios que escuchan tu bajo y canciones para tu nivel. Android, teléfono y tablet.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2314121F'/%3E%3Cellipse cx='26' cy='40' rx='14' ry='10' fill='%23FF6B2C' transform='rotate(-24 26 40)'/%3E%3Crect x='10' y='34' width='48' height='5' rx='2' fill='%23F5B83D' transform='rotate(-24 34 36)'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#14121F; --card:#1F1C2E; --raised:#2A2640; --line:#3A3552; --border:#2E2A44;
+    --ink:#F5F1E8; --muted:#B3ADC7; --accent:#FF6B2C; --accent-ink:#FF8A57; --accent-shadow:#B4441A;
+    --gold:#F5B83D; --teal:#3FD0C9; --on-accent:#1A0F08; --night:#0E0C17;
+    --radius:22px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent-ink)}
+  h1,h2,h3{font-family:Fredoka,Nunito,sans-serif;font-weight:600;line-height:1.12;margin:0}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+  .eyebrow{font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-ink)}
+  .muted{color:var(--muted)}
+  section{padding:84px 0}
+  section h2{font-size:clamp(30px,4.2vw,44px);margin:10px 0 14px}
+  section .lead{max-width:640px;color:var(--muted);font-size:18px;margin:0}
+
+  /* Barra superior */
+  header.top{position:sticky;top:0;z-index:20;background:rgba(20,18,31,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+  header.top .wrap{display:flex;align-items:center;gap:16px;min-height:64px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:Fredoka,sans-serif;font-weight:700;font-size:22px;text-decoration:none;color:var(--ink)}
+  .brand b{color:var(--accent)}
+  nav.links{display:flex;gap:18px;margin-left:auto}
+  nav.links a{color:var(--muted);text-decoration:none;font-weight:700;font-size:15px}
+  nav.links a:hover{color:var(--ink)}
+  .lang{display:inline-flex;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:3px}
+  .lang button{min-height:36px;min-width:44px;border:0;border-radius:999px;background:transparent;color:var(--muted);font:800 13px Nunito,sans-serif;cursor:pointer}
+  .lang button[aria-pressed=true]{background:var(--raised);color:var(--ink)}
+  @media (max-width:820px){nav.links{display:none}.lang{margin-left:auto}}
+
+  /* Botones */
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 24px;border-radius:16px;border:0;font:800 17px Nunito,sans-serif;text-decoration:none;cursor:pointer;transition:transform .08s, box-shadow .08s}
+  .btn.primary{background:var(--accent);color:var(--on-accent);box-shadow:0 5px 0 var(--accent-shadow)}
+  .btn.primary:active{transform:translateY(4px);box-shadow:0 1px 0 var(--accent-shadow)}
+  .btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+  .btn:focus-visible,.lang button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+
+  /* Portada */
+  .hero{padding:56px 0 72px;position:relative;overflow:hidden}
+  .hero .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+  .hero h1{font-size:clamp(40px,6.4vw,72px);margin:14px 0 18px}
+  .hero h1 span{color:var(--accent)}
+  .hero p.lead{font-size:20px;color:var(--muted);max-width:560px;margin:0 0 28px}
+  .hero .ctas{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+  .hero .facts{display:flex;flex-wrap:wrap;gap:22px;margin-top:34px}
+  .fact b{display:block;font-family:Fredoka,sans-serif;font-size:30px;color:var(--gold);line-height:1}
+  .fact span{font-size:14px;color:var(--muted);font-weight:700}
+  .stage{position:relative;aspect-ratio:1/1;max-width:500px;margin-left:auto;width:100%}
+  .stage svg{width:100%;height:100%}
+  @media (max-width:900px){.hero .grid{grid-template-columns:1fr}.stage{margin:0 auto;max-width:380px}}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  .kordi-bob{animation:bob 3.4s ease-in-out infinite}
+  @keyframes wave{0%{transform:scale(.4);opacity:.85}100%{transform:scale(1.7);opacity:0}}
+  .wave{transform-box:fill-box;transform-origin:center;animation:wave 2.4s ease-out infinite}
+  .wave.w2{animation-delay:.8s}.wave.w3{animation-delay:1.6s}
+  @media (prefers-reduced-motion:reduce){.kordi-bob,.wave{animation:none}.wave{opacity:0}}
+
+  /* Tarjetas */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:36px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+  .card h3{font-size:21px;margin:12px 0 8px}
+  .card p{margin:0;color:var(--muted)}
+  .ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:var(--raised)}
+
+  /* Pasos de una lección */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:36px;counter-reset:s}
+  .step{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;position:relative}
+  .step::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:var(--accent);color:var(--on-accent);font:700 19px Fredoka,sans-serif}
+  .step h3{font-size:20px;margin:14px 0 6px}
+  .step p{margin:0;color:var(--muted);font-size:16px}
+  @media (max-width:900px){.steps{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.steps{grid-template-columns:1fr}}
+
+  /* Ruta */
+  .levels{display:grid;gap:12px;margin-top:36px}
+  .level{display:grid;grid-template-columns:120px 1fr auto;gap:18px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 22px}
+  .level .n{font:700 15px Fredoka,sans-serif;color:var(--gold);letter-spacing:.04em}
+  .level h3{font-size:21px;margin:0 0 4px}
+  .level p{margin:0;color:var(--muted);font-size:15px}
+  .level .w{font-weight:800;color:var(--muted);font-size:14px;white-space:nowrap}
+  .bar{height:8px;border-radius:4px;background:var(--raised);overflow:hidden;margin-top:10px}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--gold))}
+  @media (max-width:640px){.level{grid-template-columns:1fr}.level .w{order:-1}}
+
+  /* Cancionero */
+  .songs{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center;margin-top:16px}
+  .genres{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0}
+  .chip{padding:9px 16px;border-radius:999px;background:var(--card);border:1px solid var(--border);font-weight:800;font-size:15px}
+  .chip.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+  .phone{background:var(--night);border:1px solid var(--line);border-radius:34px;padding:16px;max-width:360px;margin:0 auto;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+  .phone .screen{background:var(--bg);border-radius:24px;padding:18px;display:grid;gap:10px}
+  .song{display:grid;gap:4px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:12px 14px}
+  .song b{font-size:15px}.song small{color:var(--muted);font-size:12.5px;font-weight:700}
+  .song.locked{border-style:dashed}
+  .song em{font-style:normal;color:var(--accent-ink);font-size:12.5px;font-weight:700}
+  .stars{color:var(--gold);letter-spacing:2px;font-size:13px}
+  @media (max-width:900px){.songs{grid-template-columns:1fr}}
+
+  /* Herramientas */
+  .tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:36px}
+  .tool{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;display:grid;gap:10px}
+  .tool h3{font-size:19px}.tool p{margin:0;color:var(--muted);font-size:15.5px}
+  .tag{justify-self:start;font-size:12px;font-weight:800;color:var(--teal);background:#24353F;border-radius:8px;padding:3px 9px}
+
+  /* Planes */
+  .plans{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:36px}
+  .plan{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;display:grid;gap:12px;align-content:start}
+  .plan.best{border:2px solid var(--gold)}
+  .plan h3{font-size:26px}
+  .plan ul{margin:0;padding-left:20px;color:var(--muted)}
+  .plan li{margin:4px 0}
+  @media (max-width:720px){.plans{grid-template-columns:1fr}}
+
+  /* Lista de espera */
+  .waitlist{background:linear-gradient(180deg,var(--card),var(--bg));border-top:1px solid var(--border)}
+  .form{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;max-width:620px}
+  .form input[type=email]{flex:1 1 260px;min-height:52px;border-radius:16px;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:0 18px;font:600 17px Nunito,sans-serif}
+  .form select{min-height:52px;border-radius:16px;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:0 14px;font:700 15px Nunito,sans-serif}
+  .form-msg{min-height:26px;margin-top:12px;font-weight:800}
+  .form-msg.ok{color:var(--teal)}.form-msg.err{color:#FF7A7A}
+  .hidden{position:absolute;left:-9999px}
+
+  /* FAQ */
+  details{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px 22px;margin-top:12px}
+  summary{cursor:pointer;font-weight:800;font-size:18px;list-style:none;min-height:28px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:'+';float:right;color:var(--accent-ink);font-family:Fredoka,sans-serif;font-size:22px;line-height:1}
+  details[open] summary::after{content:'–'}
+  details p{margin:10px 0 0;color:var(--muted)}
+
+  footer{border-top:1px solid var(--border);padding:34px 0 44px;color:var(--muted);font-size:14px}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="LudiKordo">
+      <svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#2A2640"/><g transform="rotate(-24 34 36)"><rect x="8" y="33" width="50" height="5" rx="2" fill="#F5B83D"/></g><g transform="rotate(-24 24 42)"><ellipse cx="24" cy="42" rx="13" ry="9" fill="#FF6B2C"/></g></svg>
+      Ludi<b>Kordo</b>
+    </a>
+    <nav class="links" aria-label="Secciones">
+      <a href="#lecciones" data-i18n="nav.lessons">Lecciones</a>
+      <a href="#ruta" data-i18n="nav.path">La ruta</a>
+      <a href="#cancionero" data-i18n="nav.songs">Cancionero</a>
+      <a href="#planes" data-i18n="nav.plans">Planes</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Idioma / Language / Idioma">
+      <button type="button" data-lang="es" aria-pressed="true">ES</button>
+      <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      <button type="button" data-lang="pt" aria-pressed="false">PT</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- Portada -->
+  <section class="hero">
+    <div class="wrap grid">
+      <div>
+        <div class="eyebrow" data-i18n="hero.eyebrow">App para Android · teléfono y tablet</div>
+        <h1 data-i18n-html="hero.title">Aprende bajo <span>de cero</span> a intermedio</h1>
+        <p class="lead" data-i18n="hero.lead">Lecciones de 15 minutos con Kordi, ejercicios que escuchan tu bajo y canciones para tu nivel. Sin saber nada de música para empezar.</p>
+        <div class="ctas">
+          <a class="btn primary" href="#lista" data-i18n="hero.cta">Quiero probarla primero</a>
+          <a class="btn ghost" href="#lecciones" data-i18n="hero.more">Cómo funciona</a>
+        </div>
+        <div class="facts">
+          <div class="fact"><b>151</b><span data-i18n="facts.lessons">lecciones</span></div>
+          <div class="fact"><b>5</b><span data-i18n="facts.levels">niveles</span></div>
+          <div class="fact"><b>~60</b><span data-i18n="facts.weeks">semanas</span></div>
+          <div class="fact"><b>3</b><span data-i18n="facts.langs">idiomas</span></div>
+        </div>
+      </div>
+      <div class="stage" aria-hidden="true">
+        <svg viewBox="0 0 500 500">
+          <defs>
+            <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F5B83D" stop-opacity=".32"/><stop offset="1" stop-color="#F5B83D" stop-opacity="0"/></linearGradient>
+          </defs>
+          <path d="M215 0h70l150 470H65z" fill="url(#beam)"/>
+          <ellipse cx="250" cy="462" rx="190" ry="20" fill="#F5B83D" opacity=".12"/>
+          <circle class="wave" cx="190" cy="360" r="70" fill="none" stroke="#3FD0C9" stroke-width="5"/>
+          <circle class="wave w2" cx="190" cy="360" r="70" fill="none" stroke="#3FD0C9" stroke-width="5"/>
+          <circle class="wave w3" cx="190" cy="360" r="70" fill="none" stroke="#3FD0C9" stroke-width="5"/>
+          <g class="kordi-bob">
+            <g transform="translate(80 120) scale(2.15)">
+              <ellipse cx="80" cy="148" rx="54" ry="8" fill="#FF6B2C" opacity=".22"/>
+              <rect x="38" y="72" width="84" height="72" rx="34" fill="#A0673C"/>
+              <ellipse cx="62" cy="26" rx="9" ry="7" fill="#7A4A28"/>
+              <rect x="44" y="22" width="78" height="58" rx="27" fill="#B07444"/>
+              <rect x="90" y="40" width="42" height="36" rx="17" fill="#8E5A33"/>
+              <circle cx="122" cy="51" r="2.6" fill="#3B2414"/>
+              <path d="M80 44 q4 -5 8 0" fill="none" stroke="#1D1B2E" stroke-width="3" stroke-linecap="round"/>
+              <g transform="rotate(-24 75 101)"><rect x="16" y="98" width="118" height="7" rx="3" fill="#6B4423"/></g>
+              <g transform="rotate(-24 58 118)"><ellipse cx="58" cy="118" rx="25" ry="17" fill="#C2410C"/><ellipse cx="58" cy="118" rx="8" ry="5" fill="#1D1B2E" opacity=".35"/></g>
+              <ellipse cx="100" cy="94" rx="10" ry="8" fill="#8E5A33"/>
+              <ellipse cx="64" cy="112" rx="9" ry="7" fill="#8E5A33"/>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Qué aprendes -->
+  <section style="padding-top:24px">
+    <div class="wrap">
+      <div class="eyebrow" data-i18n="learn.eyebrow">Qué vas a aprender</div>
+      <h2 data-i18n="learn.title">Todo lo que un bajista necesita, en orden</h2>
+      <p class="lead" data-i18n="learn.lead">Un plan completo, de tu primera nota a tocar en una banda: técnica, ritmo, lectura, armonía, oído y estilos.</p>
+      <div class="cards">
+        <div class="card"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF8A57" stroke-width="2.2" stroke-linecap="round"><path d="M4 18 18 4M14 4h4v4M6 14l4 4"/></svg></div><h3 data-i18n="learn.c1t">Técnica de las dos manos</h3><p data-i18n="learn.c1b">Postura, pulsar con i y m, un dedo por traste, apagado, ligados, púa, slap y tapping.</p></div>
+        <div class="card"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5B83D" stroke-width="2.2" stroke-linecap="round"><path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></svg></div><h3 data-i18n="learn.c2t">Ritmo y groove</h3><p data-i18n="learn.c2b">Pulso, corcheas, silencios, semicorcheas y síncopa, tocando junto a una batería.</p></div>
+        <div class="card"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3FD0C9" stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 10h18M3 14h18M3 18h18"/></svg></div><h3 data-i18n="learn.c3t">Leer y escribir música</h3><p data-i18n="learn.c3b">Tablatura desde el día uno y pentagrama en clave de fa desde el nivel 2, con dictados.</p></div>
+        <div class="card"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF8A57" stroke-width="2.2" stroke-linecap="round"><path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"/></svg></div><h3 data-i18n="learn.c4t">Armonía para bajistas</h3><p data-i18n="learn.c4b">Escalas, tríadas, pentatónicas, inversiones, cifrado, arpegios de séptima y modos.</p></div>
+        <div class="card"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5B83D" stroke-width="2.2" stroke-linecap="round"><path d="M3 12h3l3-7 4 14 3-7h5"/></svg></div><h3 data-i18n="learn.c5t">Estilos</h3><p data-i18n="learn.c5b">Rock, pop, funk, blues, bossa nova, reggae, soul, metal, jazz y clásico.</p></div>
+        <div class="card"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3FD0C9" stroke-width="2.2" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4"/></svg></div><h3 data-i18n="learn.c6t">Oído, creación y sonido</h3><p data-i18n="learn.c6b">Reconocer lo que oyes, improvisar, armar tus líneas y ajustar amplificador y efectos.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lecciones -->
+  <section id="lecciones">
+    <div class="wrap">
+      <div class="eyebrow" data-i18n="lesson.eyebrow">Cómo es una lección</div>
+      <h2 data-i18n="lesson.title">Cuatro pasos, una habilidad nueva</h2>
+      <p class="lead" data-i18n="lesson.lead">Cada lección enseña una sola cosa y la practicas hasta dominarla. Si un día no tienes el bajo cerca, igual avanzas.</p>
+      <div class="steps">
+        <div class="step"><h3 data-i18n="lesson.s1t">Mira</h3><p data-i18n="lesson.s1b">Kordi te lo cuenta en un cartoon corto, con subtítulos.</p></div>
+        <div class="step"><h3 data-i18n="lesson.s2t">Entiende</h3><p data-i18n="lesson.s2b">Tarjetas con dibujos y ejemplos sonoros que puedes escuchar.</p></div>
+        <div class="step"><h3 data-i18n="lesson.s3t">Practica sin bajo</h3><p data-i18n="lesson.s3b">Ritmo, diapasón, lectura y oído, tocando la pantalla.</p></div>
+        <div class="step"><h3 data-i18n="lesson.s4t">Practica con bajo</h3><p data-i18n="lesson.s4b">La app escucha tu bajo por el micrófono y te dice cómo vas.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ruta -->
+  <section id="ruta">
+    <div class="wrap">
+      <div class="eyebrow" data-i18n="path.eyebrow">La ruta</div>
+      <h2 data-i18n="path.title">5 niveles, 31 módulos, 151 lecciones</h2>
+      <p class="lead" data-i18n="path.lead">A 15–20 minutos por día, llegas a nivel intermedio en unos 14 meses. Si ya tocas, un test por nivel te deja saltar lo que sabes.</p>
+      <div class="levels">
+        <div class="level"><div class="n" data-i18n="path.l1n">NIVEL 1</div><div><h3 data-i18n="path.l1t">Fundamentos</h3><p data-i18n="path.l1b">Conoce tu bajo, las dos manos, tablatura, pulso y tus primeras líneas.</p><div class="bar"><i style="width:20%"></i></div></div><div class="w" data-i18n="path.l1w">Semanas 1–6</div></div>
+        <div class="level"><div class="n" data-i18n="path.l2n">NIVEL 2</div><div><h3 data-i18n="path.l2t">Ritmo y groove</h3><p data-i18n="path.l2b">Corcheas y silencios, notas en las cuerdas, raíz y quinta, tocar con batería y pentagrama.</p><div class="bar"><i style="width:40%"></i></div></div><div class="w" data-i18n="path.l2w">Semanas 7–16</div></div>
+        <div class="level"><div class="n" data-i18n="path.l3n">NIVEL 3</div><div><h3 data-i18n="path.l3t">Armonía para bajistas</h3><p data-i18n="path.l3b">Escala mayor, tríadas, pentatónicas, cifrado, síncopa e inversiones.</p><div class="bar"><i style="width:60%"></i></div></div><div class="w" data-i18n="path.l3w">Semanas 17–27</div></div>
+        <div class="level"><div class="n" data-i18n="path.l4n">NIVEL 4</div><div><h3 data-i18n="path.l4t">Técnica y estilos</h3><p data-i18n="path.l4b">Ligados, rock, funk y slap, walking blues, bossa, reggae, soul y rock pesado.</p><div class="bar"><i style="width:80%"></i></div></div><div class="w" data-i18n="path.l4w">Semanas 28–45</div></div>
+        <div class="level"><div class="n" data-i18n="path.l5n">NIVEL 5</div><div><h3 data-i18n="path.l5t">Intermedio</h3><p data-i18n="path.l5b">Todo el diapasón, arpegios de séptima, lectura a primera vista, solos, modos, sonido y un proyecto final.</p><div class="bar"><i style="width:100%"></i></div></div><div class="w" data-i18n="path.l5w">Semanas 46–60</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cancionero -->
+  <section id="cancionero">
+    <div class="wrap songs">
+      <div>
+        <div class="eyebrow" data-i18n="songs.eyebrow">Cancionero</div>
+        <h2 data-i18n="songs.title">Canciones que se abren con lo que aprendes</h2>
+        <p class="lead" data-i18n="songs.lead">Cada canción usa lo que viste en tus lecciones: cuando terminas esos módulos, se desbloquea. La escuchas, ves el cifrado y la tocas a tempo; al dominarla, sube la velocidad.</p>
+        <div class="genres">
+          <span class="chip on" data-i18n="songs.g1">Pop</span><span class="chip" data-i18n="songs.g2">Rock</span><span class="chip" data-i18n="songs.g3">Baladas</span><span class="chip" data-i18n="songs.g4">Blues</span><span class="chip" data-i18n="songs.g5">Bossa nova</span><span class="chip" data-i18n="songs.g6">Soul</span><span class="chip" data-i18n="songs.g7">Reggae</span>
+        </div>
+        <p class="muted" data-i18n="songs.note">Todas las líneas de bajo son originales de LudiKordo.</p>
+      </div>
+      <div class="phone" aria-hidden="true">
+        <div class="screen">
+          <div class="eyebrow" style="font-size:11px" data-i18n="songs.m.eyebrow">Cancionero</div>
+          <div style="font:600 22px Fredoka,sans-serif" data-i18n="songs.m.title">Canciones para tu nivel</div>
+          <div class="song"><b data-i18n="songs.m.s1">Paseo de domingo</b><small data-i18n="songs.m.s1m">Pop · Nivel 1 · Mi mayor · 80 bpm</small><span class="stars">★★★</span></div>
+          <div class="song"><b data-i18n="songs.m.s2">Blues del carpincho</b><small data-i18n="songs.m.s2m">Blues · Nivel 1 · Mi mayor · 80 bpm</small><span class="stars">★★</span></div>
+          <div class="song"><b data-i18n="songs.m.s3">Brisa del puerto</b><small data-i18n="songs.m.s3m">Bossa nova · Nivel 2 · Mi menor · 70 bpm</small></div>
+          <div class="song locked"><b data-i18n="songs.m.s4">Sol de la tarde</b><small data-i18n="songs.m.s4m">Reggae · Nivel 2 · La menor · 72 bpm</small><em data-i18n="songs.m.s4l">Para desbloquearla, completa: 2.6 Pentagrama y clave de fa</em></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Herramientas -->
+  <section>
+    <div class="wrap">
+      <div class="eyebrow" data-i18n="tools.eyebrow">Además</div>
+      <h2 data-i18n="tools.title">Herramientas para practicar todos los días</h2>
+      <div class="tools">
+        <div class="tool"><span class="tag" data-i18n="tools.free">Gratis</span><h3 data-i18n="tools.t1">Afinador</h3><p data-i18n="tools.t1b">Afina tus 4 cuerdas con el micrófono del teléfono.</p></div>
+        <div class="tool"><span class="tag" data-i18n="tools.free">Gratis</span><h3 data-i18n="tools.t2">Metrónomo</h3><p data-i18n="tools.t2b">Preciso y con acento, para estudiar a cualquier tempo.</p></div>
+        <div class="tool"><h3 data-i18n="tools.t3">Ficha teórica</h3><p data-i18n="tools.t3b">Toda la teoría de cada módulo en una página, con sus ejemplos sonoros.</p></div>
+        <div class="tool"><h3 data-i18n="tools.t4">Progreso y rachas</h3><p data-i18n="tools.t4b">Estrellas por lección, habilidades que crecen y metas semanales flexibles.</p></div>
+        <div class="tool"><h3 data-i18n="tools.t5">Para zurdos y tablets</h3><p data-i18n="tools.t5b">Diapasón espejado para zurdos y pantallas pensadas para tablet.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Planes -->
+  <section id="planes">
+    <div class="wrap">
+      <div class="eyebrow" data-i18n="plans.eyebrow">Planes</div>
+      <h2 data-i18n="plans.title">Empieza gratis</h2>
+      <p class="lead" data-i18n="plans.lead">Los primeros módulos, el afinador y el metrónomo son gratis para siempre. Para seguir la ruta completa, Premium.</p>
+      <div class="plans">
+        <div class="plan"><h3 data-i18n="plans.free">Gratis</h3><ul><li data-i18n="plans.f1">Módulos 1.1 «Conoce tu bajo» y 1.2 «Mano derecha»</li><li data-i18n="plans.f2">Afinador y metrónomo</li><li data-i18n="plans.f3">Sin tarjeta</li></ul></div>
+        <div class="plan best"><h3 data-i18n="plans.premium">Premium</h3><ul><li data-i18n="plans.p1">Las 151 lecciones y los checkpoints de nivel</li><li data-i18n="plans.p2">Cancionero completo</li><li data-i18n="plans.p3">Suscripción semestral o anual</li><li data-i18n="plans.p4">El plan anual empieza con 7 días gratis</li></ul><p class="muted" style="margin:0;font-size:14px" data-i18n="plans.prices">Precios de lanzamiento: los anunciamos a la lista de espera.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lista de espera -->
+  <section id="lista" class="waitlist">
+    <div class="wrap">
+      <div class="eyebrow" data-i18n="wait.eyebrow">Lista de espera</div>
+      <h2 data-i18n="wait.title">Sé de los primeros en tocar</h2>
+      <p class="lead" data-i18n="wait.lead">Déjanos tu correo y te avisamos cuando LudiKordo esté en Google Play. Nada de spam: un correo al lanzar.</p>
+      <form class="form" name="waitlist" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="waitlist">
+        <input type="hidden" name="form-name" value="waitlist">
+        <p class="hidden"><label>No completar: <input name="bot-field"></label></p>
+        <label class="hidden" for="email" data-i18n="wait.label">Tu correo</label>
+        <input id="email" type="email" name="email" required autocomplete="email" placeholder="tu@correo.com" data-i18n-placeholder="wait.placeholder">
+        <label class="hidden" for="lang-field" data-i18n="wait.langLabel">Idioma</label>
+        <select id="lang-field" name="idioma"><option value="es">Español</option><option value="en">English</option><option value="pt">Português</option></select>
+        <button class="btn primary" type="submit" data-i18n="wait.cta">Avisarme</button>
+      </form>
+      <div class="form-msg" id="form-msg" role="status" aria-live="polite"></div>
+      <p class="muted" style="font-size:14px;margin-top:6px" data-i18n="wait.privacy">Usamos tu correo solo para avisarte del lanzamiento. Puedes pedir que lo borremos cuando quieras.</p>
+    </div>
+  </section>
+
+  <!-- Preguntas -->
+  <section>
+    <div class="wrap" style="max-width:820px">
+      <div class="eyebrow" data-i18n="faq.eyebrow">Preguntas</div>
+      <h2 data-i18n="faq.title">Lo que más nos preguntan</h2>
+      <details><summary data-i18n="faq.q1">¿Necesito saber música?</summary><p data-i18n="faq.a1">No. La ruta empieza por las partes del bajo y cómo sostenerlo. La lectura llega de a poco: primero tablatura, después pentagrama.</p></details>
+      <details><summary data-i18n="faq.q2">¿Qué bajo necesito?</summary><p data-i18n="faq.a2">Cualquier bajo eléctrico de 4 cuerdas en afinación estándar (Mi, La, Re, Sol). La app se escucha con el micrófono del teléfono: no hacen falta cables.</p></details>
+      <details><summary data-i18n="faq.q3">¿En qué dispositivos funciona?</summary><p data-i18n="faq.a3">En teléfonos y tablets Android. Las pantallas se adaptan al tamaño y hay modo para zurdos.</p></details>
+      <details><summary data-i18n="faq.q4">¿En qué idiomas está?</summary><p data-i18n="faq.a4">Español, inglés y portugués de Brasil. Puedes cambiarlo cuando quieras.</p></details>
+      <details><summary data-i18n="faq.q5">¿Cuándo sale?</summary><p data-i18n="faq.a5">Estamos terminando la primera versión. Súmate a la lista de espera y te avisamos el día del lanzamiento.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 LudiKordo</span>
+    <span data-i18n="footer.kordi">Kordi es el carpincho bajista de LudiKordo.</span>
+  </div>
+</footer>
+
+<script>
+const T = {
+  es: {}, // el HTML ya está en español
+  en: {
+    'nav.lessons':'Lessons','nav.path':'The path','nav.songs':'Songbook','nav.plans':'Plans',
+    'hero.eyebrow':'Android app · phone and tablet','hero.title':'Learn bass <span>from zero</span> to intermediate',
+    'hero.lead':'15-minute lessons with Kordi, exercises that listen to your bass, and songs for your level. No music knowledge needed to start.',
+    'hero.cta':'I want early access','hero.more':'How it works',
+    'facts.lessons':'lessons','facts.levels':'levels','facts.weeks':'weeks','facts.langs':'languages',
+    'learn.eyebrow':"What you'll learn",'learn.title':'Everything a bass player needs, in order','learn.lead':'A complete plan from your first note to playing in a band: technique, rhythm, reading, harmony, ear and styles.',
+    'learn.c1t':'Two-hand technique','learn.c1b':'Posture, plucking with i and m, one finger per fret, muting, hammer-ons, pick, slap and tapping.',
+    'learn.c2t':'Rhythm and groove','learn.c2b':'Pulse, eighth notes, rests, sixteenths and syncopation, playing along with drums.',
+    'learn.c3t':'Read and write music','learn.c3b':'Tab from day one and bass-clef notation from level 2, with dictation.',
+    'learn.c4t':'Harmony for bass players','learn.c4b':'Scales, triads, pentatonics, inversions, chord charts, seventh arpeggios and modes.',
+    'learn.c5t':'Styles','learn.c5b':'Rock, pop, funk, blues, bossa nova, reggae, soul, metal, jazz and classical.',
+    'learn.c6t':'Ear, creativity and tone','learn.c6b':'Recognize what you hear, improvise, write your own lines and dial in amp and effects.',
+    'lesson.eyebrow':'What a lesson looks like','lesson.title':'Four steps, one new skill','lesson.lead':'Each lesson teaches one thing and you practice it until you master it. Even without your bass nearby, you keep moving.',
+    'lesson.s1t':'Watch','lesson.s1b':'Kordi explains it in a short cartoon, with subtitles.',
+    'lesson.s2t':'Understand','lesson.s2b':'Cards with drawings and audio examples you can listen to.',
+    'lesson.s3t':'Practice without bass','lesson.s3b':'Rhythm, fretboard, reading and ear, tapping the screen.',
+    'lesson.s4t':'Practice with bass','lesson.s4b':'The app listens to your bass through the microphone and tells you how you did.',
+    'path.eyebrow':'The path','path.title':'5 levels, 31 modules, 151 lessons','path.lead':'At 15–20 minutes a day you reach intermediate in about 14 months. Already play? A test per level lets you skip what you know.',
+    'path.l1n':'LEVEL 1','path.l1t':'Foundations','path.l1b':'Meet your bass, both hands, tab, pulse and your first lines.','path.l1w':'Weeks 1–6',
+    'path.l2n':'LEVEL 2','path.l2t':'Rhythm and groove','path.l2b':'Eighth notes and rests, notes on the strings, root and fifth, playing with drums and the staff.','path.l2w':'Weeks 7–16',
+    'path.l3n':'LEVEL 3','path.l3t':'Harmony for bass players','path.l3b':'Major scale, triads, pentatonics, chord charts, syncopation and inversions.','path.l3w':'Weeks 17–27',
+    'path.l4n':'LEVEL 4','path.l4t':'Technique and styles','path.l4b':'Hammer-ons, rock, funk and slap, walking blues, bossa, reggae, soul and heavy rock.','path.l4w':'Weeks 28–45',
+    'path.l5n':'LEVEL 5','path.l5t':'Intermediate','path.l5b':'The whole fretboard, seventh arpeggios, sight-reading, solos, modes, tone and a final project.','path.l5w':'Weeks 46–60',
+    'songs.eyebrow':'Songbook','songs.title':'Songs that open up as you learn','songs.lead':'Each song uses what you saw in your lessons: finish those modules and it unlocks. Listen to it, read the chords and play it in time; once you master it, the tempo goes up.',
+    'songs.g1':'Pop','songs.g2':'Rock','songs.g3':'Ballads','songs.g4':'Blues','songs.g5':'Bossa nova','songs.g6':'Soul','songs.g7':'Reggae',
+    'songs.note':'Every bass line is an LudiKordo original.',
+    'songs.m.eyebrow':'Songbook','songs.m.title':'Songs for your level',
+    'songs.m.s1':'Sunday Stroll','songs.m.s1m':'Pop · Level 1 · E major · 80 bpm',
+    'songs.m.s2':'Capybara Blues','songs.m.s2m':'Blues · Level 1 · E major · 80 bpm',
+    'songs.m.s3':'Harbor Breeze','songs.m.s3m':'Bossa nova · Level 2 · E minor · 70 bpm',
+    'songs.m.s4':'Afternoon Sun','songs.m.s4m':'Reggae · Level 2 · A minor · 72 bpm','songs.m.s4l':'To unlock it, complete: 2.6 Staff and bass clef',
+    'tools.eyebrow':'Also','tools.title':'Tools to practice every day','tools.free':'Free',
+    'tools.t1':'Tuner','tools.t1b':'Tune your 4 strings with your phone\'s microphone.',
+    'tools.t2':'Metronome','tools.t2b':'Accurate, with accents, to practice at any tempo.',
+    'tools.t3':'Theory sheet','tools.t3b':'All the theory of each module on one page, with its audio examples.',
+    'tools.t4':'Progress and streaks','tools.t4b':'Stars per lesson, growing skills and flexible weekly goals.',
+    'tools.t5':'Left-handed and tablets','tools.t5b':'Mirrored fretboard for lefties and screens designed for tablets.',
+    'plans.eyebrow':'Plans','plans.title':'Start for free','plans.lead':'The first modules, the tuner and the metronome are free forever. To follow the full path, go Premium.',
+    'plans.free':'Free','plans.f1':'Modules 1.1 “Meet your bass” and 1.2 “Right hand”','plans.f2':'Tuner and metronome','plans.f3':'No card needed',
+    'plans.premium':'Premium','plans.p1':'All 151 lessons and the level checkpoints','plans.p2':'The full songbook','plans.p3':'Six-month or yearly subscription','plans.p4':'The yearly plan starts with a 7-day free trial',
+    'plans.prices':'Launch prices: we\'ll announce them to the waitlist.',
+    'wait.eyebrow':'Waitlist','wait.title':'Be one of the first to play','wait.lead':'Leave your email and we\'ll let you know when LudiKordo is on Google Play. No spam: one email at launch.',
+    'wait.label':'Your email','wait.placeholder':'you@email.com','wait.langLabel':'Language','wait.cta':'Notify me',
+    'wait.privacy':'We only use your email to tell you about the launch. You can ask us to delete it at any time.',
+    'wait.ok':'You\'re on the list! We\'ll email you at launch.','wait.err':'That didn\'t go through. Please try again in a moment.','wait.preview':'Preview: the form starts working once the site is live on Netlify.',
+    'faq.eyebrow':'Questions','faq.title':'What people ask most',
+    'faq.q1':'Do I need to know music?','faq.a1':'No. The path starts with the parts of the bass and how to hold it. Reading comes little by little: tab first, then the staff.',
+    'faq.q2':'What bass do I need?','faq.a2':'Any 4-string electric bass in standard tuning (E, A, D, G). The app listens through your phone\'s microphone: no cables needed.',
+    'faq.q3':'Which devices does it run on?','faq.a3':'Android phones and tablets. Screens adapt to the size and there\'s a left-handed mode.',
+    'faq.q4':'Which languages?','faq.a4':'Spanish, English and Brazilian Portuguese. You can switch any time.',
+    'faq.q5':'When is it coming out?','faq.a5':'We\'re finishing the first version. Join the waitlist and we\'ll tell you on launch day.',
+    'footer.kordi':'Kordi is LudiKordo\'s bass-playing capybara.'
+  },
+  pt: {
+    'nav.lessons':'Aulas','nav.path':'A trilha','nav.songs':'Cancioneiro','nav.plans':'Planos',
+    'hero.eyebrow':'App para Android · celular e tablet','hero.title':'Aprenda baixo <span>do zero</span> ao intermediário',
+    'hero.lead':'Aulas de 15 minutos com o Kordi, exercícios que escutam o seu baixo e músicas para o seu nível. Não precisa saber música para começar.',
+    'hero.cta':'Quero testar primeiro','hero.more':'Como funciona',
+    'facts.lessons':'aulas','facts.levels':'níveis','facts.weeks':'semanas','facts.langs':'idiomas',
+    'learn.eyebrow':'O que você vai aprender','learn.title':'Tudo o que um baixista precisa, em ordem','learn.lead':'Um plano completo, da primeira nota a tocar numa banda: técnica, ritmo, leitura, harmonia, ouvido e estilos.',
+    'learn.c1t':'Técnica das duas mãos','learn.c1b':'Postura, tocar com i e m, um dedo por casa, abafamento, ligados, palheta, slap e tapping.',
+    'learn.c2t':'Ritmo e groove','learn.c2b':'Pulso, colcheias, pausas, semicolcheias e síncope, tocando junto com uma bateria.',
+    'learn.c3t':'Ler e escrever música','learn.c3b':'Tablatura desde o primeiro dia e pentagrama em clave de fá a partir do nível 2, com ditados.',
+    'learn.c4t':'Harmonia para baixistas','learn.c4b':'Escalas, tríades, pentatônicas, inversões, cifra, arpejos de sétima e modos.',
+    'learn.c5t':'Estilos','learn.c5b':'Rock, pop, funk, blues, bossa nova, reggae, soul, metal, jazz e clássico.',
+    'learn.c6t':'Ouvido, criação e timbre','learn.c6b':'Reconhecer o que você ouve, improvisar, criar suas linhas e ajustar amplificador e efeitos.',
+    'lesson.eyebrow':'Como é uma aula','lesson.title':'Quatro passos, uma habilidade nova','lesson.lead':'Cada aula ensina uma coisa só e você pratica até dominar. Mesmo sem o baixo por perto, você continua avançando.',
+    'lesson.s1t':'Assista','lesson.s1b':'O Kordi conta tudo num cartoon curto, com legendas.',
+    'lesson.s2t':'Entenda','lesson.s2b':'Cartões com desenhos e exemplos sonoros para ouvir.',
+    'lesson.s3t':'Pratique sem baixo','lesson.s3b':'Ritmo, escala, leitura e ouvido, tocando na tela.',
+    'lesson.s4t':'Pratique com baixo','lesson.s4b':'O app escuta o seu baixo pelo microfone e diz como você foi.',
+    'path.eyebrow':'A trilha','path.title':'5 níveis, 31 módulos, 151 aulas','path.lead':'Com 15–20 minutos por dia, você chega ao intermediário em cerca de 14 meses. Já toca? Um teste por nível deixa você pular o que já sabe.',
+    'path.l1n':'NÍVEL 1','path.l1t':'Fundamentos','path.l1b':'Conheça seu baixo, as duas mãos, tablatura, pulso e suas primeiras linhas.','path.l1w':'Semanas 1–6',
+    'path.l2n':'NÍVEL 2','path.l2t':'Ritmo e groove','path.l2b':'Colcheias e pausas, notas nas cordas, tônica e quinta, tocar com bateria e pentagrama.','path.l2w':'Semanas 7–16',
+    'path.l3n':'NÍVEL 3','path.l3t':'Harmonia para baixistas','path.l3b':'Escala maior, tríades, pentatônicas, cifra, síncope e inversões.','path.l3w':'Semanas 17–27',
+    'path.l4n':'NÍVEL 4','path.l4t':'Técnica e estilos','path.l4b':'Ligados, rock, funk e slap, walking blues, bossa, reggae, soul e rock pesado.','path.l4w':'Semanas 28–45',
+    'path.l5n':'NÍVEL 5','path.l5t':'Intermediário','path.l5b':'A escala inteira, arpejos de sétima, leitura à primeira vista, solos, modos, timbre e um projeto final.','path.l5w':'Semanas 46–60',
+    'songs.eyebrow':'Cancioneiro','songs.title':'Músicas que se abrem com o que você aprende','songs.lead':'Cada música usa o que você viu nas aulas: quando você conclui esses módulos, ela é liberada. Ouça, veja a cifra e toque no tempo; quando dominar, o andamento sobe.',
+    'songs.g1':'Pop','songs.g2':'Rock','songs.g3':'Baladas','songs.g4':'Blues','songs.g5':'Bossa nova','songs.g6':'Soul','songs.g7':'Reggae',
+    'songs.note':'Todas as linhas de baixo são originais do LudiKordo.',
+    'songs.m.eyebrow':'Cancioneiro','songs.m.title':'Músicas para o seu nível',
+    'songs.m.s1':'Passeio de domingo','songs.m.s1m':'Pop · Nível 1 · Mi maior · 80 bpm',
+    'songs.m.s2':'Blues da capivara','songs.m.s2m':'Blues · Nível 1 · Mi maior · 80 bpm',
+    'songs.m.s3':'Brisa do porto','songs.m.s3m':'Bossa nova · Nível 2 · Mi menor · 70 bpm',
+    'songs.m.s4':'Sol da tarde','songs.m.s4m':'Reggae · Nível 2 · Lá menor · 72 bpm','songs.m.s4l':'Para liberar, conclua: 2.6 Pentagrama e clave de fá',
+    'tools.eyebrow':'Além disso','tools.title':'Ferramentas para praticar todos os dias','tools.free':'Grátis',
+    'tools.t1':'Afinador','tools.t1b':'Afine suas 4 cordas com o microfone do celular.',
+    'tools.t2':'Metrônomo','tools.t2b':'Preciso e com acento, para estudar em qualquer andamento.',
+    'tools.t3':'Ficha teórica','tools.t3b':'Toda a teoria de cada módulo numa página, com os exemplos sonoros.',
+    'tools.t4':'Progresso e sequências','tools.t4b':'Estrelas por aula, habilidades que crescem e metas semanais flexíveis.',
+    'tools.t5':'Para canhotos e tablets','tools.t5b':'Escala espelhada para canhotos e telas pensadas para tablet.',
+    'plans.eyebrow':'Planos','plans.title':'Comece grátis','plans.lead':'Os primeiros módulos, o afinador e o metrônomo são grátis para sempre. Para seguir a trilha completa, Premium.',
+    'plans.free':'Grátis','plans.f1':'Módulos 1.1 «Conheça seu baixo» e 1.2 «Mão direita»','plans.f2':'Afinador e metrônomo','plans.f3':'Sem cartão',
+    'plans.premium':'Premium','plans.p1':'As 151 aulas e os checkpoints de nível','plans.p2':'Cancioneiro completo','plans.p3':'Assinatura semestral ou anual','plans.p4':'O plano anual começa com 7 dias grátis',
+    'plans.prices':'Preços de lançamento: vamos anunciar para a lista de espera.',
+    'wait.eyebrow':'Lista de espera','wait.title':'Seja um dos primeiros a tocar','wait.lead':'Deixe seu e-mail e avisamos quando o LudiKordo estiver no Google Play. Sem spam: um e-mail no lançamento.',
+    'wait.label':'Seu e-mail','wait.placeholder':'voce@email.com','wait.langLabel':'Idioma','wait.cta':'Me avise',
+    'wait.privacy':'Usamos seu e-mail só para avisar do lançamento. Você pode pedir para apagarmos quando quiser.',
+    'wait.ok':'Você está na lista! Vamos te avisar no lançamento.','wait.err':'Não foi possível enviar. Tente de novo em instantes.','wait.preview':'Prévia: o formulário funciona quando o site estiver publicado no Netlify.',
+    'faq.eyebrow':'Perguntas','faq.title':'O que mais nos perguntam',
+    'faq.q1':'Preciso saber música?','faq.a1':'Não. A trilha começa pelas partes do baixo e como segurá-lo. A leitura vem aos poucos: primeiro tablatura, depois pentagrama.',
+    'faq.q2':'Que baixo eu preciso?','faq.a2':'Qualquer baixo elétrico de 4 cordas na afinação padrão (Mi, Lá, Ré, Sol). O app escuta pelo microfone do celular: não precisa de cabos.',
+    'faq.q3':'Em quais aparelhos funciona?','faq.a3':'Em celulares e tablets Android. As telas se adaptam ao tamanho e há modo para canhotos.',
+    'faq.q4':'Em quais idiomas?','faq.a4':'Espanhol, inglês e português do Brasil. Você pode trocar quando quiser.',
+    'faq.q5':'Quando sai?','faq.a5':'Estamos terminando a primeira versão. Entre na lista de espera e avisamos no dia do lançamento.',
+    'footer.kordi':'O Kordi é a capivara baixista do LudiKordo.'
+  }
+};
+const ES_EXTRA = {
+  'wait.ok':'¡Ya estás en la lista! Te escribimos el día del lanzamiento.',
+  'wait.err':'No pudimos enviarlo. Prueba otra vez en un momento.',
+  'wait.preview':'Vista previa: el formulario funciona cuando el sitio esté publicado en Netlify.'
+};
+
+// Guarda el español original de cada texto para poder volver.
+const nodes = [...document.querySelectorAll('[data-i18n],[data-i18n-html],[data-i18n-placeholder]')];
+nodes.forEach(el => {
+  if (el.dataset.i18n) el.dataset.es = el.textContent;
+  if (el.dataset.i18nHtml) el.dataset.es = el.innerHTML;
+  if (el.dataset.i18nPlaceholder) el.dataset.es = el.getAttribute('placeholder');
+});
+let lang = 'es';
+function tr(key){ return lang === 'es' ? ES_EXTRA[key] : T[lang][key]; }
+function setLang(l){
+  lang = l;
+  document.documentElement.lang = l === 'pt' ? 'pt-BR' : l;
+  nodes.forEach(el => {
+    if (el.dataset.i18n) el.textContent = l === 'es' ? el.dataset.es : (T[l][el.dataset.i18n] ?? el.dataset.es);
+    if (el.dataset.i18nHtml) el.innerHTML = l === 'es' ? el.dataset.es : (T[l][el.dataset.i18nHtml] ?? el.dataset.es);
+    if (el.dataset.i18nPlaceholder) el.setAttribute('placeholder', l === 'es' ? el.dataset.es : (T[l][el.dataset.i18nPlaceholder] ?? el.dataset.es));
+  });
+  document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
+  const sel = document.getElementById('lang-field'); if (sel) sel.value = l;
+  try { localStorage.setItem('ludikordo-lang', l); } catch (e) {}
+}
+document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+let start = 'es';
+try { start = localStorage.getItem('ludikordo-lang') || ''; } catch (e) {}
+if (!start) { const nav = (navigator.language || 'es').slice(0,2); start = ['en','pt'].includes(nav) ? nav : 'es'; }
+if (start !== 'es') setLang(start);
+
+// Lista de espera: Netlify Forms cuando el sitio está publicado; en otro lugar, solo una vista previa.
+const form = document.getElementById('waitlist');
+const msg = document.getElementById('form-msg');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  msg.className = 'form-msg';
+  const live = /netlify\.app$|ludikordo/i.test(location.hostname) && location.protocol.startsWith('http');
+  if (!live) { msg.textContent = tr('wait.preview'); return; }
+  try {
+    const body = new URLSearchParams(new FormData(form)).toString();
+    const res = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body });
+    if (!res.ok) throw new Error(String(res.status));
+    form.reset(); document.getElementById('lang-field').value = lang;
+    msg.className = 'form-msg ok'; msg.textContent = tr('wait.ok');
+  } catch (err) {
+    msg.className = 'form-msg err'; msg.textContent = tr('wait.err');
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+# Página de presentación de LudiKordo (sitio estático, sin build).
+# La app es Android nativa; esto publica solo site/.
+[build]
+  publish = "site"
+  command = "echo 'Sitio estático: nada que compilar'"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
