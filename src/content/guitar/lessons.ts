@@ -15,6 +15,7 @@ import { GUITAR, midiOn } from '../../instruments/profiles';
 import { midiToFreq } from '../../music/notes';
 import { GUITAR_LEVEL1_LESSONS } from './level1';
 import { GUITAR_LEVEL2_LESSONS } from './level2';
+import { GUITAR_LEVEL3_LESSONS } from './level3';
 
 const k = (lesson: string, key: string) => `content.g.l${lesson.replace(/\./g, '')}.${key}`;
 const scenes = (lesson: string) => [1, 2, 3, 4].map((n) => k(lesson, `s${n}`));
@@ -580,5 +581,5 @@ const l125: Lesson = {
 };
 
 export const GUITAR_LESSONS: Record<string, Lesson> = Object.fromEntries(
-  [l111, l112, l113, l114, l115, l121, l122, l123, l124, l125, ...GUITAR_LEVEL1_LESSONS, ...GUITAR_LEVEL2_LESSONS].map((l) => [l.id, l]),
+  [l111, l112, l113, l114, l115, l121, l122, l123, l124, l125, ...GUITAR_LEVEL1_LESSONS, ...GUITAR_LEVEL2_LESSONS, ...GUITAR_LEVEL3_LESSONS].map((l) => [l.id, l]),
 );

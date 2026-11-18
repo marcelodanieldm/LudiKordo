@@ -42,7 +42,7 @@ export function triadPitchClasses(id: ChordId): number[] {
 // ───────────── Diagramas en grilla: acordes, power chords y cajas de escala ─────────────
 
 /** Formas que se dibujan como diagrama vertical (como un acorde). */
-export type DiagramId = ChordId | 'power-6' | 'power-5' | 'penta-a';
+export type DiagramId = ChordId | 'power-6' | 'power-5' | 'penta-a' | BarreId | 'octave';
 
 export interface GridDot {
   /** 0 = 6.ª cuerda (Mi grave) … 5 = 1.ª (Mi aguda). */
@@ -57,6 +57,8 @@ export interface GridDot {
 
 export interface GridDiagram {
   name: string;
+  /** Cejilla: el dedo 1 acostado sobre varias cuerdas en un traste (índices de cuerda 0 = 6.ª). */
+  barre?: { fret: number; from: number; to: number };
   /** Primer traste que muestra la grilla (1 = con cejuela). */
   startFret: number;
   dots: GridDot[];
@@ -122,16 +124,24 @@ export const PENTA_A: GridDiagram = {
 };
 
 export function diagramOf(id: DiagramId): GridDiagram {
+  if (id in BARRES) return BARRES[id as BarreId];
+  if (id === 'octave') return OCTAVE;
   if (id === 'power-6') return POWER_6;
   if (id === 'power-5') return POWER_5;
   if (id === 'penta-a') return PENTA_A;
-  return chordDiagram(id);
+  return chordDiagram(id as ChordId);
 }
 
 /** Notas MIDI de un diagrama (las que se pisan y las cuerdas al aire). */
 export function diagramMidi(d: GridDiagram): number[] {
   const open = d.marks.flatMap((m, i) => (m === 'o' ? [GUITAR.strings[i].openMidi] : []));
-  return [...open, ...d.dots.map((dot) => GUITAR.strings[dot.string].openMidi + dot.fret)].sort((a, b) => a - b);
+  // Con cejilla, las cuerdas sin otro dedo suenan en el traste de la cejilla.
+  const barred = d.barre
+    ? Array.from({ length: d.barre.to - d.barre.from + 1 }, (_, k) => d.barre!.from + k)
+        .filter((i) => d.marks[i] !== 'x' && !d.dots.some((dot) => dot.string === i))
+        .map((i) => GUITAR.strings[i].openMidi + d.barre!.fret)
+    : [];
+  return [...open, ...barred, ...d.dots.map((dot) => GUITAR.strings[dot.string].openMidi + dot.fret)].sort((a, b) => a - b);
 }
 
 /** Power chord de dos notas con tónica en una cuerda y traste: tónica y quinta (cuerda siguiente, 2 trastes arriba). */
@@ -139,3 +149,66 @@ export function powerMidi(root: 'E' | 'A' | 'D', fret: number): number[] {
   const r = midiOn(GUITAR, root, fret);
   return [r, r + 7];
 }
+
+// ───────────── Acordes con cejilla (nivel 3) ─────────────
+
+/**
+ * Forma de E con cejilla: mayor (1 3 3 2 1 1) o menor (1 3 3 1 1 1), móvil por la 6.ª cuerda.
+ * Forma de A con cejilla: mayor (x 1 3 3 3 1) o menor (x 1 3 3 2 1), móvil por la 5.ª.
+ */
+export function eShape(name: string, fret: number, minor: boolean): GridDiagram {
+  return {
+    name,
+    startFret: fret,
+    barre: { fret, from: 0, to: 5 },
+    dots: [
+      { string: 0, fret, finger: 1, root: true },
+      { string: 1, fret: fret + 2, finger: 3 },
+      { string: 2, fret: fret + 2, finger: 4 },
+      ...(minor ? [] : [{ string: 3, fret: fret + 1, finger: 2 }]),
+    ],
+    marks: [null, null, null, null, null, null],
+  };
+}
+
+export function aShape(name: string, fret: number, minor: boolean): GridDiagram {
+  return {
+    name,
+    startFret: fret,
+    barre: { fret, from: 1, to: 5 },
+    dots: [
+      { string: 1, fret, finger: 1, root: true },
+      { string: 2, fret: fret + 2, finger: minor ? 3 : 2 },
+      { string: 3, fret: fret + 2, finger: minor ? 4 : 3 },
+      { string: 4, fret: fret + (minor ? 1 : 2), finger: minor ? 2 : 4 },
+    ],
+    marks: ['x', null, null, null, null, null],
+  };
+}
+
+export type BarreId = 'bar-f' | 'bar-fm' | 'bar-g' | 'bar-am' | 'bar-bb' | 'bar-c' | 'bar-cm' | 'bar-dm' | 'bar-c8' | 'bar-only';
+
+export const BARRES: Record<BarreId, GridDiagram> = {
+  'bar-f': eShape('F', 1, false),
+  'bar-fm': eShape('Fm', 1, true),
+  'bar-g': eShape('G', 3, false),
+  'bar-am': eShape('Am', 5, true),
+  'bar-bb': aShape('Bb', 1, false),
+  'bar-c': aShape('C', 3, false),
+  'bar-cm': aShape('Cm', 3, true),
+  'bar-dm': aShape('Dm', 5, true),
+  'bar-c8': eShape('C', 8, false),
+  // Solo la cejilla, sin otros dedos (3.5.1).
+  'bar-only': { name: '', startFret: 5, barre: { fret: 5, from: 0, to: 5 }, dots: [], marks: [null, null, null, null, null, null] },
+};
+
+/** Octavas: la nota de la 6.ª cuerda se repite dos cuerdas más arriba, dos trastes más adelante. */
+export const OCTAVE: GridDiagram = {
+  name: '8va',
+  startFret: 3,
+  dots: [
+    { string: 0, fret: 3, finger: 1, root: true },
+    { string: 2, fret: 5, finger: 3, root: true },
+  ],
+  marks: [null, 'x', null, 'x', 'x', 'x'],
+};

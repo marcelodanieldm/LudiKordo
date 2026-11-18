@@ -179,6 +179,18 @@ function GridDiagramView({ d, callouts = false }: { d: GridDiagram; callouts?: b
           </SvgText>
         ) : null,
       )}
+      {d.barre ? (
+        // Cejilla: el dedo 1 acostado sobre las cuerdas, en su traste.
+        <Rect
+          x={sx(d.barre.from) - 11}
+          y={top + (d.barre.fret - d.startFret + 0.5) * fretH - 10}
+          width={sx(d.barre.to) - sx(d.barre.from) + 22}
+          height={20}
+          rx={10}
+          fill={colors.gold}
+          opacity={0.85}
+        />
+      ) : null}
       {d.dots.map((dot, k) => {
         const cy = top + (dot.fret - d.startFret + 0.5) * fretH;
         return (
@@ -470,6 +482,90 @@ function Drawing({ id, left }: { id: Figure; left: boolean }) {
               {n}
             </SvgText>
           ))}
+        </Svg>
+      );
+    }
+    case 'hammer-on':
+    case 'pull-off':
+    case 'slide':
+    case 'bend':
+    case 'vibrato': {
+      // Tramo de mástil con la 3.ª cuerda (Sol) resaltada: y = 44 + 2 · 14,4.
+      const yG = 72.8;
+      const m = (x: number) => (left ? 360 - x : x);
+      const finger = (x: number, label: string, ghost = false) => (
+        <G>
+          <Circle cx={m(x)} cy={yG} r={11} fill={ghost ? 'none' : colors.gold} stroke={colors.gold} strokeWidth={2} strokeDasharray={ghost ? '4 3' : undefined} />
+          <SvgText x={m(x)} y={yG + 4} fontSize={12} fontWeight="900" fill={ghost ? colors.gold : colors.onAccent} textAnchor="middle">
+            {label}
+          </SvgText>
+        </G>
+      );
+      return (
+        <Svg viewBox="0 0 360 150" width="100%" height="100%">
+          <G transform={left ? 'translate(360,0) scale(-1,1)' : undefined}>
+            <NeckSection />
+            {id === 'bend' ? (
+              <Path d={`M20 ${yG} L200 ${yG} Q236 ${yG + 26} 270 ${yG} L340 ${yG}`} fill="none" stroke={colors.accent} strokeWidth={2.4} />
+            ) : (
+              <Line x1={20} y1={yG} x2={340} y2={yG} stroke={colors.accent} strokeWidth={2.4} />
+            )}
+          </G>
+          {id === 'hammer-on' ? (
+            <>
+              {finger(88, '1')}
+              {finger(236, '3', true)}
+              <Arrow x1={m(236)} y1={14} x2={m(236)} y2={yG - 14} color={colors.teal} />
+              <Callout x={m(88)} y={yG + 26} n={1} />
+              <Callout x={m(266)} y={22} n={2} />
+            </>
+          ) : null}
+          {id === 'pull-off' ? (
+            <>
+              {finger(88, '1')}
+              {finger(236, '3')}
+              <Path d={`M${m(236)} ${yG - 14} Q${m(250)} ${yG - 40} ${m(286)} ${yG - 46}`} fill="none" stroke={colors.teal} strokeWidth={3} />
+              <Polygon points={`${m(290)},${yG - 47} ${m(280)},${yG - 52} ${m(281)},${yG - 40}`} fill={colors.teal} />
+              <Callout x={m(88)} y={yG + 26} n={1} />
+              <Callout x={m(300)} y={yG - 30} n={2} />
+            </>
+          ) : null}
+          {id === 'slide' ? (
+            <>
+              {finger(88, '1')}
+              {finger(236, '1', true)}
+              <Arrow x1={m(104)} y1={yG + 22} x2={m(220)} y2={yG + 22} color={colors.teal} />
+              <Callout x={m(88)} y={20} n={1} />
+              <Callout x={m(236)} y={20} n={2} />
+            </>
+          ) : null}
+          {id === 'bend' ? (
+            <>
+              <Circle cx={m(236)} cy={yG + 22} r={11} fill={colors.gold} />
+              <SvgText x={m(236)} y={yG + 26} fontSize={12} fontWeight="900" fill={colors.onAccent} textAnchor="middle">
+                3
+              </SvgText>
+              <Circle cx={m(164)} cy={yG + 22} r={9} fill={colors.gold} opacity={0.6} />
+              <Circle cx={m(98)} cy={yG + 22} r={9} fill={colors.gold} opacity={0.6} />
+              <Arrow x1={m(256)} y1={yG} x2={m(256)} y2={yG + 36} color={colors.teal} />
+              <Callout x={m(130)} y={yG + 50} n={1} />
+              <Callout x={m(278)} y={yG + 30} n={2} />
+              <Callout x={m(236)} y={20} n={3} />
+            </>
+          ) : null}
+          {id === 'vibrato' ? (
+            <>
+              {finger(236, '3')}
+              <Path
+                d={`M${m(150)} 22 ${Array.from({ length: 8 }, (_, k) => `Q${m(150 + k * 20 + 5)} ${k % 2 ? 32 : 12} ${m(150 + (k + 1) * 20)} 22`).join(' ')}`}
+                fill="none"
+                stroke={colors.teal}
+                strokeWidth={2.6}
+              />
+              <Callout x={m(236)} y={yG + 26} n={1} />
+              <Callout x={m(130)} y={22} n={2} />
+            </>
+          ) : null}
         </Svg>
       );
     }

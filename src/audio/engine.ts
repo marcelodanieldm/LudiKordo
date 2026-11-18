@@ -65,7 +65,16 @@ export function startMetronome(bpm: number, beats: number, countIn = 4, beatsPer
  * Programa una nota con un timbre (src/music/timbre.ts): un oscilador por
  * parcial, todos por la misma envolvente. Devuelve cuánto suena, en segundos.
  */
-function scheduleVoice(c: AudioContext, freq: number, at: number, durSec: number, voice: Voice, level = 1): number {
+/** Bend y vibrato de una nota de ejemplo. */
+interface PitchMod {
+  bendCents?: number;
+  vibratoCents?: number;
+}
+
+/** Velocidad del vibrato de los ejemplos (oscilaciones por segundo). */
+const VIBRATO_HZ = 5.5;
+
+function scheduleVoice(c: AudioContext, freq: number, at: number, durSec: number, voice: Voice, level = 1, mod: PitchMod = {}): number {
   const ring = ringSec(voice, durSec);
   const gain = c.createGain();
   // Normalizado: la suma de parciales nunca pasa de ~0,5, como el tono de siempre.
@@ -87,7 +96,22 @@ function scheduleVoice(c: AudioContext, freq: number, at: number, durSec: number
     const pg = c.createGain();
     osc.type = p.type;
     // Desafinación aplicada a la frecuencia (no todas las versiones exponen `detune`).
-    osc.frequency.value = freq * Math.pow(2, p.detune / 1200);
+    const f = freq * Math.pow(2, p.detune / 1200);
+    osc.frequency.value = f;
+    // Bend: sube en el primer tercio y se sostiene. Vibrato: oscila desde la mitad.
+    const bentF = mod.bendCents ? f * Math.pow(2, mod.bendCents / 1200) : f;
+    if (mod.bendCents) {
+      osc.frequency.setValueAtTime(f, at + Math.min(0.08, ring * 0.15));
+      osc.frequency.linearRampToValueAtTime(bentF, at + ring * 0.35);
+    }
+    if (mod.vibratoCents) {
+      const from = at + ring * 0.4;
+      const step = 1 / VIBRATO_HZ / 2;
+      osc.frequency.setValueAtTime(bentF, from);
+      for (let t = from + step, k = 0; t < at + ring; t += step, k++) {
+        osc.frequency.linearRampToValueAtTime(bentF * Math.pow(2, ((k % 2 === 0 ? 1 : -1) * mod.vibratoCents) / 1200), t);
+      }
+    }
     pg.gain.value = p.gain / total;
     osc.connect(pg);
     pg.connect(gain);
@@ -133,7 +157,7 @@ export function stopActiveSequence(): void {
 }
 
 export function playSequence(
-  notes: { freq: number; startSec: number; durSec: number; tone?: Tone }[],
+  notes: { freq: number; startSec: number; durSec: number; tone?: Tone; bendCents?: number; vibratoCents?: number }[],
   clickBeats?: { bpm: number; beats: number },
   /** Se llama si otro ejemplo empieza y corta a este. */
   onInterrupt?: () => void,
@@ -150,7 +174,7 @@ export function playSequence(
   }
   const voice = voiceFor(tone, IS_GUITAR);
   // Una nota puede traer su propio timbre (corcheas apagadas dentro de un riff con crunch).
-  for (const n of notes) scheduleVoice(c, n.freq, t0 + n.startSec, n.durSec, n.tone ? voiceFor(n.tone, IS_GUITAR) : voice);
+  for (const n of notes) scheduleVoice(c, n.freq, t0 + n.startSec, n.durSec, n.tone ? voiceFor(n.tone, IS_GUITAR) : voice, 1, n);
   let stopped = false;
   const handle = {
     onInterrupt,

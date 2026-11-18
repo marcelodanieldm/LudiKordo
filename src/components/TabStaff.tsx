@@ -70,6 +70,17 @@ export function TabStaff({ notes, width, current = -1 }: { notes: TabEvent[]; wi
               <SvgText x={x} y={y + 5} fontSize={15} fontFamily={fonts.black} fill={color} textAnchor="middle">
                 {label}
               </SvgText>
+              {/* Bend (↗½ o ↗1) y vibrato (~), a la derecha del traste. */}
+              {'bend' in n && n.bend ? (
+                <SvgText x={x + boxW / 2 + 2} y={y - 2} fontSize={11} fontFamily={fonts.black} fill={colors.accentInk}>
+                  {`↗${n.bend === 1 ? '½' : '1'}`}
+                </SvgText>
+              ) : null}
+              {'vibrato' in n && n.vibrato ? (
+                <SvgText x={x + boxW / 2 + 2} y={y + 12} fontSize={13} fontFamily={fonts.black} fill={colors.tealInk}>
+                  ~
+                </SvgText>
+              ) : null}
               <Rhythm x={x} y={y0 + STAFF_TOP + STAFF_H + 22} figure={figureOf(n.beats)} color={st === 'next' ? colors.muted : color} />
             </React.Fragment>
           );

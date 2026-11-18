@@ -9,6 +9,8 @@ import { PlayAlongExercise } from './PlayAlongExercise';
 import { TabReadingExercise } from './TabReadingExercise';
 import { TempoTrainerExercise } from './TempoTrainerExercise';
 import { StrumExercise } from './StrumExercise';
+import { BendExercise } from './BendExercise';
+import { VibratoExercise } from './VibratoExercise';
 import { Button } from '../ui';
 import { colors, fonts } from '../../theme';
 import type { Exercise } from '../../content/types';
@@ -47,6 +49,10 @@ export function ExerciseView({
       return <TempoTrainerExercise key={exercise.id} exercise={exercise} onDone={onDone} mastery={mastery} />;
     case 'strum':
       return <StrumExercise key={exercise.id} exercise={exercise} onDone={onDone} mastery={mastery} width={width} allowSelfCheck={allowSelfCheck} />;
+    case 'bend':
+      return <BendExercise key={exercise.id} exercise={exercise} onDone={onDone} mastery={mastery} allowSelfCheck={allowSelfCheck} />;
+    case 'vibrato':
+      return <VibratoExercise key={exercise.id} exercise={exercise} onDone={onDone} mastery={mastery} allowSelfCheck={allowSelfCheck} />;
     default:
       return (
         <View style={{ gap: 12 }}>

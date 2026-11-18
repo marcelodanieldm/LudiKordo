@@ -55,6 +55,14 @@ Usar siempre estos términos en interfaz y lecciones. Cambiarlos solo con acuerd
 | Palm mute | Palm mute (apagado con la palma) | Palm mute (abafado com a palma) |
 | Pentatonic box | Caja (de la pentatónica) | Caixa (da pentatônica) |
 | Root | Tónica | Tônica |
+| Barre (chord) | Cejilla (acorde con cejilla) | Pestana (acorde com pestana) |
+| Bend | Bend (estirar la cuerda) | Bend (puxar a corda) |
+| Hammer-on / pull-off | Hammer-on / pull-off | Hammer-on / pull-off |
+| Slide | Slide (deslizar) | Slide (deslizar) |
+| Legato | Ligado | Ligado |
+| Vibrato | Vibrato | Vibrato |
+| Octave | Octava | Oitava |
+| Headstock | Clavijero | Cabeça (tarraxas) |
 
 Notas de estilo:
 
@@ -62,4 +70,5 @@ Notas de estilo:
 - Portugués: de Brasil, «você».
 - Guitarra: las perillas del ampli se nombran como vienen impresas, en inglés y mayúsculas (GAIN, BASS, MIDDLE, TREBLE, VOLUME). Las cuerdas se numeran desde la más fina (1.ª = Mi aguda).
 - Nombres de notas: en inglés, letras (C D E). En es/pt, por defecto «Mi (E)»; la app permite elegir.
+- Portugués: «pestana» es solo la cejilla del dedo 1; la pieza del mástil junto al clavijero es «capotraste» o «nut», nunca «pestana».
 - Kordi habla en primera persona, con humor amable, frases cortas.
