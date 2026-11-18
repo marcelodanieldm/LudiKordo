@@ -5,7 +5,9 @@
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start --dev-client",
+    "start:guitar": "APP_INSTRUMENT=guitar expo start --dev-client",
     "android": "expo run:android",
+    "android:guitar": "APP_INSTRUMENT=guitar expo run:android",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
     "check:i18n": "node scripts/check-i18n.mjs",

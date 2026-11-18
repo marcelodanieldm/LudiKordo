@@ -16,6 +16,7 @@ Memoria compartida por todos los agentes (Antigravity, Claude Code local y en Gi
 | [0006](decisions/0006-tema-escenario-nocturno.md) | Interfaz oscura «escenario nocturno», Fredoka + Nunito | Aceptada |
 | [0007](decisions/0007-objetivos-y-lectura-temprana.md) | 6 módulos nuevos (151 lecciones), clave de fa en el nivel 2, ejemplos sonoros | Aceptada |
 | [0008](decisions/0008-cancionero-original.md) | Cancionero propio con líneas originales por género y nivel | Aceptada |
+| [0009](decisions/0009-app-de-guitarra.md) | App de guitarra eléctrica: mismo repo, dos apps por variante de build | Aceptada |
 
 ## Aprendizajes y trampas
 
@@ -26,5 +27,6 @@ Ver [learnings.md](learnings.md): errores que ya cometimos y cómo no repetirlos
 - [Rediseño escenario nocturno](../design/ui-redesign.md)
 - [Kordi: guía del personaje](../design/kordi.md)
 - [Currículo y mapa de objetivos](../CURRICULUM.md)
+- [Currículo de guitarra eléctrica](../CURRICULUM-GUITAR.md)
 - [Pipeline de cartoons](../CARTOON_PIPELINE.md)
 - [Herramientas, MCPs y skills](../TOOLING.md)
