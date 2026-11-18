@@ -1,6 +1,6 @@
 /**
  * Lecciones de guitarra eléctrica: módulos 1.1 (tu guitarra y tu ampli) y 1.2
- * (postura y púa), los gratuitos. Mismo formato que las del bajo: 4 pasos, una
+ * (postura y púa), los gratuitos. El resto del nivel 1 está en level1.ts. Mismo formato que las del bajo: 4 pasos, una
  * habilidad nueva por lección y criterio de dominio. Textos en `content.g.*`.
  *
  * Mientras no hay .riv, cada escena del cartoon trae su ilustración animada
@@ -13,6 +13,7 @@ import type { Beats, Lesson, ListenExample, ScoreEvent } from '../types';
 import type { StringId } from '../../instruments/profiles';
 import { GUITAR, midiOn } from '../../instruments/profiles';
 import { midiToFreq } from '../../music/notes';
+import { GUITAR_LEVEL1_LESSONS } from './level1';
 
 const k = (lesson: string, key: string) => `content.g.l${lesson.replace(/\./g, '')}.${key}`;
 const scenes = (lesson: string) => [1, 2, 3, 4].map((n) => k(lesson, `s${n}`));
@@ -577,5 +578,5 @@ const l125: Lesson = {
 };
 
 export const GUITAR_LESSONS: Record<string, Lesson> = Object.fromEntries(
-  [l111, l112, l113, l114, l115, l121, l122, l123, l124, l125].map((l) => [l.id, l]),
+  [l111, l112, l113, l114, l115, l121, l122, l123, l124, l125, ...GUITAR_LEVEL1_LESSONS].map((l) => [l.id, l]),
 );

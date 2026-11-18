@@ -3,6 +3,19 @@
  * cuáles hay, cuántos ítems tiene cada leyenda y su proporción alto/ancho.
  */
 import type { Figure } from '../content/types';
+import type { ChordId } from '../music/chords';
+
+/** Figuras de diagrama de acorde y el acorde que dibuja cada una. */
+export const CHORD_FIGURES: Partial<Record<Figure, ChordId>> = {
+  'chord-em': 'Em',
+  'chord-e': 'E',
+  'chord-am': 'Am',
+  'chord-a': 'A',
+  'chord-c': 'C',
+  'chord-g': 'G',
+  'chord-d': 'D',
+  'chord-dm': 'Dm',
+};
 
 export const GUITAR_FIGURES: Figure[] = [
   'guitar-parts',
@@ -19,6 +32,11 @@ export const GUITAR_FIGURES: Figure[] = [
   'pick-down',
   'pick-alternate',
   'string-crossing',
+  'fret-hand',
+  'mute-fret-hand',
+  'mute-pick-hand',
+  'chord-diagram-how',
+  ...(Object.keys(CHORD_FIGURES) as Figure[]),
 ];
 
 /** Cuántos ítems tiene la leyenda de cada figura (0 = sin leyenda). */
@@ -35,6 +53,10 @@ export const LEGEND_COUNT: Partial<Record<Figure, number>> = {
   'pick-down': 2,
   'pick-alternate': 2,
   'string-crossing': 2,
+  'fret-hand': 5,
+  'mute-fret-hand': 2,
+  'mute-pick-hand': 2,
+  'chord-diagram-how': 5,
 };
 
 export const RATIO: Partial<Record<Figure, number>> = {
@@ -53,6 +75,11 @@ export const RATIO: Partial<Record<Figure, number>> = {
   'pick-down': 140 / 360,
   'pick-alternate': 140 / 360,
   'string-crossing': 150 / 360,
+  'fret-hand': 150 / 360,
+  'mute-fret-hand': 140 / 360,
+  'mute-pick-hand': 140 / 360,
+  'chord-diagram-how': 200 / 360,
+  ...Object.fromEntries(Object.keys(CHORD_FIGURES).map((f) => [f, 200 / 360])),
 };
 
 /** true si la figura se dibuja en GuitarFigures.tsx. */

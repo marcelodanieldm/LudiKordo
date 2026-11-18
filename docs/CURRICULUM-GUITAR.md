@@ -99,7 +99,7 @@ Mismo esquema que el bajo (ADR 0008): riffs y progresiones **originales**, desbl
 
 ## Estado
 
-Escritos: módulos 1.1 (5 lecciones) y 1.2 (5 lecciones) en los 3 idiomas, con figuras, cartoons animados y ejemplos sonoros (`src/content/guitar/lessons.ts`). El resto de la ruta se ve con título y objetivo, sin lecciones todavía.
+Escrito: **nivel 1 completo** (24 lecciones, módulos 1.1–1.5) y el checkpoint 1, en los 3 idiomas, con figuras, cartoons animados y ejemplos sonoros (`src/content/guitar/lessons.ts` y `level1.ts`). Los niveles 2 a 4 se ven con título y objetivo; se escriben de a un nivel por PR.
 
 ## Gratis
 

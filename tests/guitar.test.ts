@@ -7,10 +7,13 @@ import { GUITAR_LEVELS } from '../src/content/guitar/curriculum';
 import { FIRST_RIFF, GUITAR_LESSONS } from '../src/content/guitar/lessons';
 import { lessonIdsOf } from '../src/content/curriculum';
 import { GUITAR } from '../src/instruments/profiles';
-import { LEGEND_COUNT } from '../src/components/guitarFigureMeta';
+import { LEGEND_COUNT, isGuitarFigure } from '../src/components/guitarFigureMeta';
 import { withInstrumentTexts } from '../src/i18n/overlay';
 import { LEGACY_VOICE, VOICES, peakGain, ringSec, voiceFor } from '../src/music/timbre';
 import type { Lesson, ScoreEvent } from '../src/content/types';
+import { CP1_RIFF, FULL_SPIDER, GUITAR_CP1, SIGHT_RIFF } from '../src/content/guitar/level1';
+import { CHORDS, chordMidi, triadPitchClasses, type ChordId } from '../src/music/chords';
+import { barsAreComplete, layoutTab } from '../src/music/tab';
 
 type Tree = { [k: string]: string | Tree };
 const locales = { en, es, pt } as unknown as Record<string, Tree>;
@@ -42,9 +45,9 @@ test('ruta de guitarra: 4 niveles, 28 módulos, 132 lecciones, con el módulo de
   assert.equal(new Set(ids).size, ids.length);
 });
 
-test('los módulos gratis 1.1 y 1.2 están completos y todas las lecciones existen en la ruta', () => {
+test('el nivel 1 está completo y todas las lecciones existen en la ruta', () => {
   const route = new Set(GUITAR_LEVELS.flatMap((l) => l.modules.flatMap(lessonIdsOf)));
-  for (const mod of GUITAR_LEVELS[0].modules.slice(0, 2)) {
+  for (const mod of GUITAR_LEVELS[0].modules) {
     for (const id of lessonIdsOf(mod)) assert.ok(GUITAR_LESSONS[id], `falta la lección ${id}`);
   }
   for (const id of Object.keys(GUITAR_LESSONS)) assert.ok(route.has(id), `${id} no está en la ruta`);
@@ -62,7 +65,7 @@ test('cada clave de la ruta, las lecciones y las figuras de guitarra existe en l
     for (const c of lesson.cards) {
       used.add(c.titleKey);
       used.add(c.bodyKey);
-      const figs = [c.figure, ...(lesson.cartoon.visuals ?? [])].filter((f): f is NonNullable<typeof f> => Boolean(f));
+      const figs = [c.figure, ...(lesson.cartoon.visuals ?? [])].filter((f): f is NonNullable<typeof f> => Boolean(f) && isGuitarFigure(f!));
       for (const f of figs) {
         const base = `ui.gfig.${f.replace(/-/g, '_')}`;
         used.add(`${base}.a11y`);
@@ -143,4 +146,45 @@ test('timbres: el bajo suena como siempre y la guitarra limpia por defecto', () 
   assert.equal(ringSec(VOICES.crunch, 4), 4);
   assert.ok(ringSec(VOICES.muted, 1) <= 0.15);
   for (const v of Object.values(VOICES)) assert.ok(peakGain(v) > 0 && peakGain(v) <= 0.6);
+});
+
+test('checkpoint 1 de guitarra: claves en 3 idiomas, cuerdas de guitarra y compases completos', () => {
+  const used = [GUITAR_CP1.titleKey, GUITAR_CP1.introKey, ...GUITAR_CP1.parts.map((p) => p.promptKey)];
+  for (const [code, tree] of Object.entries(locales)) for (const k of used) assert.ok(lookup(tree, k), `${code}: falta ${k}`);
+  for (const p of GUITAR_CP1.parts) {
+    if (p.kind === 'playAlong') p.notes.forEach((n) => assert.ok(guitarStrings.has(n.string), p.id));
+    if (p.kind === 'ear' || p.kind === 'quiz') assert.ok(p.correctIndex < p.options.length, p.id);
+  }
+  assert.ok(barsAreComplete(CP1_RIFF) && barsAreComplete(SIGHT_RIFF));
+  assert.equal(FULL_SPIDER.length, 48);
+});
+
+test('las partituras de las lecciones de guitarra tienen compases completos', () => {
+  for (const lesson of lessons) {
+    for (const ex of lesson.exercises) {
+      if (ex.kind === 'playAlong' && ex.score) assert.ok(barsAreComplete(ex.score), `${ex.id}: compases`);
+    }
+    for (const c of lesson.cards) if (c.listen?.show === 'tab') assert.ok(barsAreComplete(c.listen.events) || c.listen.events.length <= 8, `${lesson.id}: ejemplo`);
+  }
+});
+
+test('tablatura con corcheas y silencios: más ancho por pulso y corcheas a medio pulso', () => {
+  const quarters = layoutTab([{ string: 'E', fret: 0, beats: 1 }, { string: 'E', fret: 0, beats: 1 }, { string: 'E', fret: 0, beats: 2 }], 400);
+  const eighths = layoutTab([{ string: 'E', fret: 0, beats: 0.5 }, { string: 'E', fret: 0, beats: 0.5 }, { rest: true, beats: 1 }, { string: 'A', fret: 2, beats: 2 }], 400);
+  assert.ok(eighths.beatW >= 40);
+  // Dos corcheas en el mismo pulso, separadas medio pulso.
+  assert.ok(Math.abs(eighths.notes[1].x - eighths.notes[0].x - eighths.beatW / 2) < 0.001);
+  // La negra queda centrada en su pulso, como siempre.
+  assert.ok(Math.abs(quarters.notes[0].x - (26 + quarters.beatW / 2)) < 0.001);
+});
+
+test('acordes abiertos: cada diagrama suena a su tríada y tiene un dedo por nota pisada', () => {
+  for (const id of Object.keys(CHORDS) as ChordId[]) {
+    const pcs = new Set(chordMidi(id).map((m) => m % 12));
+    assert.deepEqual([...pcs].sort(), [...triadPitchClasses(id)].sort(), id);
+    const { frets, fingers } = CHORDS[id];
+    frets.forEach((f, i) => assert.equal(f > 0, fingers[i] > 0, `${id}: cuerda ${6 - i}`));
+    // La nota más grave es la tónica (posición fundamental).
+    assert.equal(Math.min(...chordMidi(id)) % 12, CHORDS[id].root, `${id}: bajo`);
+  }
 });

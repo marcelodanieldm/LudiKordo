@@ -326,6 +326,56 @@
         "a11y": "The pick crossing from one string to another",
         "l1": "The hand's path, from the 6th to the 1st.",
         "l2": "The pick, close to the next string."
+      },
+      "fret_hand": {
+        "a11y": "Hand on the neck with one finger per fret, 1 to 4",
+        "l1": "Index: fret 1.",
+        "l2": "Middle: fret 2.",
+        "l3": "Ring: fret 3.",
+        "l4": "Pinky: fret 4.",
+        "l5": "Thumb behind the neck."
+      },
+      "mute_fret_hand": {
+        "a11y": "Finger resting on the strings without pressing, to mute them",
+        "l1": "Finger resting, not pressing.",
+        "l2": "The strings don't ring."
+      },
+      "mute_pick_hand": {
+        "a11y": "Edge of the palm resting on the strings near the bridge",
+        "l1": "Edge of the palm on the strings.",
+        "l2": "The strings it touches are muted."
+      },
+      "chord_diagram_how": {
+        "a11y": "E minor chord diagram with its parts numbered",
+        "l1": "Strings: the 6th on the left.",
+        "l2": "Frets.",
+        "l3": "Nut.",
+        "l4": "Where to press and with which finger.",
+        "l5": "O: open. X: don't play."
+      },
+      "chord_em": {
+        "a11y": "E minor diagram: finger 2 on the 5th string and finger 3 on the 4th, fret 2; the rest open"
+      },
+      "chord_e": {
+        "a11y": "E major diagram: finger 2 on the 5th and finger 3 on the 4th, fret 2; finger 1 on the 3rd, fret 1"
+      },
+      "chord_am": {
+        "a11y": "A minor diagram: 6th not played; finger 2 on the 4th and finger 3 on the 3rd, fret 2; finger 1 on the 2nd, fret 1"
+      },
+      "chord_a": {
+        "a11y": "A major diagram: 6th not played; fingers 1, 2 and 3 on fret 2 of the 4th, 3rd and 2nd strings"
+      },
+      "chord_c": {
+        "a11y": "C major diagram: 6th not played; finger 3 on the 5th fret 3, finger 2 on the 4th fret 2, finger 1 on the 2nd fret 1"
+      },
+      "chord_g": {
+        "a11y": "G major diagram: finger 2 on the 6th fret 3, finger 1 on the 5th fret 2, finger 3 on the 1st fret 3"
+      },
+      "chord_d": {
+        "a11y": "D major diagram: 6th and 5th not played; finger 1 on the 3rd fret 2, finger 3 on the 2nd fret 3, finger 2 on the 1st fret 2"
+      },
+      "chord_dm": {
+        "a11y": "D minor diagram: 6th and 5th not played; finger 2 on the 3rd fret 2, finger 3 on the 2nd fret 3, finger 1 on the 1st fret 1"
       }
     }
   },
@@ -1298,6 +1348,234 @@
         "c3b": "This is how it sounds with a bit of GAIN. Practice it clean; once you've got it, try crunch just for fun.",
         "tab": "Read the riff in the tab and play each note on the fretboard.",
         "play": "Play the whole riff with the metronome."
+      },
+      "l131": {
+        "title": "One finger per fret",
+        "objective": "Fret frets 1 to 4 on the 6th string with one finger per fret, with no buzzing.",
+        "s1": "\"So far you've used open strings. Today your other hand joins the show.\"",
+        "s2": "Index on fret 1, middle on 2, ring on 3 and pinky on 4. Your thumb goes behind the neck.",
+        "s3": "Press right behind the fret, with your fingertip. Listen: frets 1, 2, 3 and 4.",
+        "s4": "\"If the note buzzes, move your finger closer to the fret. You don't need to press harder.\"",
+        "c1t": "Fingers have numbers",
+        "c1b": "1: index. 2: middle. 3: ring. 4: pinky. 5: your thumb, resting behind the neck, roughly behind finger 2. The thumb has no fretting number.",
+        "c2t": "One finger per fret",
+        "c2b": "Each finger takes care of one fret, so your hand doesn't jump around. Play the example: frets 1, 2, 3 and 4 on the 6th string.",
+        "c3t": "Right behind the fret",
+        "c3b": "Press with your fingertip, right next to the fret (on the nut side). That way the note rings clean with little effort.",
+        "q1": "Which finger is number 3?",
+        "q1o1": "Index",
+        "q1o2": "Middle",
+        "q1o3": "Ring",
+        "q1o4": "Pinky",
+        "tap": "Tap frets 1, 2, 3 and 4 of the 6th string on the fretboard.",
+        "play": "Fret and play frets 1, 2, 3 and 4 on the 6th string, twice."
+      },
+      "l132": {
+        "title": "Chromatic on the 6th and 5th",
+        "objective": "Play the 1-2-3-4 chromatic up and back on the 6th and 5th strings at 60 bpm or faster.",
+        "s1": "\"This exercise has a name: the chromatic. Guitarists warm up with it every day.\"",
+        "s2": "Frets 1-2-3-4 on the 6th, then on the 5th, and back: 4-3-2-1. Listen.",
+        "s3": "One finger per fret. When you move to the 5th string, your hand stays put: only your fingers change strings.",
+        "s4": "\"Keep your fingers close to the strings. Far away, they waste time.\"",
+        "c1t": "Up and back",
+        "c1b": "Go up 1-2-3-4 on the 6th and 5th, then down 4-3-2-1 on the 5th and 6th. Play the example and follow the tab.",
+        "c2t": "Fingers close",
+        "c2b": "When you lift a finger, let it hover near the string. That way it gets to the next note on time.",
+        "tab": "Read the tab and play each note on the fretboard.",
+        "play": "Chromatic up and back on the 6th and 5th strings, with the metronome."
+      },
+      "l133": {
+        "title": "Chromatic on the 4th and 3rd",
+        "objective": "Play the 1-2-3-4 chromatic up and back on the 4th and 3rd strings at 60 bpm or faster.",
+        "s1": "\"The middle strings: D and G. Same exercise, new spot.\"",
+        "s2": "Frets 1-2-3-4 on the 4th, then on the 3rd, and back. Listen.",
+        "s3": "To reach the 3rd string, your wrist drops a little. Your thumb stays behind the neck.",
+        "s4": "\"Pinky getting tired? That's normal. It gets stronger after a few days of practice.\"",
+        "c1t": "D and G",
+        "c1b": "The same chromatic on the 4th (D) and 3rd (G). Play the example and follow the tab.",
+        "c2t": "The pinky works",
+        "c2b": "Finger 4 is the weakest. Don't swap it for finger 3: that's exactly what this exercise trains.",
+        "tab": "Read the tab and play each note on the fretboard.",
+        "play": "Chromatic up and back on the 4th and 3rd strings, with the metronome."
+      },
+      "l134": {
+        "title": "Chromatic on the 2nd and 1st",
+        "objective": "Play the 1-2-3-4 chromatic up and back on the 2nd and 1st strings at 60 bpm or faster.",
+        "s1": "\"The thin strings sound high and need less pressure.\"",
+        "s2": "Frets 1-2-3-4 on the 2nd, then on the 1st, and back. Listen.",
+        "s3": "On thin strings, press lightly: if you squeeze too hard, the note goes sharp.",
+        "s4": "\"Make sure your finger doesn't touch the next string. Press with the tip, standing upright.\"",
+        "c1t": "B and high E",
+        "c1b": "The chromatic on the 2nd (B) and 1st (E). Play the example and follow the tab.",
+        "c2t": "Less pressure",
+        "c2b": "Thin strings go out of tune if you press too hard. Press just enough for a clean note.",
+        "tab": "Read the tab and play each note on the fretboard.",
+        "play": "Chromatic up and back on the 2nd and 1st strings, with the metronome."
+      },
+      "l135": {
+        "title": "All 6 strings, up and back",
+        "objective": "Play the chromatic on all 6 strings, up and down, at 60 bpm or faster.",
+        "s1": "\"Listen: all six strings, end to end. This is the full exercise.\"",
+        "s2": "Go up 1-2-3-4 from the 6th to the 1st, and down 4-3-2-1 from the 1st to the 6th.",
+        "s3": "That's 48 notes. If you get lost, keep the pulse and pick it up on the next string.",
+        "s4": "\"Once you've got it at 60, move to 70 and 80. That's your daily warm-up.\"",
+        "c1t": "The full chromatic",
+        "c1b": "Four notes per string, up to the 1st and back down to the 6th. Play the example and follow the tab.",
+        "c2t": "Daily warm-up",
+        "c2b": "A few minutes of chromatic before practicing wakes up your fingers and your alternate picking.",
+        "pulse": "Keep the pulse: the click stops after 8 beats and you carry on.",
+        "play": "The chromatic on all 6 strings, up and back, with the metronome."
+      },
+      "l141": {
+        "title": "Muting with the fretting hand",
+        "objective": "Stop a fretted note by relaxing your finger, without lifting it off the string.",
+        "s1": "\"Listen to this note. It keeps ringing, and ringing… What if I want it to stop?\"",
+        "s2": "Relax your finger but keep it resting on the string. The note stops instantly.",
+        "s3": "Note and rest, note and rest. Listen.",
+        "s4": "\"If you lift your finger all the way, the open string rings. Relaxing isn't letting go.\"",
+        "c1t": "Relax, don't let go",
+        "c1b": "1: the finger stays on the string, without pressing. 2: the string stops ringing. If you lift it off, the open string sounds: that's noise.",
+        "c2t": "Note and rest",
+        "c2b": "Each note lasts one beat and the next beat is a rest. Play the example: the note stops right on the click.",
+        "ear": "Listen. Does the note ring long or is it cut short?",
+        "long": "Long",
+        "short": "Cut short",
+        "play": "Note and rest: play on the click and mute by relaxing your finger on the next click."
+      },
+      "l142": {
+        "title": "Muting with the picking hand",
+        "objective": "Stop an open string by resting your picking hand on it, in time.",
+        "s1": "\"An open string has no finger to relax. How do you stop it?\"",
+        "s2": "Rest the edge of your palm on the string, near the bridge. Done: silence.",
+        "s3": "Play, rest, play, rest. Listen to how each note stops.",
+        "s4": "\"Both hands mute. With practice they do it on their own, without thinking.\"",
+        "c1t": "The edge of your palm",
+        "c1b": "1: the edge of your picking hand rests on the strings, near the bridge. 2: the strings it touches stop ringing.",
+        "c2t": "Open string and rest",
+        "c2b": "Open string on the click and a rest on the next click. Play the example and listen for the cut.",
+        "q1": "You played the open 6th string and want it to stop. What do you do?",
+        "q1o1": "Rest the edge of my picking hand on the string",
+        "q1o2": "Press harder with the other hand",
+        "q1o3": "Turn the amp down",
+        "play": "Open string and rest: mute with your picking hand on every rest."
+      },
+      "l143": {
+        "title": "Rests in the rhythm",
+        "objective": "Respect the rests in a rhythm: nothing rings where there's no note.",
+        "s1": "\"In music, you play the silence too.\"",
+        "s2": "Listen: notes and rests mixed together. During a rest, the pulse keeps going.",
+        "s3": "On the rhythm line under the tab, a rest has its own sign.",
+        "s4": "\"Count the rests out loud. That way you won't skip them.\"",
+        "c1t": "A rest has a sign",
+        "c1b": "Under the tab, where there's no number, you see the rest sign: the quarter rest looks like a zigzag and lasts 1 beat; the half rest is a small block and lasts 2.",
+        "c2t": "A clean rest",
+        "c2b": "During a rest, no string should ring. Mute with whichever hand you need.",
+        "pulse": "Keep the pulse, during the rests too.",
+        "play": "Play the rhythm with its rests, with the metronome."
+      },
+      "l144": {
+        "title": "Noise-free riff",
+        "objective": "Play a riff with fretted notes, open strings and rests, with no extra strings ringing.",
+        "s1": "\"Listen to this crunchy riff. Notice that nothing rings between the notes.\"",
+        "s2": "Fretted notes are muted by relaxing your finger.",
+        "s3": "Open strings are muted with your picking hand.",
+        "s4": "\"Now clean and slow. Noise-free first, faster later.\"",
+        "c1t": "The riff",
+        "c1b": "Four bars with notes on the 6th and 5th strings and rests. Play the example and follow the tab.",
+        "c2t": "With crunch",
+        "c2b": "With gain, any string left ringing really stands out. That's why muting matters so much on electric guitar.",
+        "play": "Play the riff with the metronome, muting on every rest."
+      },
+      "l151": {
+        "title": "6-line tab",
+        "objective": "Read which string and fret to play on all 6 strings from tab.",
+        "s1": "\"Tab is the fastest way to write music for guitar.\"",
+        "s2": "Six lines, one per string. The 1st (high E) is on top; the 6th (low E) is at the bottom.",
+        "s3": "The number tells you the fret: 0 is an open string. Listen and follow the tab.",
+        "s4": "\"Careful: the top line is the highest string, even though it's at the bottom of your guitar.\"",
+        "c1t": "One line per string",
+        "c1b": "In tab, the top line is the 1st string (the thinnest) and the bottom one is the 6th (the thickest). It's like looking down at the neck.",
+        "c2t": "The numbers",
+        "c2b": "Each number is a fret. 0 = open. Read left to right. Play the example and follow the numbers.",
+        "q1": "In tab, which string is the top line?",
+        "q1o1": "The 6th, low E",
+        "q1o2": "The 1st, high E",
+        "q1o3": "The 3rd, G",
+        "tab": "Read the tab and play each note on the fretboard."
+      },
+      "l152": {
+        "title": "Note lengths in tab",
+        "objective": "Read quarter, half and whole notes in tab and play them for their full length.",
+        "s1": "\"Tab tells you where to play. The note shapes underneath tell you how long.\"",
+        "s2": "Quarter: 1 beat. Half: 2. Whole: 4. Listen.",
+        "s3": "The shapes sit under each number. Listen to this line and count.",
+        "s4": "\"Don't rush a half note: let it ring for two full beats.\"",
+        "c1t": "Quarter, half and whole",
+        "c1b": "The quarter note (filled head with a stem) lasts 1 beat; the half note (hollow with a stem), 2; the whole note (hollow, no stem), 4. Play the example and count 1, 2, 3, 4.",
+        "c2t": "All together",
+        "c2b": "Four bars mixing all three. Play the example and follow the shapes under the tab.",
+        "q1": "How many beats does a half note last?",
+        "tab": "Read the tab and play each note on the fretboard.",
+        "play": "Play the line, holding each note for its full length."
+      },
+      "l153": {
+        "title": "Eighth notes and rests",
+        "objective": "Read and play eighth notes and rests in tab, with alternate picking.",
+        "s1": "\"Eighth notes are the quick ones: two per beat.\"",
+        "s2": "In tab, the eighth note has a little flag on its stem. Play it with alternate picking: down, up.",
+        "s3": "Listen: eighth notes, quarter notes and rests in the same bar.",
+        "s4": "\"Count '1 and 2 and'. Eighth notes land on the number and on the 'and'.\"",
+        "c1t": "The eighth note",
+        "c1b": "It lasts half a beat: two eighth notes fill one beat. Under the tab they have a little flag. Play the example and count \"1 and 2 and\".",
+        "c2t": "Eighths and rests",
+        "c2b": "Four bars with eighth notes, quarter notes and rests. Alternate picking keeps going even during rests.",
+        "tap": "Tap ↓ and ↑ in turn: two taps per click.",
+        "play": "Play the line with eighth notes and rests, using alternate picking."
+      },
+      "l154": {
+        "title": "Chord diagrams",
+        "objective": "Read a chord diagram: strings, frets, fingers and which strings ring.",
+        "s1": "\"Before playing chords, let's learn to read their picture: the diagram.\"",
+        "s2": "It's the neck standing up: vertical strings, horizontal frets and the nut on top.",
+        "s3": "This is E minor (Em): finger 2 on the 5th string and finger 3 on the 4th, both on fret 2. Listen.",
+        "s4": "\"An X means 'this string doesn't ring'. An O means 'it rings open'. Look at this A minor.\"",
+        "c1t": "How to read it",
+        "c1b": "1: vertical strings, the 6th on the left. 2: horizontal frets. 3: the nut, the thick line on top. 4: the dot shows where to press and the number which finger. 5: O is open; X, don't play it.",
+        "c2t": "E minor (Em)",
+        "c2b": "Fingers 2 and 3 on fret 2 of the 5th and 4th strings; the other four open. Listen to it string by string.",
+        "c3t": "A minor (Am)",
+        "c3b": "The 6th string has an X: don't play it. You'll play chords in level 2; today you just read them.",
+        "q1": "In a chord diagram, what are the vertical lines?",
+        "q1o1": "The strings",
+        "q1o2": "The frets",
+        "q1o3": "The fingers",
+        "q2": "What does an X above a string mean?",
+        "q2o1": "It rings open",
+        "q2o2": "Press it with finger 10",
+        "q2o3": "Don't play that string",
+        "tap": "Tap the two fretted notes of E minor on the fretboard: fret 2 on the 5th and 4th strings."
+      },
+      "l155": {
+        "title": "Sight-reading",
+        "objective": "Read and play a new 4-bar tab without hearing it first.",
+        "s1": "\"Today's challenge: reading a tab you've never heard.\"",
+        "s2": "First look at the whole tab: which strings and frets it uses.",
+        "s3": "Then count the rhythm without playing, and only then play it, slowly.",
+        "s4": "\"This is how it sounds once you've got it. With crunch!\"",
+        "c1t": "Three steps",
+        "c1b": "1: look at strings and frets. 2: count the rhythm out loud. 3: play it slowly with the metronome. Reading well matters more than playing fast.",
+        "c2t": "The example",
+        "c2b": "Do the reading exercise first. If you get stuck, play the example and follow the tab.",
+        "tab": "Read the new tab and play each note on the fretboard.",
+        "play": "Play the whole tab with the metronome."
+      },
+      "cp1": {
+        "intro": "Show what you learned in level 1: strings, tab, pulse, chromatic and a riff with eighth notes and rests.",
+        "ear": "The first note is the open 6th string. Which open string comes next?",
+        "tab": "Read the tab and play each note on the fretboard.",
+        "pulse": "Keep the pulse at 80 bpm: the click stops after 8 beats and you carry on.",
+        "spider": "The chromatic on all 6 strings, up and back, at 70 bpm.",
+        "riff": "The final riff at 80 bpm, with clean eighth notes and rests."
       }
     }
   },

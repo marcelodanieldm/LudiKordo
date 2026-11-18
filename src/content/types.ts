@@ -170,7 +170,19 @@ export type Figure =
   | 'pick-grip'
   | 'pick-down'
   | 'pick-alternate'
-  | 'string-crossing';
+  | 'string-crossing'
+  | 'fret-hand'
+  | 'mute-fret-hand'
+  | 'mute-pick-hand'
+  | 'chord-diagram-how'
+  | 'chord-em'
+  | 'chord-e'
+  | 'chord-am'
+  | 'chord-a'
+  | 'chord-c'
+  | 'chord-g'
+  | 'chord-d'
+  | 'chord-dm';
 
 export interface Card {
   titleKey: string;

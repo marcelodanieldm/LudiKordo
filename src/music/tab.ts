@@ -1,15 +1,23 @@
 /**
  * Tablatura (lógica pura): compases, posición de cada nota y figura rítmica.
- * Solo 4/4 con redondas, blancas y negras (nivel 1).
+ * 4/4 con redondas, blancas, negras y corcheas, y silencios (la guitarra usa
+ * tablatura también para las partituras con corcheas y silencios).
  */
-import type { TabNote } from '../content/types';
+import type { ScoreEvent, TabNote } from '../content/types';
 
 export const BEATS_PER_BAR = 4;
 
-export type Figure = 'whole' | 'half' | 'quarter';
+export type Figure = 'whole' | 'half' | 'quarter' | 'eighth';
 
-export function figureOf(beats: TabNote['beats']): Figure {
-  return beats === 4 ? 'whole' : beats === 2 ? 'half' : 'quarter';
+export function figureOf(beats: number): Figure {
+  return beats >= 4 ? 'whole' : beats >= 2 ? 'half' : beats >= 1 ? 'quarter' : 'eighth';
+}
+
+/** Un evento de tablatura: nota de `TabNote` o cualquier evento de partitura (con corcheas y silencios). */
+export type TabEvent = TabNote | ScoreEvent;
+
+export function isTabRest(e: TabEvent): e is { rest: true; beats: ScoreEvent['beats'] } {
+  return 'rest' in e;
 }
 
 export interface PlacedNote extends TabNote {
@@ -22,7 +30,9 @@ export interface PlacedNote extends TabNote {
 }
 
 /** Ubica cada nota en el tiempo. */
-export function placeNotes(notes: TabNote[]): PlacedNote[] {
+export function placeNotes(notes: TabNote[]): PlacedNote[];
+export function placeNotes<T extends { beats: number }>(notes: T[]): (T & { startBeat: number; bar: number; beatInBar: number })[];
+export function placeNotes<T extends { beats: number }>(notes: T[]) {
   let beat = 0;
   return notes.map((n) => {
     const placed = { ...n, startBeat: beat, bar: Math.floor(beat / BEATS_PER_BAR), beatInBar: beat % BEATS_PER_BAR };
@@ -31,7 +41,7 @@ export function placeNotes(notes: TabNote[]): PlacedNote[] {
   });
 }
 
-export function totalBeats(notes: TabNote[]): number {
+export function totalBeats(notes: TabEvent[]): number {
   return notes.reduce((a, n) => a + n.beats, 0);
 }
 
@@ -39,7 +49,7 @@ export function totalBeats(notes: TabNote[]): number {
  * Comprueba que la tablatura esté bien escrita: compases completos y ninguna
  * nota que cruce la barra de compás.
  */
-export function barsAreComplete(notes: TabNote[]): boolean {
+export function barsAreComplete(notes: TabEvent[]): boolean {
   if (notes.length === 0 || totalBeats(notes) % BEATS_PER_BAR !== 0) return false;
   return placeNotes(notes).every((n) => n.beatInBar + n.beats <= BEATS_PER_BAR);
 }
@@ -52,6 +62,8 @@ export function countFor(note: PlacedNote): number[] {
 export const TAB_LABEL_W = 26;
 /** Ancho mínimo de un pulso: entra la caja de una nota actual con traste de dos cifras. */
 export const MIN_BEAT_W = 30;
+/** Con corcheas, dos notas por pulso: hace falta más lugar. */
+export const MIN_BEAT_W_EIGHTHS = 40;
 
 export interface TabLayout {
   barsPerRow: number;
@@ -70,12 +82,13 @@ export interface TabLayout {
  * con pulsos de MIN_BEAT_W, se usa un compás por renglón con el ancho mínimo y
  * `width` indica cuánto hace falta (el componente desplaza en horizontal).
  */
-export function layoutTab(notes: TabNote[], width: number): TabLayout {
+export function layoutTab(notes: TabEvent[], width: number): TabLayout {
   const placed = placeNotes(notes);
   const bars = placed.length ? placed[placed.length - 1].bar + 1 : 0;
   const usable = width - TAB_LABEL_W - 8;
-  const barsPerRow = Math.max(1, Math.floor(usable / (BEATS_PER_BAR * MIN_BEAT_W)));
-  const beatW = Math.max(MIN_BEAT_W, usable / (barsPerRow * BEATS_PER_BAR));
+  const minBeat = notes.some((n) => n.beats < 1) ? MIN_BEAT_W_EIGHTHS : MIN_BEAT_W;
+  const barsPerRow = Math.max(1, Math.floor(usable / (BEATS_PER_BAR * minBeat)));
+  const beatW = Math.max(minBeat, usable / (barsPerRow * BEATS_PER_BAR));
   const rows = Math.ceil(bars / barsPerRow);
   return {
     barsPerRow,
@@ -84,7 +97,8 @@ export function layoutTab(notes: TabNote[], width: number): TabLayout {
     barsInRow: Array.from({ length: rows }, (_, r) => Math.min(barsPerRow, bars - r * barsPerRow)),
     notes: placed.map((n) => {
       const beatInRow = (n.bar % barsPerRow) * BEATS_PER_BAR + n.beatInBar;
-      return { row: Math.floor(n.bar / barsPerRow), x: TAB_LABEL_W + beatInRow * beatW + beatW / 2 };
+      // Una corchea ocupa medio pulso: se centra en su mitad.
+      return { row: Math.floor(n.bar / barsPerRow), x: TAB_LABEL_W + beatInRow * beatW + (Math.min(1, n.beats) * beatW) / 2 };
     }),
     width: Math.max(width, TAB_LABEL_W + 8 + barsPerRow * BEATS_PER_BAR * beatW),
   };

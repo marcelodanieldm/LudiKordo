@@ -326,6 +326,56 @@
         "a11y": "La púa cruzando de una cuerda a otra",
         "l1": "Camino de la mano, de la 6.ª a la 1.ª.",
         "l2": "La púa, cerca de la cuerda que viene."
+      },
+      "fret_hand": {
+        "a11y": "Mano sobre el mástil con un dedo por traste, del 1 al 4",
+        "l1": "Índice: traste 1.",
+        "l2": "Medio: traste 2.",
+        "l3": "Anular: traste 3.",
+        "l4": "Meñique: traste 4.",
+        "l5": "Pulgar detrás del mástil."
+      },
+      "mute_fret_hand": {
+        "a11y": "Dedo apoyado sin apretar sobre las cuerdas para apagarlas",
+        "l1": "Dedo apoyado, sin apretar.",
+        "l2": "Las cuerdas no suenan."
+      },
+      "mute_pick_hand": {
+        "a11y": "Canto de la palma apoyado sobre las cuerdas cerca del puente",
+        "l1": "Canto de la palma sobre las cuerdas.",
+        "l2": "Las cuerdas que toca se apagan."
+      },
+      "chord_diagram_how": {
+        "a11y": "Diagrama de acorde de Mi menor con sus partes numeradas",
+        "l1": "Cuerdas: la 6.ª a la izquierda.",
+        "l2": "Trastes.",
+        "l3": "Cejuela.",
+        "l4": "Dónde pisar y con qué dedo.",
+        "l5": "O: al aire. X: no se toca."
+      },
+      "chord_em": {
+        "a11y": "Diagrama de Mi menor: dedo 2 en la 5.ª cuerda y dedo 3 en la 4.ª, traste 2; el resto al aire"
+      },
+      "chord_e": {
+        "a11y": "Diagrama de Mi mayor: dedo 2 en la 5.ª y dedo 3 en la 4.ª, traste 2; dedo 1 en la 3.ª, traste 1"
+      },
+      "chord_am": {
+        "a11y": "Diagrama de La menor: 6.ª sin tocar; dedo 2 en la 4.ª y dedo 3 en la 3.ª, traste 2; dedo 1 en la 2.ª, traste 1"
+      },
+      "chord_a": {
+        "a11y": "Diagrama de La mayor: 6.ª sin tocar; dedos 1, 2 y 3 en el traste 2 de la 4.ª, 3.ª y 2.ª cuerda"
+      },
+      "chord_c": {
+        "a11y": "Diagrama de Do mayor: 6.ª sin tocar; dedo 3 en la 5.ª traste 3, dedo 2 en la 4.ª traste 2, dedo 1 en la 2.ª traste 1"
+      },
+      "chord_g": {
+        "a11y": "Diagrama de Sol mayor: dedo 2 en la 6.ª traste 3, dedo 1 en la 5.ª traste 2, dedo 3 en la 1.ª traste 3"
+      },
+      "chord_d": {
+        "a11y": "Diagrama de Re mayor: 6.ª y 5.ª sin tocar; dedo 1 en la 3.ª traste 2, dedo 3 en la 2.ª traste 3, dedo 2 en la 1.ª traste 2"
+      },
+      "chord_dm": {
+        "a11y": "Diagrama de Re menor: 6.ª y 5.ª sin tocar; dedo 2 en la 3.ª traste 2, dedo 3 en la 2.ª traste 3, dedo 1 en la 1.ª traste 1"
       }
     }
   },
@@ -1298,6 +1348,234 @@
         "c3b": "Así suena con un poco de GAIN. Practícalo en limpio; cuando ya te salga, prueba el crunch solo para disfrutarlo.",
         "tab": "Lee el riff en la tablatura y toca cada nota en el diapasón.",
         "play": "Toca el riff completo con el metrónomo."
+      },
+      "l131": {
+        "title": "Un dedo por traste",
+        "objective": "Pisar los trastes 1 a 4 de la 6.ª cuerda con un dedo por traste, sin que la nota zumbe.",
+        "s1": "«Hasta ahora usaste cuerdas al aire. Hoy la otra mano entra en escena.»",
+        "s2": "Índice en el traste 1, medio en el 2, anular en el 3 y meñique en el 4. El pulgar, detrás del mástil.",
+        "s3": "Pisa justo detrás del traste, con la punta del dedo. Escucha: traste 1, 2, 3 y 4.",
+        "s4": "«Si la nota zumba, acerca el dedo al traste. No hace falta apretar más fuerte.»",
+        "c1t": "Los dedos tienen número",
+        "c1b": "1: índice. 2: medio. 3: anular. 4: meñique. 5: el pulgar, apoyado detrás del mástil, más o menos a la altura del dedo 2. El pulgar no tiene número para pisar.",
+        "c2t": "Un dedo por traste",
+        "c2b": "Cada dedo se encarga de un traste: así la mano no salta. Toca el ejemplo: trastes 1, 2, 3 y 4 en la 6.ª cuerda.",
+        "c3t": "Justo detrás del traste",
+        "c3b": "Pisa con la punta del dedo, pegado al traste (del lado de la cejuela). Así la nota suena limpia con poca fuerza.",
+        "q1": "¿Qué dedo es el número 3?",
+        "q1o1": "El índice",
+        "q1o2": "El medio",
+        "q1o3": "El anular",
+        "q1o4": "El meñique",
+        "tap": "Toca en el diapasón los trastes 1, 2, 3 y 4 de la 6.ª cuerda.",
+        "play": "Pisa y toca los trastes 1, 2, 3 y 4 de la 6.ª cuerda, dos veces."
+      },
+      "l132": {
+        "title": "Cromático en 6.ª y 5.ª",
+        "objective": "Tocar el cromático 1-2-3-4 ida y vuelta en la 6.ª y la 5.ª cuerda, a 60 bpm o más.",
+        "s1": "«Este ejercicio tiene nombre: cromático. Los guitarristas lo usan para calentar todos los días.»",
+        "s2": "Trastes 1-2-3-4 en la 6.ª, después en la 5.ª, y de vuelta: 4-3-2-1. Escucha.",
+        "s3": "Un dedo por traste. Cuando pasas a la 5.ª cuerda, la mano no se mueve: solo cambian los dedos de cuerda.",
+        "s4": "«Deja los dedos cerca de las cuerdas. Lejos, pierden tiempo.»",
+        "c1t": "Ida y vuelta",
+        "c1b": "Sube 1-2-3-4 en la 6.ª y en la 5.ª, y baja 4-3-2-1 en la 5.ª y en la 6.ª. Toca el ejemplo y sigue la tablatura.",
+        "c2t": "Dedos cerca",
+        "c2b": "Al levantar un dedo, déjalo flotando cerca de la cuerda. Así llega a tiempo a la nota siguiente.",
+        "tab": "Lee la tablatura y toca cada nota en el diapasón.",
+        "play": "Cromático ida y vuelta en la 6.ª y la 5.ª cuerda, con el metrónomo."
+      },
+      "l133": {
+        "title": "Cromático en 4.ª y 3.ª",
+        "objective": "Tocar el cromático 1-2-3-4 ida y vuelta en la 4.ª y la 3.ª cuerda, a 60 bpm o más.",
+        "s1": "«Las cuerdas del medio: Re y Sol. Mismo ejercicio, nuevo lugar.»",
+        "s2": "Trastes 1-2-3-4 en la 4.ª, después en la 3.ª, y de vuelta. Escucha.",
+        "s3": "Para llegar a la 3.ª cuerda, la muñeca baja un poco. El pulgar sigue detrás del mástil.",
+        "s4": "«¿Te cansa el meñique? Es normal. Se hace fuerte con unos días de práctica.»",
+        "c1t": "Re y Sol",
+        "c1b": "El mismo cromático en la 4.ª (Re) y la 3.ª (Sol). Toca el ejemplo y sigue la tablatura.",
+        "c2t": "El meñique trabaja",
+        "c2b": "El dedo 4 es el más débil. No lo reemplaces con el 3: es justo lo que este ejercicio entrena.",
+        "tab": "Lee la tablatura y toca cada nota en el diapasón.",
+        "play": "Cromático ida y vuelta en la 4.ª y la 3.ª cuerda, con el metrónomo."
+      },
+      "l134": {
+        "title": "Cromático en 2.ª y 1.ª",
+        "objective": "Tocar el cromático 1-2-3-4 ida y vuelta en la 2.ª y la 1.ª cuerda, a 60 bpm o más.",
+        "s1": "«Las cuerdas finas suenan agudas y piden menos fuerza.»",
+        "s2": "Trastes 1-2-3-4 en la 2.ª, después en la 1.ª, y de vuelta. Escucha.",
+        "s3": "Con las cuerdas finas, apoya apenas: si aprietas de más, la nota se desafina.",
+        "s4": "«Cuida que el dedo no toque la cuerda de al lado. Pisa con la punta, bien parado.»",
+        "c1t": "Si y Mi aguda",
+        "c1b": "El cromático en la 2.ª (Si) y la 1.ª (Mi). Toca el ejemplo y sigue la tablatura.",
+        "c2t": "Menos fuerza",
+        "c2b": "Las cuerdas finas se desafinan si aprietas mucho. Pisa lo justo para que la nota suene limpia.",
+        "tab": "Lee la tablatura y toca cada nota en el diapasón.",
+        "play": "Cromático ida y vuelta en la 2.ª y la 1.ª cuerda, con el metrónomo."
+      },
+      "l135": {
+        "title": "Las 6 cuerdas, ida y vuelta",
+        "objective": "Tocar el cromático en las 6 cuerdas, subiendo y bajando, a 60 bpm o más.",
+        "s1": "«Escucha: las seis cuerdas de punta a punta. Es el ejercicio completo.»",
+        "s2": "Subes 1-2-3-4 de la 6.ª a la 1.ª, y bajas 4-3-2-1 de la 1.ª a la 6.ª.",
+        "s3": "Son 48 notas. Si te pierdes, sigue con el pulso y retoma en la cuerda siguiente.",
+        "s4": "«Cuando te salga a 60, sube a 70 y a 80. Ese es tu calentamiento diario.»",
+        "c1t": "El cromático completo",
+        "c1b": "Cuatro notas por cuerda, subiendo hasta la 1.ª y bajando hasta la 6.ª. Toca el ejemplo y sigue la tablatura.",
+        "c2t": "Calentamiento diario",
+        "c2b": "Unos minutos de cromático antes de practicar despiertan los dedos y la púa alternada.",
+        "pulse": "Marca el pulso: el clic se calla después de 8 pulsos y sigues tú.",
+        "play": "El cromático en las 6 cuerdas, ida y vuelta, con el metrónomo."
+      },
+      "l141": {
+        "title": "Apagar con la mano que pisa",
+        "objective": "Cortar una nota pisada aflojando el dedo, sin levantarlo de la cuerda.",
+        "s1": "«Escucha esta nota. Sigue sonando, sigue sonando… ¿Y si quiero que se calle?»",
+        "s2": "Afloja el dedo, pero déjalo apoyado sobre la cuerda. La nota se apaga al instante.",
+        "s3": "Nota y silencio, nota y silencio. Escucha.",
+        "s4": "«Si levantas el dedo del todo, suena la cuerda al aire. Aflojar no es soltar.»",
+        "c1t": "Aflojar sin soltar",
+        "c1b": "1: el dedo sigue apoyado, sin apretar. 2: la cuerda deja de sonar. Si lo despegas, suena la cuerda al aire: eso es ruido.",
+        "c2t": "Nota y silencio",
+        "c2b": "Cada nota dura un pulso y el pulso siguiente es silencio. Toca el ejemplo: la nota se corta justo en el clic.",
+        "ear": "Escucha. ¿La nota suena larga o cortada?",
+        "long": "Larga",
+        "short": "Cortada",
+        "play": "Nota y silencio: toca en el clic y apaga aflojando el dedo en el clic siguiente."
+      },
+      "l142": {
+        "title": "Apagar con la mano de la púa",
+        "objective": "Cortar una cuerda al aire apoyando la mano de la púa, a tiempo.",
+        "s1": "«Una cuerda al aire no tiene dedo para aflojar. ¿Cómo se apaga?»",
+        "s2": "Apoya el canto de la palma sobre la cuerda, cerca del puente. Listo: silencio.",
+        "s3": "Toca, apoya, toca, apoya. Escucha cómo se corta cada nota.",
+        "s4": "«Las dos manos apagan. Con práctica lo hacen solas, sin pensar.»",
+        "c1t": "El canto de la palma",
+        "c1b": "1: el canto de la mano de la púa se apoya sobre las cuerdas, cerca del puente. 2: las cuerdas que toca dejan de sonar.",
+        "c2t": "Al aire y silencio",
+        "c2b": "Cuerda al aire en el clic y silencio en el clic siguiente. Toca el ejemplo y fíjate en el corte.",
+        "q1": "Tocaste la 6.ª cuerda al aire y quieres que se calle. ¿Qué haces?",
+        "q1o1": "Apoyo el canto de la mano de la púa sobre la cuerda",
+        "q1o2": "Aprieto más fuerte con la otra mano",
+        "q1o3": "Bajo el volumen del ampli",
+        "play": "Cuerda al aire y silencio: apaga con la mano de la púa en cada clic de silencio."
+      },
+      "l143": {
+        "title": "Silencios en el ritmo",
+        "objective": "Respetar los silencios de un ritmo: que no suene nada donde no hay nota.",
+        "s1": "«En la música, el silencio también se toca.»",
+        "s2": "Escucha: notas y silencios mezclados. Donde hay silencio, el pulso sigue igual.",
+        "s3": "En la línea de figuras, debajo de la tablatura, el silencio tiene su propio signo.",
+        "s4": "«Cuenta los silencios en voz alta. Así no te los comes.»",
+        "c1t": "El silencio tiene signo",
+        "c1b": "Debajo de la tablatura, donde no hay número, aparece el signo del silencio: el de negra parece un zigzag y dura 1 pulso; el de blanca es un bloquecito y dura 2.",
+        "c2t": "Silencio limpio",
+        "c2b": "Durante el silencio no debe sonar ninguna cuerda. Apaga con la mano que haga falta.",
+        "pulse": "Marca el pulso, también durante los silencios.",
+        "play": "Toca el ritmo con sus silencios, con el metrónomo."
+      },
+      "l144": {
+        "title": "Riff sin ruido",
+        "objective": "Tocar un riff con notas pisadas, al aire y silencios, sin que suene ninguna cuerda de más.",
+        "s1": "«Escucha este riff con crunch. Fíjate que entre nota y nota no se escucha nada.»",
+        "s2": "Las notas pisadas se apagan aflojando el dedo.",
+        "s3": "Las cuerdas al aire se apagan con la mano de la púa.",
+        "s4": "«Ahora en limpio y lento. Primero sin ruido, después más rápido.»",
+        "c1t": "El riff",
+        "c1b": "Cuatro compases con notas en la 6.ª y la 5.ª cuerda y silencios. Toca el ejemplo y sigue la tablatura.",
+        "c2t": "Con crunch",
+        "c2b": "Con ganancia, cualquier cuerda que quede sonando se nota mucho. Por eso apagar es tan importante en la guitarra eléctrica.",
+        "play": "Toca el riff con el metrónomo, apagando en cada silencio."
+      },
+      "l151": {
+        "title": "Tablatura de 6 líneas",
+        "objective": "Leer en la tablatura qué cuerda y qué traste tocar en las 6 cuerdas.",
+        "s1": "«La tablatura es la forma más rápida de escribir música para guitarra.»",
+        "s2": "Seis líneas, una por cuerda. Arriba va la 1.ª (Mi aguda); abajo, la 6.ª (Mi grave).",
+        "s3": "El número dice el traste: 0 es cuerda al aire. Escucha y sigue la tablatura.",
+        "s4": "«Ojo: la línea de arriba es la cuerda más aguda, aunque en la guitarra quede abajo.»",
+        "c1t": "Una línea por cuerda",
+        "c1b": "En la tablatura, la línea de arriba es la 1.ª cuerda (la más fina) y la de abajo la 6.ª (la más gruesa). Es como mirar el mástil desde arriba.",
+        "c2t": "Los números",
+        "c2b": "Cada número es un traste. 0 = al aire. Se lee de izquierda a derecha. Toca el ejemplo y sigue los números.",
+        "q1": "En la tablatura, ¿qué cuerda es la línea de arriba?",
+        "q1o1": "La 6.ª, Mi grave",
+        "q1o2": "La 1.ª, Mi aguda",
+        "q1o3": "La 3.ª, Sol",
+        "tab": "Lee la tablatura y toca cada nota en el diapasón."
+      },
+      "l152": {
+        "title": "Duraciones en la TAB",
+        "objective": "Leer negras, blancas y redondas en la tablatura y tocarlas con su duración.",
+        "s1": "«La tablatura dice dónde tocar. Las figuras de abajo dicen cuánto dura.»",
+        "s2": "Negra: 1 pulso. Blanca: 2. Redonda: 4. Escucha.",
+        "s3": "Las figuras van debajo de cada número. Escucha esta línea y cuenta.",
+        "s4": "«Una blanca no se apura: deja sonar la nota dos pulsos enteros.»",
+        "c1t": "Negra, blanca y redonda",
+        "c1b": "La negra (cabeza rellena con plica) dura 1 pulso; la blanca (hueca con plica), 2; la redonda (hueca sin plica), 4. Toca el ejemplo y cuenta 1, 2, 3, 4.",
+        "c2t": "Todo junto",
+        "c2b": "Cuatro compases que mezclan las tres figuras. Toca el ejemplo y sigue las figuras debajo de la tablatura.",
+        "q1": "¿Cuántos pulsos dura una blanca?",
+        "tab": "Lee la tablatura y toca cada nota en el diapasón.",
+        "play": "Toca la línea respetando cuánto dura cada nota."
+      },
+      "l153": {
+        "title": "Corcheas y silencios",
+        "objective": "Leer y tocar corcheas y silencios en la tablatura, con púa alternada.",
+        "s1": "«Las corcheas son las notas rápidas: dos por cada pulso.»",
+        "s2": "En la tablatura la corchea tiene una banderita en la plica. Va con púa alternada: abajo, arriba.",
+        "s3": "Escucha: corcheas, negras y silencios en el mismo compás.",
+        "s4": "«Cuenta “1 y 2 y”. Las corcheas caen en el número y en la “y”.»",
+        "c1t": "La corchea",
+        "c1b": "Dura medio pulso: dos corcheas ocupan un pulso. Debajo de la tablatura se ven con una banderita. Toca el ejemplo y cuenta «1 y 2 y».",
+        "c2t": "Corcheas y silencios",
+        "c2b": "Cuatro compases con corcheas, negras y silencios. La púa alternada sigue aunque haya silencios.",
+        "tap": "Toca ↓ y ↑ alternados: dos toques por cada clic.",
+        "play": "Toca la línea con corcheas y silencios, con púa alternada."
+      },
+      "l154": {
+        "title": "Diagramas de acordes",
+        "objective": "Leer un diagrama de acorde: cuerdas, trastes, dedos y qué cuerdas suenan.",
+        "s1": "«Antes de tocar acordes, aprendamos a leer su dibujo: el diagrama.»",
+        "s2": "Es el mástil parado: cuerdas verticales, trastes horizontales y la cejuela arriba.",
+        "s3": "Este es Mi menor (Em): dedo 2 en la 5.ª cuerda y dedo 3 en la 4.ª, las dos en el traste 2. Escucha.",
+        "s4": "«La X dice “esta cuerda no suena”. La O dice “suena al aire”. Mira este La menor.»",
+        "c1t": "Cómo se lee",
+        "c1b": "1: cuerdas verticales, la 6.ª a la izquierda. 2: trastes horizontales. 3: la cejuela, la línea gruesa de arriba. 4: el punto dice dónde pisar y el número, con qué dedo. 5: O es al aire; X, no se toca.",
+        "c2t": "Mi menor (Em)",
+        "c2b": "Dedos 2 y 3 en el traste 2 de la 5.ª y la 4.ª cuerda; las otras cuatro, al aire. Escucha cómo suena cuerda por cuerda.",
+        "c3t": "La menor (Am)",
+        "c3b": "La 6.ª tiene una X: no se toca. Los acordes los vas a tocar en el nivel 2; hoy solo los lees.",
+        "q1": "En un diagrama de acorde, ¿qué son las líneas verticales?",
+        "q1o1": "Las cuerdas",
+        "q1o2": "Los trastes",
+        "q1o3": "Los dedos",
+        "q2": "¿Qué significa una X sobre una cuerda?",
+        "q2o1": "Que suena al aire",
+        "q2o2": "Que se pisa con el dedo 10",
+        "q2o3": "Que esa cuerda no se toca",
+        "tap": "Toca en el diapasón las dos notas pisadas del Mi menor: traste 2 de la 5.ª y de la 4.ª cuerda."
+      },
+      "l155": {
+        "title": "Lectura a primera vista",
+        "objective": "Leer y tocar una tablatura nueva de 4 compases sin escucharla antes.",
+        "s1": "«Hoy el desafío es leer una tablatura que nunca escuchaste.»",
+        "s2": "Primero mira toda la tablatura: qué cuerdas usa y qué trastes.",
+        "s3": "Después cuenta el ritmo sin tocar, y recién ahí toca, despacio.",
+        "s4": "«Así suena cuando ya te sale. ¡Con crunch!»",
+        "c1t": "Tres pasos",
+        "c1b": "1: mira cuerdas y trastes. 2: cuenta el ritmo en voz alta. 3: toca lento con el metrónomo. Leer bien es más importante que tocar rápido.",
+        "c2t": "El ejemplo",
+        "c2b": "Haz primero el ejercicio de lectura. Si te trabas, toca el ejemplo y sigue la tablatura.",
+        "tab": "Lee la tablatura nueva y toca cada nota en el diapasón.",
+        "play": "Toca la tablatura completa con el metrónomo."
+      },
+      "cp1": {
+        "intro": "Demuestra lo que aprendiste en el nivel 1: cuerdas, tablatura, pulso, cromático y un riff con corcheas y silencios.",
+        "ear": "La primera nota es la 6.ª cuerda al aire. ¿Qué cuerda al aire suena después?",
+        "tab": "Lee la tablatura y toca cada nota en el diapasón.",
+        "pulse": "Marca el pulso a 80 bpm: el clic se calla después de 8 pulsos y sigues tú.",
+        "spider": "El cromático en las 6 cuerdas, ida y vuelta, a 70 bpm.",
+        "riff": "El riff final a 80 bpm, con corcheas y silencios limpios."
       }
     }
   },

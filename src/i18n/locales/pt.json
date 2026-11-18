@@ -326,6 +326,56 @@
         "a11y": "A palheta passando de uma corda para outra",
         "l1": "Caminho da mão, da 6ª à 1ª.",
         "l2": "A palheta, perto da corda seguinte."
+      },
+      "fret_hand": {
+        "a11y": "Mão no braço com um dedo por casa, da 1 à 4",
+        "l1": "Indicador: casa 1.",
+        "l2": "Médio: casa 2.",
+        "l3": "Anelar: casa 3.",
+        "l4": "Mínimo: casa 4.",
+        "l5": "Polegar atrás do braço."
+      },
+      "mute_fret_hand": {
+        "a11y": "Dedo apoiado sem apertar sobre as cordas para abafá-las",
+        "l1": "Dedo apoiado, sem apertar.",
+        "l2": "As cordas não soam."
+      },
+      "mute_pick_hand": {
+        "a11y": "Lateral da palma apoiada nas cordas perto da ponte",
+        "l1": "Lateral da palma sobre as cordas.",
+        "l2": "As cordas que ela toca são abafadas."
+      },
+      "chord_diagram_how": {
+        "a11y": "Diagrama do acorde de Mi menor com as partes numeradas",
+        "l1": "Cordas: a 6ª à esquerda.",
+        "l2": "Trastes.",
+        "l3": "Pestana.",
+        "l4": "Onde apertar e com qual dedo.",
+        "l5": "O: solta. X: não se toca."
+      },
+      "chord_em": {
+        "a11y": "Diagrama de Mi menor: dedo 2 na 5ª corda e dedo 3 na 4ª, casa 2; o resto solto"
+      },
+      "chord_e": {
+        "a11y": "Diagrama de Mi maior: dedo 2 na 5ª e dedo 3 na 4ª, casa 2; dedo 1 na 3ª, casa 1"
+      },
+      "chord_am": {
+        "a11y": "Diagrama de Lá menor: 6ª não se toca; dedo 2 na 4ª e dedo 3 na 3ª, casa 2; dedo 1 na 2ª, casa 1"
+      },
+      "chord_a": {
+        "a11y": "Diagrama de Lá maior: 6ª não se toca; dedos 1, 2 e 3 na casa 2 da 4ª, 3ª e 2ª corda"
+      },
+      "chord_c": {
+        "a11y": "Diagrama de Dó maior: 6ª não se toca; dedo 3 na 5ª casa 3, dedo 2 na 4ª casa 2, dedo 1 na 2ª casa 1"
+      },
+      "chord_g": {
+        "a11y": "Diagrama de Sol maior: dedo 2 na 6ª casa 3, dedo 1 na 5ª casa 2, dedo 3 na 1ª casa 3"
+      },
+      "chord_d": {
+        "a11y": "Diagrama de Ré maior: 6ª e 5ª não se tocam; dedo 1 na 3ª casa 2, dedo 3 na 2ª casa 3, dedo 2 na 1ª casa 2"
+      },
+      "chord_dm": {
+        "a11y": "Diagrama de Ré menor: 6ª e 5ª não se tocam; dedo 2 na 3ª casa 2, dedo 3 na 2ª casa 3, dedo 1 na 1ª casa 1"
       }
     }
   },
@@ -1298,6 +1348,234 @@
         "c3b": "Assim soa com um pouco de GAIN. Pratique no limpo; quando já sair, experimente o crunch só para curtir.",
         "tab": "Leia o riff na tablatura e toque cada nota na escala.",
         "play": "Toque o riff inteiro com o metrônomo."
+      },
+      "l131": {
+        "title": "Um dedo por casa",
+        "objective": "Apertar as casas 1 a 4 da 6ª corda com um dedo por casa, sem a nota trastejar.",
+        "s1": "“Até agora você usou cordas soltas. Hoje a outra mão entra em cena.”",
+        "s2": "Indicador na casa 1, médio na 2, anelar na 3 e mínimo na 4. O polegar fica atrás do braço.",
+        "s3": "Aperte logo atrás do traste, com a ponta do dedo. Ouça: casa 1, 2, 3 e 4.",
+        "s4": "“Se a nota trastejar, aproxime o dedo do traste. Não precisa apertar mais forte.”",
+        "c1t": "Os dedos têm número",
+        "c1b": "1: indicador. 2: médio. 3: anelar. 4: mínimo. 5: o polegar, apoiado atrás do braço, mais ou menos na altura do dedo 2. O polegar não tem número para apertar.",
+        "c2t": "Um dedo por casa",
+        "c2b": "Cada dedo cuida de uma casa: assim a mão não pula. Toque o exemplo: casas 1, 2, 3 e 4 na 6ª corda.",
+        "c3t": "Logo atrás do traste",
+        "c3b": "Aperte com a ponta do dedo, colado ao traste (do lado da pestana). Assim a nota soa limpa com pouca força.",
+        "q1": "Qual dedo é o número 3?",
+        "q1o1": "O indicador",
+        "q1o2": "O médio",
+        "q1o3": "O anelar",
+        "q1o4": "O mínimo",
+        "tap": "Toque na escala as casas 1, 2, 3 e 4 da 6ª corda.",
+        "play": "Aperte e toque as casas 1, 2, 3 e 4 da 6ª corda, duas vezes."
+      },
+      "l132": {
+        "title": "Cromático na 6ª e na 5ª",
+        "objective": "Tocar o cromático 1-2-3-4 de ida e volta na 6ª e na 5ª corda, a 60 bpm ou mais.",
+        "s1": "“Este exercício tem nome: cromático. Os guitarristas aquecem com ele todos os dias.”",
+        "s2": "Casas 1-2-3-4 na 6ª, depois na 5ª, e de volta: 4-3-2-1. Ouça.",
+        "s3": "Um dedo por casa. Quando você passa para a 5ª corda, a mão não se mexe: só os dedos mudam de corda.",
+        "s4": "“Deixe os dedos perto das cordas. Longe, eles perdem tempo.”",
+        "c1t": "Ida e volta",
+        "c1b": "Suba 1-2-3-4 na 6ª e na 5ª, e desça 4-3-2-1 na 5ª e na 6ª. Toque o exemplo e siga a tablatura.",
+        "c2t": "Dedos perto",
+        "c2b": "Ao levantar um dedo, deixe-o flutuando perto da corda. Assim ele chega a tempo na nota seguinte.",
+        "tab": "Leia a tablatura e toque cada nota na escala.",
+        "play": "Cromático de ida e volta na 6ª e na 5ª corda, com o metrônomo."
+      },
+      "l133": {
+        "title": "Cromático na 4ª e na 3ª",
+        "objective": "Tocar o cromático 1-2-3-4 de ida e volta na 4ª e na 3ª corda, a 60 bpm ou mais.",
+        "s1": "“As cordas do meio: Ré e Sol. Mesmo exercício, lugar novo.”",
+        "s2": "Casas 1-2-3-4 na 4ª, depois na 3ª, e de volta. Ouça.",
+        "s3": "Para chegar à 3ª corda, o pulso desce um pouco. O polegar continua atrás do braço.",
+        "s4": "“O mínimo cansa? É normal. Ele fica forte com alguns dias de prática.”",
+        "c1t": "Ré e Sol",
+        "c1b": "O mesmo cromático na 4ª (Ré) e na 3ª (Sol). Toque o exemplo e siga a tablatura.",
+        "c2t": "O mínimo trabalha",
+        "c2b": "O dedo 4 é o mais fraco. Não troque pelo 3: é justamente isso que este exercício treina.",
+        "tab": "Leia a tablatura e toque cada nota na escala.",
+        "play": "Cromático de ida e volta na 4ª e na 3ª corda, com o metrônomo."
+      },
+      "l134": {
+        "title": "Cromático na 2ª e na 1ª",
+        "objective": "Tocar o cromático 1-2-3-4 de ida e volta na 2ª e na 1ª corda, a 60 bpm ou mais.",
+        "s1": "“As cordas finas soam agudas e pedem menos força.”",
+        "s2": "Casas 1-2-3-4 na 2ª, depois na 1ª, e de volta. Ouça.",
+        "s3": "Nas cordas finas, apoie de leve: se apertar demais, a nota desafina.",
+        "s4": "“Cuidado para o dedo não encostar na corda vizinha. Aperte com a ponta, bem em pé.”",
+        "c1t": "Si e Mi agudo",
+        "c1b": "O cromático na 2ª (Si) e na 1ª (Mi). Toque o exemplo e siga a tablatura.",
+        "c2t": "Menos força",
+        "c2b": "As cordas finas desafinam se você apertar muito. Aperte só o suficiente para a nota soar limpa.",
+        "tab": "Leia a tablatura e toque cada nota na escala.",
+        "play": "Cromático de ida e volta na 2ª e na 1ª corda, com o metrônomo."
+      },
+      "l135": {
+        "title": "As 6 cordas, ida e volta",
+        "objective": "Tocar o cromático nas 6 cordas, subindo e descendo, a 60 bpm ou mais.",
+        "s1": "“Ouça: as seis cordas de ponta a ponta. É o exercício completo.”",
+        "s2": "Você sobe 1-2-3-4 da 6ª à 1ª, e desce 4-3-2-1 da 1ª à 6ª.",
+        "s3": "São 48 notas. Se se perder, siga o pulso e retome na corda seguinte.",
+        "s4": "“Quando sair a 60, suba para 70 e 80. Esse é o seu aquecimento diário.”",
+        "c1t": "O cromático completo",
+        "c1b": "Quatro notas por corda, subindo até a 1ª e descendo até a 6ª. Toque o exemplo e siga a tablatura.",
+        "c2t": "Aquecimento diário",
+        "c2b": "Alguns minutos de cromático antes de praticar acordam os dedos e a palhetada alternada.",
+        "pulse": "Marque o pulso: o clique para depois de 8 pulsos e você continua.",
+        "play": "O cromático nas 6 cordas, ida e volta, com o metrônomo."
+      },
+      "l141": {
+        "title": "Abafar com a mão que aperta",
+        "objective": "Cortar uma nota presa afrouxando o dedo, sem tirá-lo da corda.",
+        "s1": "“Ouça esta nota. Continua soando, continua… E se eu quiser que ela pare?”",
+        "s2": "Afrouxe o dedo, mas deixe-o apoiado na corda. A nota para na hora.",
+        "s3": "Nota e pausa, nota e pausa. Ouça.",
+        "s4": "“Se você tirar o dedo de vez, soa a corda solta. Afrouxar não é soltar.”",
+        "c1t": "Afrouxar sem soltar",
+        "c1b": "1: o dedo continua apoiado, sem apertar. 2: a corda para de soar. Se você tirar, soa a corda solta: isso é ruído.",
+        "c2t": "Nota e pausa",
+        "c2b": "Cada nota dura um pulso e o pulso seguinte é pausa. Toque o exemplo: a nota corta bem no clique.",
+        "ear": "Ouça. A nota soa longa ou cortada?",
+        "long": "Longa",
+        "short": "Cortada",
+        "play": "Nota e pausa: toque no clique e abafe afrouxando o dedo no clique seguinte."
+      },
+      "l142": {
+        "title": "Abafar com a mão da palheta",
+        "objective": "Cortar uma corda solta apoiando a mão da palheta, no tempo.",
+        "s1": "“Uma corda solta não tem dedo para afrouxar. Como ela para?”",
+        "s2": "Apoie a lateral da palma sobre a corda, perto da ponte. Pronto: silêncio.",
+        "s3": "Toca, apoia, toca, apoia. Ouça como cada nota é cortada.",
+        "s4": "“As duas mãos abafam. Com prática, elas fazem isso sozinhas, sem pensar.”",
+        "c1t": "A lateral da palma",
+        "c1b": "1: a lateral da mão da palheta se apoia nas cordas, perto da ponte. 2: as cordas que ela toca param de soar.",
+        "c2t": "Solta e pausa",
+        "c2b": "Corda solta no clique e pausa no clique seguinte. Toque o exemplo e repare no corte.",
+        "q1": "Você tocou a 6ª corda solta e quer que ela pare. O que você faz?",
+        "q1o1": "Apoio a lateral da mão da palheta na corda",
+        "q1o2": "Aperto mais forte com a outra mão",
+        "q1o3": "Baixo o volume do amplificador",
+        "play": "Corda solta e pausa: abafe com a mão da palheta em cada pausa."
+      },
+      "l143": {
+        "title": "Pausas no ritmo",
+        "objective": "Respeitar as pausas de um ritmo: que nada soe onde não há nota.",
+        "s1": "“Na música, o silêncio também se toca.”",
+        "s2": "Ouça: notas e pausas misturadas. Na pausa, o pulso continua igual.",
+        "s3": "Na linha de figuras, embaixo da tablatura, a pausa tem seu próprio sinal.",
+        "s4": "“Conte as pausas em voz alta. Assim você não as atropela.”",
+        "c1t": "A pausa tem sinal",
+        "c1b": "Embaixo da tablatura, onde não há número, aparece o sinal da pausa: a de semínima parece um zigue-zague e dura 1 pulso; a de mínima é um bloquinho e dura 2.",
+        "c2t": "Pausa limpa",
+        "c2b": "Durante a pausa nenhuma corda deve soar. Abafe com a mão que precisar.",
+        "pulse": "Marque o pulso, também durante as pausas.",
+        "play": "Toque o ritmo com suas pausas, com o metrônomo."
+      },
+      "l144": {
+        "title": "Riff sem ruído",
+        "objective": "Tocar um riff com notas presas, soltas e pausas, sem nenhuma corda soando a mais.",
+        "s1": "“Ouça este riff com crunch. Repare que entre uma nota e outra não se ouve nada.”",
+        "s2": "As notas presas são abafadas afrouxando o dedo.",
+        "s3": "As cordas soltas são abafadas com a mão da palheta.",
+        "s4": "“Agora limpo e devagar. Primeiro sem ruído, depois mais rápido.”",
+        "c1t": "O riff",
+        "c1b": "Quatro compassos com notas na 6ª e na 5ª corda e pausas. Toque o exemplo e siga a tablatura.",
+        "c2t": "Com crunch",
+        "c2b": "Com ganho, qualquer corda que fique soando aparece muito. Por isso abafar é tão importante na guitarra elétrica.",
+        "play": "Toque o riff com o metrônomo, abafando em cada pausa."
+      },
+      "l151": {
+        "title": "Tablatura de 6 linhas",
+        "objective": "Ler na tablatura qual corda e qual casa tocar nas 6 cordas.",
+        "s1": "“A tablatura é o jeito mais rápido de escrever música para guitarra.”",
+        "s2": "Seis linhas, uma por corda. Em cima fica a 1ª (Mi agudo); embaixo, a 6ª (Mi grave).",
+        "s3": "O número diz a casa: 0 é corda solta. Ouça e siga a tablatura.",
+        "s4": "“Atenção: a linha de cima é a corda mais aguda, mesmo ficando embaixo na guitarra.”",
+        "c1t": "Uma linha por corda",
+        "c1b": "Na tablatura, a linha de cima é a 1ª corda (a mais fina) e a de baixo é a 6ª (a mais grossa). É como olhar o braço de cima.",
+        "c2t": "Os números",
+        "c2b": "Cada número é uma casa. 0 = solta. Lê-se da esquerda para a direita. Toque o exemplo e siga os números.",
+        "q1": "Na tablatura, qual corda é a linha de cima?",
+        "q1o1": "A 6ª, Mi grave",
+        "q1o2": "A 1ª, Mi agudo",
+        "q1o3": "A 3ª, Sol",
+        "tab": "Leia a tablatura e toque cada nota na escala."
+      },
+      "l152": {
+        "title": "Durações na tablatura",
+        "objective": "Ler semínimas, mínimas e semibreves na tablatura e tocá-las com sua duração.",
+        "s1": "“A tablatura diz onde tocar. As figuras embaixo dizem quanto dura.”",
+        "s2": "Semínima: 1 pulso. Mínima: 2. Semibreve: 4. Ouça.",
+        "s3": "As figuras ficam embaixo de cada número. Ouça esta linha e conte.",
+        "s4": "“Não apresse a mínima: deixe a nota soar dois pulsos inteiros.”",
+        "c1t": "Semínima, mínima e semibreve",
+        "c1b": "A semínima (cabeça cheia com haste) dura 1 pulso; a mínima (vazada com haste), 2; a semibreve (vazada sem haste), 4. Toque o exemplo e conte 1, 2, 3, 4.",
+        "c2t": "Tudo junto",
+        "c2b": "Quatro compassos misturando as três figuras. Toque o exemplo e siga as figuras embaixo da tablatura.",
+        "q1": "Quantos pulsos dura uma mínima?",
+        "tab": "Leia a tablatura e toque cada nota na escala.",
+        "play": "Toque a linha respeitando quanto dura cada nota."
+      },
+      "l153": {
+        "title": "Colcheias e pausas",
+        "objective": "Ler e tocar colcheias e pausas na tablatura, com palhetada alternada.",
+        "s1": "“As colcheias são as notas rápidas: duas por pulso.”",
+        "s2": "Na tablatura a colcheia tem uma bandeirinha na haste. Vai com palhetada alternada: baixo, cima.",
+        "s3": "Ouça: colcheias, semínimas e pausas no mesmo compasso.",
+        "s4": "“Conte ‘1 e 2 e’. As colcheias caem no número e no ‘e’.”",
+        "c1t": "A colcheia",
+        "c1b": "Dura meio pulso: duas colcheias ocupam um pulso. Embaixo da tablatura aparecem com uma bandeirinha. Toque o exemplo e conte “1 e 2 e”.",
+        "c2t": "Colcheias e pausas",
+        "c2b": "Quatro compassos com colcheias, semínimas e pausas. A palhetada alternada continua mesmo nas pausas.",
+        "tap": "Toque ↓ e ↑ alternados: dois toques a cada clique.",
+        "play": "Toque a linha com colcheias e pausas, com palhetada alternada."
+      },
+      "l154": {
+        "title": "Diagramas de acordes",
+        "objective": "Ler um diagrama de acorde: cordas, casas, dedos e quais cordas soam.",
+        "s1": "“Antes de tocar acordes, vamos aprender a ler o desenho deles: o diagrama.”",
+        "s2": "É o braço em pé: cordas na vertical, trastes na horizontal e a pestana em cima.",
+        "s3": "Este é Mi menor (Em): dedo 2 na 5ª corda e dedo 3 na 4ª, as duas na casa 2. Ouça.",
+        "s4": "“O X diz ‘esta corda não soa’. O O diz ‘soa solta’. Olhe este Lá menor.”",
+        "c1t": "Como se lê",
+        "c1b": "1: cordas na vertical, a 6ª à esquerda. 2: trastes na horizontal. 3: a pestana, a linha grossa de cima. 4: o ponto diz onde apertar e o número, com qual dedo. 5: O é solta; X, não se toca.",
+        "c2t": "Mi menor (Em)",
+        "c2b": "Dedos 2 e 3 na casa 2 da 5ª e da 4ª corda; as outras quatro, soltas. Ouça como soa corda por corda.",
+        "c3t": "Lá menor (Am)",
+        "c3b": "A 6ª tem um X: não se toca. Você vai tocar acordes no nível 2; hoje só os lê.",
+        "q1": "Num diagrama de acorde, o que são as linhas verticais?",
+        "q1o1": "As cordas",
+        "q1o2": "Os trastes",
+        "q1o3": "Os dedos",
+        "q2": "O que significa um X sobre uma corda?",
+        "q2o1": "Que ela soa solta",
+        "q2o2": "Que se aperta com o dedo 10",
+        "q2o3": "Que essa corda não se toca",
+        "tap": "Toque na escala as duas notas presas do Mi menor: casa 2 da 5ª e da 4ª corda."
+      },
+      "l155": {
+        "title": "Leitura à primeira vista",
+        "objective": "Ler e tocar uma tablatura nova de 4 compassos sem ouvi-la antes.",
+        "s1": "“Hoje o desafio é ler uma tablatura que você nunca ouviu.”",
+        "s2": "Primeiro olhe a tablatura inteira: quais cordas usa e quais casas.",
+        "s3": "Depois conte o ritmo sem tocar, e só então toque, devagar.",
+        "s4": "“Assim soa quando já sai. Com crunch!”",
+        "c1t": "Três passos",
+        "c1b": "1: olhe cordas e casas. 2: conte o ritmo em voz alta. 3: toque devagar com o metrônomo. Ler bem é mais importante que tocar rápido.",
+        "c2t": "O exemplo",
+        "c2b": "Faça primeiro o exercício de leitura. Se travar, toque o exemplo e siga a tablatura.",
+        "tab": "Leia a tablatura nova e toque cada nota na escala.",
+        "play": "Toque a tablatura inteira com o metrônomo."
+      },
+      "cp1": {
+        "intro": "Mostre o que você aprendeu no nível 1: cordas, tablatura, pulso, cromático e um riff com colcheias e pausas.",
+        "ear": "A primeira nota é a 6ª corda solta. Qual corda solta soa depois?",
+        "tab": "Leia a tablatura e toque cada nota na escala.",
+        "pulse": "Marque o pulso a 80 bpm: o clique para depois de 8 pulsos e você continua.",
+        "spider": "O cromático nas 6 cordas, ida e volta, a 70 bpm.",
+        "riff": "O riff final a 80 bpm, com colcheias e pausas limpas."
       }
     }
   },
