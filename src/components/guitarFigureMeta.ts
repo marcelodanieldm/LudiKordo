@@ -29,6 +29,19 @@ export const CHORD_FIGURES: Partial<Record<Figure, DiagramId>> = {
   'barre-c8': 'bar-c8',
   'barre-only': 'bar-only',
   octave: 'octave',
+  'penta-box-2': 'penta-2',
+  'penta-box-3': 'penta-3',
+  'penta-box-4': 'penta-4',
+  'penta-box-5': 'penta-5',
+  'scale-major': 'major-g',
+  'scale-minor': 'minor-a',
+  'mode-dorian': 'dorian-a',
+  'mode-mixo': 'mixo-a',
+  'mode-phryg': 'phryg-a',
+  'triad-d': 'triad-d',
+  'triad-dm': 'triad-dm',
+  'dstop-12': 'dstop-12',
+  'dstop-23': 'dstop-23',
 };
 
 export const GUITAR_FIGURES: Figure[] = [
@@ -56,6 +69,10 @@ export const GUITAR_FIGURES: Figure[] = [
   'slide',
   'bend',
   'vibrato',
+  'tapping',
+  'fx-chain',
+  'fx-drive',
+  'fx-delay',
   ...(Object.keys(CHORD_FIGURES) as Figure[]),
 ];
 
@@ -89,6 +106,16 @@ export const LEGEND_COUNT: Partial<Record<Figure, number>> = {
   'barre-f': 2,
   'barre-bb': 2,
   octave: 2,
+  'penta-box-2': 2,
+  'penta-box-3': 2,
+  'penta-box-4': 2,
+  'penta-box-5': 2,
+  'scale-major': 2,
+  'scale-minor': 2,
+  tapping: 2,
+  'fx-chain': 6,
+  'fx-drive': 3,
+  'fx-delay': 3,
 };
 
 export const RATIO: Partial<Record<Figure, number>> = {
@@ -116,6 +143,10 @@ export const RATIO: Partial<Record<Figure, number>> = {
   slide: 150 / 360,
   bend: 150 / 360,
   vibrato: 150 / 360,
+  tapping: 150 / 360,
+  'fx-chain': 120 / 360,
+  'fx-drive': 130 / 360,
+  'fx-delay': 130 / 360,
   'chord-diagram-how': 216 / 360,
   ...Object.fromEntries(Object.keys(CHORD_FIGURES).map((f) => [f, 216 / 360])),
 };

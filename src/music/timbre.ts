@@ -6,7 +6,7 @@
  * clara la diferencia que enseña la lección: limpio vs crunch, pastilla del
  * mástil (oscura) vs del puente (brillante), nota apagada (palm mute).
  */
-export type Tone = 'clean' | 'crunch' | 'neck' | 'bridge' | 'muted';
+export type Tone = 'clean' | 'crunch' | 'lead' | 'neck' | 'bridge' | 'muted';
 export type OscType = 'sine' | 'triangle' | 'square' | 'sawtooth';
 
 export interface VoicePartial {
@@ -81,6 +81,19 @@ export const VOICES: Record<Tone, Voice> = {
     envelope: 'sustain',
     maxRing: 4,
     sustain: 0.8,
+  },
+  // Distorsión (nivel 4): más parciales ásperos y más sostenido que el crunch.
+  lead: {
+    partials: [
+      { type: 'sawtooth', detune: -12, gain: 0.13 },
+      { type: 'square', detune: 12, gain: 0.11 },
+      { type: 'sawtooth', detune: 1200, gain: 0.06 },
+      { type: 'square', detune: 1902, gain: 0.03 },
+    ],
+    attack: 0.004,
+    envelope: 'sustain',
+    maxRing: 6,
+    sustain: 0.92,
   },
   muted: {
     partials: [

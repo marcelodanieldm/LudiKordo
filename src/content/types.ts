@@ -5,6 +5,7 @@
 import type { StringId } from '../music/notes';
 import type { Tone } from '../music/timbre';
 import type { Stroke } from '../music/strum';
+import type { Fx } from '../music/fx';
 
 export type Skill = 'technique' | 'rhythm' | 'fretboard' | 'theory' | 'ear';
 
@@ -21,7 +22,8 @@ export type ExerciseKind =
   | 'recordYourself'
   | 'strum'
   | 'bend'
-  | 'vibrato';
+  | 'vibrato'
+  | 'improvise';
 
 interface BaseExercise {
   id: string;
@@ -45,6 +47,8 @@ export interface QuizExercise extends BaseExercise {
   timbres?: Tone[];
   /** Pentagrama que se muestra con el enunciado (por ejemplo, «¿qué nota es?»). */
   staff?: ScoreEvent[];
+  /** Ejemplo para escuchar antes de responder (oído: «¿qué efecto suena?», «¿mayor o menor?»). */
+  example?: ListenExample;
   hintKey?: string;
 }
 
@@ -130,7 +134,20 @@ export interface ListenExample {
    * Rasgueo de acordes: notas MIDI de cada compás (de grave a agudo) y patrón de
    * púa. Si está, suena esto en lugar de `events` (que puede quedar vacío).
    */
-  strum?: { chords: number[][]; pattern: Stroke[] };
+  strum?: {
+    chords: number[][];
+    pattern: Stroke[];
+    /** Timbre de los acordes cuando suenan debajo de una melodía (pista de acompañamiento). */
+    tone?: Tone;
+    /** Volumen de los acordes (1 = normal); más bajo para que la melodía se oiga encima. */
+    level?: number;
+  };
+  /**
+   * Efectos sobre el ejemplo (nivel 4): delay, reverb, chorus. Se arman con
+   * copias de las notas (src/music/fx.ts). Si hay `strum` y `events`, el efecto
+   * va solo sobre la melodía, como un pedal en la guitarra solista.
+   */
+  fx?: Fx;
 }
 
 export interface TabReadingExercise extends BaseExercise {
@@ -200,6 +217,26 @@ export interface VibratoExercise extends BaseExercise {
   seconds: number;
 }
 
+/**
+ * Improvisar sobre una pista de acompañamiento (guitarra, nivel 4): la app toca
+ * los acordes y escucha. Puntúa cuántas notas caen en la escala, que se toquen
+ * suficientes y, si hay `targets`, si en cada cambio de acorde se llega a una
+ * nota del acorde. Nunca hay una única respuesta correcta.
+ */
+export interface ImproviseExercise extends BaseExercise {
+  kind: 'improvise';
+  needsBass: true;
+  /** La pista: un rasgueo (`strum`) de una vuelta; se repite `loops` veces. */
+  backing: ListenExample;
+  loops: number;
+  /** Clases de altura de la escala (0 = Do … 11 = Si). */
+  scale: number[];
+  /** Notas que hace falta tocar como mínimo para el puntaje completo. */
+  minNotes: number;
+  /** Por compás de la vuelta: notas del acorde (clases de altura) a las que llegar al empezar el compás. */
+  targets?: number[][];
+}
+
 /** Tipos todavía no implementados en el código base; se muestran como «próximamente». */
 export interface PendingExercise extends BaseExercise {
   kind: 'followHand' | 'recordYourself';
@@ -215,6 +252,7 @@ export type Exercise =
   | StrumExercise
   | BendExercise
   | VibratoExercise
+  | ImproviseExercise
   | PendingExercise;
 
 export type Figure =
@@ -272,6 +310,23 @@ export type Figure =
   | 'barre-dm'
   | 'barre-c8'
   | 'barre-only'
+  | 'penta-box-2'
+  | 'penta-box-3'
+  | 'penta-box-4'
+  | 'penta-box-5'
+  | 'scale-major'
+  | 'scale-minor'
+  | 'mode-dorian'
+  | 'mode-mixo'
+  | 'mode-phryg'
+  | 'triad-d'
+  | 'triad-dm'
+  | 'dstop-12'
+  | 'dstop-23'
+  | 'tapping'
+  | 'fx-chain'
+  | 'fx-drive'
+  | 'fx-delay'
   | 'octave'
   | 'naturals-6'
   | 'naturals-5';

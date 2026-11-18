@@ -99,7 +99,9 @@ Mismo esquema que el bajo (ADR 0008): riffs y progresiones **originales**, desbl
 
 ## Estado
 
-Escrito: **niveles 1, 2 y 3 completos** (86 lecciones) y los checkpoints 1 a 3, en los 3 idiomas, con figuras, cartoons animados y ejemplos sonoros (`src/content/guitar/lessons.ts`, `level1.ts`, `level2.ts`, `level3.ts`). El nivel 4 se ve con título y objetivo.
+Escrito: **los 4 niveles completos** (132 lecciones) y los checkpoints 1 a 4, en los 3 idiomas, con figuras, cartoons animados y ejemplos sonoros (`src/content/guitar/lessons.ts`, `level1.ts` a `level4.ts`).
+
+Nivel 4: improvisar se practica con el ejercicio `improvise` (`src/music/improv.ts`): la app toca una pista sintetizada (acordes rasgueados en limpio, más bajos) y escucha; puntúa la fracción de notas en la escala, que se toquen suficientes y, cuando la lección lo pide, si en cada cambio de acorde se llega a una nota del acorde. Las notas que coinciden con un golpe de la pista se descartan, porque el micrófono también oye el parlante (mejor con auriculares). Los efectos del módulo 4.9 suenan con copias de las notas (`src/music/fx.ts`: delay, reverb, chorus) y la distorsión es un timbre más (`lead`); el phaser y el wah se explican, no se sintetizan. Las notas dobles se practican de a una (altura) y juntas como rasgueo (ataques), igual que los acordes.
 
 Nivel 3: ligados y slides se practican sin tempo (la app sigue la altura y espera cada nota, porque un ligado no tiene ataque de púa); bends y vibrato tienen ejercicios propios que miden la altura en el tiempo (`src/music/bend.ts`).
 

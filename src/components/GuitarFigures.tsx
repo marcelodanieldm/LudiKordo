@@ -146,8 +146,10 @@ function GridDiagramView({ d, callouts = false }: { d: GridDiagram; callouts?: b
   const x0 = 150;
   const gap = 26;
   const top = 52;
-  const fretH = 34;
-  const rows = 4;
+  // Cuatro trastes, o más si la forma se estira (cajas de escala): la grilla mide siempre lo mismo.
+  const lastFret = Math.max(...d.dots.map((x) => x.fret), d.barre?.fret ?? 0);
+  const rows = Math.max(4, lastFret - d.startFret + 1);
+  const fretH = (34 * 4) / rows;
   const sx = (i: number) => x0 + i * gap;
   const withNut = d.startFret === 1;
   return (
@@ -489,9 +491,10 @@ function Drawing({ id, left }: { id: Figure; left: boolean }) {
     case 'pull-off':
     case 'slide':
     case 'bend':
-    case 'vibrato': {
-      // Tramo de mástil con la 3.ª cuerda (Sol) resaltada: y = 44 + 2 · 14,4.
-      const yG = 72.8;
+    case 'vibrato':
+    case 'tapping': {
+      // Tramo de mástil con la 3.ª cuerda (Sol) resaltada: y = 44 + 2 · 14,4. El tapping se enseña en la 1.ª (y = 44).
+      const yG = id === 'tapping' ? 44 : 72.8;
       const m = (x: number) => (left ? 360 - x : x);
       const finger = (x: number, label: string, ghost = false) => (
         <G>
@@ -553,6 +556,18 @@ function Drawing({ id, left }: { id: Figure; left: boolean }) {
               <Callout x={m(236)} y={20} n={3} />
             </>
           ) : null}
+          {id === 'tapping' ? (
+            <>
+              {finger(88, '1')}
+              {finger(160, '4')}
+              {/* Dedo de la mano de la púa, más arriba en el mástil. */}
+              <Circle cx={m(290)} cy={yG} r={11} fill={colors.teal} />
+              <Arrow x1={m(290)} y1={14} x2={m(290)} y2={yG - 14} color={colors.teal} />
+              <Path d={`M${m(290)} ${yG + 14} Q${m(250)} ${yG + 44} ${m(104)} ${yG + 22}`} fill="none" stroke={colors.teal} strokeWidth={2.4} strokeDasharray="5 4" />
+              <Callout x={m(318)} y={24} n={1} />
+              <Callout x={m(124)} y={yG + 44} n={2} />
+            </>
+          ) : null}
           {id === 'vibrato' ? (
             <>
               {finger(236, '3')}
@@ -605,6 +620,43 @@ function Drawing({ id, left }: { id: Figure; left: boolean }) {
           <Callout x={left ? 360 - 120 : 120} y={22} n={2} />
         </Svg>
       );
+    case 'fx-chain': {
+      // De la guitarra al ampli: afinador, wah, ganancia, modulación, delay y reverb.
+      const pedalColors = [colors.muted, colors.teal, colors.accent, colors.gold, colors.fingerI, colors.tealShadow];
+      return (
+        <Svg viewBox="0 0 360 120" width="100%" height="100%">
+          <Line x1={6} y1={60} x2={354} y2={60} stroke={colors.ink} strokeWidth={2.4} />
+          <Polygon points="354,60 344,54 344,66" fill={colors.ink} />
+          {pedalColors.map((c, k) => (
+            <G key={k}>
+              <Rect x={14 + k * 56} y={34} width={46} height={58} rx={8} fill={c} />
+              <Circle cx={37 + k * 56} cy={50} r={6} fill={DARK} />
+              <Circle cx={37 + k * 56} cy={78} r={8} fill={METAL} />
+              <Callout x={37 + k * 56} y={18} n={k + 1} />
+            </G>
+          ))}
+        </Svg>
+      );
+    }
+    case 'fx-drive':
+    case 'fx-delay': {
+      // Rótulos como vienen serigrafiados en los pedales (en inglés).
+      const knobs = id === 'fx-drive' ? (['gain', 'tone', 'level'] as const) : (['time', 'feedback', 'mix'] as const);
+      const values = id === 'fx-drive' ? [6, 5, 5] : [4, 3, 3];
+      return (
+        <Svg viewBox="0 0 360 130" width="100%" height="100%">
+          {/* Cuerpo oscuro para que los rótulos claros tengan contraste; el borde da el color del pedal. */}
+          <Rect x={80} y={6} width={200} height={118} rx={14} fill={colors.raised} stroke={id === 'fx-drive' ? colors.accent : colors.fingerI} strokeWidth={4} />
+          {knobs.map((key, k) => (
+            <G key={key}>
+              <Knob x={120 + k * 60} y={42} value={values[k]} label={t(`ui.gfig.fxk.${key}`)} />
+              <Callout x={120 + k * 60 + 24} y={20} n={k + 1} />
+            </G>
+          ))}
+          <Circle cx={180} cy={102} r={13} fill={METAL} stroke={DARK} strokeWidth={2} />
+        </Svg>
+      );
+    }
     case 'chord-diagram-how':
       return (
         <Svg viewBox="0 0 360 216" width="100%" height="100%">
