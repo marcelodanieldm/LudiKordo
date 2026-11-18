@@ -22,6 +22,10 @@ export interface ScheduledNote {
   freq: number;
   startSec: number;
   durSec: number;
+  /** Volumen relativo (1 = normal). Lo usan los ecos y la pista de acompañamiento. */
+  level?: number;
+  /** Desafinación fija en cents (la copia del chorus). */
+  detuneCents?: number;
   /** Timbre propio de esta nota (por ejemplo, corcheas apagadas dentro de un riff). */
   tone?: Tone;
   /** La nota sube esta cantidad de cents (bend). */

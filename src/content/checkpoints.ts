@@ -9,6 +9,7 @@ import { IS_GUITAR } from '../instruments/current';
 import { GUITAR_CP1 } from './guitar/level1';
 import { GUITAR_CP2 } from './guitar/level2';
 import { GUITAR_CP3 } from './guitar/level3';
+import { GUITAR_CP4 } from './guitar/level4';
 import type { Exercise } from './types';
 
 export interface Checkpoint {
@@ -93,7 +94,7 @@ const cp1: Checkpoint = {
 };
 
 /** Checkpoints del instrumento de esta build (los de guitarra están en guitar/level*.ts). */
-export const CHECKPOINTS: Record<number, Checkpoint> = IS_GUITAR ? { [GUITAR_CP1.level]: GUITAR_CP1, [GUITAR_CP2.level]: GUITAR_CP2, [GUITAR_CP3.level]: GUITAR_CP3 } : { [cp1.level]: cp1 };
+export const CHECKPOINTS: Record<number, Checkpoint> = IS_GUITAR ? { [GUITAR_CP1.level]: GUITAR_CP1, [GUITAR_CP2.level]: GUITAR_CP2, [GUITAR_CP3.level]: GUITAR_CP3, [GUITAR_CP4.level]: GUITAR_CP4 } : { [cp1.level]: cp1 };
 
 export function getCheckpoint(level: number): Checkpoint | undefined {
   return CHECKPOINTS[level];
