@@ -5,7 +5,7 @@
       "title": "Canciones para tu nivel",
       "intro": "Líneas de bajo originales para tocar por género. Se desbloquean con los módulos donde aprendes lo que usan.",
       "all": "Todas",
-      "genre": {"pop": "Pop", "rock": "Rock", "ballad": "Baladas", "blues": "Blues", "bossa": "Bossa nova", "soul": "Soul", "reggae": "Reggae"},
+      "genre": {"pop": "Pop", "rock": "Rock", "ballad": "Baladas", "blues": "Blues", "bossa": "Bossa nova", "soul": "Soul", "reggae": "Reggae", "funk": "Funk", "jazz": "Jazz", "gospel": "Gospel"},
       "empty": "No hay canciones de este género todavía.",
       "lockedHint": "Bloqueada: muestra qué módulos te faltan",
       "meta": "{{genre}} · Nivel {{level}} · {{key}} · {{bpm}} bpm",
@@ -590,7 +590,47 @@
       "blues_2": { "title": "Walking de medianoche", "desc": "Walking bass en un blues en La: arpegios en negras y una nota cromática que lleva al acorde siguiente." },
       "bossa_2": { "title": "Atardecer bossa", "desc": "Bossa nova en Do sobre ii–V–I: la quinta entra una corchea antes del tercer tiempo, como en el estilo." },
       "reggae_2": { "title": "Mañana de raíces", "desc": "One drop en Mi menor: silencio en el uno y una frase que sube por la escala." },
-      "soul_2": { "title": "Noche de soul", "desc": "Soul de los 60 en Do: notas de paso que caminan hacia la raíz del acorde siguiente. Toca corto y con intención." }
+      "soul_2": { "title": "Noche de soul", "desc": "Soul de los 60 en Do: notas de paso que caminan hacia la raíz del acorde siguiente. Toca corto y con intención." },
+      "g_pop_1": {
+        "title": "Primer sol",
+        "desc": "Pop en Do con C–G–Am–F. Melodía en las tres cuerdas agudas, trastes 0 a 3: canta cada nota mientras la tocas."
+      },
+      "g_rock_1": {
+        "title": "Motor en Mi",
+        "desc": "Riff de rock en las cuerdas graves sobre power chords. Negras parejas con púa hacia abajo y la mano derecha firme."
+      },
+      "g_gospel_1": {
+        "title": "Domingo de mañana",
+        "desc": "Gospel en Sol con G–C–D–Em. Notas largas que respiran: deja sonar cada blanca hasta el final."
+      },
+      "g_funk_1": {
+        "title": "Freno de mano",
+        "desc": "Funk en Mi con palm mute: corcheas cortas y silencios exactos. El groove está en lo que no suena."
+      },
+      "g_rock_2": {
+        "title": "Ruta de noche",
+        "desc": "Solo de rock en la caja 1 de La menor, con vibrato en las notas largas. Termina con un vibrato ancho en el La."
+      },
+      "g_jazz_1": {
+        "title": "Martes en el club",
+        "desc": "Jazz en Do con el II–V–I (Dm7–G7–Cmaj7). Arpegios que dibujan cada acorde, con sonido de micrófono de mástil."
+      },
+      "g_pop_2": {
+        "title": "Ciudad de vidrio",
+        "desc": "Pop en Sol arriba del mástil, entre los trastes 7 y 10. Usa el mapa del mástil para no perderte."
+      },
+      "g_funk_2": {
+        "title": "Taller de groove",
+        "desc": "Funk en La dórico sobre Am7–D7. El Fa♯ del traste 9 es la nota que suena con el D7."
+      },
+      "g_jazz_2": {
+        "title": "Luz de madrugada",
+        "desc": "Jazz en Sol mayor con Am7–D7–Gmaj7. Cada compás empieza en una nota del acorde."
+      },
+      "g_gospel_2": {
+        "title": "Coro del barrio",
+        "desc": "Gospel en Do con pregunta y respuesta. Los silencios son parte de la frase: cuéntalos."
+      }
     },
     "l261": {
       "title": "El pentagrama y la clave de fa",
@@ -3405,8 +3445,9 @@
         "title": "Desbloquea todo el curso"
       },
       "songbook": {
-        "intro": "Riffs originales para tocar por género. Se desbloquean con los módulos donde aprendes lo que usan.",
-        "playPrompt": "Tócalo con la guitarra, a tempo con el metrónomo."
+        "intro": "Riffs y melodías originales para tocar por género, con una pista que te acompaña. Se desbloquean con los módulos donde aprendes lo que usan.",
+        "playPrompt": "Tócala con la guitarra, a tempo con el metrónomo.",
+        "chordsHint": "Un acorde por compás. En el ejemplo suenan de fondo; tu guitarra toca la melodía o el riff."
       }
     }
   }

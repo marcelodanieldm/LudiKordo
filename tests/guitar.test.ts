@@ -23,10 +23,12 @@ import { DETECTOR_WINDOW_MS, analyzeVibrato, bendAdvice, initialBend, scoreVibra
 import { midiToFreq as m2f } from '../src/music/notes';
 import { barsAreComplete, figureOf, isTabRest, layoutTab } from '../src/music/tab';
 import { tabOf } from '../src/content/guitar/helpers';
-import { DORIAN_A_NOTES, MAJOR_G_NOTES, MINOR_A_NOTES, MIXO_A_NOTES, PENTA_BOXES, PHRYG_A_NOTES, SCALE_GRIDS } from '../src/music/chords';
+import { chordFromName, DORIAN_A_NOTES, MAJOR_G_NOTES, MINOR_A_NOTES, MIXO_A_NOTES, PENTA_BOXES, PHRYG_A_NOTES, SCALE_GRIDS } from '../src/music/chords';
 import { midiOn, type StringId } from '../src/instruments/profiles';
 import { BOX_RUN, BURSTS, CALL4, C_MAJOR, D_MINOR, EVEN_EIGHTHS, FINAL_SOLO, FOURS, FX_LICK, GUITAR_CP4, G_MAJOR, A_MINOR, MOTIF_PHRASE, RESP4, SPACE_PHRASE, TARGET_PHRASE, TRIAD_ARPS } from '../src/content/guitar/level4';
 import { applyFx } from '../src/music/fx';
+import { GUITAR_SONGS } from '../src/content/guitar/songs';
+import { GUITAR_GENRES, songExample } from '../src/content/songs';
 import { filterBacking, scoreImprov, targetTimes } from '../src/music/improv';
 
 type Tree = { [k: string]: string | Tree };
@@ -566,4 +568,67 @@ test('improvisar: puntúa notas en la escala, cantidad y notas de llegada; ignor
   // Repetir una sola nota no da el puntaje completo.
   const same = Array.from({ length: 10 }, (_, i) => ({ timeMs: i * 400, freq: f(69) }));
   assert.ok(scoreImprov(same, [9, 0, 2, 4, 7], 8).accuracy < 0.5);
+});
+
+// ───────────── Cancionero de guitarra ─────────────
+
+test('cancionero de guitarra: 2 canciones por género pedido, compases y cifrado coherentes', () => {
+  assert.deepEqual([...GUITAR_GENRES].sort(), ['funk', 'gospel', 'jazz', 'pop', 'rock']);
+  for (const g of GUITAR_GENRES) assert.equal(GUITAR_SONGS.filter((s) => s.genre === g).length, 2, g);
+  assert.equal(new Set(GUITAR_SONGS.map((s) => s.id)).size, GUITAR_SONGS.length);
+  const guitarModules = GUITAR_LEVELS.flatMap((l) => l.modules.map((m) => m.id));
+  for (const s of GUITAR_SONGS) {
+    assert.ok(barsAreComplete(s.line), `${s.id}: compases`);
+    assert.equal(s.chords.length, s.line.reduce((a, e) => a + e.beats, 0) / 4, `${s.id}: un acorde por compás`);
+    assert.ok(s.tempoSteps[0] === s.bpm && s.tempoSteps.every((b, i) => i === 0 || b > s.tempoSteps[i - 1]), `${s.id}: tempos`);
+    for (const m of s.requires) assert.ok(guitarModules.includes(m), `${s.id}: módulo ${m}`);
+    assert.equal(s.level, Math.max(...s.requires.map((m) => Number(m.split('.')[0]))), `${s.id}: nivel`);
+    // Corcheas: a 80 bpm o menos al empezar (límite del detector).
+    if (s.line.some((e) => e.beats < 1)) assert.ok(s.bpm <= 80, `${s.id}: corcheas a ${s.bpm}`);
+    // Sin bends: la altura se mide al atacar.
+    assert.ok(s.line.every((e) => !('bend' in e && e.bend)), `${s.id}: bend`);
+    // La pista sale del cifrado.
+    for (const c of s.chords) assert.ok(chordFromName(c), `${s.id}: acorde ${c}`);
+    const ex = songExample(s);
+    assert.equal(ex.strum?.chords.length, s.chords.length);
+    // Nivel 1: trastes 0 a 3 (lo que se toca en el nivel 1).
+    if (s.level === 1) for (const e of s.line) if (!('rest' in e)) assert.ok(e.fret <= 3, `${s.id}: traste ${e.fret}`);
+  }
+});
+
+test('cancionero de guitarra: las notas largas y las del tiempo 1 son del acorde', () => {
+  // Una nota de un tiempo o más que empieza en el tiempo 1 tiene que ser del acorde (o su 7.ª, 9.ª en jazz).
+  for (const s of GUITAR_SONGS) {
+    let beat = 0;
+    for (const e of s.line) {
+      if (!('rest' in e) && beat % 4 === 0 && e.beats >= 1) {
+        const chord = s.chords[beat / 4];
+        const pcs = new Set(chordFromName(chord)!.map((m) => m % 12));
+        const pc = midiOn(GUITAR, e.string, e.fret) % 12;
+        const root = chordFromName(chord)![0] % 12;
+        const ninth = (root + 2) % 12;
+        assert.ok(pcs.has(pc) || (s.genre === 'jazz' && pc === ninth) || (chord.endsWith('5') && [3, 10].includes((pc - root + 12) % 12)), `${s.id}, compás ${beat / 4 + 1} (${chord}): ${e.string}${e.fret}`);
+      }
+      beat += e.beats;
+    }
+  }
+});
+
+test('acordes por nombre: tónica grave y tipo correcto', () => {
+  assert.deepEqual(chordFromName('E'), [40, 47, 52, 56]);
+  assert.deepEqual(chordFromName('Am7')!.map((m) => m % 12).sort((a, b) => a - b), [0, 4, 7, 9]);
+  assert.deepEqual(chordFromName('Bb5'), [46, 53, 58]);
+  assert.equal(chordFromName('D#')![0], 51);
+  assert.equal(chordFromName('Cdim'), null);
+});
+
+test('cancionero de guitarra: títulos, descripciones y géneros en los 3 idiomas', () => {
+  for (const [lang, tree] of Object.entries({ es, en, pt })) {
+    const get = (key: string) => key.split('.').reduce<unknown>((o, p) => (o as Record<string, unknown> | undefined)?.[p], tree);
+    for (const s of GUITAR_SONGS) {
+      assert.equal(typeof get(s.titleKey), 'string', `${lang}: ${s.titleKey}`);
+      assert.equal(typeof get(s.descriptionKey), 'string', `${lang}: ${s.descriptionKey}`);
+    }
+    for (const g of GUITAR_GENRES) assert.equal(typeof get(`ui.songbook.genre.${g}`), 'string', `${lang}: ${g}`);
+  }
 });

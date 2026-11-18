@@ -4,7 +4,9 @@
  * original o de dominio público). Cada canción se desbloquea al terminar los
  * módulos donde se aprende lo que usa.
  */
-import type { Beats, ScoreEvent, Song } from './types';
+import type { Beats, Genre, ListenExample, ScoreEvent, Song } from './types';
+import { chordFromName } from '../music/chords';
+import { GUITAR_SONGS } from './guitar/songs';
 import { IS_GUITAR } from '../instruments/current';
 
 type S = 'E' | 'A' | 'D' | 'G';
@@ -299,11 +301,25 @@ export const BASS_SONGS: Song[] = [
   }),
 ];
 
-/** Canciones del instrumento de esta build. La guitarra todavía no tiene cancionero (géneros por definir). */
-export const SONGS: Song[] = IS_GUITAR ? [] : BASS_SONGS;
+/** Canciones del instrumento de esta build. */
+export const SONGS: Song[] = IS_GUITAR ? GUITAR_SONGS : BASS_SONGS;
+
+/**
+ * Ejemplo para escuchar una canción: la línea sola o, si la canción trae rasgueo
+ * (guitarra), la línea sobre una pista con los acordes del cifrado.
+ */
+export function songExample(song: Song): ListenExample {
+  const base: ListenExample = { events: song.line, bpm: song.bpm, show: song.notation, click: true, ...(song.tone ? { tone: song.tone } : {}) };
+  if (!song.strum) return base;
+  const chords = song.chords.map((c) => chordFromName(c) ?? []);
+  return { ...base, strum: { chords, pattern: song.strum, tone: 'clean', level: 0.4 } };
+}
 
 export function getSong(id: string): Song | undefined {
   return SONGS.find((s) => s.id === id);
 }
 
-export const GENRES = ['pop', 'rock', 'ballad', 'blues', 'bossa', 'soul', 'reggae'] as const;
+const BASS_GENRES: readonly Genre[] = ['pop', 'rock', 'ballad', 'blues', 'bossa', 'soul', 'reggae'];
+/** Géneros del cancionero de guitarra, elegidos por Marcelo (18 nov 2026). */
+export const GUITAR_GENRES: readonly Genre[] = ['rock', 'pop', 'funk', 'jazz', 'gospel'];
+export const GENRES: readonly Genre[] = IS_GUITAR ? GUITAR_GENRES : BASS_GENRES;

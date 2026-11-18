@@ -5,7 +5,7 @@
       "title": "Músicas para o seu nível",
       "intro": "Linhas de baixo originais para tocar por gênero. Elas são liberadas com os módulos em que você aprende o que elas usam.",
       "all": "Todas",
-      "genre": {"pop": "Pop", "rock": "Rock", "ballad": "Baladas", "blues": "Blues", "bossa": "Bossa nova", "soul": "Soul", "reggae": "Reggae"},
+      "genre": {"pop": "Pop", "rock": "Rock", "ballad": "Baladas", "blues": "Blues", "bossa": "Bossa nova", "soul": "Soul", "reggae": "Reggae", "funk": "Funk", "jazz": "Jazz", "gospel": "Gospel"},
       "empty": "Ainda não há músicas deste gênero.",
       "lockedHint": "Bloqueada: mostra quais módulos faltam",
       "meta": "{{genre}} · Nível {{level}} · {{key}} · {{bpm}} bpm",
@@ -590,7 +590,47 @@
       "blues_2": { "title": "Walking da meia-noite", "desc": "Walking bass num blues em Lá: arpejos em semínimas e uma nota cromática que leva ao próximo acorde." },
       "bossa_2": { "title": "Entardecer bossa", "desc": "Bossa nova em Dó sobre ii–V–I: a quinta entra uma colcheia antes do terceiro tempo, como no estilo." },
       "reggae_2": { "title": "Manhã de raízes", "desc": "One drop em Mi menor: pausa no um e uma frase que sobe pela escala." },
-      "soul_2": { "title": "Noite de soul", "desc": "Soul dos anos 60 em Dó: notas de passagem que caminham até a tônica do próximo acorde. Toque curto e com intenção." }
+      "soul_2": { "title": "Noite de soul", "desc": "Soul dos anos 60 em Dó: notas de passagem que caminham até a tônica do próximo acorde. Toque curto e com intenção." },
+      "g_pop_1": {
+        "title": "Primeiro sol",
+        "desc": "Pop em Dó com C–G–Am–F. Melodia nas três cordas agudas, casas 0 a 3: cante cada nota enquanto toca."
+      },
+      "g_rock_1": {
+        "title": "Motor em Mi",
+        "desc": "Riff de rock nas cordas graves sobre power chords. Semínimas iguais com palhetada para baixo e a mão direita firme."
+      },
+      "g_gospel_1": {
+        "title": "Domingo de manhã",
+        "desc": "Gospel em Sol com G–C–D–Em. Notas longas que respiram: deixe cada mínima soar até o fim."
+      },
+      "g_funk_1": {
+        "title": "Freio de mão",
+        "desc": "Funk em Mi com palm mute: colcheias curtas e pausas exatas. O groove está no que não soa."
+      },
+      "g_rock_2": {
+        "title": "Estrada à noite",
+        "desc": "Solo de rock na caixa 1 de Lá menor, com vibrato nas notas longas. Termina com um vibrato largo no Lá."
+      },
+      "g_jazz_1": {
+        "title": "Terça no clube",
+        "desc": "Jazz em Dó com o II–V–I (Dm7–G7–Cmaj7). Arpejos que desenham cada acorde, com som de captador do braço."
+      },
+      "g_pop_2": {
+        "title": "Cidade de vidro",
+        "desc": "Pop em Sol no alto do braço, entre as casas 7 e 10. Use o mapa do braço para não se perder."
+      },
+      "g_funk_2": {
+        "title": "Oficina de groove",
+        "desc": "Funk em Lá dórico sobre Am7–D7. O Fá♯ da casa 9 é a nota que soa com o D7."
+      },
+      "g_jazz_2": {
+        "title": "Luz da madrugada",
+        "desc": "Jazz em Sol maior com Am7–D7–Gmaj7. Cada compasso começa numa nota do acorde."
+      },
+      "g_gospel_2": {
+        "title": "Coral do bairro",
+        "desc": "Gospel em Dó com pergunta e resposta. As pausas fazem parte da frase: conte-as."
+      }
     },
     "l261": {
       "title": "O pentagrama e a clave de fá",
@@ -3405,8 +3445,9 @@
         "title": "Desbloqueie o curso inteiro"
       },
       "songbook": {
-        "intro": "Riffs originais para tocar por gênero. Eles são liberados com os módulos em que você aprende o que eles usam.",
-        "playPrompt": "Toque na guitarra, no tempo do metrônomo."
+        "intro": "Riffs e melodias originais para tocar por gênero, com uma base que acompanha você. Eles são liberados com os módulos em que você aprende o que eles usam.",
+        "playPrompt": "Toque na guitarra, no tempo do metrônomo.",
+        "chordsHint": "Um acorde por compasso. No exemplo eles soam ao fundo; sua guitarra toca a melodia ou o riff."
       }
     }
   }

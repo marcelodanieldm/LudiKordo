@@ -9,7 +9,7 @@ import { Listen } from '../../src/components/Listen';
 import { PlayAlongExercise as PlayAlong } from '../../src/components/exercises/PlayAlongExercise';
 import { useKeyLabel, useSongbook } from '../../src/components/SongbookHooks';
 import { songExerciseId } from '../../src/content/songbook';
-import { getSong } from '../../src/content/songs';
+import { getSong, songExample } from '../../src/content/songs';
 import { isRest } from '../../src/music/staff';
 import { useProgress } from '../../src/state/progress';
 import { useLayout } from '../../src/hooks/useLayout';
@@ -103,7 +103,7 @@ export default function SongScreen() {
             {!running ? (
               <Card style={{ gap: 10 }}>
                 <H2 style={{ fontSize: 18 }}>{t('ui.songbook.listen')}</H2>
-                <Listen example={{ events: song.line, bpm: song.bpm, show: song.notation, click: true }} width={contentWidth - 34} testID={`listen-${song.id}`} />
+                <Listen example={songExample(song)} width={contentWidth - 34} testID={`listen-${song.id}`} />
               </Card>
             ) : null}
             {saved !== null ? (

@@ -5,7 +5,7 @@
       "title": "Songs for your level",
       "intro": "Original bass lines to play by genre. They unlock with the modules where you learn what they use.",
       "all": "All",
-      "genre": {"pop": "Pop", "rock": "Rock", "ballad": "Ballads", "blues": "Blues", "bossa": "Bossa nova", "soul": "Soul", "reggae": "Reggae"},
+      "genre": {"pop": "Pop", "rock": "Rock", "ballad": "Ballads", "blues": "Blues", "bossa": "Bossa nova", "soul": "Soul", "reggae": "Reggae", "funk": "Funk", "jazz": "Jazz", "gospel": "Gospel"},
       "empty": "No songs in this genre yet.",
       "lockedHint": "Locked: shows which modules you still need",
       "meta": "{{genre}} · Level {{level}} · {{key}} · {{bpm}} bpm",
@@ -590,7 +590,47 @@
       "blues_2": { "title": "Midnight Walk", "desc": "Walking bass over a blues in A: quarter-note arpeggios and a chromatic note that leads into the next chord." },
       "bossa_2": { "title": "Bossa Sunset", "desc": "Bossa nova in C over ii–V–I: the fifth comes in one eighth note before beat three, as in the style." },
       "reggae_2": { "title": "Roots Morning", "desc": "One drop in E minor: a rest on one and a phrase that climbs the scale." },
-      "soul_2": { "title": "Soul Night", "desc": "Sixties soul in C: passing notes that walk toward the root of the next chord. Play short and with intent." }
+      "soul_2": { "title": "Soul Night", "desc": "Sixties soul in C: passing notes that walk toward the root of the next chord. Play short and with intent." },
+      "g_pop_1": {
+        "title": "First Sun",
+        "desc": "Pop in C with C–G–Am–F. A melody on the three high strings, frets 0 to 3: sing each note as you play it."
+      },
+      "g_rock_1": {
+        "title": "Engine in E",
+        "desc": "A rock riff on the low strings over power chords. Even quarter notes with downstrokes and a steady picking hand."
+      },
+      "g_gospel_1": {
+        "title": "Sunday Morning",
+        "desc": "Gospel in G with G–C–D–Em. Long notes that breathe: let every half note ring to the end."
+      },
+      "g_funk_1": {
+        "title": "Handbrake",
+        "desc": "Funk in E with palm muting: short eighth notes and exact rests. The groove lives in what doesn't ring."
+      },
+      "g_rock_2": {
+        "title": "Night Road",
+        "desc": "A rock solo in box 1 of A minor, with vibrato on the long notes. It ends on a wide vibrato on A."
+      },
+      "g_jazz_1": {
+        "title": "Tuesday at the Club",
+        "desc": "Jazz in C with the ii–V–I (Dm7–G7–Cmaj7). Arpeggios that outline each chord, with a neck-pickup tone."
+      },
+      "g_pop_2": {
+        "title": "Glass City",
+        "desc": "Pop in G up the neck, between frets 7 and 10. Use the fretboard map so you don't get lost."
+      },
+      "g_funk_2": {
+        "title": "Groove Workshop",
+        "desc": "Funk in A Dorian over Am7–D7. The F♯ at fret 9 is the note that rings with the D7."
+      },
+      "g_jazz_2": {
+        "title": "Daybreak Light",
+        "desc": "Jazz in G major with Am7–D7–Gmaj7. Every bar starts on a chord tone."
+      },
+      "g_gospel_2": {
+        "title": "Neighborhood Choir",
+        "desc": "Gospel in C with call and response. The rests are part of the phrase: count them."
+      }
     },
     "l261": {
       "title": "The staff and the bass clef",
@@ -3405,8 +3445,9 @@
         "title": "Unlock the whole course"
       },
       "songbook": {
-        "intro": "Original riffs to play by genre. They unlock with the modules where you learn what they use.",
-        "playPrompt": "Play it on your guitar, in time with the metronome."
+        "intro": "Original riffs and melodies to play by genre, with a backing track. They unlock with the modules where you learn what they use.",
+        "playPrompt": "Play it on your guitar, in time with the metronome.",
+        "chordsHint": "One chord per bar. In the example they play in the background; your guitar plays the melody or riff."
       }
     }
   }
