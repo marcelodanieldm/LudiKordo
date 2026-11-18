@@ -19,7 +19,7 @@ Marcelo lo pidió explícito: todo el curso es para **guitarra eléctrica**. Eso
 - **Distorsión y detección.** Con ganancia alta YIN y el detector de ataques fallan (armónicos, sustain comprimido). Cada ejercicio que se puntúa declara el sonido que pide: **limpio** por defecto, **crunch** solo donde la técnica lo necesita (power chords, palm mute) y con la detección probada en ese sonido. La distorsión fuerte se usa para escuchar y tocar libre, no para puntuar.
 - **Cómo suenan los ejemplos.** Los ejemplos sonoros y las pistas de acompañamiento imitan una eléctrica (limpia y crunch), sintetizados por la app como en el bajo, sin grabaciones con derechos. Sin transponer: la guitarra ya suena bien en el parlante del teléfono.
 
-El equipo es contenido desde la primera lección (1.1: pastillas, volumen, tono y ecualización del ampli) y vuelve en cada módulo con un «ajuste sugerido» del ampli.
+El equipo es contenido desde la primera lección (1.1: pastillas, volumen, tono y ecualización del ampli), vuelve en cada módulo con un «ajuste sugerido» del ampli y tiene su módulo propio antes del proyecto final: **4.9 Tu sonido: efectos** (overdrive y distorsión, delay, reverb, modulación y wah, orden de la cadena). Lo sumó Claude con el visto bueno de Marcelo; no estaba en su programa de 4 etapas.
 
 ## Consecuencias
 - Hay que generalizar lo que hoy asume 4 cuerdas: `STRINGS` y `StringId` en `notes.ts`, `Fretboard`, `TabStaff`, `CartoonPlayer`, el afinador y el rango de YIN (ambas copias). Va en PRs chicos, con el bajo sin cambios de comportamiento.

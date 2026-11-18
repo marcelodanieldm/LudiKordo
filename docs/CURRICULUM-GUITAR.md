@@ -1,6 +1,6 @@
 # Currículo de guitarra eléctrica
 
-4 niveles, 27 módulos, 127 lecciones, unas 52 semanas a 15–20 minutos por día. Base: el programa de 4 etapas que trajo Marcelo (6 a 12 meses de práctica constante, de inicial a intermedio). Mismo formato que el bajo: lecciones de 4 pasos (Mira, Entiende, Practica sin guitarra, Practica con guitarra), una habilidad nueva por lección, criterio de dominio medible, objetivo de una frase por módulo y checkpoint al final de cada nivel.
+4 niveles, 28 módulos, 132 lecciones, unas 54 semanas a 15–20 minutos por día. Base: el programa de 4 etapas que trajo Marcelo (6 a 12 meses de práctica constante, de inicial a intermedio). Mismo formato que el bajo: lecciones de 4 pasos (Mira, Entiende, Practica sin guitarra, Practica con guitarra), una habilidad nueva por lección, criterio de dominio medible, objetivo de una frase por módulo y checkpoint al final de cada nivel.
 
 **El curso es para guitarra eléctrica, no acústica.** Se practica con ampli (o ampli de práctica / multiefecto con parlante): cada ejercicio indica el sonido que pide (limpio o crunch) y cada módulo trae un ajuste sugerido de pastilla y ampli. Los ejemplos sonoros imitan una eléctrica. Detalle en ADR 0009.
 
@@ -51,7 +51,7 @@ Las técnicas que le dan voz a la guitarra eléctrica y el mapa del mástil.
 
 **Checkpoint 3**: solo corto con bends afinados, vibrato y ligados sobre una progresión con cejillas.
 
-## Nivel 4 · Improvisación y nivel intermedio (semanas 31–52)
+## Nivel 4 · Improvisación y nivel intermedio (semanas 31–54)
 
 Crear música, ganar velocidad y entender la armonía.
 
@@ -65,9 +65,20 @@ Crear música, ganar velocidad y entender la armonía.
 | 4.6 Púa rápida | 4 | Subir el tempo del alternate picking sin perder limpieza. |
 | 4.7 Double stops y tríadas | 5 | Tocar notas dobles y arpegios de tríadas mayores y menores. |
 | 4.8 Tapping | 4 | Tocar un patrón básico de tapping a dos manos. |
-| 4.9 Proyecto final | 4 | Componer y tocar tu propio solo sobre una pista de acompañamiento. |
+| 4.9 Tu sonido: efectos | 5 | Armar tu sonido con overdrive o distorsión, delay, reverb y modulación, en el orden correcto de la cadena. |
+| 4.10 Proyecto final | 4 | Componer y tocar tu propio solo sobre una pista de acompañamiento, con tu sonido. |
 
 **Checkpoint 4** = proyecto final.
+
+### 4.9 Tu sonido: efectos (lecciones)
+
+1. **Ganancia: overdrive y distorsión.** Cuánta saturación pide cada estilo y por qué más ganancia no es más sonido.
+2. **Delay.** Repeticiones, tiempo y mezcla; delay corto (slapback) y largo para solos.
+3. **Reverb.** Ambiente sin embarrar; cuándo bajarla.
+4. **Modulación y wah.** Chorus, phaser y wah: qué hacen y dónde se usan.
+5. **La cadena y tu preset.** Orden afinador → wah → ganancia → modulación → delay → reverb, y un sonido para ritmo y otro para solo.
+
+Los ejercicios del módulo son de oído (reconocer el efecto en ejemplos sintetizados) y de ajuste (elegir perillas para un sonido objetivo). Lo que se toca y se puntúa sigue siendo en limpio o crunch (ADR 0009); con efectos se toca libre. Sirve con pedales, multiefecto, ampli con efectos o app de modelado: la lección explica el concepto, no una marca.
 
 ## Diferencias con el bajo que piden trabajo nuevo
 
@@ -78,7 +89,8 @@ Crear música, ganar velocidad y entender la armonía.
 | Patrones de rasgueo | 2.3 | Extender `score` con dirección (abajo/arriba). |
 | Bends y vibrato | 3.3, 3.4 | YIN en el tiempo: cents alcanzados y regularidad. |
 | Palm mute | 2.5 | Duración corta y menos agudos; se valida con el detector de ataques + autodetección de sustain. |
-| Pistas de acompañamiento | 4.5, 4.9 | Sintetizadas por la app, como los ejemplos sonoros. |
+| Pistas de acompañamiento | 4.5, 4.10 | Sintetizadas por la app, como los ejemplos sonoros. |
+| Efectos sintetizados (ejemplos de oído) | 4.9 | Overdrive, delay, reverb y chorus sobre el sintetizador de ejemplos sonoros. |
 | Rango de YIN | todo | 70–1400 Hz en las dos copias (TS y Kotlin). |
 
 ## Cancionero
