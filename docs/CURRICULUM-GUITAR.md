@@ -18,7 +18,7 @@ Familiarizarse con el instrumento, controlar el ruido de las cuerdas y coordinar
 | 1.4 Silencio entre notas | 4 | Apagar las cuerdas que no suenan con las dos manos. |
 | 1.5 Leer guitarra | 5 | Leer diagramas de acordes y tablatura con negras, corcheas y silencios. |
 
-**Checkpoint 1**: riff original en cuerdas al aire con púa alternada, leído de TAB, sin ruido de cuerdas.
+**Checkpoint 1**: oído, lectura de una tablatura nueva, pulso a 80 bpm, cromático en las 6 cuerdas y un riff con corcheas y silencios, sin ruido.
 
 ## Nivel 2 · Acordes, ritmo y riffs (semanas 9–17)
 

@@ -78,6 +78,14 @@ export const SIGHT_RIFF: ScoreEvent[] = [
   n('A', 0, 4),
 ];
 
+/** Checkpoint 1: tablatura nueva para leer (distinta de la de 1.5.5). */
+export const CP1_TAB: ScoreEvent[] = [
+  n('D', 0), n('D', 2), n('A', 0), n('A', 3),
+  n('E', 0, 2), n('E', 3, 2),
+  n('A', 0), n('A', 2), n('D', 0), n('G', 0),
+  n('D', 2, 4),
+];
+
 /** Checkpoint 1: riff con corcheas y silencios a 80 bpm. */
 export const CP1_RIFF: ScoreEvent[] = [
   n('E', 0, 0.5), n('E', 0, 0.5), n('E', 3), n('E', 0, 0.5), n('E', 0, 0.5), n('A', 0),
@@ -256,6 +264,17 @@ const l141: Lesson = {
       correctIndex: 1,
       tones: [hz('A', 2)],
       timbres: ['muted'],
+    },
+    {
+      id: '1.4.1-ear2',
+      kind: 'ear',
+      needsBass: false,
+      skills: ['ear'],
+      promptKey: k('1.4.1', 'ear'),
+      options: [k('1.4.1', 'long'), k('1.4.1', 'short')],
+      correctIndex: 0,
+      tones: [hz('A', 2)],
+      timbres: ['clean'],
     },
     {
       id: '1.4.1-play',
@@ -586,11 +605,12 @@ const l155: Lesson = {
     durationSec: 100,
     sceneKeys: scenes('1.5.5'),
     visuals: [null, 'guitar-strings', 'fret-hand', null],
-    sounds: [null, null, null, listen(SIGHT_RIFF, 80, { tone: 'crunch' })],
+    // Sin ejemplo sonoro: el desafío es leer una tablatura que nunca escuchaste.
+    sounds: [null, null, null, null],
   },
   cards: [
     { titleKey: k('1.5.5', 'c1t'), bodyKey: k('1.5.5', 'c1b') },
-    { titleKey: k('1.5.5', 'c2t'), bodyKey: k('1.5.5', 'c2b'), listen: listen(SIGHT_RIFF, 70, { show: 'tab', click: true }) },
+    { titleKey: k('1.5.5', 'c2t'), bodyKey: k('1.5.5', 'c2b') },
   ],
   exercises: [
     {
@@ -644,7 +664,7 @@ export const GUITAR_CP1: Checkpoint = {
       needsBass: false,
       skills: ['theory', 'fretboard'],
       promptKey: ck('tab'),
-      notes: tabOf(SIGHT_RIFF),
+      notes: tabOf(CP1_TAB),
       frets: 4,
     },
     {

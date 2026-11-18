@@ -1060,7 +1060,7 @@
         "4": "Level 4 · Improvisation and intermediate"
       },
       "checkpoint": {
-        "1": "Checkpoint 1 · Open-string riff, no string noise",
+        "1": "Checkpoint 1 · Riff with eighth notes and rests, no noise",
         "2": "Checkpoint 2 · Strummed chords and a palm-muted riff",
         "3": "Checkpoint 3 · Short solo with bends and vibrato",
         "4": "Final project · Your solo over a backing track"
@@ -1330,7 +1330,7 @@
         "c2b": "Sixteen eighth notes on the 3rd string (G), with a click on every beat. Play the example and count: \"1 and 2 and 3 and 4 and\".",
         "c3t": "Always alternating",
         "c3b": "Alternate picking never stops: even if a note is missing, the hand keeps going up and down. That way you don't lose time.",
-        "tap": "Tap ↓ and ↑ in turn: two taps per click.",
+        "tap": "Tap one button per click, alternating ↓ and ↑.",
         "play": "Eighth notes on the 3rd string (G): down on the click, up between clicks."
       },
       "l125": {
@@ -1351,13 +1351,13 @@
       },
       "l131": {
         "title": "One finger per fret",
-        "objective": "Fret frets 1 to 4 on the 6th string with one finger per fret, with no buzzing.",
+        "objective": "Press frets 1 to 4 on the 6th string with one finger per fret, with no buzzing.",
         "s1": "\"So far you've used open strings. Today your other hand joins the show.\"",
         "s2": "Index on fret 1, middle on 2, ring on 3 and pinky on 4. Your thumb goes behind the neck.",
         "s3": "Press right behind the fret, with your fingertip. Listen: frets 1, 2, 3 and 4.",
         "s4": "\"If the note buzzes, move your finger closer to the fret. You don't need to press harder.\"",
         "c1t": "Fingers have numbers",
-        "c1b": "1: index. 2: middle. 3: ring. 4: pinky. 5: your thumb, resting behind the neck, roughly behind finger 2. The thumb has no fretting number.",
+        "c1b": "1: index. 2: middle. 3: ring. 4: pinky. Circle 5 in the drawing is your thumb: it rests behind the neck, roughly behind finger 2, and doesn't fret.",
         "c2t": "One finger per fret",
         "c2b": "Each finger takes care of one fret, so your hand doesn't jump around. Play the example: frets 1, 2, 3 and 4 on the 6th string.",
         "c3t": "Right behind the fret",
@@ -1529,7 +1529,7 @@
         "c1b": "It lasts half a beat: two eighth notes fill one beat. Under the tab they have a little flag. Play the example and count \"1 and 2 and\".",
         "c2t": "Eighths and rests",
         "c2b": "Four bars with eighth notes, quarter notes and rests. Alternate picking keeps going even during rests.",
-        "tap": "Tap ↓ and ↑ in turn: two taps per click.",
+        "tap": "Tap one button per click, alternating ↓ and ↑.",
         "play": "Play the line with eighth notes and rests, using alternate picking."
       },
       "l154": {
@@ -1561,11 +1561,11 @@
         "s1": "\"Today's challenge: reading a tab you've never heard.\"",
         "s2": "First look at the whole tab: which strings and frets it uses.",
         "s3": "Then count the rhythm without playing, and only then play it, slowly.",
-        "s4": "\"This is how it sounds once you've got it. With crunch!\"",
+        "s4": "\"Slow and steady. Once you've got it at 60, move up to 70 and 80.\"",
         "c1t": "Three steps",
         "c1b": "1: look at strings and frets. 2: count the rhythm out loud. 3: play it slowly with the metronome. Reading well matters more than playing fast.",
-        "c2t": "The example",
-        "c2b": "Do the reading exercise first. If you get stuck, play the example and follow the tab.",
+        "c2t": "No example",
+        "c2b": "This time there's no example to listen to: the challenge is reading. If you get stuck, count the rhythm again without playing.",
         "tab": "Read the new tab and play each note on the fretboard.",
         "play": "Play the whole tab with the metronome."
       },

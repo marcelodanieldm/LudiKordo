@@ -24,7 +24,8 @@ const LOW_TO_HIGH: StringId[] = ['E', 'A', 'D', 'G', 'B', 'e'];
 const open = (s: StringId, beats: Beats = 1): ScoreEvent => ({ string: s, fret: 0, beats });
 const times = (s: StringId, n: number) => Array.from({ length: n }, () => ({ string: s, fret: 0 }));
 
-const openStringsExample = (bpm = 70): ListenExample => ({ events: LOW_TO_HIGH.map((s) => open(s)), bpm, show: 'tab' });
+/** Las 6 cuerdas al aire en dos compases: 4 negras y 2 blancas (Si y Mi aguda). */
+const openStringsExample = (bpm = 70): ListenExample => ({ events: LOW_TO_HIGH.map((s, i) => open(s, i >= 4 ? 2 : 1)), bpm, show: 'tab' });
 
 /** Riff original de 1.2.5 en cuerdas al aire (4 compases de 4/4). */
 export const FIRST_RIFF: ScoreEvent[] = [

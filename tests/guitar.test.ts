@@ -13,7 +13,8 @@ import { LEGACY_VOICE, VOICES, peakGain, ringSec, voiceFor } from '../src/music/
 import type { Lesson, ScoreEvent } from '../src/content/types';
 import { CP1_RIFF, FULL_SPIDER, GUITAR_CP1, SIGHT_RIFF } from '../src/content/guitar/level1';
 import { CHORDS, chordMidi, triadPitchClasses, type ChordId } from '../src/music/chords';
-import { barsAreComplete, layoutTab } from '../src/music/tab';
+import { barsAreComplete, figureOf, isTabRest, layoutTab } from '../src/music/tab';
+import { tabOf } from '../src/content/guitar/helpers';
 
 type Tree = { [k: string]: string | Tree };
 const locales = { en, es, pt } as unknown as Record<string, Tree>;
@@ -164,7 +165,7 @@ test('las partituras de las lecciones de guitarra tienen compases completos', ()
     for (const ex of lesson.exercises) {
       if (ex.kind === 'playAlong' && ex.score) assert.ok(barsAreComplete(ex.score), `${ex.id}: compases`);
     }
-    for (const c of lesson.cards) if (c.listen?.show === 'tab') assert.ok(barsAreComplete(c.listen.events) || c.listen.events.length <= 8, `${lesson.id}: ejemplo`);
+    for (const c of lesson.cards) if (c.listen?.show === 'tab') assert.ok(barsAreComplete(c.listen.events), `${lesson.id}: ejemplo en tablatura con compases completos`);
   }
 });
 
@@ -187,4 +188,17 @@ test('acordes abiertos: cada diagrama suena a su tríada y tiene un dedo por not
     // La nota más grave es la tónica (posición fundamental).
     assert.equal(Math.min(...chordMidi(id)) % 12, CHORDS[id].root, `${id}: bajo`);
   }
+});
+
+test('figuras y silencios de la tablatura', () => {
+  assert.deepEqual([0.5, 1, 2, 4].map(figureOf), ['eighth', 'quarter', 'half', 'whole']);
+  assert.equal(isTabRest({ rest: true, beats: 2 }), true);
+  assert.equal(isTabRest({ string: 'E', fret: 0, beats: 1 }), false);
+  assert.throws(() => tabOf([{ string: 'E', fret: 0, beats: 0.5 }]));
+  assert.throws(() => tabOf([{ rest: true, beats: 1 }]));
+  // Un silencio de blanca o de redonda ocupa su lugar en el compás.
+  const l = layoutTab([{ string: 'E', fret: 0, beats: 1 }, { rest: true, beats: 2 }, { string: 'A', fret: 0, beats: 1 }, { rest: true, beats: 4 }], 600);
+  assert.equal(l.notes.length, 4);
+  assert.ok(l.notes[2].x > l.notes[1].x + l.beatW * 1.5);
+  assert.equal(l.barsInRow.reduce((a, b) => a + b, 0), 2);
 });

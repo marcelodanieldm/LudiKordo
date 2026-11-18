@@ -1060,7 +1060,7 @@
         "4": "Nivel 4 · Improvisación e intermedio"
       },
       "checkpoint": {
-        "1": "Checkpoint 1 · Riff en cuerdas al aire, sin ruido",
+        "1": "Checkpoint 1 · Riff con corcheas y silencios, sin ruido",
         "2": "Checkpoint 2 · Acordes rasgueados y riff con palm mute",
         "3": "Checkpoint 3 · Solo corto con bends y vibrato",
         "4": "Proyecto final · Tu solo sobre una pista de acompañamiento"
@@ -1330,7 +1330,7 @@
         "c2b": "Dieciséis corcheas en la 3.ª cuerda (Sol), con el clic en cada pulso. Toca el ejemplo y cuenta: «1 y 2 y 3 y 4 y».",
         "c3t": "Siempre alternada",
         "c3b": "La púa alternada no se corta: aunque una nota falte, la mano sigue subiendo y bajando. Así no pierdes el tiempo.",
-        "tap": "Toca ↓ y ↑ alternados: dos toques por cada clic.",
+        "tap": "Toca un botón por clic, alternando ↓ y ↑.",
         "play": "Corcheas en la 3.ª cuerda (Sol): abajo en el clic, arriba entre clics."
       },
       "l125": {
@@ -1357,7 +1357,7 @@
         "s3": "Pisa justo detrás del traste, con la punta del dedo. Escucha: traste 1, 2, 3 y 4.",
         "s4": "«Si la nota zumba, acerca el dedo al traste. No hace falta apretar más fuerte.»",
         "c1t": "Los dedos tienen número",
-        "c1b": "1: índice. 2: medio. 3: anular. 4: meñique. 5: el pulgar, apoyado detrás del mástil, más o menos a la altura del dedo 2. El pulgar no tiene número para pisar.",
+        "c1b": "1: índice. 2: medio. 3: anular. 4: meñique. El círculo 5 del dibujo es el pulgar: va apoyado detrás del mástil, más o menos a la altura del dedo 2, y no pisa.",
         "c2t": "Un dedo por traste",
         "c2b": "Cada dedo se encarga de un traste: así la mano no salta. Toca el ejemplo: trastes 1, 2, 3 y 4 en la 6.ª cuerda.",
         "c3t": "Justo detrás del traste",
@@ -1529,7 +1529,7 @@
         "c1b": "Dura medio pulso: dos corcheas ocupan un pulso. Debajo de la tablatura se ven con una banderita. Toca el ejemplo y cuenta «1 y 2 y».",
         "c2t": "Corcheas y silencios",
         "c2b": "Cuatro compases con corcheas, negras y silencios. La púa alternada sigue aunque haya silencios.",
-        "tap": "Toca ↓ y ↑ alternados: dos toques por cada clic.",
+        "tap": "Toca un botón por clic, alternando ↓ y ↑.",
         "play": "Toca la línea con corcheas y silencios, con púa alternada."
       },
       "l154": {
@@ -1561,11 +1561,11 @@
         "s1": "«Hoy el desafío es leer una tablatura que nunca escuchaste.»",
         "s2": "Primero mira toda la tablatura: qué cuerdas usa y qué trastes.",
         "s3": "Después cuenta el ritmo sin tocar, y recién ahí toca, despacio.",
-        "s4": "«Así suena cuando ya te sale. ¡Con crunch!»",
+        "s4": "«Lento y seguro. Cuando te salga a 60, sube a 70 y a 80.»",
         "c1t": "Tres pasos",
         "c1b": "1: mira cuerdas y trastes. 2: cuenta el ritmo en voz alta. 3: toca lento con el metrónomo. Leer bien es más importante que tocar rápido.",
-        "c2t": "El ejemplo",
-        "c2b": "Haz primero el ejercicio de lectura. Si te trabas, toca el ejemplo y sigue la tablatura.",
+        "c2t": "Sin ejemplo",
+        "c2b": "Esta vez no hay ejemplo para escuchar: el desafío es leer. Si te trabas, vuelve a contar el ritmo sin tocar.",
         "tab": "Lee la tablatura nueva y toca cada nota en el diapasón.",
         "play": "Toca la tablatura completa con el metrónomo."
       },

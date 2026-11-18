@@ -146,7 +146,9 @@ function ChordDiagram({ chord, left, callouts = false }: { chord: ChordId; left:
   const gap = 26;
   const top = 52;
   const fretH = 34;
-  const sx = (i: number) => (left ? x0 + (5 - i) * gap : x0 + i * gap);
+  // Los diagramas no se espejan para zurdos: los cancioneros los dibujan siempre igual.
+  void left;
+  const sx = (i: number) => x0 + i * gap;
   return (
     <G>
       <SvgText x={70} y={118} fontSize={34} fontWeight="900" fill={colors.ink} textAnchor="middle">
@@ -181,11 +183,11 @@ function ChordDiagram({ chord, left, callouts = false }: { chord: ChordId; left:
       ))}
       {callouts ? (
         <>
-          <Callout x={left ? x0 + gap * 5 + 24 : x0 - 24} y={top + fretH * 3} n={1} />
-          <Callout x={left ? x0 - 24 : x0 + gap * 5 + 24} y={top + fretH * 2} n={2} />
-          <Callout x={left ? x0 - 24 : x0 + gap * 5 + 24} y={top - 2} n={3} />
-          <Callout x={sx(2) + (left ? -22 : 22)} y={top + 1.5 * fretH} n={4} />
-          <Callout x={left ? x0 + gap * 5 + 24 : x0 - 24} y={top - 14} n={5} />
+          <Callout x={x0 - 24} y={top + fretH * 3} n={1} />
+          <Callout x={x0 + gap * 5 + 24} y={top + fretH * 2} n={2} />
+          <Callout x={x0 + gap * 5 + 24} y={top - 2} n={3} />
+          <Callout x={sx(2) + 22} y={top + 1.5 * fretH} n={4} />
+          <Callout x={x0 - 24} y={top - 14} n={5} />
         </>
       ) : null}
     </G>
@@ -431,7 +433,8 @@ function Drawing({ id, left }: { id: Figure; left: boolean }) {
       );
     case 'fret-hand': {
       const mirror = (x: number) => (left ? 360 - x : x);
-      const fretCenters = [62, 138, 212, 282];
+      // Cada dedo pisa justo detrás de su traste (del lado de la cejuela).
+      const fretCenters = [88, 164, 236, 304];
       return (
         <Svg viewBox="0 0 360 150" width="100%" height="100%">
           <G transform={left ? 'translate(360,0) scale(-1,1)' : undefined}>
@@ -492,7 +495,7 @@ function Drawing({ id, left }: { id: Figure; left: boolean }) {
       );
     case 'chord-diagram-how':
       return (
-        <Svg viewBox="0 0 360 200" width="100%" height="100%">
+        <Svg viewBox="0 0 360 216" width="100%" height="100%">
           <ChordDiagram chord="Em" left={left} callouts />
         </Svg>
       );
@@ -519,7 +522,7 @@ function Drawing({ id, left }: { id: Figure; left: boolean }) {
     default: {
       const chord = CHORD_FIGURES[id];
       return chord ? (
-        <Svg viewBox="0 0 360 200" width="100%" height="100%">
+        <Svg viewBox="0 0 360 216" width="100%" height="100%">
           <ChordDiagram chord={chord} left={left} />
         </Svg>
       ) : null;

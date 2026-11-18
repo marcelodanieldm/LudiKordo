@@ -31,7 +31,7 @@ export function TabStaff({ notes, width, current = -1 }: { notes: TabEvent[]; wi
   const stateOf = (i: number): NoteState => (i < current ? 'done' : i === current ? 'current' : 'next');
 
   return (
-    <ScrollView horizontal scrollEnabled={layout.width > width} accessibilityRole="image" accessibilityLabel={t('ui.exercise.tabLabel', { count: notes.length })}>
+    <ScrollView horizontal scrollEnabled={layout.width > width} accessibilityRole="image" accessibilityLabel={t('ui.exercise.tabLabel', { count: notes.filter((e) => !isTabRest(e)).length })}>
       <Svg width={layout.width} height={rows * ROW_H}>
         {Array.from({ length: rows }, (_, r) => {
           const y0 = r * ROW_H;

@@ -78,8 +78,8 @@ export const RATIO: Partial<Record<Figure, number>> = {
   'fret-hand': 150 / 360,
   'mute-fret-hand': 140 / 360,
   'mute-pick-hand': 140 / 360,
-  'chord-diagram-how': 200 / 360,
-  ...Object.fromEntries(Object.keys(CHORD_FIGURES).map((f) => [f, 200 / 360])),
+  'chord-diagram-how': 216 / 360,
+  ...Object.fromEntries(Object.keys(CHORD_FIGURES).map((f) => [f, 216 / 360])),
 };
 
 /** true si la figura se dibuja en GuitarFigures.tsx. */

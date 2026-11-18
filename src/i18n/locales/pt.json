@@ -1060,7 +1060,7 @@
         "4": "Nível 4 · Improvisação e intermediário"
       },
       "checkpoint": {
-        "1": "Checkpoint 1 · Riff em cordas soltas, sem ruído",
+        "1": "Checkpoint 1 · Riff com colcheias e pausas, sem ruído",
         "2": "Checkpoint 2 · Acordes com batida e riff com palm mute",
         "3": "Checkpoint 3 · Solo curto com bends e vibrato",
         "4": "Projeto final · Seu solo sobre uma base"
@@ -1330,7 +1330,7 @@
         "c2b": "Dezesseis colcheias na 3ª corda (Sol), com clique em cada pulso. Toque o exemplo e conte: “1 e 2 e 3 e 4 e”.",
         "c3t": "Sempre alternada",
         "c3b": "A palhetada alternada não para: mesmo que falte uma nota, a mão continua subindo e descendo. Assim você não perde o tempo.",
-        "tap": "Toque ↓ e ↑ alternados: dois toques a cada clique.",
+        "tap": "Toque um botão por clique, alternando ↓ e ↑.",
         "play": "Colcheias na 3ª corda (Sol): para baixo no clique, para cima entre os cliques."
       },
       "l125": {
@@ -1357,7 +1357,7 @@
         "s3": "Aperte logo atrás do traste, com a ponta do dedo. Ouça: casa 1, 2, 3 e 4.",
         "s4": "“Se a nota trastejar, aproxime o dedo do traste. Não precisa apertar mais forte.”",
         "c1t": "Os dedos têm número",
-        "c1b": "1: indicador. 2: médio. 3: anelar. 4: mínimo. 5: o polegar, apoiado atrás do braço, mais ou menos na altura do dedo 2. O polegar não tem número para apertar.",
+        "c1b": "1: indicador. 2: médio. 3: anelar. 4: mínimo. O círculo 5 do desenho é o polegar: fica apoiado atrás do braço, mais ou menos na altura do dedo 2, e não aperta.",
         "c2t": "Um dedo por casa",
         "c2b": "Cada dedo cuida de uma casa: assim a mão não pula. Toque o exemplo: casas 1, 2, 3 e 4 na 6ª corda.",
         "c3t": "Logo atrás do traste",
@@ -1522,14 +1522,14 @@
         "title": "Colcheias e pausas",
         "objective": "Ler e tocar colcheias e pausas na tablatura, com palhetada alternada.",
         "s1": "“As colcheias são as notas rápidas: duas por pulso.”",
-        "s2": "Na tablatura a colcheia tem uma bandeirinha na haste. Vai com palhetada alternada: baixo, cima.",
+        "s2": "Na tablatura a colcheia tem uma bandeirinha na haste. Vai com palhetada alternada: para baixo, para cima.",
         "s3": "Ouça: colcheias, semínimas e pausas no mesmo compasso.",
         "s4": "“Conte ‘1 e 2 e’. As colcheias caem no número e no ‘e’.”",
         "c1t": "A colcheia",
         "c1b": "Dura meio pulso: duas colcheias ocupam um pulso. Embaixo da tablatura aparecem com uma bandeirinha. Toque o exemplo e conte “1 e 2 e”.",
         "c2t": "Colcheias e pausas",
         "c2b": "Quatro compassos com colcheias, semínimas e pausas. A palhetada alternada continua mesmo nas pausas.",
-        "tap": "Toque ↓ e ↑ alternados: dois toques a cada clique.",
+        "tap": "Toque um botão por clique, alternando ↓ e ↑.",
         "play": "Toque a linha com colcheias e pausas, com palhetada alternada."
       },
       "l154": {
@@ -1561,11 +1561,11 @@
         "s1": "“Hoje o desafio é ler uma tablatura que você nunca ouviu.”",
         "s2": "Primeiro olhe a tablatura inteira: quais cordas usa e quais casas.",
         "s3": "Depois conte o ritmo sem tocar, e só então toque, devagar.",
-        "s4": "“Assim soa quando já sai. Com crunch!”",
+        "s4": "“Devagar e seguro. Quando sair a 60, suba para 70 e 80.”",
         "c1t": "Três passos",
         "c1b": "1: olhe cordas e casas. 2: conte o ritmo em voz alta. 3: toque devagar com o metrônomo. Ler bem é mais importante que tocar rápido.",
-        "c2t": "O exemplo",
-        "c2b": "Faça primeiro o exercício de leitura. Se travar, toque o exemplo e siga a tablatura.",
+        "c2t": "Sem exemplo",
+        "c2b": "Desta vez não há exemplo para ouvir: o desafio é ler. Se travar, conte o ritmo de novo sem tocar.",
         "tab": "Leia a tablatura nova e toque cada nota na escala.",
         "play": "Toque a tablatura inteira com o metrônomo."
       },
