@@ -20,12 +20,19 @@ export const EIGHTHS: Stroke[] = ['D', 'U', 'D', 'U', 'D', 'U', 'D', 'U'];
 export const BALLAD: Stroke[] = ['D', '-', 'D', 'U', '-', 'U', 'D', 'U'];
 /** Blancas: un golpe cada dos pulsos (para los primeros cambios). */
 export const HALVES: Stroke[] = ['D', '-', '-', '-', 'D', '-', '-', '-'];
+/** Corcheas todas hacia abajo (palm mute): más parejas y con más peso. */
+export const DOWN_EIGHTHS: Stroke[] = ['D', 'D', 'D', 'D', 'D', 'D', 'D', 'D'];
 /** Redondas: un golpe por compás. */
 export const WHOLES: Stroke[] = ['D', '-', '-', '-', '-', '-', '-', '-'];
 
-/** Un patrón es válido si tiene 8 casillas y la púa alterna: abajo en los pulsos, arriba entre pulsos. */
+/**
+ * Un patrón es válido si tiene 8 casillas y la púa alterna (abajo en los pulsos,
+ * arriba entre pulsos), o si todo va hacia abajo (sin ningún golpe hacia arriba).
+ */
 export function isValidPattern(p: Stroke[]): boolean {
-  return p.length === EIGHTHS_PER_BAR && p.every((s, i) => s === '-' || (i % 2 === 0 ? s === 'D' : s === 'U'));
+  if (p.length !== EIGHTHS_PER_BAR) return false;
+  if (!p.includes('U')) return p.some((s) => s === 'D');
+  return p.every((s, i) => s === '-' || (i % 2 === 0 ? s === 'D' : s === 'U'));
 }
 
 export interface StrokeTime {
@@ -81,4 +88,73 @@ export function strumSchedule(chords: number[][], pattern: Stroke[], bpm: number
     });
   });
   return out;
+}
+
+// ───────────── Puntaje del rasgueo ─────────────
+
+export interface Attack {
+  timeMs: number;
+  /** Energía del golpe (RMS del cuadro). */
+  rms: number;
+}
+
+/** Cuánto más fuerte que lo que entró durante la cuenta tiene que ser un golpe para contar. */
+export const CLICK_MARGIN = 1.5;
+
+/**
+ * Descarta lo que probablemente sea el clic del metrónomo colándose por el
+ * micrófono: durante la cuenta previa el alumno no toca, así que lo que se oye
+ * ahí mide cuánto entra el clic. Después solo cuentan los golpes más fuertes
+ * que eso. Sin nada en la cuenta (auriculares), no se descarta nada.
+ */
+export function filterClicks(attacks: Attack[], startMs: number, countInMs: number): Attack[] {
+  const during = attacks.filter((a) => a.timeMs >= startMs - countInMs && a.timeMs < startMs - 40);
+  const floor = during.reduce((m, a) => Math.max(m, a.rms), 0);
+  return attacks.filter((a) => a.timeMs >= startMs - 40 && (floor === 0 || a.rms > floor * CLICK_MARGIN));
+}
+
+export interface StrumScore {
+  hits: number;
+  total: number;
+  /** Golpes donde el patrón pedía mano al aire. */
+  extras: number;
+  accuracy: number;
+}
+
+/**
+ * Golpes a tiempo y golpes de más. Un golpe sin pareja que cae cerca de una
+ * casilla '-' (mano al aire) cuenta en contra: así se evalúan los golpes al
+ * aire del patrón y no sirve rasguear corcheas sin parar.
+ */
+export function scoreStrum(pattern: Stroke[], bars: number, bpm: number, startMs: number, times: number[], toleranceMs: number): StrumScore {
+  const expected = strokeTimes(pattern, bars, bpm, startMs);
+  const used = new Set<number>();
+  let hits = 0;
+  for (const e of expected) {
+    let best = -1;
+    let bestDist = Infinity;
+    times.forEach((t, j) => {
+      if (used.has(j)) return;
+      const d = Math.abs(t - e.timeMs);
+      if (d < bestDist) {
+        bestDist = d;
+        best = j;
+      }
+    });
+    if (best >= 0 && bestDist <= toleranceMs) {
+      used.add(best);
+      hits += 1;
+    }
+  }
+  const eighthMs = 60000 / bpm / 2;
+  let extras = 0;
+  times.forEach((t, j) => {
+    if (used.has(j)) return;
+    const slot = Math.round((t - startMs) / eighthMs);
+    if (slot < 0 || slot >= bars * EIGHTHS_PER_BAR) return;
+    if (Math.abs(t - (startMs + slot * eighthMs)) > toleranceMs) return;
+    if (pattern[slot % EIGHTHS_PER_BAR] === '-') extras += 1;
+  });
+  const total = expected.length;
+  return { hits, total, extras, accuracy: total ? hits / (total + extras) : 0 };
 }

@@ -78,6 +78,7 @@ class PitchDetectorModule : Module() {
       var pendingOnsetMs = -1.0
       var framesSinceOnset = 0
       var lastAttackMs = -1000.0
+      var attackRms = 0f
       try {
         while (running) {
           val n = record.read(hop, 0, hop.size, AudioRecord.READ_BLOCKING)
@@ -96,14 +97,21 @@ class PitchDetectorModule : Module() {
           if (rms > 0.01f && rms > prevRms * 1.8f) {
             pendingOnsetMs = nowMs - n * 1000.0 / o.sampleRate
             framesSinceOnset = 0
-            // Rasgueo: el golpe cuenta aunque un acorde no tenga una sola altura clara.
-            // Dos subidas a menos de 60 ms son el mismo golpe.
-            if (pendingOnsetMs - lastAttackMs > 60.0) {
-              sendEvent("onAttack", mapOf("elapsedMs" to pendingOnsetMs, "rms" to rms))
-              lastAttackMs = pendingOnsetMs
-            }
           }
           prevRms = rms * 0.7f + prevRms * 0.3f
+
+          // Golpe de rasgueo: umbral propio, más bajo (un golpe hacia arriba sobre un
+          // acorde que todavía suena rara vez duplica la energía). Cuenta aunque no
+          // haya altura clara. Dos subidas a menos de 60 ms son el mismo golpe.
+          // No toca la detección de notas (onNote) ni YIN.
+          if (rms > 0.01f && rms > attackRms * 1.3f) {
+            val atMs = nowMs - n * 1000.0 / o.sampleRate
+            if (atMs - lastAttackMs > 60.0) {
+              sendEvent("onAttack", mapOf("elapsedMs" to atMs, "rms" to rms))
+              lastAttackMs = atMs
+            }
+          }
+          attackRms = rms * 0.6f + attackRms * 0.4f
 
           val res = if (rms > 0.005f) yin.detect(window) else null
           if (res != null && res.clarity > 0.8f) {

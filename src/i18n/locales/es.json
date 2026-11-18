@@ -166,8 +166,11 @@
       "headphones": "Con auriculares la detección funciona mejor.",
       "result": "{{hits}} de {{total}} a tiempo",
       "strumLegend": "↓ púa hacia abajo · ↑ hacia arriba · · la mano se mueve sin tocar",
-      "strumLabel": "Rasgueo de {{bars}} compases: {{chords}}",
-      "strumDetected": "Golpes a tiempo: {{hits}} de {{total}}"
+      "strumLabel": "Rasgueo de {{bars}} compases: {{chords}}. Patrón: {{pattern}}",
+      "strumDetected": "Golpes a tiempo: {{hits}} de {{total}}",
+      "strokeD": "abajo",
+      "strokeU": "arriba",
+      "strokeRest": "al aire"
     },
     "practice": {
       "bpmUnit": "bpm",
@@ -387,17 +390,17 @@
       },
       "power_6": {
         "a11y": "Diagrama del power chord G5: dedo 1 en la 6.ª cuerda traste 3 y dedo 3 en la 5.ª traste 5",
-        "l1": "Tónica en la 6.ª cuerda (en rojo).",
+        "l1": "Tónica en la 6.ª cuerda (en naranja).",
         "l2": "La quinta, dos trastes arriba en la cuerda siguiente."
       },
       "power_5": {
         "a11y": "Diagrama del power chord C5: dedo 1 en la 5.ª cuerda traste 3 y dedo 3 en la 4.ª traste 5",
-        "l1": "Tónica en la 5.ª cuerda (en rojo).",
+        "l1": "Tónica en la 5.ª cuerda (en naranja).",
         "l2": "La quinta, dos trastes arriba en la cuerda siguiente."
       },
       "penta_box": {
         "a11y": "Caja de la pentatónica menor de La entre los trastes 5 y 8, con la tónica marcada",
-        "l1": "En rojo, la tónica: La.",
+        "l1": "En naranja, la tónica: La.",
         "l2": "Dedo 1 en el traste 5; dedo 3 en el 7 o 4 en el 8."
       }
     }
@@ -1786,7 +1789,7 @@
         "c1b": "Abajo en «1, 2, 3, 4» y arriba en cada «y». Toca el ejemplo: La menor en corcheas.",
         "c2t": "Arriba, más liviano",
         "c2b": "El golpe hacia arriba suena más suave y agudo: así tiene que ser.",
-        "tap": "Toca un botón por clic, alternando ↓ y ↑, como el movimiento de la mano.",
+        "tap": "Primero solo la alternancia: un toque por clic, ↓ y ↑ alternados. Con la guitarra, la ↑ va entre clic y clic.",
         "strum": "Rasguea Am en corcheas abajo-arriba, cuatro compases."
       },
       "l233": {
@@ -1838,7 +1841,7 @@
         "s3": "Las otras cuerdas no suenan: las apaga el dedo 1 apoyado y la palma de la mano de la púa.",
         "s4": "«Ni mayor ni menor: la quinta suena fuerte con mucha ganancia. Así suena en limpio.»",
         "c1t": "Sol 5 (G5)",
-        "c1b": "Dedo 1 en la 6.ª, traste 3 (la tónica, en rojo); dedo 3 en la 5.ª, traste 5. El número de la derecha dice el traste donde empieza el diagrama. Toca el ejemplo.",
+        "c1b": "Dedo 1 en la 6.ª, traste 3 (la tónica, en naranja); dedo 3 en la 5.ª, traste 5. El número de la derecha dice el traste donde empieza el diagrama. Toca el ejemplo.",
         "c2t": "Solo dos cuerdas",
         "c2b": "Rasguea corto, solo la 6.ª y la 5.ª. El resto se apaga con el dedo 1 apoyado sobre las cuerdas agudas.",
         "tap": "Toca en el diapasón las dos notas de G5.",
@@ -1867,7 +1870,7 @@
         "s3": "Ahora la 6.ª cuerda no se toca: apágala con la punta del dedo 1.",
         "s4": "«Do, Re, Mi y Re: escucha cómo sube y baja.»",
         "c1t": "Do 5 (C5)",
-        "c1b": "Dedo 1 en la 5.ª, traste 3 (tónica en rojo); dedo 3 en la 4.ª, traste 5. Toca el ejemplo.",
+        "c1b": "Dedo 1 en la 5.ª, traste 3 (tónica en naranja); dedo 3 en la 4.ª, traste 5. Toca el ejemplo.",
         "c2t": "Notas de la 5.ª cuerda",
         "c2b": "Traste 3: Do (C). 5: Re (D). 7: Mi (E). 8: Fa (F). 10: Sol (G).",
         "tap": "Toca en el diapasón las dos notas de C5.",
@@ -1967,7 +1970,7 @@
         "s3": "Las notas abiertas están en la 6.ª y la 5.ª cuerda, trastes 3 y 5.",
         "s4": "«Lento y parejo primero. La ganancia hace el resto.»",
         "c1t": "El riff",
-        "c1b": "Cuatro compases: cuatro corcheas apagadas y dos notas abiertas. Toca el ejemplo y sigue la tablatura.",
+        "c1b": "En los tres primeros compases, cuatro corcheas apagadas y dos notas abiertas; el último cierra con una nota larga. Toca el ejemplo y sigue la tablatura.",
         "c2t": "Con crunch",
         "c2b": "Practícalo en limpio para que la app te escuche bien; cuando te salga, súbele la ganancia y disfrútalo.",
         "play": "Toca el riff completo con el metrónomo."
@@ -1977,10 +1980,10 @@
         "objective": "Ubicar la pentatónica menor de La en el traste 5 y saber dónde está la tónica.",
         "s1": "«Esta escala de cinco notas es la favorita de los solos de rock y blues.»",
         "s2": "Pentatónica menor de La: dos notas por cuerda, entre los trastes 5 y 8.",
-        "s3": "La tónica, La, está en rojo: en la 6.ª y la 1.ª cuerda en el traste 5, y en la 4.ª en el 7.",
+        "s3": "La tónica, La, está en naranja: en la 6.ª y la 1.ª cuerda en el traste 5, y en la 4.ª en el 7.",
         "s4": "«Escucha cómo sube. ¿Te suena a solo de guitarra?»",
         "c1t": "La caja",
-        "c1b": "El dibujo empieza en el traste 5. Dedo 1 en el traste 5, dedo 3 en el 7 y dedo 4 en el 8. Los puntos rojos son la tónica, La.",
+        "c1b": "El dibujo empieza en el traste 5. Dedo 1 en el traste 5, dedo 3 en el 7 y dedo 4 en el 8. Los puntos naranjas son la tónica, La.",
         "c2t": "Así suena",
         "c2b": "De la 6.ª a la 1.ª cuerda, dos notas por cuerda. Toca el ejemplo y sigue la tablatura.",
         "q1": "¿Cuál es la tónica de esta pentatónica?",
@@ -2013,14 +2016,14 @@
         "play": "La pentatónica en corcheas con el metrónomo."
       },
       "l264": {
-        "title": "Frases de cuatro notas",
+        "title": "Tu primera frase",
         "objective": "Leer y tocar una frase hecha con la pentatónica.",
         "s1": "«Un solo no es subir y bajar la escala: son frases.»",
-        "s2": "Esta frase baja por la caja de a dos notas y descansa en La.",
+        "s2": "Esta frase baja por la caja de a dos notas, sube un poco y descansa en La.",
         "s3": "Termina en la tónica, en la 4.ª cuerda, traste 7. Eso le da sensación de final.",
         "s4": "«Escucha con crunch. ¡Ya suena a solo!»",
         "c1t": "La frase",
-        "c1b": "Cuatro compases que bajan por la caja y terminan en La. Toca el ejemplo y sigue la tablatura.",
+        "c1b": "Cuatro compases que bajan por la caja, suben un poco y terminan en La. Toca el ejemplo y sigue la tablatura.",
         "c2t": "Terminar en casa",
         "c2b": "Las frases que terminan en la tónica suenan cerradas. Prueba terminarla en otra nota y escucha la diferencia.",
         "tab": "Lee la frase en la tablatura y toca cada nota en el diapasón.",

@@ -6,8 +6,8 @@ import { Button, Stars } from '../ui';
 import { colors, fonts, radius } from '../../theme';
 import { listenAttacks, requestMic, type Listener, type MicStatus } from '../../audio/mic';
 import { nowMs, startMetronome, stopActiveSequence, type MetronomeHandle } from '../../audio/engine';
-import { EIGHTHS_PER_BAR, eighthAt, strokeTimes } from '../../music/strum';
-import { scoreTiming, starsFor } from '../../music/scoring';
+import { EIGHTHS_PER_BAR, eighthAt, filterClicks, scoreStrum, type Attack } from '../../music/strum';
+import { TIMING_TOLERANCE_MS, starsFor } from '../../music/scoring';
 import { useProgress } from '../../state/progress';
 import type { StrumExercise as StrumEx } from '../../content/types';
 
@@ -50,6 +50,8 @@ export function StrumExercise({
   const metro = useRef<MetronomeHandle | null>(null);
   const timers = useRef<{ tick?: ReturnType<typeof setInterval>; end?: ReturnType<typeof setTimeout> }>({});
   const mounted = useRef(true);
+  /** Evita dos tomas a la vez (dos toques rápidos en «Empezar»). */
+  const starting = useRef(false);
 
   const stopAll = () => {
     if (timers.current.tick) clearInterval(timers.current.tick);
@@ -84,8 +86,20 @@ export function StrumExercise({
   };
 
   const start = async () => {
+    if (starting.current || phase === 'running') return;
+    starting.current = true;
+    try {
+      await run();
+    } finally {
+      starting.current = false;
+    }
+  };
+
+  const run = async () => {
     stopActiveSequence();
     const status = await requestMic();
+    // La pantalla pudo cerrarse mientras se pedía el permiso.
+    if (!mounted.current) return;
     setMic(status);
     if (status !== 'ok') {
       setPhase('self');
@@ -94,21 +108,30 @@ export function StrumExercise({
     setResult(null);
     setPos(-1);
     setPhase('running');
-    const attacks: number[] = [];
+    const attacks: Attack[] = [];
     metro.current = startMetronome(bpm, bars * 4);
     const startMs = metro.current.startMs;
-    listener.current = await listenAttacks((ms) => attacks.push(ms));
+    const beatMs = 60000 / bpm;
+    const heard = await listenAttacks((timeMs, rms) => attacks.push({ timeMs, rms }));
+    // Si la pantalla se cerró durante la espera, apagar lo que llegó tarde.
+    if (!mounted.current) {
+      heard?.stop();
+      stopAll();
+      return;
+    }
+    listener.current = heard;
     if (!listener.current) {
       stopAll();
       setPhase('self');
       return;
     }
-    const expected = strokeTimes(exercise.pattern, bars, bpm, startMs).map((s) => s.timeMs);
     timers.current.tick = setInterval(() => setPos(eighthAt(nowMs(), startMs, bpm)), 60);
     timers.current.end = setTimeout(() => {
-      const r = scoreTiming(expected, attacks);
-      finishWith(r.hits, r.total);
-    }, startMs - nowMs() + bars * 4 * (60000 / bpm) + 800);
+      // Lo que entró durante la cuenta (el clic por el parlante) no cuenta como golpe.
+      const strokes = filterClicks(attacks, startMs, 4 * beatMs).map((a) => a.timeMs);
+      const r = scoreStrum(exercise.pattern, bars, bpm, startMs, strokes, TIMING_TOLERANCE_MS);
+      finishWith(r.hits, r.total + r.extras);
+    }, startMs - nowMs() + bars * 4 * beatMs + 800);
   };
 
   // Dos compases por renglón en teléfono, cuatro en tablet.
@@ -128,7 +151,11 @@ export function StrumExercise({
           style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}
           accessible
           accessibilityRole="image"
-          accessibilityLabel={t('ui.exercise.strumLabel', { bars, chords: exercise.chords.join(', ') })}
+          accessibilityLabel={t('ui.exercise.strumLabel', {
+            bars,
+            chords: exercise.chords.join(', '),
+            pattern: exercise.pattern.map((s) => t(s === 'D' ? 'ui.exercise.strokeD' : s === 'U' ? 'ui.exercise.strokeU' : 'ui.exercise.strokeRest')).join(', '),
+          })}
         >
           {exercise.chords.map((chord, bar) => (
             <View key={bar} style={{ width: barW, borderRadius: radius.md, borderWidth: 1, borderColor: colors.line, padding: 6, gap: 4 }}>

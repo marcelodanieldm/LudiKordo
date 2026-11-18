@@ -166,8 +166,11 @@
       "headphones": "Com fones de ouvido a detecção funciona melhor.",
       "result": "{{hits}} de {{total}} no tempo",
       "strumLegend": "↓ palhetada para baixo · ↑ para cima · · a mão se mexe sem tocar",
-      "strumLabel": "Batida de {{bars}} compassos: {{chords}}",
-      "strumDetected": "Batidas no tempo: {{hits}} de {{total}}"
+      "strumLabel": "Batida de {{bars}} compassos: {{chords}}. Padrão: {{pattern}}",
+      "strumDetected": "Batidas no tempo: {{hits}} de {{total}}",
+      "strokeD": "para baixo",
+      "strokeU": "para cima",
+      "strokeRest": "no ar"
     },
     "practice": {
       "bpmUnit": "bpm",
@@ -387,17 +390,17 @@
       },
       "power_6": {
         "a11y": "Diagrama do power chord G5: dedo 1 na 6ª corda casa 3 e dedo 3 na 5ª casa 5",
-        "l1": "Tônica na 6ª corda (em vermelho).",
+        "l1": "Tônica na 6ª corda (em laranja).",
         "l2": "A quinta, duas casas acima na corda seguinte."
       },
       "power_5": {
         "a11y": "Diagrama do power chord C5: dedo 1 na 5ª corda casa 3 e dedo 3 na 4ª casa 5",
-        "l1": "Tônica na 5ª corda (em vermelho).",
+        "l1": "Tônica na 5ª corda (em laranja).",
         "l2": "A quinta, duas casas acima na corda seguinte."
       },
       "penta_box": {
         "a11y": "Caixa da pentatônica menor de Lá entre as casas 5 e 8, com a tônica marcada",
-        "l1": "Em vermelho, a tônica: Lá.",
+        "l1": "Em laranja, a tônica: Lá.",
         "l2": "Dedo 1 na casa 5; dedo 3 na 7 ou 4 na 8."
       }
     }
@@ -1786,7 +1789,7 @@
         "c1b": "Para baixo em “1, 2, 3, 4” e para cima em cada “e”. Toque o exemplo: Lá menor em colcheias.",
         "c2t": "Para cima, mais leve",
         "c2b": "A batida para cima soa mais suave e aguda: é assim mesmo.",
-        "tap": "Toque um botão a cada clique, alternando ↓ e ↑, como o movimento da mão.",
+        "tap": "Primeiro só a alternância: um toque por clique, ↓ e ↑ alternados. Na guitarra, a ↑ vai entre um clique e outro.",
         "strum": "Faça a batida de Am em colcheias, para baixo e para cima, quatro compassos."
       },
       "l233": {
@@ -1838,7 +1841,7 @@
         "s3": "As outras cordas não soam: o dedo 1 apoiado e a palma da mão da palheta as abafam.",
         "s4": "“Nem maior nem menor: a quinta soa forte com muito ganho. Assim soa no limpo.”",
         "c1t": "Sol 5 (G5)",
-        "c1b": "Dedo 1 na 6ª, casa 3 (a tônica, em vermelho); dedo 3 na 5ª, casa 5. O número à direita diz a casa onde o diagrama começa. Toque o exemplo.",
+        "c1b": "Dedo 1 na 6ª, casa 3 (a tônica, em laranja); dedo 3 na 5ª, casa 5. O número à direita diz a casa onde o diagrama começa. Toque o exemplo.",
         "c2t": "Só duas cordas",
         "c2b": "Faça a batida curta, só na 6ª e na 5ª. O resto é abafado pelo dedo 1 apoiado nas cordas agudas.",
         "tap": "Toque na escala as duas notas de G5.",
@@ -1867,7 +1870,7 @@
         "s3": "Agora a 6ª corda não se toca: abafe-a com a ponta do dedo 1.",
         "s4": "“Dó, Ré, Mi e Ré: ouça como sobe e desce.”",
         "c1t": "Dó 5 (C5)",
-        "c1b": "Dedo 1 na 5ª, casa 3 (tônica em vermelho); dedo 3 na 4ª, casa 5. Toque o exemplo.",
+        "c1b": "Dedo 1 na 5ª, casa 3 (tônica em laranja); dedo 3 na 4ª, casa 5. Toque o exemplo.",
         "c2t": "Notas da 5ª corda",
         "c2b": "Casa 3: Dó (C). 5: Ré (D). 7: Mi (E). 8: Fá (F). 10: Sol (G).",
         "tap": "Toque na escala as duas notas de C5.",
@@ -1967,7 +1970,7 @@
         "s3": "As notas abertas ficam na 6ª e na 5ª corda, casas 3 e 5.",
         "s4": "“Devagar e regular primeiro. O ganho faz o resto.”",
         "c1t": "O riff",
-        "c1b": "Quatro compassos: quatro colcheias abafadas e duas notas abertas. Toque o exemplo e siga a tablatura.",
+        "c1b": "Nos três primeiros compassos, quatro colcheias abafadas e duas notas abertas; o último fecha com uma nota longa. Toque o exemplo e siga a tablatura.",
         "c2t": "Com crunch",
         "c2b": "Pratique no limpo para o app escutar bem; quando sair, aumente o ganho e curta.",
         "play": "Toque o riff inteiro com o metrônomo."
@@ -1977,10 +1980,10 @@
         "objective": "Localizar a pentatônica menor de Lá na casa 5 e saber onde está a tônica.",
         "s1": "“Esta escala de cinco notas é a favorita dos solos de rock e blues.”",
         "s2": "Pentatônica menor de Lá: duas notas por corda, entre as casas 5 e 8.",
-        "s3": "A tônica, Lá, está em vermelho: na 6ª e na 1ª corda na casa 5, e na 4ª na casa 7.",
+        "s3": "A tônica, Lá, está em laranja: na 6ª e na 1ª corda na casa 5, e na 4ª na casa 7.",
         "s4": "“Ouça como sobe. Parece solo de guitarra?”",
         "c1t": "A caixa",
-        "c1b": "O desenho começa na casa 5. Dedo 1 na casa 5, dedo 3 na 7 e dedo 4 na 8. Os pontos vermelhos são a tônica, Lá.",
+        "c1b": "O desenho começa na casa 5. Dedo 1 na casa 5, dedo 3 na 7 e dedo 4 na 8. Os pontos laranja são a tônica, Lá.",
         "c2t": "Assim soa",
         "c2b": "Da 6ª à 1ª corda, duas notas por corda. Toque o exemplo e siga a tablatura.",
         "q1": "Qual é a tônica desta pentatônica?",
@@ -2013,14 +2016,14 @@
         "play": "A pentatônica em colcheias com o metrônomo."
       },
       "l264": {
-        "title": "Frases de quatro notas",
+        "title": "Sua primeira frase",
         "objective": "Ler e tocar uma frase feita com a pentatônica.",
         "s1": "“Um solo não é subir e descer a escala: são frases.”",
-        "s2": "Esta frase desce pela caixa de duas em duas notas e descansa em Lá.",
+        "s2": "Esta frase desce pela caixa de duas em duas notas, sobe um pouco e descansa em Lá.",
         "s3": "Termina na tônica, na 4ª corda, casa 7. Isso dá sensação de final.",
         "s4": "“Ouça com crunch. Já soa como solo!”",
         "c1t": "A frase",
-        "c1b": "Quatro compassos que descem pela caixa e terminam em Lá. Toque o exemplo e siga a tablatura.",
+        "c1b": "Quatro compassos que descem pela caixa, sobem um pouco e terminam em Lá. Toque o exemplo e siga a tablatura.",
         "c2t": "Terminar em casa",
         "c2b": "As frases que terminam na tônica soam fechadas. Tente terminar em outra nota e ouça a diferença.",
         "tab": "Leia a frase na tablatura e toque cada nota na escala.",

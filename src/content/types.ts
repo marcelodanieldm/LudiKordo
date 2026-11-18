@@ -99,7 +99,7 @@ export type ScoreNotation = 'tab' | 'staff';
 export type Beats = 0.5 | 1 | 2 | 4;
 
 /** Un evento de partitura: una nota (cuerda y traste) o un silencio. */
-export type ScoreEvent = { string: StringId; fret: number; beats: Beats } | { rest: true; beats: Beats };
+export type ScoreEvent = { string: StringId; fret: number; beats: Beats; tone?: Tone } | { rest: true; beats: Beats };
 
 /** Ejemplo sonoro de una tarjeta: la app lo toca con un tono sintetizado. */
 export interface ListenExample {

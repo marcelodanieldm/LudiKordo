@@ -9,6 +9,7 @@ import { midiAt, midiToFreq } from './notes';
 import { INSTRUMENT } from '../instruments/current';
 import { isRest } from './staff';
 import type { ScoreEvent } from '../content/types';
+import type { Tone } from './timbre';
 
 /** Semitonos que se sube al reproducir: 12 en el bajo, 0 en la guitarra. */
 export const PLAYBACK_OCTAVE_UP = INSTRUMENT.listenTransposeSemitones;
@@ -21,6 +22,8 @@ export interface ScheduledNote {
   freq: number;
   startSec: number;
   durSec: number;
+  /** Timbre propio de esta nota (por ejemplo, corcheas apagadas dentro de un riff). */
+  tone?: Tone;
 }
 
 export function listenSchedule(events: ScoreEvent[], bpm: number, offsetBeats = 0): ScheduledNote[] {
@@ -33,6 +36,7 @@ export function listenSchedule(events: ScoreEvent[], bpm: number, offsetBeats = 
         freq: midiToFreq(midiAt(e.string, e.fret) + PLAYBACK_OCTAVE_UP),
         startSec: beat * beatSec,
         durSec: e.beats * beatSec * NOTE_GATE,
+        ...(e.tone ? { tone: e.tone } : {}),
       });
     }
     beat += e.beats;

@@ -62,11 +62,11 @@ export async function listenNotes(onNote: (n: DetectedNote) => void, latencyMs =
  * Escucha golpes (ataques) sin importar la altura: para rasgueos de acordes,
  * que no tienen una sola nota clara. Tiempos en el reloj de audio, como listenNotes.
  */
-export async function listenAttacks(onAttack: (timeMs: number) => void, latencyMs = DEFAULT_INPUT_LATENCY_MS): Promise<Listener | null> {
+export async function listenAttacks(onAttack: (timeMs: number, rms: number) => void, latencyMs = DEFAULT_INPUT_LATENCY_MS): Promise<Listener | null> {
   if (!PitchDetector) return null;
   let startedAt = nowMs();
   const sub = PitchDetector.addListener('onAttack', (e: AttackEvent) => {
-    onAttack(startedAt + e.elapsedMs - latencyMs);
+    onAttack(startedAt + e.elapsedMs - latencyMs, e.rms);
   });
   startedAt = nowMs();
   await PitchDetector.start(START_OPTIONS);

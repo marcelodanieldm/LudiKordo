@@ -115,6 +115,8 @@ export function PlayAlongExercise({
     // Un ejemplo sonoro de la misma pantalla no debe sonar durante la toma.
     stopActiveSequence();
     const status = await requestMic();
+    // La pantalla pudo cerrarse mientras se pedía el permiso.
+    if (!mounted.current) return;
     setMic(status);
     if (status !== 'ok') {
       setPhase('self');
@@ -151,6 +153,11 @@ export function PlayAlongExercise({
     metro.current = startMetronome(bpm, totalBeats);
     const startMs = metro.current.startMs;
     listener.current = await listenNotes((n) => detected.push(n));
+    // Si la pantalla se cerró durante la espera, la limpieza ya corrió: apagar lo que llegó tarde.
+    if (!mounted.current) {
+      stopAll();
+      return;
+    }
     if (!listener.current) {
       // Sin detección, el metrónomo ya programado no debe seguir sonando.
       stopAll();

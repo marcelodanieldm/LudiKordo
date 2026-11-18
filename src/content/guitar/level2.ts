@@ -14,7 +14,7 @@ import type { StringId } from '../../instruments/profiles';
 import type { ChordId } from '../../music/chords';
 import { chordMidi, powerMidi } from '../../music/chords';
 import { midiToFreq } from '../../music/notes';
-import { BALLAD, EIGHTHS, HALVES, QUARTERS, type Stroke } from '../../music/strum';
+import { BALLAD, DOWN_EIGHTHS, EIGHTHS, HALVES, QUARTERS, type Stroke } from '../../music/strum';
 import { chordArp, chordFretted, k, listen, n, notesOf, scenes, strumListen, tabOf } from './helpers';
 
 const STEPS = [60, 70, 80];
@@ -194,14 +194,14 @@ const l232 = lesson('2.3.2', 10, {
 
 const l233 = lesson('2.3.3', 12, {
   visuals: [null, 'pick-alternate', 'chord-g', null],
-  sounds: [strumListen(['G', 'G'], BALLAD, 80), strumListen(['G'], BALLAD, 60, { click: true }), null, null],
+  sounds: [strumListen(['G', 'G'], BALLAD, 80), null, strumListen(['G'], BALLAD, 60, { click: true }), null],
   cards: [{ listen: strumListen(['G', 'G'], BALLAD, 70, { click: true }) }, {}],
   exercises: [strum('2.3.3', 'strum', ['G', 'G', 'G', 'G'], BALLAD)],
 });
 
 const l234 = lesson('2.3.4', 12, {
   visuals: ['chord-c', 'chord-am', 'chord-g', null],
-  sounds: [strumListen(['C', 'Am', 'C', 'Am'], BALLAD, 80), null, null, null],
+  sounds: [strumListen(['C', 'Am', 'C', 'Am'], BALLAD, 80), null, null, strumListen(['C', 'Am', 'C', 'Am'], BALLAD, 70)],
   cards: [{ listen: strumListen(['C', 'Am', 'C', 'Am'], BALLAD, 70, { click: true }) }, { figure: 'chord-am' }],
   exercises: [strum('2.3.4', 'strum1', ['C', 'Am', 'C', 'Am'], BALLAD), strum('2.3.4', 'strum2', ['G', 'C', 'G', 'C'], BALLAD)],
 });
@@ -252,7 +252,7 @@ const l241 = lesson('2.4.1', 12, {
 
 const l242 = lesson('2.4.2', 12, {
   visuals: ['power-6', null, null, null],
-  sounds: [strumListen([G5, A5, C5_6, D5_6], HALVES, 80, CRUNCH), null, null, null],
+  sounds: [strumListen([G5, A5, C5_6, D5_6], HALVES, 80, CRUNCH), null, null, strumListen([G5, A5, C5_6, D5_6], HALVES, 80, CRUNCH)],
   cards: [{ listen: strumListen([G5, A5, C5_6, D5_6], HALVES, 70, CRUNCH) }, { figure: 'power-6' }],
   exercises: [
     quiz('2.4.2', 'q1', ['=3', '=5', '=7', '=8'], 1),
@@ -267,7 +267,7 @@ const l242 = lesson('2.4.2', 12, {
 
 const l243 = lesson('2.4.3', 12, {
   visuals: ['power-5', 'power-5', null, null],
-  sounds: [strumListen([C5, D5, E5_5, D5], HALVES, 80, CRUNCH), null, null, null],
+  sounds: [strumListen([C5, D5, E5_5, D5], HALVES, 80, CRUNCH), null, null, strumListen([C5, D5, E5_5, D5], HALVES, 80, CRUNCH)],
   cards: [{ figure: 'power-5', listen: strumListen([C5, D5, E5_5, D5], HALVES, 70, CRUNCH) }, {}],
   exercises: [
     tap('2.4.3', 'tap', [
@@ -301,8 +301,11 @@ const l245 = lesson('2.4.5', 14, {
 
 // ───────────── 2.5 · Palm muting ─────────────
 
-const chug = (s: StringId, fret: number, count: number): ScoreEvent[] => Array.from({ length: count }, () => n(s, fret, 0.5));
+/** Corcheas con palm mute: en los ejemplos suenan apagadas aunque el resto vaya con crunch. */
+const chug = (s: StringId, fret: number, count: number): ScoreEvent[] => Array.from({ length: count }, () => ({ string: s, fret, beats: 0.5, tone: 'muted' as const }));
 const MUTED = { tone: 'muted' as const };
+/** Las mismas corcheas sin palm mute, para comparar. */
+const OPEN_8: ScoreEvent[] = Array.from({ length: 8 }, () => n('E', 0, 0.5));
 
 /** Corcheas apagadas y una nota abierta de acento por compás. */
 export const PM_ACCENT: ScoreEvent[] = [...chug('E', 0, 6), n('A', 0), ...chug('E', 0, 6), n('D', 0), ...chug('E', 0, 6), n('A', 0), ...chug('E', 0, 6), n('G', 0)];
@@ -316,8 +319,8 @@ export const PM_RIFF: ScoreEvent[] = [
 
 const l251 = lesson('2.5.1', 10, {
   visuals: ['palm-mute', 'palm-mute', null, null],
-  sounds: [listen(chug('E', 0, 8), 70, MUTED), null, listen([n('E', 0, 4)], 70), listen(chug('E', 0, 8), 70, MUTED)],
-  cards: [{ figure: 'palm-mute' }, { listen: listen(chug('E', 0, 8), 70, MUTED) }, { listen: listen(chug('E', 0, 8), 70, CRUNCH) }],
+  sounds: [listen(chug('E', 0, 8), 70), null, null, listen([...OPEN_8, ...chug('E', 0, 8)], 70, CRUNCH)],
+  cards: [{ figure: 'palm-mute' }, { listen: listen(chug('E', 0, 8), 70) }, { listen: listen(OPEN_8, 70, CRUNCH) }],
   exercises: [
     { id: '2.5.1-ear1', kind: 'ear', needsBass: false, skills: ['ear'], promptKey: k('2.5.1', 'ear'), options: [k('2.5.1', 'open'), k('2.5.1', 'muted')], correctIndex: 1, tones: [midiToFreq(40), midiToFreq(40), midiToFreq(40)], timbres: ['muted', 'muted', 'muted'] },
     { id: '2.5.1-ear2', kind: 'ear', needsBass: false, skills: ['ear'], promptKey: k('2.5.1', 'ear'), options: [k('2.5.1', 'open'), k('2.5.1', 'muted')], correctIndex: 0, tones: [midiToFreq(40), midiToFreq(40), midiToFreq(40)], timbres: ['crunch', 'crunch', 'crunch'] },
@@ -329,8 +332,8 @@ const PM_EIGHTHS = chug('E', 0, 16);
 
 const l252 = lesson('2.5.2', 10, {
   visuals: ['palm-mute', null, null, null],
-  sounds: [listen(PM_EIGHTHS, 80, MUTED), null, null, null],
-  cards: [{ listen: listen(PM_EIGHTHS, 70, { ...MUTED, show: 'tab', click: true }) }, {}],
+  sounds: [listen(PM_EIGHTHS, 80), null, null, null],
+  cards: [{ listen: listen(PM_EIGHTHS, 70, { show: 'tab', click: true }) }, {}],
   exercises: [playScore('2.5.2', 'play', PM_EIGHTHS)],
 });
 
@@ -345,9 +348,9 @@ const PM_POWER: ScoreEvent[] = [...chug('E', 0, 8), ...chug('E', 0, 8), ...chug(
 
 const l254 = lesson('2.5.4', 12, {
   visuals: ['power-6', 'palm-mute', null, null],
-  sounds: [strumListen([E5, E5, G5, A5], EIGHTHS, 70, MUTED), null, null, null],
-  cards: [{ listen: strumListen([E5, E5, G5, A5], EIGHTHS, 70, { ...MUTED, click: true }) }, {}],
-  exercises: [strum('2.5.4', 'strum', ['E5', 'E5', 'G5', 'A5'], EIGHTHS), playScore('2.5.4', 'play', PM_POWER)],
+  sounds: [strumListen([E5, E5, G5, A5], DOWN_EIGHTHS, 70, MUTED), null, null, null],
+  cards: [{ listen: strumListen([E5, E5, G5, A5], DOWN_EIGHTHS, 70, { ...MUTED, click: true }) }, {}],
+  exercises: [strum('2.5.4', 'strum', ['E5', 'E5', 'G5', 'A5'], DOWN_EIGHTHS), playScore('2.5.4', 'play', PM_POWER)],
 });
 
 const l255 = lesson('2.5.5', 14, {
@@ -391,7 +394,7 @@ export const RESPONSE: ScoreEvent[] = [n('B', 8), n('B', 5), n('G', 7), n('G', 5
 
 const l261 = lesson('2.6.1', 12, {
   visuals: ['penta-box', 'penta-box', null, null],
-  sounds: [listen(asQuarters(PENTA_UP), 100), null, listen(asQuarters(PENTA_UP), 70), null],
+  sounds: [listen(asQuarters(PENTA_UP), 100), null, null, listen(asQuarters(PENTA_UP), 70)],
   cards: [{ figure: 'penta-box' }, { listen: listen(asQuarters(PENTA_UP), 70, { show: 'tab' }) }],
   exercises: [quiz('2.6.1', 'q1', ['=A', '=C', '=E', '=G'], 0), tap('2.6.1', 'tap', PENTA_UP.slice(0, 6), 9)],
 });

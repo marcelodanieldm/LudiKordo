@@ -13,7 +13,8 @@ import { LEGACY_VOICE, VOICES, peakGain, ringSec, voiceFor } from '../src/music/
 import type { Lesson, ScoreEvent } from '../src/content/types';
 import { CP1_RIFF, FULL_SPIDER, GUITAR_CP1, SIGHT_RIFF } from '../src/content/guitar/level1';
 import { CHORDS, PENTA_A, POWER_5, POWER_6, chordMidi, diagramMidi, powerMidi, triadPitchClasses, type ChordId } from '../src/music/chords';
-import { BALLAD, EIGHTHS, HALVES, QUARTERS, eighthAt, isValidPattern, strokeTimes, strumSchedule } from '../src/music/strum';
+import { BALLAD, DOWN_EIGHTHS, EIGHTHS, HALVES, QUARTERS, eighthAt, filterClicks, isValidPattern, scoreStrum, strokeTimes, strumSchedule } from '../src/music/strum';
+import { listenSchedule } from '../src/music/listen';
 import { exampleSchedule } from '../src/music/examples';
 import { CALL, GUITAR_CP2, PENTA_UP, RESPONSE, arpScore } from '../src/content/guitar/level2';
 import { barsAreComplete, figureOf, isTabRest, layoutTab } from '../src/music/tab';
@@ -263,4 +264,35 @@ test('power chords, pentatónica y arpegios de acordes', () => {
   const endMidi = (e: { string: string; fret: number }) => GUITAR.strings.find((x) => x.id === e.string)!.openMidi + e.fret;
   assert.equal(endMidi(last(CALL)) % 12, 4);
   assert.equal(endMidi(last(RESPONSE)) % 12, 9);
+});
+
+test('rasgueo: el clic que se cuela por el parlante no cuenta y los golpes de más restan', () => {
+  assert.ok(isValidPattern(DOWN_EIGHTHS));
+  const start = 4000;
+  const beat = 1000; // 60 bpm
+  // Durante la cuenta el micrófono oye el clic (rms 0,02); después, el clic y los golpes reales (0,08).
+  const clicks = [0, 1, 2, 3, 4, 5, 6, 7].map((i) => ({ timeMs: i * beat, rms: 0.02 }));
+  const strokes = [4000, 5000, 6000, 7000].map((t) => ({ timeMs: t + 10, rms: 0.08 }));
+  const kept = filterClicks([...clicks, ...strokes], start, 4 * beat);
+  assert.deepEqual(kept.map((a) => a.timeMs), [4010, 5010, 6010, 7010]);
+  // Solo el clic (sin tocar): no queda nada.
+  assert.equal(filterClicks(clicks, start, 4 * beat).length, 0);
+  // Con auriculares no entra nada en la cuenta: no se descarta ningún golpe.
+  assert.equal(filterClicks(strokes, start, 4 * beat).length, 4);
+
+  // Patrón de balada (6 golpes por compás) tocado como corcheas sin parar: 6 aciertos y 2 golpes de más.
+  const allEighths = Array.from({ length: 8 }, (_, i) => start + i * 500);
+  const r = scoreStrum(BALLAD, 1, 60, start, allEighths, 80);
+  assert.equal(r.hits, 6);
+  assert.equal(r.extras, 2);
+  assert.ok(r.accuracy < 0.8);
+  // El patrón justo: todo bien.
+  const exact = strokeTimes(BALLAD, 1, 60, start).map((x) => x.timeMs);
+  assert.equal(scoreStrum(BALLAD, 1, 60, start, exact, 80).accuracy, 1);
+});
+
+test('ejemplos: una nota puede traer su propio timbre (palm mute dentro de un riff)', () => {
+  const sched = listenSchedule([{ string: 'E', fret: 0, beats: 0.5, tone: 'muted' }, { string: 'E', fret: 3, beats: 1 }], 60);
+  assert.equal(sched[0].tone, 'muted');
+  assert.equal(sched[1].tone, undefined);
 });

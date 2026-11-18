@@ -49,6 +49,12 @@ Usar siempre estos términos en interfaz y lecciones. Cambiarlos solo con acuerd
 | Clean / crunch | Limpio / crunch | Limpo / crunch |
 | Gain | Ganancia (GAIN en el ampli) | Ganho (GAIN no amplificador) |
 | Open string | Cuerda al aire | Corda solta |
+| Strum / strumming | Rasguear / rasgueo | Fazer a batida / batida |
+| Strumming pattern | Patrón de rasgueo | Padrão de batida |
+| Power chord | Power chord (quinta) | Power chord (quinta) |
+| Palm mute | Palm mute (apagado con la palma) | Palm mute (abafado com a palma) |
+| Pentatonic box | Caja (de la pentatónica) | Caixa (da pentatônica) |
+| Root | Tónica | Tônica |
 
 Notas de estilo:
 

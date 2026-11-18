@@ -166,8 +166,11 @@
       "headphones": "Detection works better with headphones.",
       "result": "{{hits}} of {{total}} on time",
       "strumLegend": "↓ downstroke · ↑ upstroke · · hand moves without hitting the strings",
-      "strumLabel": "Strumming, {{bars}} bars: {{chords}}",
-      "strumDetected": "Strums in time: {{hits}} of {{total}}"
+      "strumLabel": "Strumming, {{bars}} bars: {{chords}}. Pattern: {{pattern}}",
+      "strumDetected": "Strums in time: {{hits}} of {{total}}",
+      "strokeD": "down",
+      "strokeU": "up",
+      "strokeRest": "miss"
     },
     "practice": {
       "bpmUnit": "bpm",
@@ -387,17 +390,17 @@
       },
       "power_6": {
         "a11y": "G5 power chord diagram: finger 1 on the 6th string fret 3 and finger 3 on the 5th fret 5",
-        "l1": "Root on the 6th string (in red).",
+        "l1": "Root on the 6th string (in orange).",
         "l2": "The fifth, two frets up on the next string."
       },
       "power_5": {
         "a11y": "C5 power chord diagram: finger 1 on the 5th string fret 3 and finger 3 on the 4th fret 5",
-        "l1": "Root on the 5th string (in red).",
+        "l1": "Root on the 5th string (in orange).",
         "l2": "The fifth, two frets up on the next string."
       },
       "penta_box": {
         "a11y": "A minor pentatonic box between frets 5 and 8, with the root marked",
-        "l1": "In red, the root: A.",
+        "l1": "In orange, the root: A.",
         "l2": "Finger 1 on fret 5; finger 3 on 7 or 4 on 8."
       }
     }
@@ -1786,7 +1789,7 @@
         "c1b": "Down on \"1, 2, 3, 4\" and up on every \"and\". Play the example: A minor in eighth notes.",
         "c2t": "Lighter going up",
         "c2b": "The upstroke sounds softer and brighter: that's how it should be.",
-        "tap": "Tap one button per click, alternating ↓ and ↑, like your hand's motion.",
+        "tap": "First just the alternation: one tap per click, ↓ and ↑ in turn. On the guitar, the ↑ goes between clicks.",
         "strum": "Strum Am in down-up eighth notes, four bars."
       },
       "l233": {
@@ -1838,7 +1841,7 @@
         "s3": "The other strings don't ring: finger 1 resting on them and your picking-hand palm mute them.",
         "s4": "\"Neither major nor minor: the fifth sounds huge with lots of gain. Here it is clean.\"",
         "c1t": "G5",
-        "c1b": "Finger 1 on the 6th, fret 3 (the root, in red); finger 3 on the 5th, fret 5. The number on the right is the fret where the diagram starts. Play the example.",
+        "c1b": "Finger 1 on the 6th, fret 3 (the root, in orange); finger 3 on the 5th, fret 5. The number on the right is the fret where the diagram starts. Play the example.",
         "c2t": "Just two strings",
         "c2b": "Strum short, only the 6th and 5th. The rest is muted by finger 1 resting on the high strings.",
         "tap": "Tap the two notes of G5 on the fretboard.",
@@ -1867,7 +1870,7 @@
         "s3": "Now the 6th string isn't played: mute it with the tip of finger 1.",
         "s4": "\"C, D, E and D: hear it climb and come back.\"",
         "c1t": "C5",
-        "c1b": "Finger 1 on the 5th, fret 3 (root in red); finger 3 on the 4th, fret 5. Play the example.",
+        "c1b": "Finger 1 on the 5th, fret 3 (root in orange); finger 3 on the 4th, fret 5. Play the example.",
         "c2t": "Notes on the 5th string",
         "c2b": "Fret 3: C. 5: D. 7: E. 8: F. 10: G.",
         "tap": "Tap the two notes of C5 on the fretboard.",
@@ -1967,7 +1970,7 @@
         "s3": "The open notes are on the 6th and 5th strings, frets 3 and 5.",
         "s4": "\"Slow and even first. The gain does the rest.\"",
         "c1t": "The riff",
-        "c1b": "Four bars: four muted eighth notes and two open notes. Play the example and follow the tab.",
+        "c1b": "In the first three bars, four muted eighth notes and two open notes; the last one ends on a long note. Play the example and follow the tab.",
         "c2t": "With crunch",
         "c2b": "Practice it clean so the app hears you well; once you've got it, turn up the gain and enjoy it.",
         "play": "Play the whole riff with the metronome."
@@ -1977,10 +1980,10 @@
         "objective": "Find the A minor pentatonic at fret 5 and know where the root is.",
         "s1": "\"This five-note scale is the favorite for rock and blues solos.\"",
         "s2": "A minor pentatonic: two notes per string, between frets 5 and 8.",
-        "s3": "The root, A, is in red: on the 6th and 1st strings at fret 5, and on the 4th at fret 7.",
+        "s3": "The root, A, is in orange: on the 6th and 1st strings at fret 5, and on the 4th at fret 7.",
         "s4": "\"Hear it climb. Sound like a guitar solo?\"",
         "c1t": "The box",
-        "c1b": "The drawing starts at fret 5. Finger 1 on fret 5, finger 3 on 7 and finger 4 on 8. The red dots are the root, A.",
+        "c1b": "The drawing starts at fret 5. Finger 1 on fret 5, finger 3 on 7 and finger 4 on 8. The orange dots are the root, A.",
         "c2t": "How it sounds",
         "c2b": "From the 6th to the 1st string, two notes per string. Play the example and follow the tab.",
         "q1": "What is the root of this pentatonic?",
@@ -2013,14 +2016,14 @@
         "play": "The pentatonic in eighth notes with the metronome."
       },
       "l264": {
-        "title": "Four-note phrases",
+        "title": "Your first phrase",
         "objective": "Read and play a phrase built from the pentatonic.",
         "s1": "\"A solo isn't running the scale up and down: it's phrases.\"",
-        "s2": "This phrase moves down the box two notes at a time and rests on A.",
+        "s2": "This phrase moves down the box two notes at a time, climbs a little and rests on A.",
         "s3": "It ends on the root, on the 4th string, fret 7. That makes it sound finished.",
         "s4": "\"Listen with crunch. It already sounds like a solo!\"",
         "c1t": "The phrase",
-        "c1b": "Four bars moving down the box and ending on A. Play the example and follow the tab.",
+        "c1b": "Four bars that move down the box, climb a little and end on A. Play the example and follow the tab.",
         "c2t": "Ending at home",
         "c2b": "Phrases that end on the root sound closed. Try ending on another note and hear the difference.",
         "tab": "Read the phrase in the tab and play each note on the fretboard.",
