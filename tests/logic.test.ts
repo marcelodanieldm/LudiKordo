@@ -4,7 +4,7 @@ import { expectedTimes, scorePlayAlong, scoreTiming, starsFor, xpFor } from '../
 import { midiToFreq } from '../src/music/notes';
 import { currentWeekDays, needsReview, weeklyStreak, weekMet } from '../src/state/rules';
 import { LEVELS, allLessonIds, isUnlocked, nextLesson, totalLessons, levelProgress } from '../src/content/curriculum';
-import { annualSavingsPct, canOpenLesson, isLessonFree } from '../src/billing/access';
+import { annualSavingsPct, canOpenLesson, isLessonFree, unlockWithoutStore } from '../src/billing/access';
 
 test('el currículo tiene 5 niveles, 31 módulos y 151 lecciones', () => {
   assert.equal(LEVELS.length, 5);
@@ -323,4 +323,13 @@ test('cartoon: sin voces registradas, voiceFor no devuelve audio', async () => {
   const { voiceFor, VOICES } = await import('../src/content/voices');
   assert.equal(voiceFor('1.1.1', 'es', 0), VOICES['1.1.1']?.es?.[0]);
   assert.equal(voiceFor('9.9.9', 'en', 0), undefined);
+});
+
+test('sin tienda: Premium de prueba solo en desarrollo o en el APK de prueba', () => {
+  assert.equal(unlockWithoutStore(true, '1', undefined), true);
+  assert.equal(unlockWithoutStore(false, '1', '1'), true);
+  // Release normal: aunque alguien defina DEV_PREMIUM, sin TEST_BUILD no abre nada.
+  assert.equal(unlockWithoutStore(false, '1', undefined), false);
+  assert.equal(unlockWithoutStore(true, undefined, '1'), false);
+  assert.equal(unlockWithoutStore(false, '', '1'), false);
 });

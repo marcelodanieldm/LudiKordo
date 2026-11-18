@@ -1,0 +1,65 @@
+# APK de prueba para instalar a mano en un teléfono Android.
+# - Release con el JavaScript incluido (no necesita Metro ni computadora).
+# - Firmado con la clave de depuración de Expo: sirve para probar, no para Google Play.
+# - Todo el contenido abierto (Premium de prueba): no hay compras en este APK.
+# Se publica como pre-release «apk-test-<n>» para descargarlo desde el teléfono.
+name: apk-test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [cc/apk-build]
+
+concurrency:
+  group: apk-test-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    name: apk
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      EXPO_PUBLIC_TEST_BUILD: "1"
+      EXPO_PUBLIC_DEV_PREMIUM: "1"
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - run: npm ci
+      - name: Pruebas de lógica
+        run: npm test
+      - name: Generar el proyecto Android
+        run: npx expo prebuild --platform android --no-install
+      - name: Módulos nativos que enlaza Expo (diagnóstico)
+        run: npx expo-modules-autolinking resolve --platform android --json | node -e "const d=JSON.parse(require('fs').readFileSync(0,'utf8'));for(const m of d.modules){console.log(m.packageName, m.packageVersion, JSON.stringify((m.projects||[]).map(p=>({name:p.name,publication:p.publication}))))}"
+      - name: Compilar el APK (release, arm64)
+        working-directory: android
+        # La mayoría de los teléfonos de los últimos años son arm64: el APK queda más chico y compila más rápido.
+        run: ./gradlew :app:assembleRelease --no-daemon -PreactNativeArchitectures=arm64-v8a
+      - name: Renombrar
+        run: cp android/app/build/outputs/apk/release/app-release.apk "LudiKordo-prueba-${{ github.run_number }}.apk"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ludikordo-apk-prueba
+          path: LudiKordo-prueba-*.apk
+          retention-days: 14
+      - name: Publicar como pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "apk-test-${{ github.run_number }}" LudiKordo-prueba-*.apk \
+            --prerelease \
+            --target "${{ github.sha }}" \
+            --title "APK de prueba ${{ github.run_number }}" \
+            --notes "APK para probar en un teléfono Android (arm64). No es la versión de Google Play: está firmado con una clave de prueba y tiene todo el contenido abierto. Para instalarlo, abre este enlace desde el teléfono, descarga el .apk y permite instalar apps de este origen. Commit: ${{ github.sha }}"

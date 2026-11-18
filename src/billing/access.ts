@@ -34,3 +34,12 @@ export function trialEndDate(from: Date, locale: string, days = TRIAL_DAYS): str
   const d = new Date(from.getTime() + days * 86400000);
   return new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long' }).format(d);
 }
+
+/**
+ * Sin tienda configurada (sin clave de RevenueCat): ¿se abre todo como Premium?
+ * Solo con EXPO_PUBLIC_DEV_PREMIUM=1, y solo en desarrollo o en el APK de
+ * prueba (EXPO_PUBLIC_TEST_BUILD=1). Nunca en la release de Google Play.
+ */
+export function unlockWithoutStore(isDev: boolean, devPremium: string | undefined, testBuild: string | undefined): boolean {
+  return devPremium === '1' && (isDev || testBuild === '1');
+}
