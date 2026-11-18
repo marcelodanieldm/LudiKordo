@@ -2,6 +2,8 @@
 
 4 niveles, 27 módulos, 127 lecciones, unas 52 semanas a 15–20 minutos por día. Base: el programa de 4 etapas que trajo Marcelo (6 a 12 meses de práctica constante, de inicial a intermedio). Mismo formato que el bajo: lecciones de 4 pasos (Mira, Entiende, Practica sin guitarra, Practica con guitarra), una habilidad nueva por lección, criterio de dominio medible, objetivo de una frase por módulo y checkpoint al final de cada nivel.
 
+**El curso es para guitarra eléctrica, no acústica.** Se practica con ampli (o ampli de práctica / multiefecto con parlante): cada ejercicio indica el sonido que pide (limpio o crunch) y cada módulo trae un ajuste sugerido de pastilla y ampli. Los ejemplos sonoros imitan una eléctrica. Detalle en ADR 0009.
+
 Afinación estándar: E2 A2 D3 G3 B3 E4 (MIDI 40, 45, 50, 55, 59, 64); cuerda 6 = Mi grave, cuerda 1 = Mi aguda. Perfil en `src/instruments/profiles.ts`.
 
 ## Nivel 1 · Fundamentos y control (semanas 1–8)

@@ -12,6 +12,15 @@ Marcelo quiere la misma app, pero para guitarra eléctrica de cero a intermedio.
 - Kordi en las dos apps; en la de guitarra toca una guitarra eléctrica (nueva variante en Rive).
 - La suscripción de guitarra es otra app en Play y en RevenueCat; precios y si hay paquete combinado quedan para Marcelo (ADR 0004 sigue siendo hipótesis).
 
+## Es guitarra eléctrica, no acústica
+Marcelo lo pidió explícito: todo el curso es para **guitarra eléctrica**. Eso cambia tres cosas respecto de una app de guitarra genérica:
+
+- **Cómo escucha la app.** Una eléctrica desenchufada casi no suena: el micrófono del teléfono capta poco y mal. Los ejercicios «con guitarra» piden tocar **con el ampli encendido** (o el ampli de práctica / multiefecto con parlante) y el teléfono cerca. La fase 2 suma entrada directa por USB-C (interfaz de audio o adaptador de guitarra), que da la señal más limpia; queda para un ADR propio.
+- **Distorsión y detección.** Con ganancia alta YIN y el detector de ataques fallan (armónicos, sustain comprimido). Cada ejercicio que se puntúa declara el sonido que pide: **limpio** por defecto, **crunch** solo donde la técnica lo necesita (power chords, palm mute) y con la detección probada en ese sonido. La distorsión fuerte se usa para escuchar y tocar libre, no para puntuar.
+- **Cómo suenan los ejemplos.** Los ejemplos sonoros y las pistas de acompañamiento imitan una eléctrica (limpia y crunch), sintetizados por la app como en el bajo, sin grabaciones con derechos. Sin transponer: la guitarra ya suena bien en el parlante del teléfono.
+
+El equipo es contenido desde la primera lección (1.1: pastillas, volumen, tono y ecualización del ampli) y vuelve en cada módulo con un «ajuste sugerido» del ampli.
+
 ## Consecuencias
 - Hay que generalizar lo que hoy asume 4 cuerdas: `STRINGS` y `StringId` en `notes.ts`, `Fretboard`, `TabStaff`, `CartoonPlayer`, el afinador y el rango de YIN (ambas copias). Va en PRs chicos, con el bajo sin cambios de comportamiento.
 - La guitarra necesita cosas que el bajo no tiene: diagramas de acordes, rasgueo y **detección de acordes** (YIN es monofónico; hace falta un cromagrama, en TS puro y en Kotlin). Hasta tenerla, los ejercicios de acordes con guitarra validan ritmo con el detector de ataques y notas sueltas del acorde con YIN; los checkpoints siguen sin autoevaluación.

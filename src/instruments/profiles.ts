@@ -28,9 +28,18 @@ export interface InstrumentProfile {
    * teléfono. El bajo sube una octava; la guitarra ya suena en ese registro.
    */
   listenTransposeSemitones: number;
+  /**
+   * Instrumento eléctrico: para los ejercicios «con instrumento» la app pide
+   * tocar por el ampli (desenchufado casi no lo capta el micrófono).
+   */
+  amplified: boolean;
+  /** Sonidos de ampli con los que se puede puntuar (la distorsión fuerte confunde a YIN). */
+  scoredTones: readonly AmpTone[];
   /** Habilidades que solo existen en este instrumento; habilitan tipos de ejercicio. */
   techniques: readonly Technique[];
 }
+
+export type AmpTone = 'clean' | 'crunch';
 
 export type Technique =
   | 'fingerstyle'
@@ -55,6 +64,8 @@ export const BASS: InstrumentProfile = {
   frets: 20,
   pitchRangeHz: { min: 35, max: 450 },
   listenTransposeSemitones: 12,
+  amplified: true,
+  scoredTones: ['clean'],
   techniques: ['fingerstyle', 'pick', 'slap', 'tapping', 'palmMute'],
 };
 
@@ -72,6 +83,9 @@ export const GUITAR: InstrumentProfile = {
   // Traste 22 de la 1.ª cuerda = D6 ≈ 1175 Hz; los bends suben hasta un tono más.
   pitchRangeHz: { min: 70, max: 1400 },
   listenTransposeSemitones: 0,
+  amplified: true,
+  // Crunch solo para power chords y palm mute, con la detección probada en ese sonido (ADR 0009).
+  scoredTones: ['clean', 'crunch'],
   techniques: ['pick', 'tapping', 'palmMute', 'chords', 'strumming', 'bending', 'vibrato', 'barreChords'],
 };
 

@@ -52,3 +52,9 @@ test('trastes fuera de rango y cuerdas inexistentes fallan', () => {
   assert.throws(() => midiOn(GUITAR, 'E', 23));
   assert.throws(() => midiOn(BASS, 'B', 0));
 });
+
+test('la guitarra es eléctrica: se toca con ampli y se puntúa en limpio o crunch', () => {
+  assert.equal(GUITAR.amplified, true);
+  assert.deepEqual([...GUITAR.scoredTones], ['clean', 'crunch']);
+  assert.ok(GUITAR.techniques.includes('palmMute') && GUITAR.techniques.includes('bending'));
+});
