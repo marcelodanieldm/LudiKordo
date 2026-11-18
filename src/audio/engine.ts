@@ -9,8 +9,19 @@ import { peakGain, ringSec, voiceFor, type Tone, type Voice } from '../music/tim
 let ctx: AudioContext | null = null;
 function context(): AudioContext {
   if (!ctx) ctx = new AudioContext();
+  // Algunos Android crean el contexto suspendido hasta el primer gesto: lo despertamos.
+  // `resume` no está en todas las versiones de los tipos de react-native-audio-api.
+  const c = ctx as AudioContext & { state?: string; resume?: () => Promise<void> };
+  if (c.state === 'suspended') void c.resume?.().catch(() => undefined);
   return ctx;
 }
+
+/**
+ * El parlante de un teléfono casi no reproduce las notas del bajo (41–98 Hz al aire).
+ * Los tonos sueltos del bajo suenan una octava arriba, igual que los ejemplos
+ * (src/music/listen.ts), con un timbre con armónicos que el parlante sí reproduce.
+ */
+const BASS_TONE_UP = 2;
 
 /** Tiempo actual del reloj de audio, en ms. Sirve para medir ataques. */
 export function nowMs(): number {
@@ -125,12 +136,10 @@ function scheduleVoice(c: AudioContext, freq: number, at: number, durSec: number
 export function playTone(freq: number, durationSec = 1.2, delaySec = 0, tone?: Tone): Promise<void> {
   const c = context();
   const at = c.currentTime + 0.05 + delaySec;
-  scheduleVoice(c, freq, at, durationSec, tone || IS_GUITAR ? voiceFor(tone, IS_GUITAR) : TONE_VOICE);
+  scheduleVoice(c, IS_GUITAR ? freq : freq * BASS_TONE_UP, at, durationSec, tone || IS_GUITAR ? voiceFor(tone, IS_GUITAR) : voiceFor(undefined, false));
   return new Promise((resolve) => setTimeout(resolve, (0.05 + delaySec + durationSec) * 1000));
 }
 
-/** El tono de referencia del bajo: triangular, ataque suave, cae hasta el final. */
-const TONE_VOICE: Voice = { partials: [{ type: 'triangle', detune: 0, gain: 0.5 }], attack: 0.02, envelope: 'pluck', maxRing: 8, sustain: 0 };
 
 /** Toca varios tonos en secuencia, con una pausa corta entre ellos (y el timbre de cada uno, si se indica). */
 export async function playTones(freqs: number[], timbres?: Tone[]): Promise<void> {

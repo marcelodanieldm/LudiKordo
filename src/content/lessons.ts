@@ -2,13 +2,23 @@
  * Las 4 lecciones modelo del documento de producto. El resto de las lecciones
  * se agrega siguiendo exactamente este formato.
  */
-import type { Lesson } from './types';
+import type { FigureMotion, Lesson, MotionStep } from './types';
 import { LESSONS_2_6 } from './lessons26';
 import { midiToFreq } from '../music/notes';
 import { IS_GUITAR } from '../instruments/current';
 import { GUITAR_LESSONS } from './guitar/lessons';
 
 const k = (lesson: string, key: string) => `content.l${lesson.replace(/\./g, '')}.${key}`;
+
+/** Movimiento de un dibujo: pasos de una negra (o lo que se indique) con su nota. */
+const step = (string: 'E' | 'A' | 'D' | 'G', fret: number, extra: Partial<MotionStep> = {}): MotionStep => ({ beats: 1, note: { string, fret }, ...extra });
+/** Las 4 cuerdas al aire, de la más grave a la más aguda. */
+const OPEN_STRINGS_MOTION: FigureMotion = { bpm: 60, steps: (['E', 'A', 'D', 'G'] as const).map((s) => step(s, 0)) };
+/** Un dedo por traste en la cuerda Mi. */
+const FINGERS_1234 = (order: (1 | 2 | 3 | 4)[], bpm = 60): FigureMotion => ({ bpm, steps: order.map((f) => step('E', f, { finger: f })) });
+/** Alternancia i-m sobre una cuerda, con el pulgar donde corresponde. */
+const IM = (string: 'E' | 'A' | 'D' | 'G', times: number): MotionStep[] =>
+  Array.from({ length: times }, (_, i) => step(string, 0, { finger: i % 2 === 0 ? 'i' : 'm', thumb: string === 'E' ? 'pickup' : 'E' }));
 
 const l111: Lesson = {
   id: '1.1.1',
@@ -18,7 +28,7 @@ const l111: Lesson = {
   cartoon: { riveResource: 'kordi_1_1_1', durationSec: 120, sceneKeys: [1, 2, 3, 4].map((n) => k('1.1.1', `s${n}`)) },
   cards: [
     { titleKey: k('1.1.1', 'c1t'), bodyKey: k('1.1.1', 'c1b'), figure: 'bass-parts' },
-    { titleKey: k('1.1.1', 'c2t'), bodyKey: k('1.1.1', 'c2b'), figure: 'strings' },
+    { titleKey: k('1.1.1', 'c2t'), bodyKey: k('1.1.1', 'c2b'), figure: 'strings', motion: OPEN_STRINGS_MOTION },
     { titleKey: k('1.1.1', 'c3t'), bodyKey: k('1.1.1', 'c3b') },
   ],
   exercises: [
@@ -68,7 +78,7 @@ const l114: Lesson = {
   cards: [
     { titleKey: k('1.1.4', 'c1t'), bodyKey: k('1.1.4', 'c1b'), figure: 'tuner' },
     { titleKey: k('1.1.4', 'c2t'), bodyKey: k('1.1.4', 'c2b') },
-    { titleKey: k('1.1.4', 'c3t'), bodyKey: k('1.1.4', 'c3b'), figure: 'fret5' },
+    { titleKey: k('1.1.4', 'c3t'), bodyKey: k('1.1.4', 'c3b'), figure: 'fret5', motion: { bpm: 60, steps: [step('E', 5), step('A', 0), step('A', 5), step('D', 0), step('D', 5), step('G', 0)] } },
   ],
   exercises: [
     {
@@ -117,7 +127,7 @@ const l121: Lesson = {
   objectiveKey: k('1.2.1', 'objective'),
   cartoon: { riveResource: 'kordi_1_2_1', durationSec: 120, sceneKeys: [1, 2, 3, 4].map((n) => k('1.2.1', `s${n}`)) },
   cards: [
-    { titleKey: k('1.2.1', 'c1t'), bodyKey: k('1.2.1', 'c1b'), figure: 'right-hand' },
+    { titleKey: k('1.2.1', 'c1t'), bodyKey: k('1.2.1', 'c1b'), figure: 'right-hand', motion: { bpm: 72, steps: IM('E', 8) } },
     { titleKey: k('1.2.1', 'c2t'), bodyKey: k('1.2.1', 'c2b') },
   ],
   exercises: [
@@ -164,8 +174,8 @@ const l131: Lesson = {
   objectiveKey: k('1.3.1', 'objective'),
   cartoon: { riveResource: 'kordi_1_3_1', durationSec: 150, sceneKeys: [1, 2, 3, 4].map((n) => k('1.3.1', `s${n}`)) },
   cards: [
-    { titleKey: k('1.3.1', 'c1t'), bodyKey: k('1.3.1', 'c1b'), figure: 'left-hand' },
-    { titleKey: k('1.3.1', 'c3t'), bodyKey: k('1.3.1', 'c3b'), figure: 'fretboard-1234' },
+    { titleKey: k('1.3.1', 'c1t'), bodyKey: k('1.3.1', 'c1b'), figure: 'left-hand', motion: FINGERS_1234([1, 2, 3, 4]) },
+    { titleKey: k('1.3.1', 'c3t'), bodyKey: k('1.3.1', 'c3b'), figure: 'fretboard-1234', motion: FINGERS_1234([1, 2, 3, 4]) },
   ],
   exercises: [
     {
@@ -211,7 +221,7 @@ const l132: Lesson = {
   objectiveKey: k('1.3.2', 'objective'),
   cartoon: { riveResource: 'kordi_1_3_2', durationSec: 90, sceneKeys: [1, 2, 3, 4].map((n) => k('1.3.2', `s${n}`)) },
   cards: [
-    { titleKey: k('1.3.2', 'c1t'), bodyKey: k('1.3.2', 'c1b'), figure: 'left-hand' },
+    { titleKey: k('1.3.2', 'c1t'), bodyKey: k('1.3.2', 'c1b'), figure: 'left-hand', motion: { bpm: 60, steps: [step('E', 3, { beats: 2, mark: 'ok' }), step('E', 3, { beats: 2, mark: 'onFret', muted: true }), step('E', 3, { beats: 2, mark: 'middle', muted: true }), step('E', 3, { beats: 2, mark: 'ok' })] } },
     { titleKey: k('1.3.2', 'c2t'), bodyKey: k('1.3.2', 'c2b') },
     { titleKey: k('1.3.2', 'c3t'), bodyKey: k('1.3.2', 'c3b') },
   ],
@@ -265,7 +275,7 @@ const l133: Lesson = {
   objectiveKey: k('1.3.3', 'objective'),
   cartoon: { riveResource: 'kordi_1_3_3', durationSec: 90, sceneKeys: [1, 2, 3, 4].map((n) => k('1.3.3', `s${n}`)) },
   cards: [
-    { titleKey: k('1.3.3', 'c1t'), bodyKey: k('1.3.3', 'c1b'), figure: 'fretboard-1234' },
+    { titleKey: k('1.3.3', 'c1t'), bodyKey: k('1.3.3', 'c1b'), figure: 'fretboard-1234', motion: FINGERS_1234([4, 3, 2, 1]) },
     { titleKey: k('1.3.3', 'c2t'), bodyKey: k('1.3.3', 'c2b') },
   ],
   exercises: [
@@ -318,8 +328,8 @@ const l134: Lesson = {
   objectiveKey: k('1.3.4', 'objective'),
   cartoon: { riveResource: 'kordi_1_3_4', durationSec: 90, sceneKeys: [1, 2, 3, 4].map((n) => k('1.3.4', `s${n}`)) },
   cards: [
-    { titleKey: k('1.3.4', 'c1t'), bodyKey: k('1.3.4', 'c1b'), figure: 'fretboard-1234' },
-    { titleKey: k('1.3.4', 'c2t'), bodyKey: k('1.3.4', 'c2b'), figure: 'right-hand' },
+    { titleKey: k('1.3.4', 'c1t'), bodyKey: k('1.3.4', 'c1b'), figure: 'fretboard-1234', motion: { bpm: 72, steps: [...([1, 2, 3, 4] as const).map((f) => step('E', f, { finger: f })), ...([1, 2, 3, 4] as const).map((f) => step('A', f, { finger: f }))] } },
+    { titleKey: k('1.3.4', 'c2t'), bodyKey: k('1.3.4', 'c2b'), figure: 'right-hand', motion: { bpm: 72, steps: [step('E', 3, { finger: 'i', thumb: 'pickup' }), step('E', 4, { finger: 'm', thumb: 'pickup' }), step('A', 1, { finger: 'i', thumb: 'E' }), step('A', 2, { finger: 'm', thumb: 'E' }), step('A', 3, { finger: 'i', thumb: 'E' }), step('A', 4, { finger: 'm', thumb: 'E' })] } },
   ],
   exercises: [
     {
@@ -372,7 +382,7 @@ const l135: Lesson = {
   objectiveKey: k('1.3.5', 'objective'),
   cartoon: { riveResource: 'kordi_1_3_5', durationSec: 90, sceneKeys: [1, 2, 3, 4].map((n) => k('1.3.5', `s${n}`)) },
   cards: [
-    { titleKey: k('1.3.5', 'c1t'), bodyKey: k('1.3.5', 'c1b'), figure: 'fretboard-1234' },
+    { titleKey: k('1.3.5', 'c1t'), bodyKey: k('1.3.5', 'c1b'), figure: 'fretboard-1234', motion: { bpm: 100, steps: [...(['E', 'A', 'D', 'G'] as const).flatMap((st) => ([1, 2, 3, 4] as const).map((f) => step(st, f, { finger: f }))), ...(['G', 'D', 'A', 'E'] as const).flatMap((st) => ([4, 3, 2, 1] as const).map((f) => step(st, f, { finger: f })))] } },
     { titleKey: k('1.3.5', 'c2t'), bodyKey: k('1.3.5', 'c2b') },
   ],
   exercises: [
@@ -421,7 +431,7 @@ const l141: Lesson = {
   objectiveKey: k('1.4.1', 'objective'),
   cartoon: { riveResource: 'kordi_1_4_1', durationSec: 90, sceneKeys: [1, 2, 3, 4].map((x) => k('1.4.1', `s${x}`)) },
   cards: [
-    { titleKey: k('1.4.1', 'c1t'), bodyKey: k('1.4.1', 'c1b'), figure: 'strings' },
+    { titleKey: k('1.4.1', 'c1t'), bodyKey: k('1.4.1', 'c1b'), figure: 'strings', motion: OPEN_STRINGS_MOTION },
     { titleKey: k('1.4.1', 'c2t'), bodyKey: k('1.4.1', 'c2b') },
     { titleKey: k('1.4.1', 'c3t'), bodyKey: k('1.4.1', 'c3b') },
   ],
@@ -1011,7 +1021,7 @@ const l115: Lesson = {
   cartoon: { riveResource: 'kordi_1_1_5', durationSec: 90, sceneKeys: [1, 2, 3, 4].map((x) => k('1.1.5', `s${x}`)) },
   cards: [
     { titleKey: k('1.1.5', 'c1t'), bodyKey: k('1.1.5', 'c1b'), figure: 'tuner' },
-    { titleKey: k('1.1.5', 'c2t'), bodyKey: k('1.1.5', 'c2b'), figure: 'strings' },
+    { titleKey: k('1.1.5', 'c2t'), bodyKey: k('1.1.5', 'c2b'), figure: 'strings', motion: OPEN_STRINGS_MOTION },
   ],
   exercises: [
     {
@@ -1075,7 +1085,7 @@ const l122: Lesson = {
   objectiveKey: k('1.2.2', 'objective'),
   cartoon: { riveResource: 'kordi_1_2_2', durationSec: 90, sceneKeys: [1, 2, 3, 4].map((x) => k('1.2.2', `s${x}`)) },
   cards: [
-    { titleKey: k('1.2.2', 'c1t'), bodyKey: k('1.2.2', 'c1b'), figure: 'right-hand' },
+    { titleKey: k('1.2.2', 'c1t'), bodyKey: k('1.2.2', 'c1b'), figure: 'right-hand', motion: { bpm: 66, steps: [...IM('E', 2), ...IM('A', 2), ...IM('D', 2), ...IM('G', 2)] } },
     { titleKey: k('1.2.2', 'c2t'), bodyKey: k('1.2.2', 'c2b') },
   ],
   exercises: [
@@ -1208,7 +1218,7 @@ const l125: Lesson = {
   objectiveKey: k('1.2.5', 'objective'),
   cartoon: { riveResource: 'kordi_1_2_5', durationSec: 90, sceneKeys: [1, 2, 3, 4].map((x) => k('1.2.5', `s${x}`)) },
   cards: [
-    { titleKey: k('1.2.5', 'c1t'), bodyKey: k('1.2.5', 'c1b'), figure: 'right-hand' },
+    { titleKey: k('1.2.5', 'c1t'), bodyKey: k('1.2.5', 'c1b'), figure: 'right-hand', motion: { bpm: 80, steps: [...IM('E', 4), ...IM('A', 4)] } },
     { titleKey: k('1.2.5', 'c2t'), bodyKey: k('1.2.5', 'c2b') },
   ],
   exercises: [

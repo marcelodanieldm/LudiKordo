@@ -1,5 +1,14 @@
 {
   "ui": {
+    "motion": {
+      "play": "Ver y escuchar",
+      "stop": "Detener",
+      "label": "Dibujo con movimiento, paso {{step}} de {{total}}",
+      "stepOf": "Paso {{step}} de {{total}}",
+      "ok": "Justo detrás del traste: suena limpio",
+      "onFret": "Encima del traste: suena apagado",
+      "middle": "En el medio del espacio: zumba"
+    },
     "songbook": {
       "eyebrow": "Cancionero",
       "title": "Canciones para tu nivel",
