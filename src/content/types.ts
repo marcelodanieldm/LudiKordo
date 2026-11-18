@@ -19,7 +19,9 @@ export type ExerciseKind =
   | 'playAlong'
   | 'tempoTrainer'
   | 'recordYourself'
-  | 'strum';
+  | 'strum'
+  | 'bend'
+  | 'vibrato';
 
 interface BaseExercise {
   id: string;
@@ -99,7 +101,18 @@ export type ScoreNotation = 'tab' | 'staff';
 export type Beats = 0.5 | 1 | 2 | 4;
 
 /** Un evento de partitura: una nota (cuerda y traste) o un silencio. */
-export type ScoreEvent = { string: StringId; fret: number; beats: Beats; tone?: Tone } | { rest: true; beats: Beats };
+export type ScoreEvent =
+  | {
+      string: StringId;
+      fret: number;
+      beats: Beats;
+      tone?: Tone;
+      /** Bend de ½ (1) o 1 tono (2): en el ejemplo la nota sube; en la tablatura se marca ↗. */
+      bend?: 1 | 2;
+      /** Vibrato al final de la nota: en el ejemplo oscila; en la tablatura se marca ~. */
+      vibrato?: boolean;
+    }
+  | { rest: true; beats: Beats };
 
 /** Ejemplo sonoro de una tarjeta: la app lo toca con un tono sintetizado. */
 export interface ListenExample {
@@ -156,6 +169,37 @@ export interface StrumExercise extends BaseExercise {
   tempoSteps?: number[];
 }
 
+/**
+ * Bend (guitarra): se toca la nota de partida y se empuja la cuerda hasta la de
+ * llegada; la app sigue la altura y cuenta los intentos que llegan y se sostienen.
+ */
+export interface BendExercise extends BaseExercise {
+  kind: 'bend';
+  needsBass: true;
+  string: StringId;
+  fret: number;
+  semitones: 1 | 2;
+  /** Además, soltar y volver a la nota de partida. */
+  release?: boolean;
+  /** Intentos logrados que hacen falta. */
+  reps: number;
+}
+
+/**
+ * Vibrato (guitarra): se sostiene la nota con vibrato; la app mide ancho,
+ * velocidad y regularidad en ventanas de 1 s.
+ */
+export interface VibratoExercise extends BaseExercise {
+  kind: 'vibrato';
+  needsBass: true;
+  string: StringId;
+  fret: number;
+  /** Ancho mínimo hacia cada lado, en cents. */
+  minDepthCents: number;
+  /** Cuánto se mide. */
+  seconds: number;
+}
+
 /** Tipos todavía no implementados en el código base; se muestran como «próximamente». */
 export interface PendingExercise extends BaseExercise {
   kind: 'followHand' | 'recordYourself';
@@ -169,6 +213,8 @@ export type Exercise =
   | TabReadingExercise
   | TempoTrainerExercise
   | StrumExercise
+  | BendExercise
+  | VibratoExercise
   | PendingExercise;
 
 export type Figure =
@@ -210,7 +256,23 @@ export type Figure =
   | 'power-6'
   | 'power-5'
   | 'penta-box'
-  | 'palm-mute';
+  | 'palm-mute'
+  | 'hammer-on'
+  | 'pull-off'
+  | 'slide'
+  | 'bend'
+  | 'vibrato'
+  | 'barre-f'
+  | 'barre-fm'
+  | 'barre-g'
+  | 'barre-am'
+  | 'barre-bb'
+  | 'barre-c'
+  | 'barre-cm'
+  | 'barre-dm'
+  | 'octave'
+  | 'naturals-6'
+  | 'naturals-5';
 
 export interface Card {
   titleKey: string;

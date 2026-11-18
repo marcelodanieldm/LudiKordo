@@ -17,6 +17,10 @@ import { BALLAD, DOWN_EIGHTHS, EIGHTHS, HALVES, QUARTERS, eighthAt, filterClicks
 import { listenSchedule } from '../src/music/listen';
 import { exampleSchedule } from '../src/music/examples';
 import { CALL, GUITAR_CP2, PENTA_UP, RESPONSE, arpScore } from '../src/content/guitar/level2';
+import { BEND_PHRASE, GUITAR_CP3, LEG_PHRASE, SLIDE_PHRASE, VIB_PHRASE } from '../src/content/guitar/level3';
+import { BARRES, OCTAVE } from '../src/music/chords';
+import { analyzeVibrato, initialBend, scoreVibrato, stepBend, vibratoOk } from '../src/music/bend';
+import { midiToFreq as m2f } from '../src/music/notes';
 import { barsAreComplete, figureOf, isTabRest, layoutTab } from '../src/music/tab';
 import { tabOf } from '../src/content/guitar/helpers';
 
@@ -50,9 +54,9 @@ test('ruta de guitarra: 4 niveles, 28 módulos, 132 lecciones, con el módulo de
   assert.equal(new Set(ids).size, ids.length);
 });
 
-test('los niveles 1 y 2 están completos y todas las lecciones existen en la ruta', () => {
+test('los niveles 1, 2 y 3 están completos y todas las lecciones existen en la ruta', () => {
   const route = new Set(GUITAR_LEVELS.flatMap((l) => l.modules.flatMap(lessonIdsOf)));
-  for (const mod of [...GUITAR_LEVELS[0].modules, ...GUITAR_LEVELS[1].modules]) {
+  for (const mod of GUITAR_LEVELS.slice(0, 3).flatMap((l) => l.modules)) {
     for (const id of lessonIdsOf(mod)) assert.ok(GUITAR_LESSONS[id], `falta la lección ${id}`);
   }
   for (const id of Object.keys(GUITAR_LESSONS)) assert.ok(route.has(id), `${id} no está en la ruta`);
@@ -226,8 +230,8 @@ test('rasgueo: patrones válidos, golpes a tiempo y ejercicios con acordes conoc
   assert.deepEqual(t.slice(0, 6).map((s) => [s.timeMs, s.dir]), [[1000, 'D'], [2000, 'D'], [2500, 'U'], [3500, 'U'], [4000, 'D'], [4500, 'U']]);
   assert.equal(eighthAt(999, 1000, 60), -1);
   assert.equal(eighthAt(2600, 1000, 60), 3);
-  const known = new Set([...Object.keys(CHORDS), 'G5', 'A5', 'C5', 'D5', 'E5']);
-  const strums = [...lessons.flatMap((l) => l.exercises), ...GUITAR_CP2.parts].filter((e) => e.kind === 'strum');
+  const known = new Set([...Object.keys(CHORDS), 'G5', 'A5', 'C5', 'D5', 'E5', 'F', 'Fm', 'Bb', 'Cm']);
+  const strums = [...lessons.flatMap((l) => l.exercises), ...GUITAR_CP2.parts, ...GUITAR_CP3.parts].filter((e) => e.kind === 'strum');
   assert.ok(strums.length >= 20);
   for (const e of strums) {
     if (e.kind !== 'strum') continue;
@@ -295,4 +299,70 @@ test('ejemplos: una nota puede traer su propio timbre (palm mute dentro de un ri
   const sched = listenSchedule([{ string: 'E', fret: 0, beats: 0.5, tone: 'muted' }, { string: 'E', fret: 3, beats: 1 }], 60);
   assert.equal(sched[0].tone, 'muted');
   assert.equal(sched[1].tone, undefined);
+});
+
+test('checkpoint 3 de guitarra: claves en 3 idiomas', () => {
+  const used = [GUITAR_CP3.titleKey, GUITAR_CP3.introKey, ...GUITAR_CP3.parts.map((p) => p.promptKey)];
+  for (const [code, tree] of Object.entries(locales)) for (const k of used) assert.ok(lookup(tree, k), `${code}: falta ${k}`);
+});
+
+test('acordes con cejilla: cada forma suena a su tríada con la tónica en el bajo; octava a 12 semitonos', () => {
+  const expected: Record<string, [number, boolean]> = { 'bar-f': [5, false], 'bar-fm': [5, true], 'bar-g': [7, false], 'bar-am': [9, true], 'bar-bb': [10, false], 'bar-c': [0, false], 'bar-cm': [0, true], 'bar-dm': [2, true] };
+  for (const [id, [root, minor]] of Object.entries(expected)) {
+    const midi = diagramMidi(BARRES[id as keyof typeof BARRES]);
+    const pcs = [...new Set(midi.map((m) => m % 12))].sort((a, b) => a - b);
+    assert.deepEqual(pcs, [root, (root + (minor ? 3 : 4)) % 12, (root + 7) % 12].sort((a, b) => a - b), id);
+    assert.equal(Math.min(...midi) % 12, root, `${id}: tónica en el bajo`);
+  }
+  const o = diagramMidi(OCTAVE);
+  assert.equal(o[1] - o[0], 12);
+});
+
+test('bend: cuenta solo los intentos que llegan y se sostienen; avisa si queda corto', () => {
+  const spec = { startMidi: 62, semitones: 2 as const };
+  const f = (c: number) => m2f(62) * 2 ** (c / 1200);
+  let s = initialBend();
+  // Corto: llega a 150 cents y vuelve.
+  for (const c of [0, 0, 60, 120, 150, 150, 100, 10]) s = stepBend(spec, s, f(c));
+  assert.equal(s.reps, 0);
+  assert.equal(s.short, 1);
+  // Bien: llega a 200 y se sostiene.
+  for (const c of [0, 80, 160, 195, 200, 200, 202, 199, 200, 201, 200, 200]) s = stepBend(spec, s, f(c));
+  assert.equal(s.reps, 1);
+  // Con soltar: no cuenta hasta volver.
+  let r = initialBend();
+  const rel = { ...spec, release: true };
+  for (const c of [0, 100, 200, 200, 200, 200, 200, 200, 200, 200, 200]) r = stepBend(rel, r, f(c));
+  assert.equal(r.reps, 0);
+  assert.equal(r.phase, 'release');
+  r = stepBend(rel, r, f(5));
+  assert.equal(r.reps, 1);
+});
+
+test('vibrato: mide velocidad y ancho; una nota quieta no aprueba', () => {
+  const wave = (hz: number, depth: number) => Array.from({ length: 220 }, (_, i) => ({ tMs: i * 23, cents: depth * Math.sin(2 * Math.PI * hz * i * 0.023) }));
+  const good = analyzeVibrato(wave(5.5, 30));
+  assert.ok(good && Math.abs(good.rateHz - 5.5) < 0.6);
+  assert.ok(vibratoOk(good, 20));
+  assert.equal(scoreVibrato(wave(5.5, 30), 20).accuracy, 1);
+  assert.equal(vibratoOk(analyzeVibrato(wave(5.5, 8)), 20), false, 'muy angosto');
+  assert.equal(vibratoOk(analyzeVibrato(wave(12, 30)), 20), false, 'muy rápido');
+  const still = Array.from({ length: 220 }, (_, i) => ({ tMs: i * 23, cents: (i % 2) * 2 }));
+  assert.ok(scoreVibrato(still, 20).accuracy < 0.2);
+});
+
+test('nivel 3: frases en compases completos, bends y vibratos en cuerdas y trastes de guitarra', () => {
+  for (const sc of [LEG_PHRASE, SLIDE_PHRASE, BEND_PHRASE, VIB_PHRASE]) assert.ok(barsAreComplete(sc));
+  assert.ok(BEND_PHRASE.some((e) => 'bend' in e && e.bend === 2));
+  assert.ok(VIB_PHRASE.some((e) => 'vibrato' in e && e.vibrato));
+  const parts = [...lessons.flatMap((l) => l.exercises), ...GUITAR_CP3.parts];
+  const bv = parts.filter((e) => e.kind === 'bend' || e.kind === 'vibrato');
+  assert.ok(bv.length >= 12);
+  for (const e of bv) {
+    if (e.kind !== 'bend' && e.kind !== 'vibrato') continue;
+    assert.ok(guitarStrings.has(e.string), e.id);
+    assert.ok(e.fret >= 1 && e.fret <= 20, e.id);
+    // Los bends van en las cuerdas 1 a 3, como se enseña.
+    if (e.kind === 'bend') assert.ok(['G', 'B', 'e'].includes(e.string), e.id);
+  }
 });

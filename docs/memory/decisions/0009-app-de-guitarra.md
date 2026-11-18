@@ -39,4 +39,6 @@ El equipo es contenido desde la primera lección (1.1: pastillas, volumen, tono 
 - Diagramas de acordes abiertos (Em, E, Am, A, C, G, D, Dm) en `src/music/chords.ts` + figuras `chord-*`, con prueba de que cada forma suena a su tríada.
 - Rasgueo (nivel 2): ejercicio `strum` (`StrumExercise.tsx`, lógica en `src/music/strum.ts`) que puntúa cuándo cae cada golpe con un patrón de 8 corcheas por compás. El módulo nativo emite `onAttack` en cada subida de energía aunque no haya altura clara (antes los rasgueos se descartaban); YIN no cambió. Los ejemplos sonoros pueden ser rasgueos (`ListenExample.strum`, `src/music/examples.ts`).
 - Diagramas en grilla para power chords (tónica en 6.ª y 5.ª) y la caja de la pentatónica menor de La (`diagramOf`).
+- Bends y vibrato (nivel 3): ejercicios `bend` (cuenta intentos que llegan a ½ o 1 tono ±25 cents y se sostienen ~0,2 s; opcionalmente soltar) y `vibrato` (ventanas de 1 s: 3–8 oscilaciones/s, ancho mínimo, regularidad). Lógica pura en `src/music/bend.ts`. Los ejemplos sonoros hacen bend y vibrato (`ScoreEvent.bend`/`vibrato`); la tablatura los marca con ↗ y ~.
+- Acordes con cejilla formas de E y de A (`eShape`/`aShape`, `BARRES`) y forma de octava; el diagrama dibuja la cejilla.
 - APK: el workflow `apk-test` acepta `instrument: guitar` (o push a `cc/apk-guitar`) y publica «LudiKordo-guitarra-prueba-N.apk».

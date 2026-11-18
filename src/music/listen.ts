@@ -24,6 +24,10 @@ export interface ScheduledNote {
   durSec: number;
   /** Timbre propio de esta nota (por ejemplo, corcheas apagadas dentro de un riff). */
   tone?: Tone;
+  /** La nota sube esta cantidad de cents (bend). */
+  bendCents?: number;
+  /** Oscila ± esta cantidad de cents (vibrato). */
+  vibratoCents?: number;
 }
 
 export function listenSchedule(events: ScoreEvent[], bpm: number, offsetBeats = 0): ScheduledNote[] {
@@ -37,6 +41,8 @@ export function listenSchedule(events: ScoreEvent[], bpm: number, offsetBeats = 
         startSec: beat * beatSec,
         durSec: e.beats * beatSec * NOTE_GATE,
         ...(e.tone ? { tone: e.tone } : {}),
+        ...(e.bend ? { bendCents: e.bend * 100 } : {}),
+        ...(e.vibrato ? { vibratoCents: 30 } : {}),
       });
     }
     beat += e.beats;

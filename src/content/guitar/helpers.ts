@@ -7,7 +7,7 @@ import type { Beats, ListenExample, ScoreEvent, TabNote } from '../types';
 import type { StringId } from '../../instruments/profiles';
 import { GUITAR, midiOn } from '../../instruments/profiles';
 import { midiToFreq } from '../../music/notes';
-import { CHORDS, chordMidi, type ChordId } from '../../music/chords';
+import { CHORDS, chordMidi, type ChordId, type GridDiagram } from '../../music/chords';
 import type { Stroke } from '../../music/strum';
 
 export const k = (lesson: string, key: string) => `content.g.l${lesson.replace(/\./g, '')}.${key}`;
@@ -62,4 +62,16 @@ export function chordFretted(id: ChordId): { string: StringId; fret: number }[] 
 /** Ejemplo sonoro rasgueado: un acorde por compás. */
 export function strumListen(chords: (ChordId | number[])[], pattern: Stroke[], bpm: number, extra: Partial<ListenExample> = {}): ListenExample {
   return { events: [], bpm, strum: { chords: chords.map((c) => (Array.isArray(c) ? c : chordMidi(c))), pattern }, ...extra };
+}
+
+/** Notas de un diagrama en grilla (acorde con cejilla, octava…) de grave a agudo, como cuerda y traste. */
+export function gridNotes(d: GridDiagram): { string: StringId; fret: number }[] {
+  const out: { string: StringId; fret: number; midi: number }[] = [];
+  for (let i = 0; i < 6; i++) {
+    if (d.marks[i] === 'x') continue;
+    const dot = d.dots.find((x) => x.string === i);
+    const fret = dot ? dot.fret : d.marks[i] === 'o' ? 0 : d.barre && i >= d.barre.from && i <= d.barre.to ? d.barre.fret : -1;
+    if (fret >= 0) out.push({ string: GUITAR_STRING_IDS[i], fret, midi: GUITAR.strings[i].openMidi + fret });
+  }
+  return out.map(({ string, fret }) => ({ string, fret }));
 }

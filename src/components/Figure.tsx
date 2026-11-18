@@ -9,7 +9,7 @@ import { GuitarFigure, isGuitarFigure } from './GuitarFigures';
 import { colors } from '../theme';
 import { useSettings } from '../state/settings';
 import type { Figure as FigureId } from '../content/types';
-import type { Locale } from '../music/notes';
+import { STRINGS, noteName, type Locale } from '../music/notes';
 
 /**
  * Ilustración de una tarjeta. Los diagramas de diapasón se dibujan en código;
@@ -29,6 +29,21 @@ export function Figure({ id, width }: { id: FigureId; width: number }) {
       return <GuitarFigure id="guitar-tuner" width={width} leftHanded={left} />;
     case 'bass-clef':
       return <Staff events={[]} width={width} highlightLine={6} accessibilityLabel={t('ui.figure.bassClef')} />;
+    case 'naturals-6':
+    case 'naturals-5': {
+      // Notas naturales (sin sostenidos) en la cuerda grave, hasta el traste 12.
+      const string = id === 'naturals-6' ? 'E' : 'A';
+      const open = STRINGS.find((x) => x.id === string)?.openMidi ?? 40;
+      const naturals = Array.from({ length: 13 }, (_, f) => f).filter((f) => [0, 2, 4, 5, 7, 9, 11].includes((open + f) % 12));
+      return (
+        <Fretboard
+          width={width}
+          frets={12}
+          leftHanded={left}
+          dots={naturals.map((f) => ({ string, fret: f, label: noteName(open + f, locale, notation === 'both' ? 'solfege' : notation).slice(0, 3), color: (open + f) % 12 === open % 12 ? colors.accent : undefined }))}
+        />
+      );
+    }
     case 'fretboard-1234':
       return (
         <Fretboard

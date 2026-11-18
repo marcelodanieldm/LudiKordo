@@ -17,16 +17,16 @@ import { midiToFreq } from '../../music/notes';
 import { BALLAD, DOWN_EIGHTHS, EIGHTHS, HALVES, QUARTERS, type Stroke } from '../../music/strum';
 import { chordArp, chordFretted, k, listen, n, notesOf, scenes, strumListen, tabOf } from './helpers';
 
-const STEPS = [60, 70, 80];
+export const STEPS = [60, 70, 80];
 
 // ───────────── Constructores ─────────────
 
-interface CardSpec {
+export interface CardSpec {
   figure?: Figure;
   listen?: ListenExample;
 }
 
-function lesson(
+export function lesson(
   id: string,
   minutes: number,
   spec: { visuals: (Figure | null)[]; sounds: (ListenExample | null)[]; cards: CardSpec[]; exercises: Exercise[]; mastery?: number },
@@ -43,7 +43,7 @@ function lesson(
   };
 }
 
-const strum = (lessonId: string, key: string, chords: string[], pattern: Stroke[], bpm = 60): Exercise => ({
+export const strum = (lessonId: string, key: string, chords: string[], pattern: Stroke[], bpm = 60): Exercise => ({
   id: `${lessonId}-${key}`,
   kind: 'strum',
   needsBass: true,
@@ -55,7 +55,7 @@ const strum = (lessonId: string, key: string, chords: string[], pattern: Stroke[
   tempoSteps: STEPS,
 });
 
-const play = (lessonId: string, key: string, notes: { string: StringId; fret: number; beats?: 1 | 2 | 4 }[], bpm: number | null, score?: ScoreEvent[]): Exercise => ({
+export const play = (lessonId: string, key: string, notes: { string: StringId; fret: number; beats?: 1 | 2 | 4 }[], bpm: number | null, score?: ScoreEvent[]): Exercise => ({
   id: `${lessonId}-${key}`,
   kind: 'playAlong',
   needsBass: true,
@@ -67,9 +67,9 @@ const play = (lessonId: string, key: string, notes: { string: StringId; fret: nu
   ...(score ? { score } : {}),
 });
 
-const playScore = (lessonId: string, key: string, score: ScoreEvent[]): Exercise => play(lessonId, key, notesOf(score), 60, score);
+export const playScore = (lessonId: string, key: string, score: ScoreEvent[]): Exercise => play(lessonId, key, notesOf(score), 60, score);
 
-const tap = (lessonId: string, key: string, sequence: { string: StringId; fret: number }[], frets: number): Exercise => ({
+export const tap = (lessonId: string, key: string, sequence: { string: StringId; fret: number }[], frets: number): Exercise => ({
   id: `${lessonId}-${key}`,
   kind: 'fretboardTap',
   needsBass: false,
@@ -79,7 +79,7 @@ const tap = (lessonId: string, key: string, sequence: { string: StringId; fret: 
   frets,
 });
 
-const quiz = (lessonId: string, key: string, options: string[], correctIndex: number): Exercise => ({
+export const quiz = (lessonId: string, key: string, options: string[], correctIndex: number): Exercise => ({
   id: `${lessonId}-${key}`,
   kind: 'quiz',
   needsBass: false,
@@ -89,7 +89,7 @@ const quiz = (lessonId: string, key: string, options: string[], correctIndex: nu
   correctIndex,
 });
 
-const tab = (lessonId: string, key: string, score: ScoreEvent[], frets: number): Exercise => ({
+export const tab = (lessonId: string, key: string, score: ScoreEvent[], frets: number): Exercise => ({
   id: `${lessonId}-${key}`,
   kind: 'tabReading',
   needsBass: false,
@@ -223,7 +223,7 @@ const C5 = powerMidi('A', 3);
 const D5 = powerMidi('A', 5);
 const E5_5 = powerMidi('A', 7);
 const E5 = powerMidi('E', 0);
-const CRUNCH = { tone: 'crunch' as const };
+export const CRUNCH = { tone: 'crunch' as const };
 
 /** Rasgueo del riff de quintas: abajo, abajo, abajo-arriba, abajo (por compás). */
 const RIFF_STROKES: Stroke[] = ['D', '-', 'D', '-', 'D', 'U', 'D', '-'];

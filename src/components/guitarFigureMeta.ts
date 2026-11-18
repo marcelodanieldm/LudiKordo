@@ -18,6 +18,15 @@ export const CHORD_FIGURES: Partial<Record<Figure, DiagramId>> = {
   'power-6': 'power-6',
   'power-5': 'power-5',
   'penta-box': 'penta-a',
+  'barre-f': 'bar-f',
+  'barre-fm': 'bar-fm',
+  'barre-g': 'bar-g',
+  'barre-am': 'bar-am',
+  'barre-bb': 'bar-bb',
+  'barre-c': 'bar-c',
+  'barre-cm': 'bar-cm',
+  'barre-dm': 'bar-dm',
+  octave: 'octave',
 };
 
 export const GUITAR_FIGURES: Figure[] = [
@@ -40,6 +49,11 @@ export const GUITAR_FIGURES: Figure[] = [
   'mute-pick-hand',
   'chord-diagram-how',
   'palm-mute',
+  'hammer-on',
+  'pull-off',
+  'slide',
+  'bend',
+  'vibrato',
   ...(Object.keys(CHORD_FIGURES) as Figure[]),
 ];
 
@@ -65,6 +79,14 @@ export const LEGEND_COUNT: Partial<Record<Figure, number>> = {
   'power-6': 2,
   'power-5': 2,
   'penta-box': 2,
+  'hammer-on': 2,
+  'pull-off': 2,
+  slide: 2,
+  bend: 3,
+  vibrato: 2,
+  'barre-f': 2,
+  'barre-bb': 2,
+  octave: 2,
 };
 
 export const RATIO: Partial<Record<Figure, number>> = {
@@ -87,6 +109,11 @@ export const RATIO: Partial<Record<Figure, number>> = {
   'mute-fret-hand': 140 / 360,
   'mute-pick-hand': 140 / 360,
   'palm-mute': 140 / 360,
+  'hammer-on': 150 / 360,
+  'pull-off': 150 / 360,
+  slide: 150 / 360,
+  bend: 150 / 360,
+  vibrato: 150 / 360,
   'chord-diagram-how': 216 / 360,
   ...Object.fromEntries(Object.keys(CHORD_FIGURES).map((f) => [f, 216 / 360])),
 };
