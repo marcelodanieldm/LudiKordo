@@ -2,15 +2,17 @@ import React from 'react';
 import { View } from 'react-native';
 import Svg, { Circle, Defs, Ellipse, G, LinearGradient, Path, RadialGradient, Rect, Stop } from 'react-native-svg';
 import { colors } from '../theme';
+import { INSTRUMENT } from '../instruments/current';
 
 type Mood = 'normal' | 'happy';
 type Light = 'none' | 'beam' | 'glow';
 
 /**
- * Kordi, el carpincho bajista. Personaje original de LudiKordo (docs/design/kordi.md).
+ * Kordi, el carpincho músico. Personaje original de LudiKordo (docs/design/kordi.md).
+ * En la app de bajo toca un bajo; en la de guitarra, una guitarra eléctrica.
  * `light` lo pone bajo un foco de escenario (beam) o con un halo dorado (glow).
  */
-export function Kordi({ size = 160, label = 'Kordi', mood = 'normal', light = 'none' }: { size?: number; label?: string; mood?: Mood; light?: Light }) {
+export function Kordi({ size = 160, label = 'Kordi', mood = 'normal', light = 'none', instrument = INSTRUMENT.id }: { size?: number; label?: string; mood?: Mood; light?: Light; instrument?: 'bass' | 'guitar' }) {
   const figure = (
     <Svg width={size} height={size} viewBox="0 0 160 160" accessibilityLabel={label} accessibilityRole="image">
       <Ellipse cx={80} cy={148} rx={54} ry={8} fill={light === 'none' ? '#000000' : colors.accent} opacity={light === 'none' ? 0.3 : 0.22} />
@@ -27,13 +29,31 @@ export function Kordi({ size = 160, label = 'Kordi', mood = 'normal', light = 'n
           <Circle cx={85.5} cy={42.5} r={1.3} fill="#FFFFFF" />
         </>
       )}
-      <G rotation={-24} origin="75, 101">
-        <Rect x={16} y={98} width={118} height={7} rx={3} fill="#6B4423" />
-      </G>
-      <G rotation={-24} origin="58, 118">
-        <Ellipse cx={58} cy={118} rx={25} ry={17} fill="#C2410C" />
-        <Ellipse cx={58} cy={118} rx={8} ry={5} fill="#1D1B2E" opacity={0.35} />
-      </G>
+      {instrument === 'guitar' ? (
+        <>
+          {/* Guitarra eléctrica: mástil más corto, clavijero 6 en línea, doble corte y golpeador */}
+          <G rotation={-24} origin="75, 101">
+            <Rect x={34} y={98} width={92} height={6} rx={2} fill="#6B4423" />
+            <Rect x={122} y={95} width={18} height={11} rx={3} fill="#C2410C" />
+          </G>
+          <G rotation={-24} origin="58, 118">
+            <Path d="M34 118 C32 102 46 98 56 104 C62 107 66 104 70 100 C76 96 84 100 82 108 L80 128 C82 136 74 138 70 134 C64 130 60 130 54 134 C44 140 34 132 34 118 Z" fill="#C2410C" />
+            <Path d="M44 112 C52 106 64 108 72 112 L74 126 C64 130 52 130 44 126 Z" fill="#F5F1E8" opacity={0.9} />
+            <Rect x={52} y={112} width={4} height={14} rx={1.5} fill="#1D1B2E" />
+            <Rect x={62} y={112} width={4} height={14} rx={1.5} fill="#1D1B2E" />
+          </G>
+        </>
+      ) : (
+        <>
+          <G rotation={-24} origin="75, 101">
+            <Rect x={16} y={98} width={118} height={7} rx={3} fill="#6B4423" />
+          </G>
+          <G rotation={-24} origin="58, 118">
+            <Ellipse cx={58} cy={118} rx={25} ry={17} fill="#C2410C" />
+            <Ellipse cx={58} cy={118} rx={8} ry={5} fill="#1D1B2E" opacity={0.35} />
+          </G>
+        </>
+      )}
       <Ellipse cx={100} cy={94} rx={10} ry={8} fill="#8E5A33" />
       <Ellipse cx={64} cy={112} rx={9} ry={7} fill="#8E5A33" />
     </Svg>

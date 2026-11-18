@@ -3,6 +3,8 @@
  * metrónomo con tiempos programados y tonos de referencia para el oído.
  */
 import { AudioContext } from 'react-native-audio-api';
+import { IS_GUITAR } from '../instruments/current';
+import { peakGain, ringSec, voiceFor, type Tone, type Voice } from '../music/timbre';
 
 let ctx: AudioContext | null = null;
 function context(): AudioContext {
@@ -59,27 +61,52 @@ export function startMetronome(bpm: number, beats: number, countIn = 4, beatsPer
   };
 }
 
-/** Toca un tono suave de referencia (oído, afinación). */
-export function playTone(freq: number, durationSec = 1.2, delaySec = 0): Promise<void> {
+/**
+ * Programa una nota con un timbre (src/music/timbre.ts): un oscilador por
+ * parcial, todos por la misma envolvente. Devuelve cuánto suena, en segundos.
+ */
+function scheduleVoice(c: AudioContext, freq: number, at: number, durSec: number, voice: Voice, level = 1): number {
+  const ring = ringSec(voice, durSec);
+  const gain = c.createGain();
+  // Normalizado: la suma de parciales nunca pasa de ~0,5, como el tono de siempre.
+  const peak = (0.5 / Math.max(0.5, peakGain(voice))) * peakGain(voice) * level;
+  gain.gain.setValueAtTime(0, at);
+  gain.gain.linearRampToValueAtTime(peak, at + voice.attack);
+  if (voice.envelope === 'sustain') {
+    gain.gain.setValueAtTime(peak * Math.max(0.05, voice.sustain), at + Math.max(voice.attack, ring * 0.7));
+  }
+  gain.gain.exponentialRampToValueAtTime(0.001, at + ring);
+  gain.connect(c.destination);
+  const total = peakGain(voice);
+  for (const p of voice.partials) {
+    const osc = c.createOscillator();
+    const pg = c.createGain();
+    osc.type = p.type;
+    // Desafinación aplicada a la frecuencia (no todas las versiones exponen `detune`).
+    osc.frequency.value = freq * Math.pow(2, p.detune / 1200);
+    pg.gain.value = p.gain / total;
+    osc.connect(pg);
+    pg.connect(gain);
+    osc.start(at);
+    osc.stop(at + ring + 0.02);
+  }
+  return ring;
+}
+
+/** Toca un tono de referencia (oído, afinación). En guitarra, con timbre de eléctrica limpia. */
+export function playTone(freq: number, durationSec = 1.2, delaySec = 0, tone?: Tone): Promise<void> {
   const c = context();
   const at = c.currentTime + 0.05 + delaySec;
-  const osc = c.createOscillator();
-  const gain = c.createGain();
-  osc.type = 'triangle';
-  osc.frequency.value = freq;
-  gain.gain.setValueAtTime(0, at);
-  gain.gain.linearRampToValueAtTime(0.5, at + 0.02);
-  gain.gain.exponentialRampToValueAtTime(0.001, at + durationSec);
-  osc.connect(gain);
-  gain.connect(c.destination);
-  osc.start(at);
-  osc.stop(at + durationSec);
+  scheduleVoice(c, freq, at, durationSec, tone || IS_GUITAR ? voiceFor(tone, IS_GUITAR) : TONE_VOICE);
   return new Promise((resolve) => setTimeout(resolve, (0.05 + delaySec + durationSec) * 1000));
 }
 
-/** Toca varios tonos en secuencia, con una pausa corta entre ellos. */
-export async function playTones(freqs: number[]): Promise<void> {
-  for (const f of freqs) await playTone(f, 1, 0.15);
+/** El tono de referencia del bajo: triangular, ataque suave, cae hasta el final. */
+const TONE_VOICE: Voice = { partials: [{ type: 'triangle', detune: 0, gain: 0.5 }], attack: 0.02, envelope: 'pluck', maxRing: 8, sustain: 0 };
+
+/** Toca varios tonos en secuencia, con una pausa corta entre ellos (y el timbre de cada uno, si se indica). */
+export async function playTones(freqs: number[], timbres?: Tone[]): Promise<void> {
+  for (let i = 0; i < freqs.length; i++) await playTone(freqs[i], 1, 0.15, timbres?.[i]);
 }
 
 export interface SequenceHandle {
@@ -106,6 +133,8 @@ export function playSequence(
   clickBeats?: { bpm: number; beats: number },
   /** Se llama si otro ejemplo empieza y corta a este. */
   onInterrupt?: () => void,
+  /** Timbre (guitarra: limpio, crunch…). Por defecto, el del instrumento. */
+  tone?: Tone,
 ): SequenceHandle {
   // Un solo ejemplo a la vez: el anterior se corta y se entera.
   stopActiveSequence();
@@ -115,20 +144,8 @@ export function playSequence(
     const step = 60 / clickBeats.bpm;
     for (let i = 0; i < clickBeats.beats; i++) click(t0 + i * step, i % 4 === 0);
   }
-  for (const n of notes) {
-    const at = t0 + n.startSec;
-    const osc = c.createOscillator();
-    const gain = c.createGain();
-    osc.type = 'triangle';
-    osc.frequency.value = n.freq;
-    gain.gain.setValueAtTime(0, at);
-    gain.gain.linearRampToValueAtTime(0.45, at + 0.015);
-    gain.gain.exponentialRampToValueAtTime(0.001, at + Math.max(0.08, n.durSec));
-    osc.connect(gain);
-    gain.connect(c.destination);
-    osc.start(at);
-    osc.stop(at + Math.max(0.08, n.durSec) + 0.02);
-  }
+  const voice = voiceFor(tone, IS_GUITAR);
+  for (const n of notes) scheduleVoice(c, n.freq, t0 + n.startSec, n.durSec, voice);
   let stopped = false;
   const handle = {
     onInterrupt,

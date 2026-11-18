@@ -234,6 +234,92 @@
     "notifications": {
       "daily": "Up next: {{lesson}}",
       "trialEnding": "Your free trial ends in 2 days. You can cancel it from Profile."
+    },
+    "gfig": {
+      "guitar_parts": {
+        "a11y": "Electric guitar with 9 numbered parts",
+        "l1": "Tuning pegs: tune each string.",
+        "l2": "Nut: where the open strings start.",
+        "l3": "Neck with frets.",
+        "l4": "Body.",
+        "l5": "Pickups: they \"listen\" to the strings.",
+        "l6": "Pickup selector.",
+        "l7": "Volume and tone knobs.",
+        "l8": "Bridge.",
+        "l9": "Output jack."
+      },
+      "guitar_strings": {
+        "a11y": "The open strings numbered, lowest at the bottom and highest at the top"
+      },
+      "pickup_selector": {
+        "a11y": "Three pickups and a 5-way selector",
+        "l1": "Neck pickup: round and warm.",
+        "l2": "Middle pickup.",
+        "l3": "Bridge pickup: bright, with bite.",
+        "l4": "5-way selector (shown in position 1).",
+        "l5": "Which pickups sound in each position."
+      },
+      "guitar_knobs": {
+        "a11y": "Three guitar knobs, all on 10",
+        "l1": "Guitar volume.",
+        "l2": "Neck pickup tone.",
+        "l3": "Middle pickup tone (on many guitars, the bridge)."
+      },
+      "amp_panel": {
+        "a11y": "Amp panel with five knobs",
+        "l1": "GAIN: drive.",
+        "l2": "BASS: lows.",
+        "l3": "MIDDLE: mids.",
+        "l4": "TREBLE: highs.",
+        "l5": "VOLUME: overall level."
+      },
+      "amp_clean": {
+        "a11y": "Amp set for a clean sound",
+        "l1": "GAIN at 2: clean sound.",
+        "l2": "VOLUME to taste."
+      },
+      "amp_crunch": {
+        "a11y": "Amp set for crunch",
+        "l1": "GAIN at 6: crunch.",
+        "l2": "VOLUME a little lower."
+      },
+      "cable_amp": {
+        "a11y": "Guitar connected to the amp with a cable",
+        "l1": "The cable goes into the guitar.",
+        "l2": "The other end goes into INPUT on the amp.",
+        "l3": "Amp volume at 0 before switching it on."
+      },
+      "guitar_tuner": {
+        "a11y": "Tuner: the needle in the middle, in the teal zone, means the string is in tune"
+      },
+      "posture": {
+        "a11y": "Person sitting with the guitar on the leg and a straight back",
+        "l1": "Straight back.",
+        "l2": "Guitar resting on your leg.",
+        "l3": "Neck pointing slightly up.",
+        "l4": "Both feet on the ground."
+      },
+      "pick_grip": {
+        "a11y": "Hand holding the pick between thumb and index finger",
+        "l1": "Thumb flat, on top.",
+        "l2": "Index finger curled, underneath.",
+        "l3": "The tip shows: 2 or 3 mm."
+      },
+      "pick_down": {
+        "a11y": "Pick moving down across a string and the downstroke sign",
+        "l1": "Downstroke.",
+        "l2": "Downstroke sign."
+      },
+      "pick_alternate": {
+        "a11y": "Alternate picking: down and up arrows",
+        "l1": "Down (table sign), on the beat.",
+        "l2": "Up (V), between beats."
+      },
+      "string_crossing": {
+        "a11y": "The pick crossing from one string to another",
+        "l1": "The hand's path, from the 6th to the 1st.",
+        "l2": "The pick, close to the next string."
+      }
     }
   },
   "content": {
@@ -908,6 +994,326 @@
       "pulse": "80 bpm: 8 beats with the click and 24 without.",
       "spider": "The full spider: climb across all 4 strings and come back down.",
       "groove": "The full Kordi Groove 1 at 80 bpm."
+    },
+    "g": {
+      "level": {
+        "1": "Level 1 · Foundations and control",
+        "2": "Level 2 · Chords, rhythm and riffs",
+        "3": "Level 3 · Expression",
+        "4": "Level 4 · Improvisation and intermediate"
+      },
+      "checkpoint": {
+        "1": "Checkpoint 1 · Open-string riff, no string noise",
+        "2": "Checkpoint 2 · Strummed chords and a palm-muted riff",
+        "3": "Checkpoint 3 · Short solo with bends and vibrato",
+        "4": "Final project · Your solo over a backing track"
+      },
+      "module": {
+        "1_1": "Your guitar and your amp",
+        "1_2": "Posture and pick",
+        "1_3": "Independent fingers",
+        "1_4": "Silence between notes",
+        "1_5": "Reading guitar",
+        "2_1": "First chords",
+        "2_2": "More open chords",
+        "2_3": "Change without stopping",
+        "2_4": "Power chords",
+        "2_5": "Palm muting",
+        "2_6": "Minor pentatonic",
+        "3_1": "Legato",
+        "3_2": "Slides",
+        "3_3": "Bending",
+        "3_4": "Vibrato",
+        "3_5": "E-shape barre chords",
+        "3_6": "A-shape barre chords",
+        "3_7": "Fretboard map",
+        "4_1": "The 5 pentatonic boxes",
+        "4_2": "The whole neck",
+        "4_3": "Major and natural minor",
+        "4_4": "Basic modes",
+        "4_5": "Phrasing",
+        "4_6": "Fast picking",
+        "4_7": "Double stops and triads",
+        "4_8": "Tapping",
+        "4_9": "Your sound: effects",
+        "4_10": "Final project"
+      },
+      "goal": {
+        "1_1": "Know the parts of the electric guitar, plug it in, tune it and dial in a clean sound.",
+        "1_2": "Play open strings with alternate picking and a steady pulse.",
+        "1_3": "Play the 1-2-3-4 chromatic on all 6 strings, one finger per fret.",
+        "1_4": "Mute the strings you are not playing with both hands.",
+        "1_5": "Read chord diagrams and tab with quarter notes, eighth notes and rests.",
+        "2_1": "Play Em, E, Am and A cleanly, string by string.",
+        "2_2": "Add C, G, D and Dm.",
+        "2_3": "Switch chords while strumming quarter and eighth notes without losing the pulse.",
+        "2_4": "Move the fifth shape with the root on the 6th and 5th strings to play riffs.",
+        "2_5": "Mute with your palm on the bridge to give riffs weight.",
+        "2_6": "Play the minor pentatonic in 1st position with a metronome.",
+        "3_1": "Connect notes with hammer-ons and pull-offs.",
+        "3_2": "Slide between notes landing on the right fret.",
+        "3_3": "Bend a half step and a whole step right in tune.",
+        "3_4": "Make an even, controlled vibrato.",
+        "3_5": "Play barre chords rooted on the 6th string all over the neck.",
+        "3_6": "Play barre chords rooted on the 5th string.",
+        "3_7": "Find every natural note on the 6th and 5th strings.",
+        "4_1": "Play all five pentatonic positions.",
+        "4_2": "Connect the boxes and move horizontally.",
+        "4_3": "Build them by intervals and play them in two positions.",
+        "4_4": "Use Dorian, Mixolydian and Phrygian from the major scale.",
+        "4_5": "Improvise with motifs and target notes over backing tracks.",
+        "4_6": "Raise your alternate-picking tempo while staying clean.",
+        "4_7": "Play double stops and major and minor triad arpeggios.",
+        "4_8": "Play a basic two-hand tapping pattern.",
+        "4_9": "Build your sound with gain, delay, reverb and modulation in the right order.",
+        "4_10": "Write and play your own solo over a backing track."
+      },
+      "star": {
+        "1_1": "Tune all 6 strings",
+        "1_2": "First riff at 80 bpm",
+        "1_3": "Chromatic on 6 strings",
+        "1_4": "Noise-free riff",
+        "1_5": "Sight-reading",
+        "2_1": "Four clean chords",
+        "2_2": "Eight open chords",
+        "2_3": "Progression in time",
+        "2_4": "Power-chord riff",
+        "2_5": "Palm-muted riff",
+        "2_6": "Pentatonic at 80 bpm",
+        "3_1": "Legato phrase",
+        "3_2": "Phrase with slides",
+        "3_3": "In-tune bend",
+        "3_4": "Long note with vibrato",
+        "3_5": "Barres on the 6th",
+        "3_6": "Barres on the 5th",
+        "3_7": "Notes on the 6th and 5th",
+        "4_1": "Five boxes",
+        "4_2": "Pentatonic end to end",
+        "4_3": "Major and minor",
+        "4_4": "Three modes",
+        "4_5": "Solo with a motif",
+        "4_6": "Alternate picking at 120 bpm",
+        "4_7": "Triad arpeggios",
+        "4_8": "Tapping pattern",
+        "4_9": "Your rhythm and lead presets",
+        "4_10": "Your complete solo"
+      },
+      "l111": {
+        "title": "Meet your electric guitar",
+        "objective": "Name 9 parts of the electric guitar and identify the 6 strings by number and by sound.",
+        "s1": "\"Hi! I'm Kordi. Today I swapped my bass for an electric guitar. Let's get to know it together.\"",
+        "s2": "Tuning pegs, nut, neck with frets, body, pickups, selector, volume and tone knobs, bridge and output jack.",
+        "s3": "Six strings, from thickest to thinnest: E, A, D, G, B and E. Listen to them climb.",
+        "s4": "\"There are two Es: the 6th, thick and low, and the 1st, thin and high. They are two octaves apart.\"",
+        "c1t": "The parts of the electric guitar",
+        "c1b": "Look at the drawing and find each number on your guitar. The pickups are magnets that \"listen\" to the strings and send the signal to the amp.",
+        "c2t": "The 6 strings",
+        "c2b": "They are numbered from the thinnest: 1st E, 2nd B, 3rd G, 4th D, 5th A and 6th E. The 6th is on top, closest to your face.",
+        "c3t": "Thicker = lower",
+        "c3b": "The thicker the string, the lower the sound. Listen to the 6th and the 1st: both are E, but two octaves apart.",
+        "q1": "Which one is the 1st string?",
+        "q1o1": "The low E, the thickest",
+        "q1o2": "The high E, the thinnest",
+        "q1o3": "The G",
+        "q1o4": "The A",
+        "q2": "Which part turns the strings' vibration into the signal that goes to the amp?",
+        "q2o1": "The pickups",
+        "q2o2": "The bridge",
+        "q2o3": "The tuning pegs",
+        "ear": "You'll hear both E strings. Which one is the high one?",
+        "first": "The first one",
+        "second": "The second one",
+        "play": "With the amp on, play the open string that lights up, from the 6th to the 1st."
+      },
+      "l112": {
+        "title": "Plug guitar into amp",
+        "objective": "Plug the guitar into the amp in the safe order and get it sounding at a comfortable volume.",
+        "s1": "\"An unplugged electric guitar barely makes a sound. Its voice lives in the amp.\"",
+        "s2": "First, amp volume at 0. Then plug the cable into the guitar and the amp. Only then turn it on.",
+        "s3": "The amp has knobs: GAIN, BASS, MIDDLE, TREBLE and VOLUME. Today you only use VOLUME.",
+        "s4": "\"Turn the volume up slowly while you play the 6th string, until it sounds clear but not deafening.\"",
+        "c1t": "The safe order",
+        "c1b": "1: the cable goes into the guitar's jack. 2: the other end goes into the amp's INPUT. 3: with the volume at 0, turn the amp on and bring it up slowly. That way you avoid a loud pop in the speaker and in your ears.",
+        "c2t": "The amp panel",
+        "c2b": "GAIN adds drive, BASS the lows, MIDDLE the mids, TREBLE the highs and VOLUME the overall level.",
+        "c3t": "The app hears you through the amp",
+        "c3b": "For the exercises with your guitar, keep the phone near the amp. Without an amp, the microphone barely picks up an electric guitar. If you use a multi-effects unit or a headphone amp, connect it to a speaker.",
+        "q1": "What do you do before plugging in the cable?",
+        "q1o1": "Turn the amp volume all the way up",
+        "q1o2": "Play hard to test it",
+        "q1o3": "Turn the amp volume down to 0",
+        "q2": "Which amp knob controls how loud everything is?",
+        "play": "With the amp at a comfortable volume, play the open 6th string 4 times."
+      },
+      "l113": {
+        "title": "Tune all 6 strings",
+        "objective": "Tune the 6 strings with the app's tuner to within 5 cents.",
+        "s1": "\"An out-of-tune guitar sounds bad even if you play perfectly. Tuning always comes first.\"",
+        "s2": "Play a string and watch the needle. Left means the string is flat: tighten the peg. Right means it's sharp: loosen it.",
+        "s3": "Tune from the 6th to the 1st: E, A, D, G, B, E. Listen to how it should sound.",
+        "s4": "\"Turn a little and play again. When the needle sits in the middle, in teal, you're in tune.\"",
+        "c1t": "How to read the tuner",
+        "c1b": "Needle in the middle and teal: in tune. If it's on the left, raise the string (tighten). If it's on the right, lower it (loosen). It's best to reach the note from below.",
+        "c2t": "Standard tuning",
+        "c2b": "From the 6th to the 1st: E, A, D, G, B, E. Play the example to hear the 6 strings in tune.",
+        "c3t": "Checking by ear",
+        "c3b": "The 5th fret of a string sounds the same as the next open string. There is one exception: on the 3rd string (G), the 4th fret gives you the 2nd string (B).",
+        "ear": "Listen to two notes. Is the second one higher or lower?",
+        "higher": "Higher",
+        "lower": "Lower",
+        "tune": "Tune each string that lights up until the needle sits in the middle."
+      },
+      "l114": {
+        "title": "Pickups, volume and tone",
+        "objective": "Choose a pickup with the selector and use the guitar's volume and tone knobs.",
+        "s1": "\"My guitar has three pickups. Each one hears the string in a different spot.\"",
+        "s2": "The neck pickup sounds round and warm. Listen.",
+        "s3": "The bridge pickup sounds bright, with more bite. Hear the difference.",
+        "s4": "\"The guitar's knobs change volume and tone before the signal reaches the amp.\"",
+        "c1t": "The pickup selector",
+        "c1b": "Pickup 1 is the neck, 2 the middle, 3 the bridge. A 5-way selector picks one or blends two neighbors. Many guitars have 2 pickups and a 3-way selector: same idea.",
+        "c2t": "Neck pickup",
+        "c2b": "Round, warm sound. Great for soft melodies and blues solos.",
+        "c3t": "Bridge pickup",
+        "c3b": "Bright sound with bite. The favorite for rock riffs and for crunch.",
+        "c4t": "Guitar volume and tone",
+        "c4b": "1: guitar volume. 2 and 3: tone; at 10 it keeps all the brightness, and turning it down makes it darker. To practice, leave everything at 10 and control volume on the amp.",
+        "ear": "Listen. Which pickup is it: neck or bridge?",
+        "neck": "Neck",
+        "bridge": "Bridge",
+        "q1": "You want a bright sound with lots of bite for a riff. Which pickup do you choose?",
+        "q1o1": "The bridge pickup",
+        "q1o2": "The neck pickup",
+        "q1o3": "It doesn't matter",
+        "play": "Try the pickups: play the strings that light up, first on the neck pickup and then on the bridge."
+      },
+      "l115": {
+        "title": "Your clean sound",
+        "objective": "Set the amp for a clean sound and tell clean from crunch by ear.",
+        "s1": "\"Now let's build your sound. Every amp knob at halfway, and GAIN low.\"",
+        "s2": "With GAIN at 2 the sound is clean: every note comes through clearly. That's how we practice most of the time.",
+        "s3": "With GAIN at 6 you get crunch: the sound gets a little dirty and gains punch. Listen.",
+        "s4": "\"Crunch is for some riffs. For learning, and so the app hears you well, go back to clean.\"",
+        "c1t": "EQ: bass, mids and treble",
+        "c1b": "Start with BASS, MIDDLE and TREBLE at 5. If it sounds dull, raise TREBLE. If it sounds thin, raise BASS. MIDDLE gives it body so the guitar cuts through the band.",
+        "c2t": "Clean sound",
+        "c2b": "1: GAIN low, at 2 or 3. 2: VOLUME to taste. It's the sound for practicing and the one the app hears best.",
+        "c3t": "Crunch",
+        "c3b": "1: GAIN at 6, just slightly driven. 2: lower VOLUME a bit, because crunch sounds louder. You'll use it for power chords and palm muting.",
+        "ear": "Listen. Is the sound clean or crunchy?",
+        "clean": "Clean",
+        "crunch": "Crunch",
+        "q1": "Which amp knob adds drive (crunch)?",
+        "play": "With a clean sound, play the 6 open strings from the 6th to the 1st and back."
+      },
+      "l121": {
+        "title": "Posture",
+        "objective": "Sit with the guitar in a comfortable posture and play the 6th string to a steady pulse.",
+        "s1": "\"Good posture lets you play longer without getting tired or hurt.\"",
+        "s2": "Back straight, against the chair. The guitar on your leg, with the neck pointing slightly up.",
+        "s3": "Shoulders relaxed. Your picking arm rests on the guitar body; the other elbow stays close to your body.",
+        "s4": "\"Let's try: one note per click, on the 6th string.\"",
+        "c1t": "Sitting with the guitar",
+        "c1b": "1: back straight. 2: the guitar resting on your leg. 3: the neck slightly up, never toward the floor. 4: both feet on the ground. If you play standing, adjust the strap so the guitar sits at the same height.",
+        "c2t": "No tension",
+        "c2b": "If your shoulders creep up or your wrist bends sharply, stop, breathe and settle back in. Practicing through pain doesn't help.",
+        "q1": "When sitting, where does the guitar rest?",
+        "q1o1": "On the table",
+        "q1o2": "On your leg, with the neck slightly up",
+        "q1o3": "With the neck pointing at the floor",
+        "pulse": "Keep the pulse with the metronome: one tap per click.",
+        "play": "Play the open 6th string, once per click."
+      },
+      "l122": {
+        "title": "Hold the pick",
+        "objective": "Hold the pick between thumb and index finger and play downstrokes to a steady pulse.",
+        "s1": "\"The pick is the electric guitar's tool. Small, but it's the boss.\"",
+        "s2": "Curl your index finger. Rest the pick on the side of its last joint and close it with your thumb, flat.",
+        "s3": "Let just the tip show. Strike downward from the wrist, not from the elbow.",
+        "s4": "\"If the pick spins or drops, grip a little tighter. Just a little.\"",
+        "c1t": "The grip",
+        "c1b": "1: thumb flat on top. 2: index finger curled underneath. 3: the tip shows, about 2 or 3 mm. If too much shows, the pick catches on the string.",
+        "c2t": "Downstroke",
+        "c2b": "1: the pick moving toward the floor. 2: this table-shaped sign means \"downstroke\" in sheet music.",
+        "c3t": "From the wrist",
+        "c3b": "The motion is short and comes from the wrist, as if shaking off a drop of water. The arm barely moves.",
+        "q1": "How much of the pick tip should show?",
+        "q1o1": "Half of the pick",
+        "q1o2": "None, the fingers cover it",
+        "q1o3": "About 2 or 3 mm",
+        "q2": "To start, which part of the pick touches the string?",
+        "q2o1": "Just the tip",
+        "q2o2": "The whole pick, deep in",
+        "play": "Downstrokes on the 4th string (D), once per click."
+      },
+      "l123": {
+        "title": "Downstrokes on every string",
+        "objective": "Move from string to string with downstrokes without losing the pulse.",
+        "s1": "\"You can play one string. Now let's travel across all six.\"",
+        "s2": "To change strings, move your whole hand, not just the pick. The motion stays short.",
+        "s3": "Four times on each string, from the 6th to the 1st. Listen.",
+        "s4": "\"If you hit the wrong string, slow down. Accurate first, fast later.\"",
+        "c1t": "Crossing strings",
+        "c1b": "1: the hand travels from the 6th to the 1st. 2: the pick stays the same distance from the string. Look at the next string, not the one you're playing.",
+        "c2t": "Four per string",
+        "c2b": "Play the example: four quarter notes per string, with the metronome. That's how the exercise sounds.",
+        "tab": "Read the tab and play each note on the fretboard.",
+        "play": "Four times on each string, from the 6th to the 1st, with downstrokes."
+      },
+      "l124": {
+        "title": "Alternate picking",
+        "objective": "Alternate down and up strokes in eighth notes at 60 bpm without losing the pulse.",
+        "s1": "\"Down, up, down, up. That way the pick plays twice as much without working twice as hard.\"",
+        "s2": "On the click, down. Between clicks, up. Those are eighth notes: two notes per beat.",
+        "s3": "The table sign means down; the V means up. They always alternate, even when you change strings.",
+        "s4": "\"If you mix them up, say it out loud: 'down', 'up'. It works.\"",
+        "c1t": "Down and up",
+        "c1b": "1: downstroke, on the beat. 2: upstroke, between beats. The upward motion is as short as the downward one.",
+        "c2t": "This is how eighth notes sound",
+        "c2b": "Sixteen eighth notes on the 3rd string (G), with a click on every beat. Play the example and count: \"1 and 2 and 3 and 4 and\".",
+        "c3t": "Always alternating",
+        "c3b": "Alternate picking never stops: even if a note is missing, the hand keeps going up and down. That way you don't lose time.",
+        "tap": "Tap ↓ and ↑ in turn: two taps per click.",
+        "play": "Eighth notes on the 3rd string (G): down on the click, up between clicks."
+      },
+      "l125": {
+        "title": "Your first riff",
+        "objective": "Play a 4-bar riff on open strings at 60 bpm or faster.",
+        "s1": "\"Listen to this! It's a riff made only of open strings. Today you play it.\"",
+        "s2": "It jumps between the 6th, 5th, 4th and 3rd strings. Look closely at the tab before you play.",
+        "s3": "Now clean and slower, with the metronome. That's how you'll practice it.",
+        "s4": "\"When you nail it at 60, move up to 70 and 80. Then try it with crunch.\"",
+        "c1t": "The riff",
+        "c1b": "Four bars on open strings. Play the example and follow the tab: the 0s mean open string.",
+        "c2t": "Jumping strings",
+        "c2b": "1: the pick jumps from one string to another without lifting much. 2: look at the next string before you play it.",
+        "c3t": "With crunch",
+        "c3b": "This is how it sounds with a bit of GAIN. Practice it clean; once you've got it, try crunch just for fun.",
+        "tab": "Read the riff in the tab and play each note on the fretboard.",
+        "play": "Play the whole riff with the metronome."
+      }
+    }
+  },
+  "guitar": {
+    "ui": {
+      "onboarding": {
+        "appTag": "Learn electric guitar from zero",
+        "welcomeBody": "Short lessons, cartoons and exercises with or without your guitar. 15 minutes a day.",
+        "hasBass": "Do you have an electric guitar?"
+      },
+      "lesson": {
+        "steps": {
+          "noBass": "No guitar",
+          "withBass": "With guitar"
+        }
+      },
+      "paywall": {
+        "title": "Unlock the whole course"
+      },
+      "songbook": {
+        "intro": "Original riffs to play by genre. They unlock with the modules where you learn what they use.",
+        "playPrompt": "Play it on your guitar, in time with the metronome."
+      }
     }
   }
 }

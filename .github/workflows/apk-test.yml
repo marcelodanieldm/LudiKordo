@@ -3,12 +3,20 @@
 # - Firmado con la clave de depuración de Expo: sirve para probar, no para Google Play.
 # - Todo el contenido abierto (Premium de prueba): no hay compras en este APK.
 # Se publica como pre-release «apk-test-<n>» para descargarlo desde el teléfono.
+# Instrumento (ADR 0009): bajo por defecto; guitarra eléctrica eligiendo «guitar» al
+# lanzarlo a mano, o con un push a la rama cc/apk-guitar.
 name: apk-test
 
 on:
   workflow_dispatch:
+    inputs:
+      instrument:
+        description: Qué app compilar
+        type: choice
+        options: [bass, guitar]
+        default: bass
   push:
-    branches: [cc/apk-build]
+    branches: [cc/apk-build, cc/apk-guitar]
 
 concurrency:
   group: apk-test-${{ github.ref }}
@@ -25,6 +33,8 @@ jobs:
     env:
       EXPO_PUBLIC_TEST_BUILD: "1"
       EXPO_PUBLIC_DEV_PREMIUM: "1"
+      EXPO_PUBLIC_INSTRUMENT: ${{ inputs.instrument || (github.ref_name == 'cc/apk-guitar' && 'guitar') || 'bass' }}
+      APK_NAME: ${{ (inputs.instrument == 'guitar' || github.ref_name == 'cc/apk-guitar') && 'LudiKordo-guitarra' || 'LudiKordo' }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v5
@@ -48,18 +58,18 @@ jobs:
         # La mayoría de los teléfonos de los últimos años son arm64: el APK queda más chico y compila más rápido.
         run: ./gradlew :app:assembleRelease --no-daemon -PreactNativeArchitectures=arm64-v8a
       - name: Renombrar
-        run: cp android/app/build/outputs/apk/release/app-release.apk "LudiKordo-prueba-${{ github.run_number }}.apk"
+        run: cp android/app/build/outputs/apk/release/app-release.apk "${APK_NAME}-prueba-${{ github.run_number }}.apk"
       - uses: actions/upload-artifact@v4
         with:
-          name: ludikordo-apk-prueba
-          path: LudiKordo-prueba-*.apk
+          name: ${{ env.APK_NAME }}-apk-prueba
+          path: ${{ env.APK_NAME }}-prueba-*.apk
           retention-days: 14
       - name: Publicar como pre-release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "apk-test-${{ github.run_number }}" LudiKordo-prueba-*.apk \
+          gh release create "apk-test-${{ github.run_number }}" ${APK_NAME}-prueba-*.apk \
             --prerelease \
             --target "${{ github.sha }}" \
-            --title "APK de prueba ${{ github.run_number }}" \
+            --title "APK de prueba ${{ github.run_number }} (${{ env.EXPO_PUBLIC_INSTRUMENT == 'guitar' && 'guitarra eléctrica' || 'bajo' }})" \
             --notes "APK para probar en un teléfono Android (arm64). No es la versión de Google Play: está firmado con una clave de prueba y tiene todo el contenido abierto. Para instalarlo, abre este enlace desde el teléfono, descarga el .apk y permite instalar apps de este origen. Commit: ${{ github.sha }}"

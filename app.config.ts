@@ -1,6 +1,6 @@
 /**
  * Dos apps desde el mismo código (ADR 0009). `app.json` sigue siendo la base
- * (LudiKordo, bajo); con APP_INSTRUMENT=guitar se arma la app de guitarra
+ * (LudiKordo, bajo); con EXPO_PUBLIC_INSTRUMENT=guitar se arma la app de guitarra
  * eléctrica con otro nombre, otro paquete y su propio esquema de enlaces.
  *
  *   npm run android            → LudiKordo (bajo)
@@ -15,7 +15,8 @@ import type { ConfigContext, ExpoConfig } from 'expo/config';
 const GUITAR_NAME = process.env.APP_GUITAR_NAME ?? 'Kordi Guitar';
 
 export default ({ config }: ConfigContext): ExpoConfig => {
-  const instrument = process.env.APP_INSTRUMENT === 'guitar' ? 'guitar' : 'bass';
+  // La misma variable elige el contenido dentro del bundle (src/instruments/current.ts).
+  const instrument = process.env.EXPO_PUBLIC_INSTRUMENT === 'guitar' ? 'guitar' : 'bass';
   const base = config as ExpoConfig;
   const extra = { ...base.extra, instrument };
 

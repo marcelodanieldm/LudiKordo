@@ -1,15 +1,17 @@
 /**
  * Ejemplos sonoros (lógica pura): cuándo suena cada nota de un ejemplo.
  *
- * El parlante de un teléfono casi no reproduce el Mi grave (41 Hz), así que el
- * ejemplo suena una octava arriba: se oyen igual el ritmo, la melodía y la
- * diferencia entre grave y agudo.
+ * El parlante de un teléfono casi no reproduce el Mi grave del bajo (41 Hz), así
+ * que en el bajo el ejemplo suena una octava arriba: se oyen igual el ritmo, la
+ * melodía y la diferencia entre grave y agudo. La guitarra suena donde está.
  */
 import { midiAt, midiToFreq } from './notes';
+import { INSTRUMENT } from '../instruments/current';
 import { isRest } from './staff';
 import type { ScoreEvent } from '../content/types';
 
-export const PLAYBACK_OCTAVE_UP = 12;
+/** Semitonos que se sube al reproducir: 12 en el bajo, 0 en la guitarra. */
+export const PLAYBACK_OCTAVE_UP = INSTRUMENT.listenTransposeSemitones;
 /** La nota dura un poco menos que su figura para que se escuche el ataque de la siguiente. */
 export const NOTE_GATE = 0.9;
 /** Cuenta previa del ejemplo con clic, en pulsos. */

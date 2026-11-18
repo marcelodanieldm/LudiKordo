@@ -21,7 +21,7 @@ export function QuizExercise({ exercise, onDone, width = 300 }: { exercise: Quiz
   const correct = picked === exercise.correctIndex;
 
   useEffect(() => {
-    if (exercise.tones) void playTones(exercise.tones);
+    if (exercise.tones) void playTones(exercise.tones, exercise.timbres);
   }, [exercise]);
 
   const pick = (i: number) => {
@@ -37,7 +37,7 @@ export function QuizExercise({ exercise, onDone, width = 300 }: { exercise: Quiz
     <View style={{ gap: 14 }}>
       <Text style={{ fontFamily: fonts.display, fontSize: 24, lineHeight: 30, color: colors.ink }}>{t(exercise.promptKey)}</Text>
       {exercise.staff ? <Staff events={exercise.staff} width={width} /> : null}
-      {exercise.tones ? <Button variant="secondary" label={`▶ ${t('ui.exercise.listen')}`} onPress={() => void playTones(exercise.tones!)} /> : null}
+      {exercise.tones ? <Button variant="secondary" label={`▶ ${t('ui.exercise.listen')}`} onPress={() => void playTones(exercise.tones!, exercise.timbres)} /> : null}
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10 }}>
         {exercise.options.map((opt, i) => {
           const isPicked = picked === i;

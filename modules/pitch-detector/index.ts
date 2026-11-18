@@ -16,6 +16,9 @@ export interface StartOptions {
   bufferSize: number;
   hopSize: number;
   threshold: number;
+  /** Rango de búsqueda de YIN en Hz (por defecto, el del bajo: 35–450). */
+  minFreq?: number;
+  maxFreq?: number;
 }
 
 type Events = {

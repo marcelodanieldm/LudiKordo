@@ -1,20 +1,18 @@
 /**
- * Teoría básica para un bajo de 4 cuerdas en afinación estándar (E1 A1 D2 G2).
+ * Teoría básica del instrumento de esta build en afinación estándar:
+ * bajo E1 A1 D2 G2, guitarra E2 A2 D3 G3 B3 E4 (src/instruments/profiles.ts).
  * Todo en MIDI para que la conversión a frecuencia y nombre sea exacta.
  */
+import { INSTRUMENT } from '../instruments/current';
+import type { InstrumentString, StringId } from '../instruments/profiles';
+
+export type { StringId } from '../instruments/profiles';
 
 export type Locale = 'en' | 'es' | 'pt';
 export type Notation = 'letters' | 'solfege' | 'both';
 
-/** Cuerdas de la más grave (índice 0, la 4ª cuerda) a la más aguda. */
-export const STRINGS = [
-  { id: 'E', number: 4, openMidi: 28 }, // E1 ≈ 41,20 Hz
-  { id: 'A', number: 3, openMidi: 33 }, // A1 = 55 Hz
-  { id: 'D', number: 2, openMidi: 38 }, // D2 ≈ 73,42 Hz
-  { id: 'G', number: 1, openMidi: 43 }, // G2 ≈ 98,00 Hz
-] as const;
-
-export type StringId = (typeof STRINGS)[number]['id'];
+/** Cuerdas de la más grave (índice 0) a la más aguda, del instrumento de esta build. */
+export const STRINGS: readonly InstrumentString[] = INSTRUMENT.strings;
 
 const LETTERS = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
 const SOLFEGE_ES = ['Do', 'Do♯', 'Re', 'Re♯', 'Mi', 'Fa', 'Fa♯', 'Sol', 'Sol♯', 'La', 'La♯', 'Si'];
@@ -38,7 +36,9 @@ export function stringIndex(id: StringId): number {
 }
 
 export function midiAt(string: StringId, fret: number): number {
-  return STRINGS[stringIndex(string)].openMidi + fret;
+  const i = stringIndex(string);
+  if (i < 0) throw new Error(`La cuerda «${string}» no existe en este instrumento`);
+  return STRINGS[i].openMidi + fret;
 }
 
 export function octaveOf(midi: number): number {
@@ -58,13 +58,8 @@ export function noteName(midi: number, locale: Locale, notation: Notation = 'bot
 }
 
 /** Frecuencia de cada cuerda al aire, para el afinador. */
-export function openStringFreqs(): Record<StringId, number> {
-  return {
-    E: midiToFreq(28),
-    A: midiToFreq(33),
-    D: midiToFreq(38),
-    G: midiToFreq(43),
-  };
+export function openStringFreqs(): Partial<Record<StringId, number>> {
+  return Object.fromEntries(STRINGS.map((s) => [s.id, midiToFreq(s.openMidi)]));
 }
 
 const LETTER_PC: Record<string, number> = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };

@@ -34,8 +34,8 @@ interface Props {
 const MARKERS = [3, 5, 7, 9, 15, 17, 19, 21];
 
 /**
- * Diapasón dibujado como se ve desde quien toca: la cuerda Mi abajo.
- * Los trastes se achican hacia el cuerpo, como en un bajo real (regla del 17,817).
+ * Diapasón dibujado como se ve desde quien toca: la cuerda más grave abajo.
+ * Los trastes se achican hacia el cuerpo, como en un instrumento real (regla del 17,817).
  * Para zurdos se espeja horizontalmente.
  */
 export function Fretboard({ frets = 5, width, dots = [], showNoteNames, leftHanded, onTap, openStrings }: Props) {
@@ -45,7 +45,7 @@ export function Fretboard({ frets = 5, width, dots = [], showNoteNames, leftHand
   const top = 14;
   // Con zonas táctiles, cada cuerda tiene 44 dp de alto propios (sin invadir la vecina).
   const stringGap = onTap ? 44 : width >= 560 ? 40 : 28;
-  const boardH = stringGap * 3 + 24;
+  const boardH = stringGap * (STRINGS.length - 1) + 24;
   const height = top + boardH + 30;
   const dotR = Math.min(16, stringGap * 0.45);
   // Margen izquierdo: número de cuerda + punto de cuerda al aire sin cortarse.
@@ -60,8 +60,8 @@ export function Fretboard({ frets = 5, width, dots = [], showNoteNames, leftHand
   const fretX = raw.map((r) => nutX + r * scale);
   const mid = (f: number) => (f === 0 ? nutX - dotR - 4 : (fretX[f - 1] + fretX[f]) / 2);
   const stringY = (id: StringId) => {
-    const i = STRINGS.findIndex((s) => s.id === id); // 0 = Mi
-    return top + 12 + (3 - i) * stringGap;
+    const i = STRINGS.findIndex((s) => s.id === id); // 0 = la más grave
+    return top + 12 + (STRINGS.length - 1 - i) * stringGap;
   };
   const mirror = (x: number) => (leftHanded ? width - x : x);
 
@@ -81,7 +81,7 @@ export function Fretboard({ frets = 5, width, dots = [], showNoteNames, leftHand
         ))}
         {STRINGS.map((s, i) => (
           <React.Fragment key={s.id}>
-            <Line x1={mirror(nutX)} y1={stringY(s.id)} x2={mirror(nutX + boardW)} y2={stringY(s.id)} stroke={colors.stringColor} strokeWidth={3.4 - i * 0.65} strokeLinecap="round" />
+            <Line x1={mirror(nutX)} y1={stringY(s.id)} x2={mirror(nutX + boardW)} y2={stringY(s.id)} stroke={colors.stringColor} strokeWidth={3.4 - (i * 2.2) / (STRINGS.length - 1)} strokeLinecap="round" />
             <SvgText x={mirror(8)} y={stringY(s.id) + 4} fontSize={12} fontWeight="900" fill={colors.muted} textAnchor="middle">
               {s.id}
             </SvgText>

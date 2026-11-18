@@ -8,9 +8,12 @@
 
 export type InstrumentId = 'bass' | 'guitar';
 
+/** Cuerdas de los dos instrumentos. En guitarra, «E» es la 6.ª (grave) y «e» la 1.ª (aguda). */
+export type StringId = 'E' | 'A' | 'D' | 'G' | 'B' | 'e';
+
 export interface InstrumentString {
   /** Identificador único dentro del instrumento («E» grave y «e» aguda en guitarra). */
-  id: string;
+  id: StringId;
   /** Número tradicional de cuerda: 1 = la más aguda. */
   number: number;
   openMidi: number;
@@ -96,13 +99,13 @@ export function resolveInstrument(value: unknown): InstrumentProfile {
   return value === 'guitar' ? GUITAR : BASS;
 }
 
-export function openMidiOf(profile: InstrumentProfile, stringId: string): number {
+export function openMidiOf(profile: InstrumentProfile, stringId: StringId): number {
   const s = profile.strings.find((x) => x.id === stringId);
   if (!s) throw new Error(`La cuerda «${stringId}» no existe en ${profile.id}`);
   return s.openMidi;
 }
 
-export function midiOn(profile: InstrumentProfile, stringId: string, fret: number): number {
+export function midiOn(profile: InstrumentProfile, stringId: StringId, fret: number): number {
   if (fret < 0 || fret > profile.frets) throw new Error(`Traste ${fret} fuera de rango (0–${profile.frets})`);
   return openMidiOf(profile, stringId) + fret;
 }

@@ -39,10 +39,21 @@ Usar siempre estos términos en interfaz y lecciones. Cambiarlos solo con acuerd
 | Lesson | Lección | Aula |
 | Path | Ruta | Trilha |
 | Streak | Racha | Sequência |
+| Electric guitar | Guitarra eléctrica | Guitarra elétrica |
+| Amp | Ampli (amplificador) | Amplificador |
+| Pickup selector | Selector de pastillas | Chave seletora |
+| Neck pickup / bridge pickup | Pastilla del mástil / del puente | Captador do braço / da ponte |
+| Output jack | Entrada del cable (jack) | Entrada do cabo (jack) |
+| Downstroke / upstroke | Púa hacia abajo / hacia arriba | Palhetada para baixo / para cima |
+| Alternate picking | Púa alternada | Palhetada alternada |
+| Clean / crunch | Limpio / crunch | Limpo / crunch |
+| Gain | Ganancia (GAIN en el ampli) | Ganho (GAIN no amplificador) |
+| Open string | Cuerda al aire | Corda solta |
 
 Notas de estilo:
 
 - Español: neutro latinoamericano, tuteo («toca», «elige»), sin voseo.
 - Portugués: de Brasil, «você».
+- Guitarra: las perillas del ampli se nombran como vienen impresas, en inglés y mayúsculas (GAIN, BASS, MIDDLE, TREBLE, VOLUME). Las cuerdas se numeran desde la más fina (1.ª = Mi aguda).
 - Nombres de notas: en inglés, letras (C D E). En es/pt, por defecto «Mi (E)»; la app permite elegir.
 - Kordi habla en primera persona, con humor amable, frases cortas.
