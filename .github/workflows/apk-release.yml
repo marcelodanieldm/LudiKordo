@@ -1,9 +1,10 @@
 # Versiones en APK para instalar a mano en teléfonos y tablets Android: LudiKordo (bajo)
 # y la app de guitarra eléctrica (ADR 0009), las dos en la misma versión.
 #
-# Se lanza con un tag `apk-vX.Y.Z` sobre main (X.Y.Z = `expo.version` de app.json) o a
-# mano desde Actions con el mismo tag. NO es la versión de Google Play: esa sale con el
-# tag `vX.Y.Z` y release.yml. Estos APK:
+# Se lanza a mano desde Actions sobre main con la versión X.Y.Z (= `expo.version` de
+# app.json): el workflow crea el tag `apk-vX.Y.Z` al publicar. También corre si alguien
+# empuja ese tag sobre main. NO es la versión de Google Play: esa sale con el tag
+# `vX.Y.Z` y release.yml. Estos APK:
 # - llevan el JavaScript incluido (no necesitan computadora);
 # - sirven en teléfonos y tablets: ARM de 64 y 32 bits, y x86_64 (Chromebooks y emuladores);
 # - están firmados con la clave de prueba de Expo (se instalan encima de la versión anterior,
@@ -15,19 +16,19 @@ on:
     tags: ["apk-v*.*.*"]
   workflow_dispatch:
     inputs:
-      tag:
-        description: Tag de la versión (apk-vX.Y.Z), ya creado sobre main
+      version:
+        description: Versión X.Y.Z (la de app.json); se lanza sobre main
         required: true
 
 concurrency:
-  group: apk-release-${{ inputs.tag || github.ref_name }}
+  group: apk-release-${{ inputs.version || github.ref_name }}
   cancel-in-progress: false
 
 permissions:
   contents: write
 
 env:
-  TAG: ${{ inputs.tag || github.ref_name }}
+  TAG: ${{ inputs.version && format('apk-v{0}', inputs.version) || github.ref_name }}
 
 jobs:
   verify:
@@ -36,12 +37,19 @@ jobs:
     outputs:
       version: ${{ steps.v.outputs.version }}
       code: ${{ steps.v.outputs.code }}
+      sha: ${{ steps.v.outputs.sha }}
     steps:
       - uses: actions/checkout@v6
         with:
-          ref: ${{ env.TAG }}
           fetch-depth: 0
-      - name: El tag apunta a un commit de main
+      - name: El commit es de main
+        run: test "${{ github.event_name }}" != workflow_dispatch || test "$GITHUB_REF_NAME" = main || { echo "Lánzalo sobre main"; exit 1; }
+      - name: La versión no existe todavía
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then echo "Ya hay una versión $TAG"; exit 1; fi
+      - name: El commit está en main
         run: git merge-base --is-ancestor HEAD origin/main || { echo "El tag no está sobre main"; exit 1; }
       - name: El tag coincide con app.json
         id: v
@@ -51,6 +59,7 @@ jobs:
           IFS=. read -r major minor patch <<< "$v"
           echo "version=$v" >> "$GITHUB_OUTPUT"
           echo "code=$((major * 10000 + minor * 100 + patch))" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - uses: actions/setup-node@v5
         with:
           node-version: 22
@@ -78,8 +87,6 @@ jobs:
       APK_FILE: ${{ matrix.file }}-${{ needs.verify.outputs.version }}.apk
     steps:
       - uses: actions/checkout@v6
-        with:
-          ref: ${{ env.TAG }}
       - uses: actions/setup-node@v5
         with:
           node-version: 22
@@ -108,8 +115,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-        with:
-          ref: ${{ env.TAG }}
       - uses: actions/download-artifact@v4
         with:
           path: apks
@@ -136,4 +141,4 @@ jobs:
             echo
             echo "No es la versión de Google Play: está firmada con una clave de prueba y tiene todo el contenido abierto (sin compras)."
           } > notes.md
-          gh release create "$TAG" apks/*.apk --target "$(git rev-parse HEAD)" --title "LudiKordo $VERSION (APK)" --notes-file notes.md
+          gh release create "$TAG" apks/*.apk --target "${{ needs.verify.outputs.sha }}" --title "LudiKordo $VERSION (APK)" --notes-file notes.md
