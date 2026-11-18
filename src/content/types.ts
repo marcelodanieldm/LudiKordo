@@ -3,6 +3,7 @@
  * claves que cada idioma resuelve (src/i18n/locales/*.json, sección "content").
  */
 import type { StringId } from '../music/notes';
+import type { Tone } from '../music/timbre';
 
 export type Skill = 'technique' | 'rhythm' | 'fretboard' | 'theory' | 'ear';
 
@@ -22,7 +23,7 @@ interface BaseExercise {
   id: string;
   kind: ExerciseKind;
   skills: Skill[];
-  /** Si necesita el bajo en la mano. */
+  /** Si necesita el instrumento en la mano (el nombre viene del bajo; vale para la guitarra). */
   needsBass: boolean;
   /** Clave del enunciado. */
   promptKey: string;
@@ -36,6 +37,8 @@ export interface QuizExercise extends BaseExercise {
   correctIndex: number;
   /** Para ejercicios de oído: tonos a reproducir antes de responder (Hz). */
   tones?: number[];
+  /** Timbre de cada tono (guitarra: limpio, crunch, pastilla del mástil…). Por defecto, el del instrumento. */
+  timbres?: Tone[];
   /** Pentagrama que se muestra con el enunciado (por ejemplo, «¿qué nota es?»). */
   staff?: ScoreEvent[];
   hintKey?: string;
@@ -106,6 +109,8 @@ export interface ListenExample {
   noteNames?: boolean;
   /** Clic de metrónomo durante el ejemplo. */
   click?: boolean;
+  /** Timbre del ejemplo (guitarra: limpio, crunch, pastilla…). Por defecto, el del instrumento. */
+  tone?: Tone;
 }
 
 export interface TabReadingExercise extends BaseExercise {
@@ -142,7 +147,30 @@ export type Exercise =
   | TempoTrainerExercise
   | PendingExercise;
 
-export type Figure = 'bass-parts' | 'strings' | 'tuner' | 'fret5' | 'right-hand' | 'fretboard-1234' | 'left-hand' | 'bass-clef';
+export type Figure =
+  | 'bass-parts'
+  | 'strings'
+  | 'tuner'
+  | 'fret5'
+  | 'right-hand'
+  | 'fretboard-1234'
+  | 'left-hand'
+  | 'bass-clef'
+  // Guitarra eléctrica (src/components/GuitarFigures.tsx)
+  | 'guitar-parts'
+  | 'guitar-strings'
+  | 'pickup-selector'
+  | 'guitar-knobs'
+  | 'amp-panel'
+  | 'amp-clean'
+  | 'amp-crunch'
+  | 'cable-amp'
+  | 'guitar-tuner'
+  | 'posture'
+  | 'pick-grip'
+  | 'pick-down'
+  | 'pick-alternate'
+  | 'string-crossing';
 
 export interface Card {
   titleKey: string;
@@ -164,6 +192,13 @@ export interface Lesson {
     durationSec: number;
     /** Subtítulos por escena, en orden. */
     sceneKeys: string[];
+    /**
+     * Mientras no hay .riv: ilustración animada de cada escena (misma longitud
+     * que `sceneKeys`; null = solo Kordi en el escenario).
+     */
+    visuals?: (Figure | null)[];
+    /** Sonido que acompaña cada escena (se toca al empezarla); null = ninguno. */
+    sounds?: (ListenExample | null)[];
   };
   cards: Card[];
   exercises: Exercise[];

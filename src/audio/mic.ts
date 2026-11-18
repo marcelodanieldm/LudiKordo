@@ -6,6 +6,7 @@
 import { PermissionsAndroid, Platform } from 'react-native';
 import { PitchDetector, type PitchEvent } from '../../modules/pitch-detector';
 import { nowMs } from './engine';
+import { INSTRUMENT } from '../instruments/current';
 import type { DetectedNote } from '../music/scoring';
 
 export type MicStatus = 'ok' | 'denied' | 'unavailable';
@@ -27,7 +28,15 @@ export interface Listener {
   stop: () => void;
 }
 
-const START_OPTIONS = { sampleRate: 44100, bufferSize: 4096, hopSize: 1024, threshold: 0.15 };
+// Rango del detector según el instrumento de la build (bajo 35–450 Hz, guitarra 70–1400 Hz).
+const START_OPTIONS = {
+  sampleRate: 44100,
+  bufferSize: 4096,
+  hopSize: 1024,
+  threshold: 0.15,
+  minFreq: INSTRUMENT.pitchRangeHz.min,
+  maxFreq: INSTRUMENT.pitchRangeHz.max,
+};
 
 /**
  * Escucha ataques de nota. Los tiempos llegan convertidos al reloj de audio

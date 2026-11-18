@@ -16,6 +16,9 @@ class StartOptions : Record {
   @Field val bufferSize: Int = 4096
   @Field val hopSize: Int = 1024
   @Field val threshold: Double = 0.15
+  // Rango de YIN: bajo 35–450 Hz (por defecto), guitarra 70–1400 Hz.
+  @Field val minFreq: Double = 35.0
+  @Field val maxFreq: Double = 450.0
 }
 
 /**
@@ -66,7 +69,7 @@ class PitchDetectorModule : Module() {
     running = true
     record.startRecording()
     worker = thread(name = "PitchDetector") {
-      val yin = Yin(o.sampleRate, o.bufferSize, o.threshold.toFloat())
+      val yin = Yin(o.sampleRate, o.bufferSize, o.threshold.toFloat(), o.minFreq.toFloat(), o.maxFreq.toFloat())
       val window = FloatArray(o.bufferSize)
       val hop = FloatArray(o.hopSize)
       var samples = 0L

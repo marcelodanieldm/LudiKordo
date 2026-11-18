@@ -5,6 +5,7 @@
  * módulos donde se aprende lo que usa.
  */
 import type { Beats, ScoreEvent, Song } from './types';
+import { IS_GUITAR } from '../instruments/current';
 
 type S = 'E' | 'A' | 'D' | 'G';
 const k = (id: string, key: string) => `content.song.${id.replace(/-/g, '_')}.${key}`;
@@ -22,7 +23,7 @@ const rootFifth = (rs: S, rf: number, fs: S, ff: number) => [n(rs, rf, 2), n(fs,
 
 const song = (s: Omit<Song, 'titleKey' | 'descriptionKey'>): Song => ({ ...s, titleKey: k(s.id, 'title'), descriptionKey: k(s.id, 'desc') });
 
-export const SONGS: Song[] = [
+export const BASS_SONGS: Song[] = [
   // ── Nivel 1: cuerdas Mi, La y Re, trastes 0–4, redondas, blancas y negras ──
   song({
     id: 'pop-1',
@@ -297,6 +298,9 @@ export const SONGS: Song[] = [
     skills: ['theory', 'technique'],
   }),
 ];
+
+/** Canciones del instrumento de esta build. La guitarra todavía no tiene cancionero (géneros por definir). */
+export const SONGS: Song[] = IS_GUITAR ? [] : BASS_SONGS;
 
 export function getSong(id: string): Song | undefined {
   return SONGS.find((s) => s.id === id);

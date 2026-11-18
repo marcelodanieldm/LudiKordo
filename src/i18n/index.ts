@@ -5,6 +5,8 @@ import en from './locales/en.json';
 import es from './locales/es.json';
 import pt from './locales/pt.json';
 import { letterNoteLabel, type Locale, type Notation } from '../music/notes';
+import { IS_GUITAR } from '../instruments/current';
+import { withInstrumentTexts } from './overlay';
 
 export const SUPPORTED: Locale[] = ['en', 'es', 'pt'];
 
@@ -20,7 +22,12 @@ export function initI18n(locale: Locale) {
     return i18n;
   }
   void i18n.use(initReactI18next).init({
-    resources: { en: { translation: en }, es: { translation: es }, pt: { translation: pt } },
+    // En la app de guitarra, los textos de `guitar.ui` reemplazan a los de `ui` que nombran el bajo.
+    resources: {
+      en: { translation: withInstrumentTexts(en, IS_GUITAR) },
+      es: { translation: withInstrumentTexts(es, IS_GUITAR) },
+      pt: { translation: withInstrumentTexts(pt, IS_GUITAR) },
+    },
     lng: locale,
     fallbackLng: 'en',
     interpolation: { escapeValue: false },

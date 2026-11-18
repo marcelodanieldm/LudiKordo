@@ -57,7 +57,7 @@ export function Listen({ example, width, testID = 'listen' }: { example: ListenE
       if (timer.current) clearTimeout(timer.current);
       timer.current = null;
       setPlaying(false);
-    });
+    }, example.tone);
     setPlaying(true);
     timer.current = setTimeout(() => {
       handle.current = null;

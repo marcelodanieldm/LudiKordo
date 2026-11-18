@@ -234,6 +234,99 @@
     "notifications": {
       "daily": "Hoy toca: {{lesson}}",
       "trialEnding": "Tu prueba gratis termina en 2 días. Puedes cancelarla desde Perfil."
+    },
+    "gfig": {
+      "amp": {
+        "gain": "GAIN",
+        "bass": "BASS",
+        "middle": "MIDDLE",
+        "treble": "TREBLE",
+        "volume": "VOLUME"
+      },
+      "guitar_parts": {
+        "a11y": "Guitarra eléctrica con 9 partes numeradas",
+        "l1": "Clavijas: afinan cada cuerda.",
+        "l2": "Cejuela: donde empiezan las cuerdas al aire.",
+        "l3": "Mástil con trastes.",
+        "l4": "Cuerpo.",
+        "l5": "Pastillas: «escuchan» las cuerdas.",
+        "l6": "Selector de pastillas.",
+        "l7": "Perillas de volumen y tono.",
+        "l8": "Puente.",
+        "l9": "Entrada del cable (jack)."
+      },
+      "guitar_strings": {
+        "a11y": "Las cuerdas al aire numeradas, de la más grave abajo a la más aguda arriba"
+      },
+      "pickup_selector": {
+        "a11y": "Tres pastillas y un selector de 5 posiciones",
+        "l1": "Pastilla del mástil: redonda y cálida.",
+        "l2": "Pastilla del medio.",
+        "l3": "Pastilla del puente: brillante y con ataque.",
+        "l4": "Selector de 5 posiciones (en la imagen, en la 1).",
+        "l5": "Qué pastillas suenan en cada posición."
+      },
+      "guitar_knobs": {
+        "a11y": "Tres perillas de la guitarra, todas en 10",
+        "l1": "Volumen de la guitarra.",
+        "l2": "Tono de la pastilla del mástil.",
+        "l3": "Tono de la pastilla del medio (en muchas guitarras, del puente)."
+      },
+      "amp_panel": {
+        "a11y": "Panel del ampli con cinco perillas",
+        "l1": "GAIN: saturación.",
+        "l2": "BASS: graves.",
+        "l3": "MIDDLE: medios.",
+        "l4": "TREBLE: agudos.",
+        "l5": "VOLUME: volumen general."
+      },
+      "amp_clean": {
+        "a11y": "Ampli ajustado para sonido limpio",
+        "l1": "GAIN en 2: sonido limpio.",
+        "l2": "VOLUME a gusto."
+      },
+      "amp_crunch": {
+        "a11y": "Ampli ajustado para crunch",
+        "l1": "GAIN en 6: crunch.",
+        "l2": "VOLUME un poco más bajo."
+      },
+      "cable_amp": {
+        "a11y": "Guitarra conectada al ampli con un cable",
+        "l1": "El cable entra en la guitarra.",
+        "l2": "La otra punta va a INPUT, en el ampli.",
+        "l3": "Volumen del ampli en 0 antes de prenderlo."
+      },
+      "guitar_tuner": {
+        "a11y": "Afinador: la aguja en el centro, en la zona turquesa, indica que la cuerda está afinada"
+      },
+      "posture": {
+        "a11y": "Persona sentada con la guitarra en la pierna y la espalda recta",
+        "l1": "Espalda recta.",
+        "l2": "Guitarra apoyada en la pierna.",
+        "l3": "Mástil un poco hacia arriba.",
+        "l4": "Los dos pies en el suelo."
+      },
+      "pick_grip": {
+        "a11y": "Mano sosteniendo la púa entre el pulgar y el índice",
+        "l1": "Pulgar plano, encima.",
+        "l2": "Índice doblado, debajo.",
+        "l3": "Asoma la punta: 2 o 3 mm."
+      },
+      "pick_down": {
+        "a11y": "Púa bajando sobre una cuerda y el signo de púa hacia abajo",
+        "l1": "Púa hacia abajo.",
+        "l2": "Signo de púa hacia abajo."
+      },
+      "pick_alternate": {
+        "a11y": "Púa alternada: flechas hacia abajo y hacia arriba",
+        "l1": "Abajo (signo de mesa), en el pulso.",
+        "l2": "Arriba (V), entre pulsos."
+      },
+      "string_crossing": {
+        "a11y": "La púa cruzando de una cuerda a otra",
+        "l1": "Camino de la mano, de la 6.ª a la 1.ª.",
+        "l2": "La púa, cerca de la cuerda que viene."
+      }
     }
   },
   "content": {
@@ -908,6 +1001,326 @@
       "pulse": "80 bpm: 8 pulsos con clic y 24 sin clic.",
       "spider": "La araña completa: sube por las 4 cuerdas y vuelve a bajar.",
       "groove": "El Kordi Groove 1 completo a 80 bpm."
+    },
+    "g": {
+      "level": {
+        "1": "Nivel 1 · Fundamentos y control",
+        "2": "Nivel 2 · Acordes, ritmo y riffs",
+        "3": "Nivel 3 · Expresión",
+        "4": "Nivel 4 · Improvisación e intermedio"
+      },
+      "checkpoint": {
+        "1": "Checkpoint 1 · Riff en cuerdas al aire, sin ruido",
+        "2": "Checkpoint 2 · Acordes rasgueados y riff con palm mute",
+        "3": "Checkpoint 3 · Solo corto con bends y vibrato",
+        "4": "Proyecto final · Tu solo sobre una pista de acompañamiento"
+      },
+      "module": {
+        "1_1": "Tu guitarra y tu ampli",
+        "1_2": "Postura y púa",
+        "1_3": "Dedos independientes",
+        "1_4": "Silencio entre notas",
+        "1_5": "Leer guitarra",
+        "2_1": "Primeros acordes",
+        "2_2": "Más acordes abiertos",
+        "2_3": "Cambiar sin parar",
+        "2_4": "Power chords",
+        "2_5": "Palm muting",
+        "2_6": "Pentatónica menor",
+        "3_1": "Ligados",
+        "3_2": "Slides",
+        "3_3": "Bending",
+        "3_4": "Vibrato",
+        "3_5": "Cejilla forma de E",
+        "3_6": "Cejilla forma de A",
+        "3_7": "Mapa del mástil",
+        "4_1": "Las 5 cajas pentatónicas",
+        "4_2": "Todo el mástil",
+        "4_3": "Escala mayor y menor natural",
+        "4_4": "Modos básicos",
+        "4_5": "Fraseo",
+        "4_6": "Púa rápida",
+        "4_7": "Double stops y tríadas",
+        "4_8": "Tapping",
+        "4_9": "Tu sonido: efectos",
+        "4_10": "Proyecto final"
+      },
+      "goal": {
+        "1_1": "Conocer las partes de la guitarra eléctrica, conectarla, afinarla y armar un sonido limpio.",
+        "1_2": "Tocar cuerdas al aire con púa alternada y pulso constante.",
+        "1_3": "Tocar el cromático 1-2-3-4 en las 6 cuerdas, un dedo por traste.",
+        "1_4": "Apagar las cuerdas que no suenan con las dos manos.",
+        "1_5": "Leer diagramas de acordes y tablatura con negras, corcheas y silencios.",
+        "2_1": "Tocar Em, E, Am y A limpios, cuerda por cuerda.",
+        "2_2": "Sumar C, G, D y Dm.",
+        "2_3": "Cambiar entre acordes con rasgueos de negras y corcheas sin perder el pulso.",
+        "2_4": "Mover la quinta con tónica en 6.ª y 5.ª cuerda para tocar riffs.",
+        "2_5": "Apagar con la palma sobre el puente para dar peso a los riffs.",
+        "2_6": "Tocar la 1.ª posición de la pentatónica menor con metrónomo.",
+        "3_1": "Conectar notas con hammer-ons y pull-offs.",
+        "3_2": "Deslizar entre notas llegando al traste justo.",
+        "3_3": "Estirar medio tono y un tono llegando a la afinación exacta.",
+        "3_4": "Hacer un vibrato parejo y controlado.",
+        "3_5": "Tocar acordes con cejilla desde la 6.ª cuerda en todo el mástil.",
+        "3_6": "Tocar acordes con cejilla desde la 5.ª cuerda.",
+        "3_7": "Encontrar todas las notas naturales en la 6.ª y la 5.ª cuerda.",
+        "4_1": "Tocar las cinco posiciones de la pentatónica.",
+        "4_2": "Unir las cajas y moverte en horizontal.",
+        "4_3": "Construirlas por intervalos y tocarlas en dos posiciones.",
+        "4_4": "Usar dórico, mixolidio y frigio a partir de la escala mayor.",
+        "4_5": "Improvisar con motivos y notas objetivo sobre pistas de acompañamiento.",
+        "4_6": "Subir el tempo de la púa alternada sin perder limpieza.",
+        "4_7": "Tocar notas dobles y arpegios de tríadas mayores y menores.",
+        "4_8": "Tocar un patrón básico de tapping a dos manos.",
+        "4_9": "Armar tu sonido con ganancia, delay, reverb y modulación en el orden correcto.",
+        "4_10": "Componer y tocar tu propio solo sobre una pista de acompañamiento."
+      },
+      "star": {
+        "1_1": "Afinar las 6 cuerdas",
+        "1_2": "Primer riff a 80 bpm",
+        "1_3": "Cromático en 6 cuerdas",
+        "1_4": "Riff sin ruido",
+        "1_5": "Lectura a primera vista",
+        "2_1": "Cuatro acordes limpios",
+        "2_2": "Ocho acordes abiertos",
+        "2_3": "Progresión a tempo",
+        "2_4": "Riff de quintas",
+        "2_5": "Riff con palm mute",
+        "2_6": "Pentatónica a 80 bpm",
+        "3_1": "Frase con ligados",
+        "3_2": "Frase con slides",
+        "3_3": "Bend afinado",
+        "3_4": "Nota larga con vibrato",
+        "3_5": "Cejillas en 6.ª",
+        "3_6": "Cejillas en 5.ª",
+        "3_7": "Notas en 6.ª y 5.ª",
+        "4_1": "Cinco cajas",
+        "4_2": "Pentatónica de punta a punta",
+        "4_3": "Mayor y menor",
+        "4_4": "Tres modos",
+        "4_5": "Solo con motivo",
+        "4_6": "Púa alternada a 120 bpm",
+        "4_7": "Tríadas en arpegio",
+        "4_8": "Patrón de tapping",
+        "4_9": "Tu preset de ritmo y de solo",
+        "4_10": "Tu solo completo"
+      },
+      "l111": {
+        "title": "Conoce tu guitarra eléctrica",
+        "objective": "Nombrar 9 partes de la guitarra eléctrica e identificar las 6 cuerdas por número y por sonido.",
+        "s1": "«¡Hola! Soy Kordi. Hoy cambié el bajo por una guitarra eléctrica. Vamos a conocerla juntos.»",
+        "s2": "Clavijas, cejuela, mástil con trastes, cuerpo, pastillas, selector, perillas de volumen y tono, puente y entrada del cable.",
+        "s3": "Seis cuerdas, de la más gruesa a la más fina: Mi, La, Re, Sol, Si y Mi. Escucha cómo suben.",
+        "s4": "«Hay dos Mi: la 6.ª, gruesa y grave, y la 1.ª, fina y aguda. Suenan a dos octavas.»",
+        "c1t": "Las partes de la guitarra eléctrica",
+        "c1b": "Mira el dibujo y ubica cada número en tu guitarra. Las pastillas son los imanes que «escuchan» las cuerdas y mandan la señal al ampli.",
+        "c2t": "Las 6 cuerdas",
+        "c2b": "Se numeran desde la más fina: 1.ª Mi (E), 2.ª Si (B), 3.ª Sol (G), 4.ª Re (D), 5.ª La (A) y 6.ª Mi (E). La 6.ª queda arriba, cerca de tu cara.",
+        "c3t": "Más gruesa = más grave",
+        "c3b": "Cuanto más gruesa la cuerda, más grave el sonido. Escucha la 6.ª y la 1.ª: las dos son Mi, pero a dos octavas de distancia.",
+        "q1": "¿Cuál es la 1.ª cuerda?",
+        "q1o1": "La Mi grave, la más gruesa",
+        "q1o2": "La Mi aguda, la más fina",
+        "q1o3": "La Sol",
+        "q1o4": "La La",
+        "q2": "¿Qué parte convierte la vibración de las cuerdas en la señal que va al ampli?",
+        "q2o1": "Las pastillas",
+        "q2o2": "El puente",
+        "q2o3": "Las clavijas",
+        "ear": "Suenan las dos cuerdas Mi. ¿Cuál es la aguda?",
+        "first": "La primera",
+        "second": "La segunda",
+        "play": "Con el ampli encendido, toca al aire la cuerda que se ilumina, de la 6.ª a la 1.ª."
+      },
+      "l112": {
+        "title": "Conecta guitarra y ampli",
+        "objective": "Enchufar la guitarra al ampli en el orden seguro y que suene a un volumen cómodo.",
+        "s1": "«Una guitarra eléctrica desenchufada casi no suena. Su voz está en el ampli.»",
+        "s2": "Primero el volumen del ampli en 0. Después enchufas el cable a la guitarra y al ampli. Recién ahí lo prendes.",
+        "s3": "En el ampli hay perillas: GAIN, BASS, MIDDLE, TREBLE y VOLUME. Hoy solo usas VOLUME.",
+        "s4": "«Sube el volumen de a poco mientras tocas la 6.ª cuerda, hasta que suene claro, sin aturdir.»",
+        "c1t": "El orden seguro",
+        "c1b": "1: el cable va a la entrada de la guitarra. 2: el otro extremo, a la entrada INPUT del ampli. 3: con el volumen en 0, prende el ampli y súbelo de a poco. Así evitas un golpe fuerte en el parlante y en tus oídos.",
+        "c2t": "El panel del ampli",
+        "c2b": "GAIN da saturación, BASS los graves, MIDDLE los medios, TREBLE los agudos y VOLUME el volumen general. Los nombres vienen en inglés en casi todos los amplis.",
+        "c3t": "La app te escucha por el ampli",
+        "c3b": "Para los ejercicios con guitarra, deja el teléfono cerca del ampli. Sin ampli, el micrófono casi no capta una guitarra eléctrica. Si tienes un multiefecto o un ampli de auriculares, conéctalo a un parlante.",
+        "q1": "¿Qué haces antes de enchufar el cable?",
+        "q1o1": "Subir el volumen del ampli al máximo",
+        "q1o2": "Tocar fuerte para probar",
+        "q1o3": "Bajar el volumen del ampli a 0",
+        "q2": "¿Qué perilla del ampli controla qué tan fuerte suena todo?",
+        "play": "Con el ampli a un volumen cómodo, toca 4 veces la 6.ª cuerda al aire."
+      },
+      "l113": {
+        "title": "Afina las 6 cuerdas",
+        "objective": "Afinar las 6 cuerdas con el afinador de la app, a menos de 5 cents.",
+        "s1": "«Una guitarra desafinada suena mal aunque toques perfecto. Afinar es lo primero, siempre.»",
+        "s2": "Toca una cuerda y mira la aguja. A la izquierda, la cuerda está baja: aprieta la clavija. A la derecha, está alta: aflójala.",
+        "s3": "Afina de la 6.ª a la 1.ª: Mi, La, Re, Sol, Si, Mi. Escucha cómo debería sonar.",
+        "s4": "«Gira de a poco y vuelve a tocar. Cuando la aguja queda en el centro, en turquesa, está afinada.»",
+        "c1t": "Cómo leer el afinador",
+        "c1b": "La aguja en el centro y en turquesa: afinada. Si está a la izquierda, sube la cuerda (aprieta). Si está a la derecha, bájala (afloja). Siempre conviene llegar a la nota desde abajo.",
+        "c2t": "Afinación estándar",
+        "c2b": "De la 6.ª a la 1.ª: Mi (E), La (A), Re (D), Sol (G), Si (B), Mi (E). Toca el ejemplo para escuchar las 6 cuerdas afinadas.",
+        "c3t": "Para comprobar de oído",
+        "c3b": "El traste 5 de una cuerda suena igual que la cuerda siguiente al aire. Hay una excepción: en la 3.ª cuerda (Sol) es el traste 4 el que da la 2.ª (Si).",
+        "ear": "Escucha dos notas. ¿La segunda es más aguda o más grave?",
+        "higher": "Más aguda",
+        "lower": "Más grave",
+        "tune": "Afina cada cuerda que se ilumina hasta que la aguja quede en el centro."
+      },
+      "l114": {
+        "title": "Pastillas, volumen y tono",
+        "objective": "Elegir pastilla con el selector y usar las perillas de volumen y tono de la guitarra.",
+        "s1": "«Mi guitarra tiene tres pastillas. Cada una escucha la cuerda en un lugar distinto.»",
+        "s2": "La pastilla del mástil suena redonda y cálida. Escucha.",
+        "s3": "La del puente suena brillante y con más ataque. Escucha la diferencia.",
+        "s4": "«Las perillas de la guitarra cambian el volumen y el tono antes de llegar al ampli.»",
+        "c1t": "El selector de pastillas",
+        "c1b": "Pastilla 1, del mástil; 2, del medio; 3, del puente. El selector de 5 posiciones elige una o combina dos vecinas. Muchas guitarras tienen 2 pastillas y un selector de 3 posiciones: la idea es la misma.",
+        "c2t": "Pastilla del mástil",
+        "c2b": "Sonido redondo y cálido. Se usa mucho para melodías suaves y solos de blues.",
+        "c3t": "Pastilla del puente",
+        "c3b": "Sonido brillante y con ataque. Es la favorita para riffs de rock y para sonar con crunch.",
+        "c4t": "Volumen y tono de la guitarra",
+        "c4b": "1: volumen de la guitarra. 2 y 3: tono, que en 10 deja todo el brillo y al bajarlo lo oscurece. Para practicar, deja todo en 10 y controla el volumen con el ampli.",
+        "ear": "Escucha. ¿Qué pastilla suena: la del mástil o la del puente?",
+        "neck": "La del mástil",
+        "bridge": "La del puente",
+        "q1": "Quieres un sonido brillante y con mucho ataque para un riff. ¿Qué pastilla eliges?",
+        "q1o1": "La del puente",
+        "q1o2": "La del mástil",
+        "q1o3": "Da lo mismo",
+        "play": "Prueba las pastillas: toca las cuerdas que se iluminan, primero con la del mástil y después con la del puente."
+      },
+      "l115": {
+        "title": "Tu sonido limpio",
+        "objective": "Ajustar el ampli para un sonido limpio y distinguir de oído limpio y crunch.",
+        "s1": "«Ahora vamos a armar tu sonido. Todas las perillas del ampli a la mitad, y GAIN bajo.»",
+        "s2": "Con GAIN en 2 el sonido es limpio: cada nota se escucha clara. Así practicamos casi siempre.",
+        "s3": "Con GAIN en 6 aparece el crunch: el sonido se ensucia un poco y gana fuerza. Escucha.",
+        "s4": "«El crunch es para algunos riffs. Para aprender y para que la app te escuche bien, vuelve al limpio.»",
+        "c1t": "Ecualización: graves, medios y agudos",
+        "c1b": "Empieza con BASS, MIDDLE y TREBLE en 5. Si suena opaco, sube TREBLE. Si suena flaco, sube BASS. MIDDLE le da cuerpo para que la guitarra se escuche en la banda.",
+        "c2t": "Sonido limpio",
+        "c2b": "1: GAIN bajo, en 2 o 3. 2: VOLUME a gusto. Es el sonido para practicar y el que la app escucha mejor.",
+        "c3t": "Crunch",
+        "c3b": "1: GAIN en 6, apenas saturado. 2: baja un poco VOLUME, porque el crunch suena más fuerte. Lo usarás en power chords y palm mute.",
+        "ear": "Escucha. ¿El sonido es limpio o con crunch?",
+        "clean": "Limpio",
+        "crunch": "Crunch",
+        "q1": "¿Qué perilla del ampli agrega saturación (crunch)?",
+        "play": "Con sonido limpio, toca las 6 cuerdas al aire, de la 6.ª a la 1.ª y de vuelta."
+      },
+      "l121": {
+        "title": "Postura",
+        "objective": "Sentarte con la guitarra en una postura cómoda y tocar la 6.ª cuerda a pulso constante.",
+        "s1": "«Una buena postura te deja tocar más tiempo sin cansarte ni lastimarte.»",
+        "s2": "Espalda recta, apoyada en la silla. La guitarra sobre la pierna, con el mástil un poco hacia arriba.",
+        "s3": "Hombros sueltos. El brazo de la púa descansa sobre el cuerpo de la guitarra; el codo de la otra mano, cerca del cuerpo.",
+        "s4": "«Probemos: una nota por cada clic, en la 6.ª cuerda.»",
+        "c1t": "Sentado con la guitarra",
+        "c1b": "1: espalda recta. 2: la guitarra apoyada en la pierna. 3: el mástil un poco hacia arriba, nunca hacia el piso. 4: los dos pies en el suelo. Si tocas parado, ajusta la correa para que la guitarra quede a la misma altura.",
+        "c2t": "Sin tensión",
+        "c2b": "Si sientes los hombros arriba o la muñeca doblada, para, respira y vuelve a acomodarte. Practicar con dolor no sirve.",
+        "q1": "Sentado, ¿dónde se apoya la guitarra?",
+        "q1o1": "Sobre la mesa",
+        "q1o2": "Sobre la pierna, con el mástil un poco hacia arriba",
+        "q1o3": "Con el mástil apuntando al piso",
+        "pulse": "Marca el pulso con el metrónomo: un toque por clic.",
+        "play": "Toca la 6.ª cuerda al aire, una vez por cada clic."
+      },
+      "l122": {
+        "title": "Agarra la púa",
+        "objective": "Sostener la púa entre pulgar e índice y tocar hacia abajo con pulso constante.",
+        "s1": "«La púa es la herramienta de la guitarra eléctrica. Pequeña, pero manda.»",
+        "s2": "Dobla el índice. Apoya la púa sobre el costado de la última falange y ciérrala con el pulgar, plano.",
+        "s3": "Que asome apenas la punta. Toca hacia abajo, desde la muñeca, no desde el codo.",
+        "s4": "«Si la púa gira o se cae, aprieta un poquito más. Solo un poquito.»",
+        "c1t": "El agarre",
+        "c1b": "1: pulgar plano encima. 2: índice doblado debajo. 3: asoma la punta, unos 2 o 3 mm. Si asoma mucho, la púa se engancha en la cuerda.",
+        "c2t": "Púa hacia abajo",
+        "c2b": "1: el movimiento de la púa hacia el piso. 2: este signo, parecido a una mesa, marca «púa hacia abajo» en las partituras.",
+        "c3t": "Desde la muñeca",
+        "c3b": "El movimiento es corto y sale de la muñeca, como si sacudieras una gota de agua. El brazo casi no se mueve.",
+        "q1": "¿Cuánto asoma la punta de la púa?",
+        "q1o1": "La mitad de la púa",
+        "q1o2": "Nada, la tapan los dedos",
+        "q1o3": "Unos 2 o 3 mm",
+        "q2": "Para empezar, ¿con qué parte de la púa tocas la cuerda?",
+        "q2o1": "Con la punta, apenas",
+        "q2o2": "Con toda la púa, bien adentro",
+        "play": "Púa hacia abajo en la 4.ª cuerda (Re), una vez por cada clic."
+      },
+      "l123": {
+        "title": "Púa hacia abajo en cada cuerda",
+        "objective": "Pasar de una cuerda a otra con la púa hacia abajo sin perder el pulso.",
+        "s1": "«Ya sabes tocar una cuerda. Ahora vamos a viajar por las seis.»",
+        "s2": "Para cambiar de cuerda, mueve la mano entera, no solo la púa. El movimiento sigue siendo corto.",
+        "s3": "Cuatro veces cada cuerda, de la 6.ª a la 1.ª. Escucha.",
+        "s4": "«Si te pasas de cuerda, baja el tempo. Primero preciso, después rápido.»",
+        "c1t": "Cruzar cuerdas",
+        "c1b": "1: la mano viaja de la 6.ª a la 1.ª. 2: la púa siempre a la misma distancia de la cuerda. Mira la cuerda que viene, no la que estás tocando.",
+        "c2t": "Cuatro por cuerda",
+        "c2b": "Toca el ejemplo: cuatro negras por cuerda, con el metrónomo. Así suena el ejercicio.",
+        "tab": "Lee la tablatura y toca cada nota en el diapasón.",
+        "play": "Cuatro veces cada cuerda, de la 6.ª a la 1.ª, con púa hacia abajo."
+      },
+      "l124": {
+        "title": "Púa alternada",
+        "objective": "Alternar púa abajo y arriba en corcheas a 60 bpm sin perder el pulso.",
+        "s1": "«Abajo, arriba, abajo, arriba. Así la púa toca el doble sin trabajar el doble.»",
+        "s2": "En el clic, púa abajo. Entre clic y clic, púa arriba. Son corcheas: dos notas por pulso.",
+        "s3": "El signo de mesa es abajo; la V es arriba. Se alternan siempre, aunque cambies de cuerda.",
+        "s4": "«Si se te mezclan, di en voz alta: “a-rri-ba”, “a-ba-jo”. Funciona.»",
+        "c1t": "Abajo y arriba",
+        "c1b": "1: púa hacia abajo, en el pulso. 2: púa hacia arriba, entre pulsos. El movimiento de subida es tan corto como el de bajada.",
+        "c2t": "Así suenan las corcheas",
+        "c2b": "Dieciséis corcheas en la 3.ª cuerda (Sol), con el clic en cada pulso. Toca el ejemplo y cuenta: «1 y 2 y 3 y 4 y».",
+        "c3t": "Siempre alternada",
+        "c3b": "La púa alternada no se corta: aunque una nota falte, la mano sigue subiendo y bajando. Así no pierdes el tiempo.",
+        "tap": "Toca ↓ y ↑ alternados: dos toques por cada clic.",
+        "play": "Corcheas en la 3.ª cuerda (Sol): abajo en el clic, arriba entre clics."
+      },
+      "l125": {
+        "title": "Tu primer riff",
+        "objective": "Tocar un riff de 4 compases en cuerdas al aire, a 60 bpm o más.",
+        "s1": "«¡Escucha esto! Es un riff hecho solo con cuerdas al aire. Hoy lo tocas tú.»",
+        "s2": "Va saltando entre la 6.ª, la 5.ª, la 4.ª y la 3.ª cuerda. Mira bien la tablatura antes de tocar.",
+        "s3": "Ahora en limpio y más lento, con el metrónomo. Así lo vas a practicar.",
+        "s4": "«Cuando te salga a 60, sube a 70 y a 80. Después, prueba con crunch.»",
+        "c1t": "El riff",
+        "c1b": "Cuatro compases en cuerdas al aire. Toca el ejemplo y sigue la tablatura: los números 0 significan cuerda al aire.",
+        "c2t": "Saltar de cuerda",
+        "c2b": "1: la púa salta de una cuerda a otra sin levantarse mucho. 2: mira la cuerda que viene antes de tocarla.",
+        "c3t": "Con crunch",
+        "c3b": "Así suena con un poco de GAIN. Practícalo en limpio; cuando ya te salga, prueba el crunch solo para disfrutarlo.",
+        "tab": "Lee el riff en la tablatura y toca cada nota en el diapasón.",
+        "play": "Toca el riff completo con el metrónomo."
+      }
+    }
+  },
+  "guitar": {
+    "ui": {
+      "onboarding": {
+        "appTag": "Aprende guitarra eléctrica desde cero",
+        "welcomeBody": "Lecciones cortas, cartoons y ejercicios con y sin guitarra. 15 minutos al día.",
+        "hasBass": "¿Tienes una guitarra eléctrica?"
+      },
+      "lesson": {
+        "steps": {
+          "noBass": "Sin guitarra",
+          "withBass": "Con guitarra"
+        }
+      },
+      "paywall": {
+        "title": "Desbloquea todo el curso"
+      },
+      "songbook": {
+        "intro": "Riffs originales para tocar por género. Se desbloquean con los módulos donde aprendes lo que usan.",
+        "playPrompt": "Tócalo con la guitarra, a tempo con el metrónomo."
+      }
     }
   }
 }

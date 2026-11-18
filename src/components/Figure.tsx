@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Fretboard } from './Fretboard';
 import { Staff } from './Staff';
 import { Kordi } from './Kordi';
+import { GuitarFigure, isGuitarFigure } from './GuitarFigures';
 import { colors } from '../theme';
 import { useSettings } from '../state/settings';
 import type { Figure as FigureId } from '../content/types';
@@ -21,7 +22,11 @@ export function Figure({ id, width }: { id: FigureId; width: number }) {
   const locale = i18n.language as Locale;
   const left = hand === 'left';
 
+  if (isGuitarFigure(id)) return <GuitarFigure id={id} width={width} leftHanded={left} />;
   switch (id) {
+    case 'tuner':
+      // El afinador sirve igual para los dos instrumentos: muestra las cuerdas de esta build.
+      return <GuitarFigure id="guitar-tuner" width={width} leftHanded={left} />;
     case 'bass-clef':
       return <Staff events={[]} width={width} highlightLine={6} accessibilityLabel={t('ui.figure.bassClef')} />;
     case 'fretboard-1234':

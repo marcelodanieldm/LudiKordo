@@ -49,6 +49,8 @@ export default function Practice() {
 function SongbookCard() {
   const { t } = useTranslation();
   const list = useSongbook();
+  // Sin canciones para este instrumento (guitarra, por ahora), no se muestra.
+  if (list.length === 0) return null;
   const open = list.filter((s) => s.state === 'open').length;
   const today = recommendedSong(list);
   const allPremium = list.every((s) => s.state === 'premium');
@@ -125,7 +127,8 @@ function Tuner() {
       </View>
       <View accessibilityLiveRegion="polite" style={{ alignItems: 'center', gap: 6, marginTop: -18 }}>
         <Text style={{ fontFamily: fonts.displayBold, fontSize: 56, lineHeight: 62, color: freq ? statusColor : colors.muted }}>
-          {nearest ? noteName(nearest.openMidi, i18n.language as Locale, notation) : '–'}
+          {/* Con 6 cuerdas hay dos Mi: la octava las distingue (Mi2 grave, Mi4 aguda). */}
+          {nearest ? noteName(nearest.openMidi, i18n.language as Locale, notation, STRINGS.length > 4) : '–'}
         </Text>
         <Text style={{ fontSize: 15, fontWeight: '800', color: colors.muted }}>
           {freq ? `${freq.toFixed(1)} Hz · ${cents > 0 ? '+' : ''}${Math.round(cents)} ¢` : t('ui.practice.tunerHint')}
@@ -141,7 +144,10 @@ function Tuner() {
           const hit = nearest?.id === s.id;
           return (
             <View key={s.id} style={{ flex: 1, minHeight: 48, borderRadius: radius.md, borderWidth: 2, borderColor: hit ? colors.teal : colors.line, backgroundColor: hit ? colors.tealSoft : 'transparent', alignItems: 'center', justifyContent: 'center' }}>
-              <Text style={{ fontSize: 16, fontWeight: '900', color: hit ? colors.teal : colors.ink }}>{noteName(s.openMidi, i18n.language as Locale, notation)}</Text>
+              {/* Con 6 cuerdas cada botón es angosto: solo la letra o el nombre corto. */}
+              <Text style={{ fontSize: STRINGS.length > 4 ? 14 : 16, fontWeight: '900', color: hit ? colors.teal : colors.ink }}>
+                {noteName(s.openMidi, i18n.language as Locale, STRINGS.length > 4 && notation === 'both' ? 'solfege' : notation, STRINGS.length > 4)}
+              </Text>
             </View>
           );
         })}

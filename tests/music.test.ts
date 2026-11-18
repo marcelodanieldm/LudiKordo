@@ -4,7 +4,7 @@ import { centsOff, freqToMidi, midiAt, midiToFreq, noteName, openStringFreqs } f
 import { detectPitch } from '../src/music/yin';
 
 test('afinación estándar del bajo: E1 A1 D2 G2', () => {
-  const f = openStringFreqs();
+  const f = openStringFreqs() as Record<string, number>;
   assert.ok(Math.abs(f.E - 41.2034) < 0.001);
   assert.equal(f.A, 55);
   assert.ok(Math.abs(f.D - 73.4162) < 0.001);

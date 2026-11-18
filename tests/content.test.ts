@@ -5,7 +5,7 @@ import es from '../src/i18n/locales/es.json';
 import pt from '../src/i18n/locales/pt.json';
 import { LESSONS } from '../src/content/lessons';
 import { LEVELS } from '../src/content/curriculum';
-import { midiToFreq } from '../src/music/notes';
+import { midiToFreq, type StringId } from '../src/music/notes';
 
 type Tree = { [k: string]: string | Tree };
 
@@ -275,7 +275,7 @@ test('módulo 2.6: pentagrama con la teoría correcta', async () => {
     assert.equal(f.options[f.correctIndex], '=F');
   }
   // 2.6.2 y 2.6.4: la respuesta es la nota que muestra el pentagrama.
-  const letterOf = (s: 'E' | 'A' | 'D' | 'G', fret: number) => {
+  const letterOf = (s: StringId, fret: number) => {
     const sp = spell(writtenMidi(s, fret));
     return sp.letter + (sp.sharp ? '♯' : '');
   };
@@ -283,10 +283,10 @@ test('módulo 2.6: pentagrama con la teoría correcta', async () => {
     const ex = at('2.6.4', exId);
     if (ex.kind === 'quiz' && ex.staff && !('rest' in ex.staff[0])) assert.equal(ex.options[ex.correctIndex], `=${letterOf(ex.staff[0].string, ex.staff[0].fret)}`, exId);
   }
-  const stringKey = { A: 'oA', E: 'oE', D: 'oD', G: 'oG' } as const;
+  const stringKey: Partial<Record<StringId, string>> = { A: 'oA', E: 'oE', D: 'oD', G: 'oG' };
   for (const exId of ['2.6.2-a', '2.6.2-g', '2.6.2-e']) {
     const ex = at('2.6.2', exId);
-    if (ex.kind === 'quiz' && ex.staff && !('rest' in ex.staff[0])) assert.ok(ex.options[ex.correctIndex].endsWith(stringKey[ex.staff[0].string]), exId);
+    if (ex.kind === 'quiz' && ex.staff && !('rest' in ex.staff[0])) assert.ok(ex.options[ex.correctIndex].endsWith(stringKey[ex.staff[0].string] ?? '?'), exId);
   }
   // 2.6.3: dos blancas = 2 pulsos cada una; negra-silencio-negra-silencio = 2 notas.
   const half = at('2.6.3', '2.6.3-half');
@@ -313,4 +313,18 @@ test('ficha teórica: junta las tarjetas del módulo y respeta Premium', async (
   assert.equal(theorySheet('9.9', () => true), null);
   // Un módulo sin lecciones escritas da una ficha vacía, no un error.
   assert.equal(theorySheet('4.7', () => true)!.sections.length, 0);
+});
+
+test('las lecciones del bajo usan solo sus 4 cuerdas (E A D G)', () => {
+  const bass = new Set(['E', 'A', 'D', 'G']);
+  for (const lesson of Object.values(LESSONS)) {
+    for (const ex of lesson.exercises) {
+      const strings = [
+        ...('notes' in ex ? ex.notes.map((n) => n.string) : []),
+        ...('sequence' in ex ? ex.sequence.map((n) => n.string) : []),
+        ...('score' in ex && ex.score ? ex.score.flatMap((e) => ('string' in e ? [e.string] : [])) : []),
+      ];
+      for (const s of strings) assert.ok(bass.has(s), `${ex.id}: cuerda «${s}» no existe en el bajo`);
+    }
+  }
 });

@@ -97,6 +97,10 @@ Los ejercicios del módulo son de oído (reconocer el efecto en ejemplos sinteti
 
 Mismo esquema que el bajo (ADR 0008): riffs y progresiones **originales**, desbloqueados por los módulos que usan. Géneros pendientes de elegir (el programa sugiere rock, blues, metal, pop y funk).
 
+## Estado
+
+Escritos: módulos 1.1 (5 lecciones) y 1.2 (5 lecciones) en los 3 idiomas, con figuras, cartoons animados y ejemplos sonoros (`src/content/guitar/lessons.ts`). El resto de la ruta se ve con título y objetivo, sin lecciones todavía.
+
 ## Gratis
 
 Igual que en el bajo: módulos 1.1 y 1.2, afinador y metrónomo.

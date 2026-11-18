@@ -10,14 +10,14 @@ import type { TabNote } from '../content/types';
 const LABEL_W = TAB_LABEL_W;
 const LINE_GAP = 18;
 const STAFF_TOP = 14;
-const STAFF_H = LINE_GAP * 3;
+const STAFF_H = LINE_GAP * (STRINGS.length - 1);
 /** Alto de cada renglón: tablatura + figura rítmica debajo. */
 const ROW_H = STAFF_TOP + STAFF_H + 52;
 
 type NoteState = 'done' | 'current' | 'next';
 
 /**
- * Tablatura de 4 líneas (Sol arriba, Mi abajo, como se escribe siempre) con la
+ * Tablatura de una línea por cuerda (la más aguda arriba, como se escribe siempre) con la
  * figura rítmica de cada nota debajo: redonda, blanca o negra. Corta en
  * renglones de compases enteros según el ancho.
  */
@@ -26,8 +26,8 @@ export function TabStaff({ notes, width, current = -1 }: { notes: TabNote[]; wid
   const placed = placeNotes(notes);
   const layout = layoutTab(notes, width);
   const { rows, beatW } = layout;
-  // En la tablatura la cuerda 1 (Sol) va arriba.
-  const lineY = (string: TabNote['string']) => STAFF_TOP + (3 - STRINGS.findIndex((s) => s.id === string)) * LINE_GAP;
+  // En la tablatura la cuerda 1 (la más aguda) va arriba.
+  const lineY = (string: TabNote['string']) => STAFF_TOP + (STRINGS.length - 1 - STRINGS.findIndex((s) => s.id === string)) * LINE_GAP;
   const stateOf = (i: number): NoteState => (i < current ? 'done' : i === current ? 'current' : 'next');
 
   return (
@@ -43,7 +43,7 @@ export function TabStaff({ notes, width, current = -1 }: { notes: TabNote[]; wid
                 <Line key={s.id} x1={LABEL_W} x2={x1} y1={y0 + lineY(s.id)} y2={y0 + lineY(s.id)} stroke={colors.line} strokeWidth={1.5} />
               ))}
               {['T', 'A', 'B'].map((ch, k) => (
-                <SvgText key={ch} x={10} y={y0 + STAFF_TOP + 12 + k * 17} fontSize={13} fontFamily={fonts.black} fill={colors.muted} textAnchor="middle">
+                <SvgText key={ch} x={10} y={y0 + STAFF_TOP + STAFF_H / 2 - 13 + k * 17} fontSize={13} fontFamily={fonts.black} fill={colors.muted} textAnchor="middle">
                   {ch}
                 </SvgText>
               ))}

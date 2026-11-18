@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useReducer, useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import React, { useEffect, useMemo, useReducer, useRef, useState } from 'react';
+import { Animated, Easing, Pressable, StyleSheet, View } from 'react-native';
 import { Text } from './Text';
 import { useTranslation } from 'react-i18next';
 import Rive, { AutoBind, Fit, useRive } from 'rive-react-native';
@@ -11,8 +11,13 @@ import { RIVE_READY } from '../content/assets';
 import { SCENE_GAP_MS, initialPlayer, playerReducer, sceneDurationsMs, voiceTimeoutMs, type PlayerAction, type PlayerState } from '../content/cartoon';
 import { voiceFor } from '../content/voices';
 import { playClip } from '../audio/voice';
-import { noteName, type Locale } from '../music/notes';
+import { STRINGS, noteName, type Locale } from '../music/notes';
 import { useSettings } from '../state/settings';
+import { GuitarDrawingFor, isGuitarFigure } from './GuitarFigures';
+import { RATIO } from './guitarFigureMeta';
+import { playSequence } from '../audio/engine';
+import { LISTEN_COUNT_IN, listenLengthSec, listenSchedule } from '../music/listen';
+import type { Figure, ListenExample } from '../content/types';
 
 const STAGE_H = 210;
 
@@ -22,7 +27,11 @@ const STAGE_H = 210;
  * - Con voz grabada para el idioma: cada escena dura lo que su audio, más una pausa.
  * - Sin voz: cada escena dura su tiempo de lectura (src/content/cartoon.ts).
  * - Con el .riv listo: se le pasan por data binding `scene` (1–4), `talking` y
- *   `subtitle`. Sin él, Kordi bajo el foco con el subtítulo debajo.
+ *   `subtitle`. Sin él, Kordi bajo el foco con el subtítulo debajo y, si la
+ *   lección lo trae (`cartoon.visuals`), la ilustración de la escena animada.
+ * - `cartoon.sounds`: el ejemplo sonoro de la escena suena al empezarla, y la
+ *   escena dura al menos lo que el sonido (sin voz grabada; las lecciones con
+ *   sonidos de escena todavía no tienen voces).
  */
 export function CartoonPlayer({ lesson }: { lesson: Lesson }) {
   const { t, i18n } = useTranslation();
@@ -38,17 +47,32 @@ export function CartoonPlayer({ lesson }: { lesson: Lesson }) {
   const [captions, setCaptions] = useState(true);
   const rate = slow ? 0.75 : 1;
   // Nombres de las cuerdas al aire según el ajuste de notación (glosario: «Mi (E)»).
+  // Variables: {{e}} {{a}} {{d}} {{g}} y, en guitarra, {{b}} y {{e1}} (Mi aguda).
   const texts = useMemo(() => {
-    const n = (midi: number) => noteName(midi, locale, notation);
-    const vars = { e: n(28), a: n(33), d: n(38), g: n(43) };
+    const vars = Object.fromEntries(STRINGS.map((s) => [s.id === 'e' ? 'e1' : s.id.toLowerCase(), noteName(s.openMidi, locale, notation)]));
     return scenes.map((k) => t(k, vars));
   }, [scenes, t, locale, notation]);
-  const readMs = useMemo(() => sceneDurationsMs(texts, rate), [texts, rate]);
+  const sounds = lesson.cartoon.sounds;
+  const visuals = lesson.cartoon.visuals;
+  const readMs = useMemo(
+    () => sceneDurationsMs(texts, rate).map((ms, i) => Math.max(ms, soundMs(sounds?.[i]) + 800)),
+    [texts, rate, sounds],
+  );
   const [setRiveRef, riveRef] = useRive();
   const voice = voiceFor(lesson.id, locale, scene);
 
   const riveResource = lesson.cartoon.riveResource;
   const rive = riveResource !== undefined && RIVE_READY.includes(riveResource) ? riveResource : undefined;
+
+  // Sonido de la escena: suena al empezarla y se corta al pausar o cambiar de escena.
+  useEffect(() => {
+    const sound = sounds?.[scene];
+    if (!playing || !sound) return;
+    const offset = sound.click ? LISTEN_COUNT_IN : 0;
+    const beats = sound.events.reduce((a, e) => a + e.beats, 0) + offset;
+    const handle = playSequence(listenSchedule(sound.events, sound.bpm, offset), sound.click ? { bpm: sound.bpm, beats } : undefined, undefined, sound.tone);
+    return () => handle.stop();
+  }, [playing, scene, sounds]);
 
   // Avance de escenas: por la voz si existe, si no por el tiempo de lectura.
   useEffect(() => {
@@ -129,7 +153,7 @@ export function CartoonPlayer({ lesson }: { lesson: Lesson }) {
               <Rect x={0} y={176} width={350} height={34} fill={colors.stage} />
               <Rect x={0} y={175} width={350} height={2} fill={colors.line} />
             </Svg>
-            <Kordi size={160} />
+            {visuals?.[scene] ? <SceneVisual key={scene} figure={visuals[scene]!} playing={playing} /> : <Kordi size={160} />}
           </>
         )}
         <View style={styles.badge}>
@@ -179,6 +203,58 @@ export function CartoonPlayer({ lesson }: { lesson: Lesson }) {
   );
 }
 
+/** Duración de un sonido de escena, en ms (0 si no hay). */
+function soundMs(sound: ListenExample | null | undefined): number {
+  return sound ? listenLengthSec(sound.events, sound.bpm, sound.click) * 1000 : 0;
+}
+
+/**
+ * Ilustración animada de una escena, mientras no está el .riv: Kordi a un costado
+ * y la figura que entra (aparece, sube y se asienta) y después «respira» bajo el foco.
+ */
+function SceneVisual({ figure, playing }: { figure: Figure; playing: boolean }) {
+  const [w, setW] = useState(0);
+  const left = useSettings((st) => st.hand) === 'left';
+  const enter = useRef(new Animated.Value(0)).current;
+  const breathe = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(enter, { toValue: 1, duration: 650, easing: Easing.out(Easing.back(1.4)), useNativeDriver: true }).start();
+  }, [enter]);
+
+  useEffect(() => {
+    if (!playing) return;
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(breathe, { toValue: 1, duration: 1400, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+        Animated.timing(breathe, { toValue: 0, duration: 1400, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+      ]),
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [breathe, playing]);
+
+  // El dibujo entra entero en el escenario: se limita por ancho y por alto (tablet).
+  const figW = Math.max(0, Math.min(w - 92, (STAGE_H - 46) / (RATIO[figure] ?? 0.4)));
+  const style = {
+    opacity: enter,
+    transform: [
+      { translateY: enter.interpolate({ inputRange: [0, 1], outputRange: [18, 0] }) },
+      { scale: Animated.add(enter.interpolate({ inputRange: [0, 1], outputRange: [0.92, 1] }), breathe.interpolate({ inputRange: [0, 1], outputRange: [0, 0.025] })) },
+    ],
+  };
+  return (
+    <View onLayout={(e) => setW(e.nativeEvent.layout.width)} style={styles.visual}>
+      <Kordi size={88} mood="happy" />
+      {w > 0 && isGuitarFigure(figure) ? (
+        <Animated.View style={[{ width: figW, maxHeight: STAGE_H - 46, justifyContent: 'center' }, style]}>
+          <GuitarDrawingFor id={figure} width={figW} leftHanded={left} compact />
+        </Animated.View>
+      ) : null}
+    </View>
+  );
+}
+
 function Toggle({ label, a11y, on, onPress }: { label: string; a11y?: string; on: boolean; onPress: () => void }) {
   return (
     <Pressable accessibilityRole="switch" accessibilityLabel={a11y ?? label} accessibilityState={{ checked: on }} onPress={onPress} style={[styles.toggle, on && { backgroundColor: colors.ink }]}>
@@ -191,6 +267,7 @@ const styles = StyleSheet.create({
   frame: { borderRadius: radius.xl, overflow: 'hidden', backgroundColor: colors.card, borderWidth: 1, borderColor: colors.border },
   stage: { height: STAGE_H, backgroundColor: colors.night, alignItems: 'center', justifyContent: 'flex-end', paddingBottom: 14, overflow: 'hidden' },
   badge: { position: 'absolute', left: 12, top: 12, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8, backgroundColor: 'rgba(20,18,31,0.8)' },
+  visual: { position: 'absolute', left: 0, right: 0, top: 34, bottom: 10, flexDirection: 'row', alignItems: 'flex-end', gap: 4, paddingHorizontal: 8 },
   caption: { fontSize: 16, fontWeight: '700', lineHeight: 22, paddingHorizontal: 16, paddingTop: 14, minHeight: 66 },
   controls: { flexDirection: 'row', alignItems: 'center', gap: 10, padding: 14 },
   play: { width: 44, height: 44, borderRadius: 22, backgroundColor: colors.ink, alignItems: 'center', justifyContent: 'center' },

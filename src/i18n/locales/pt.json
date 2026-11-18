@@ -234,6 +234,99 @@
     "notifications": {
       "daily": "Hoje tem: {{lesson}}",
       "trialEnding": "Seu teste grátis termina em 2 dias. Você pode cancelar pelo Perfil."
+    },
+    "gfig": {
+      "amp": {
+        "gain": "GAIN",
+        "bass": "BASS",
+        "middle": "MIDDLE",
+        "treble": "TREBLE",
+        "volume": "VOLUME"
+      },
+      "guitar_parts": {
+        "a11y": "Guitarra elétrica com 9 partes numeradas",
+        "l1": "Tarraxas: afinam cada corda.",
+        "l2": "Pestana: onde começam as cordas soltas.",
+        "l3": "Braço com trastes.",
+        "l4": "Corpo.",
+        "l5": "Captadores: “escutam” as cordas.",
+        "l6": "Chave seletora.",
+        "l7": "Botões de volume e tom.",
+        "l8": "Ponte.",
+        "l9": "Entrada do cabo (jack)."
+      },
+      "guitar_strings": {
+        "a11y": "As cordas soltas numeradas, a mais grave embaixo e a mais aguda em cima"
+      },
+      "pickup_selector": {
+        "a11y": "Três captadores e uma chave de 5 posições",
+        "l1": "Captador do braço: redondo e quente.",
+        "l2": "Captador do meio.",
+        "l3": "Captador da ponte: brilhante e com ataque.",
+        "l4": "Chave de 5 posições (na imagem, na 1).",
+        "l5": "Quais captadores soam em cada posição."
+      },
+      "guitar_knobs": {
+        "a11y": "Três botões da guitarra, todos no 10",
+        "l1": "Volume da guitarra.",
+        "l2": "Tom do captador do braço.",
+        "l3": "Tom do captador do meio (em muitas guitarras, da ponte)."
+      },
+      "amp_panel": {
+        "a11y": "Painel do amplificador com cinco botões",
+        "l1": "GAIN: saturação.",
+        "l2": "BASS: graves.",
+        "l3": "MIDDLE: médios.",
+        "l4": "TREBLE: agudos.",
+        "l5": "VOLUME: volume geral."
+      },
+      "amp_clean": {
+        "a11y": "Amplificador ajustado para som limpo",
+        "l1": "GAIN no 2: som limpo.",
+        "l2": "VOLUME a gosto."
+      },
+      "amp_crunch": {
+        "a11y": "Amplificador ajustado para crunch",
+        "l1": "GAIN no 6: crunch.",
+        "l2": "VOLUME um pouco mais baixo."
+      },
+      "cable_amp": {
+        "a11y": "Guitarra ligada ao amplificador com um cabo",
+        "l1": "O cabo entra na guitarra.",
+        "l2": "A outra ponta vai no INPUT do amplificador.",
+        "l3": "Volume do amplificador no 0 antes de ligar."
+      },
+      "guitar_tuner": {
+        "a11y": "Afinador: o ponteiro no centro, na zona turquesa, indica que a corda está afinada"
+      },
+      "posture": {
+        "a11y": "Pessoa sentada com a guitarra na perna e as costas retas",
+        "l1": "Costas retas.",
+        "l2": "Guitarra apoiada na perna.",
+        "l3": "Braço um pouco para cima.",
+        "l4": "Os dois pés no chão."
+      },
+      "pick_grip": {
+        "a11y": "Mão segurando a palheta entre o polegar e o indicador",
+        "l1": "Polegar reto, por cima.",
+        "l2": "Indicador dobrado, por baixo.",
+        "l3": "Aparece a ponta: 2 ou 3 mm."
+      },
+      "pick_down": {
+        "a11y": "Palheta descendo sobre uma corda e o sinal de palhetada para baixo",
+        "l1": "Palhetada para baixo.",
+        "l2": "Sinal de palhetada para baixo."
+      },
+      "pick_alternate": {
+        "a11y": "Palhetada alternada: setas para baixo e para cima",
+        "l1": "Para baixo (sinal de mesa), no pulso.",
+        "l2": "Para cima (V), entre os pulsos."
+      },
+      "string_crossing": {
+        "a11y": "A palheta passando de uma corda para outra",
+        "l1": "Caminho da mão, da 6ª à 1ª.",
+        "l2": "A palheta, perto da corda seguinte."
+      }
     }
   },
   "content": {
@@ -908,6 +1001,326 @@
       "pulse": "80 bpm: 8 pulsos com clique e 24 sem clique.",
       "spider": "A aranha completa: suba pelas 4 cordas e volte descendo.",
       "groove": "O Kordi Groove 1 completo a 80 bpm."
+    },
+    "g": {
+      "level": {
+        "1": "Nível 1 · Fundamentos e controle",
+        "2": "Nível 2 · Acordes, ritmo e riffs",
+        "3": "Nível 3 · Expressão",
+        "4": "Nível 4 · Improvisação e intermediário"
+      },
+      "checkpoint": {
+        "1": "Checkpoint 1 · Riff em cordas soltas, sem ruído",
+        "2": "Checkpoint 2 · Acordes com batida e riff com palm mute",
+        "3": "Checkpoint 3 · Solo curto com bends e vibrato",
+        "4": "Projeto final · Seu solo sobre uma base"
+      },
+      "module": {
+        "1_1": "Sua guitarra e seu amplificador",
+        "1_2": "Postura e palheta",
+        "1_3": "Dedos independentes",
+        "1_4": "Silêncio entre as notas",
+        "1_5": "Ler guitarra",
+        "2_1": "Primeiros acordes",
+        "2_2": "Mais acordes abertos",
+        "2_3": "Trocar sem parar",
+        "2_4": "Power chords",
+        "2_5": "Palm muting",
+        "2_6": "Pentatônica menor",
+        "3_1": "Ligados",
+        "3_2": "Slides",
+        "3_3": "Bend",
+        "3_4": "Vibrato",
+        "3_5": "Pestana forma de E",
+        "3_6": "Pestana forma de A",
+        "3_7": "Mapa da escala",
+        "4_1": "As 5 caixas pentatônicas",
+        "4_2": "O braço inteiro",
+        "4_3": "Escala maior e menor natural",
+        "4_4": "Modos básicos",
+        "4_5": "Fraseado",
+        "4_6": "Palhetada rápida",
+        "4_7": "Double stops e tríades",
+        "4_8": "Tapping",
+        "4_9": "Seu som: efeitos",
+        "4_10": "Projeto final"
+      },
+      "goal": {
+        "1_1": "Conhecer as partes da guitarra elétrica, ligá-la, afiná-la e montar um som limpo.",
+        "1_2": "Tocar cordas soltas com palhetada alternada e pulso constante.",
+        "1_3": "Tocar o cromático 1-2-3-4 nas 6 cordas, um dedo por casa.",
+        "1_4": "Abafar as cordas que não estão soando com as duas mãos.",
+        "1_5": "Ler diagramas de acordes e tablatura com semínimas, colcheias e pausas.",
+        "2_1": "Tocar Em, E, Am e A limpos, corda por corda.",
+        "2_2": "Somar C, G, D e Dm.",
+        "2_3": "Trocar de acorde com batidas de semínimas e colcheias sem perder o pulso.",
+        "2_4": "Mover a quinta com tônica na 6ª e na 5ª corda para tocar riffs.",
+        "2_5": "Abafar com a palma sobre a ponte para dar peso aos riffs.",
+        "2_6": "Tocar a 1ª posição da pentatônica menor com metrônomo.",
+        "3_1": "Conectar notas com hammer-ons e pull-offs.",
+        "3_2": "Deslizar entre notas chegando na casa certa.",
+        "3_3": "Puxar meio tom e um tom chegando na afinação exata.",
+        "3_4": "Fazer um vibrato regular e controlado.",
+        "3_5": "Tocar acordes com pestana a partir da 6ª corda em toda a escala.",
+        "3_6": "Tocar acordes com pestana a partir da 5ª corda.",
+        "3_7": "Encontrar todas as notas naturais na 6ª e na 5ª corda.",
+        "4_1": "Tocar as cinco posições da pentatônica.",
+        "4_2": "Unir as caixas e se mover na horizontal.",
+        "4_3": "Montá-las por intervalos e tocá-las em duas posições.",
+        "4_4": "Usar dórico, mixolídio e frígio a partir da escala maior.",
+        "4_5": "Improvisar com motivos e notas-alvo sobre bases.",
+        "4_6": "Subir o tempo da palhetada alternada sem perder a limpeza.",
+        "4_7": "Tocar notas duplas e arpejos de tríades maiores e menores.",
+        "4_8": "Tocar um padrão básico de tapping com as duas mãos.",
+        "4_9": "Montar seu som com ganho, delay, reverb e modulação na ordem certa.",
+        "4_10": "Compor e tocar seu próprio solo sobre uma base."
+      },
+      "star": {
+        "1_1": "Afinar as 6 cordas",
+        "1_2": "Primeiro riff a 80 bpm",
+        "1_3": "Cromático nas 6 cordas",
+        "1_4": "Riff sem ruído",
+        "1_5": "Leitura à primeira vista",
+        "2_1": "Quatro acordes limpos",
+        "2_2": "Oito acordes abertos",
+        "2_3": "Progressão no tempo",
+        "2_4": "Riff de quintas",
+        "2_5": "Riff com palm mute",
+        "2_6": "Pentatônica a 80 bpm",
+        "3_1": "Frase com ligados",
+        "3_2": "Frase com slides",
+        "3_3": "Bend afinado",
+        "3_4": "Nota longa com vibrato",
+        "3_5": "Pestanas na 6ª",
+        "3_6": "Pestanas na 5ª",
+        "3_7": "Notas na 6ª e 5ª",
+        "4_1": "Cinco caixas",
+        "4_2": "Pentatônica de ponta a ponta",
+        "4_3": "Maior e menor",
+        "4_4": "Três modos",
+        "4_5": "Solo com motivo",
+        "4_6": "Palhetada alternada a 120 bpm",
+        "4_7": "Tríades em arpejo",
+        "4_8": "Padrão de tapping",
+        "4_9": "Seus presets de base e de solo",
+        "4_10": "Seu solo completo"
+      },
+      "l111": {
+        "title": "Conheça sua guitarra elétrica",
+        "objective": "Nomear 9 partes da guitarra elétrica e identificar as 6 cordas pelo número e pelo som.",
+        "s1": "“Oi! Eu sou o Kordi. Hoje troquei o baixo por uma guitarra elétrica. Vamos conhecê-la juntos.”",
+        "s2": "Tarraxas, pestana, braço com trastes, corpo, captadores, chave seletora, botões de volume e tom, ponte e entrada do cabo.",
+        "s3": "Seis cordas, da mais grossa à mais fina: Mi, Lá, Ré, Sol, Si e Mi. Ouça como sobem.",
+        "s4": "“Tem dois Mi: a 6ª, grossa e grave, e a 1ª, fina e aguda. Estão a duas oitavas de distância.”",
+        "c1t": "As partes da guitarra elétrica",
+        "c1b": "Olhe o desenho e encontre cada número na sua guitarra. Os captadores são ímãs que “escutam” as cordas e mandam o sinal para o amplificador.",
+        "c2t": "As 6 cordas",
+        "c2b": "São numeradas a partir da mais fina: 1ª Mi (E), 2ª Si (B), 3ª Sol (G), 4ª Ré (D), 5ª Lá (A) e 6ª Mi (E). A 6ª fica em cima, perto do seu rosto.",
+        "c3t": "Mais grossa = mais grave",
+        "c3b": "Quanto mais grossa a corda, mais grave o som. Ouça a 6ª e a 1ª: as duas são Mi, mas a duas oitavas de distância.",
+        "q1": "Qual é a 1ª corda?",
+        "q1o1": "O Mi grave, a mais grossa",
+        "q1o2": "O Mi agudo, a mais fina",
+        "q1o3": "O Sol",
+        "q1o4": "O Lá",
+        "q2": "Qual parte transforma a vibração das cordas no sinal que vai para o amplificador?",
+        "q2o1": "Os captadores",
+        "q2o2": "A ponte",
+        "q2o3": "As tarraxas",
+        "ear": "Você vai ouvir as duas cordas Mi. Qual é a aguda?",
+        "first": "A primeira",
+        "second": "A segunda",
+        "play": "Com o amplificador ligado, toque solta a corda que acender, da 6ª à 1ª."
+      },
+      "l112": {
+        "title": "Ligue a guitarra no amplificador",
+        "objective": "Ligar a guitarra no amplificador na ordem segura e fazê-la soar num volume confortável.",
+        "s1": "“Uma guitarra elétrica desligada quase não soa. A voz dela está no amplificador.”",
+        "s2": "Primeiro, o volume do amplificador no 0. Depois você liga o cabo na guitarra e no amplificador. Só então liga o amplificador.",
+        "s3": "O amplificador tem botões: GAIN, BASS, MIDDLE, TREBLE e VOLUME. Hoje você só usa o VOLUME.",
+        "s4": "“Suba o volume aos poucos enquanto toca a 6ª corda, até soar claro, sem incomodar.”",
+        "c1t": "A ordem segura",
+        "c1b": "1: o cabo vai na entrada da guitarra. 2: a outra ponta, na entrada INPUT do amplificador. 3: com o volume no 0, ligue o amplificador e suba aos poucos. Assim você evita um estalo forte no alto-falante e nos seus ouvidos.",
+        "c2t": "O painel do amplificador",
+        "c2b": "GAIN dá saturação, BASS os graves, MIDDLE os médios, TREBLE os agudos e VOLUME o volume geral. Os nomes vêm em inglês em quase todos os amplificadores.",
+        "c3t": "O app escuta você pelo amplificador",
+        "c3b": "Nos exercícios com a guitarra, deixe o celular perto do amplificador. Sem amplificador, o microfone quase não capta uma guitarra elétrica. Se você usa uma pedaleira ou um amplificador de fone, ligue numa caixa de som.",
+        "q1": "O que você faz antes de ligar o cabo?",
+        "q1o1": "Subir o volume do amplificador no máximo",
+        "q1o2": "Tocar forte para testar",
+        "q1o3": "Baixar o volume do amplificador para 0",
+        "q2": "Qual botão do amplificador controla o volume de tudo?",
+        "play": "Com o amplificador num volume confortável, toque 4 vezes a 6ª corda solta."
+      },
+      "l113": {
+        "title": "Afine as 6 cordas",
+        "objective": "Afinar as 6 cordas com o afinador do app, a menos de 5 cents.",
+        "s1": "“Uma guitarra desafinada soa mal mesmo que você toque perfeito. Afinar vem sempre primeiro.”",
+        "s2": "Toque uma corda e olhe o ponteiro. À esquerda, a corda está baixa: aperte a tarraxa. À direita, está alta: afrouxe.",
+        "s3": "Afine da 6ª à 1ª: Mi, Lá, Ré, Sol, Si, Mi. Ouça como deve soar.",
+        "s4": "“Gire aos poucos e toque de novo. Quando o ponteiro fica no centro, em turquesa, está afinada.”",
+        "c1t": "Como ler o afinador",
+        "c1b": "Ponteiro no centro e em turquesa: afinada. Se estiver à esquerda, suba a corda (aperte). Se estiver à direita, abaixe (afrouxe). É melhor chegar na nota vindo de baixo.",
+        "c2t": "Afinação padrão",
+        "c2b": "Da 6ª à 1ª: Mi (E), Lá (A), Ré (D), Sol (G), Si (B), Mi (E). Toque o exemplo para ouvir as 6 cordas afinadas.",
+        "c3t": "Para conferir de ouvido",
+        "c3b": "A casa 5 de uma corda soa igual à corda seguinte solta. Tem uma exceção: na 3ª corda (Sol), é a casa 4 que dá a 2ª (Si).",
+        "ear": "Ouça duas notas. A segunda é mais aguda ou mais grave?",
+        "higher": "Mais aguda",
+        "lower": "Mais grave",
+        "tune": "Afine cada corda que acender até o ponteiro ficar no centro."
+      },
+      "l114": {
+        "title": "Captadores, volume e tom",
+        "objective": "Escolher o captador com a chave seletora e usar os botões de volume e tom da guitarra.",
+        "s1": "“Minha guitarra tem três captadores. Cada um escuta a corda num lugar diferente.”",
+        "s2": "O captador do braço soa redondo e quente. Ouça.",
+        "s3": "O da ponte soa brilhante e com mais ataque. Ouça a diferença.",
+        "s4": "“Os botões da guitarra mudam o volume e o tom antes de chegar ao amplificador.”",
+        "c1t": "A chave seletora",
+        "c1b": "Captador 1, do braço; 2, do meio; 3, da ponte. A chave de 5 posições escolhe um ou combina dois vizinhos. Muitas guitarras têm 2 captadores e uma chave de 3 posições: a ideia é a mesma.",
+        "c2t": "Captador do braço",
+        "c2b": "Som redondo e quente. Muito usado em melodias suaves e solos de blues.",
+        "c3t": "Captador da ponte",
+        "c3b": "Som brilhante e com ataque. É o favorito para riffs de rock e para soar com crunch.",
+        "c4t": "Volume e tom da guitarra",
+        "c4b": "1: volume da guitarra. 2 e 3: tom; no 10 deixa todo o brilho e, ao baixar, escurece o som. Para praticar, deixe tudo no 10 e controle o volume no amplificador.",
+        "ear": "Ouça. Qual captador está soando: o do braço ou o da ponte?",
+        "neck": "O do braço",
+        "bridge": "O da ponte",
+        "q1": "Você quer um som brilhante e com muito ataque para um riff. Qual captador escolhe?",
+        "q1o1": "O da ponte",
+        "q1o2": "O do braço",
+        "q1o3": "Tanto faz",
+        "play": "Teste os captadores: toque as cordas que acenderem, primeiro com o do braço e depois com o da ponte."
+      },
+      "l115": {
+        "title": "Seu som limpo",
+        "objective": "Ajustar o amplificador para um som limpo e distinguir de ouvido limpo e crunch.",
+        "s1": "“Agora vamos montar seu som. Todos os botões do amplificador na metade, e o GAIN baixo.”",
+        "s2": "Com GAIN no 2 o som é limpo: cada nota soa clara. É assim que praticamos quase sempre.",
+        "s3": "Com GAIN no 6 aparece o crunch: o som suja um pouco e ganha força. Ouça.",
+        "s4": "“O crunch é para alguns riffs. Para aprender, e para o app escutar bem você, volte para o limpo.”",
+        "c1t": "Equalização: graves, médios e agudos",
+        "c1b": "Comece com BASS, MIDDLE e TREBLE no 5. Se soar abafado, suba o TREBLE. Se soar magro, suba o BASS. O MIDDLE dá corpo para a guitarra aparecer na banda.",
+        "c2t": "Som limpo",
+        "c2b": "1: GAIN baixo, no 2 ou 3. 2: VOLUME a gosto. É o som para praticar e o que o app escuta melhor.",
+        "c3t": "Crunch",
+        "c3b": "1: GAIN no 6, levemente saturado. 2: baixe um pouco o VOLUME, porque o crunch soa mais alto. Você vai usá-lo em power chords e palm mute.",
+        "ear": "Ouça. O som é limpo ou com crunch?",
+        "clean": "Limpo",
+        "crunch": "Crunch",
+        "q1": "Qual botão do amplificador acrescenta saturação (crunch)?",
+        "play": "Com som limpo, toque as 6 cordas soltas, da 6ª à 1ª e de volta."
+      },
+      "l121": {
+        "title": "Postura",
+        "objective": "Sentar com a guitarra numa postura confortável e tocar a 6ª corda com pulso constante.",
+        "s1": "“Uma boa postura deixa você tocar mais tempo sem cansar nem se machucar.”",
+        "s2": "Costas retas, apoiadas na cadeira. A guitarra sobre a perna, com o braço um pouco para cima.",
+        "s3": "Ombros soltos. O braço da palheta descansa sobre o corpo da guitarra; o cotovelo da outra mão, perto do corpo.",
+        "s4": "“Vamos testar: uma nota a cada clique, na 6ª corda.”",
+        "c1t": "Sentado com a guitarra",
+        "c1b": "1: costas retas. 2: a guitarra apoiada na perna. 3: o braço um pouco para cima, nunca para o chão. 4: os dois pés no chão. Se tocar em pé, ajuste a correia para a guitarra ficar na mesma altura.",
+        "c2t": "Sem tensão",
+        "c2b": "Se sentir os ombros subindo ou o pulso dobrado, pare, respire e se ajeite de novo. Praticar com dor não ajuda.",
+        "q1": "Sentado, onde a guitarra fica apoiada?",
+        "q1o1": "Sobre a mesa",
+        "q1o2": "Sobre a perna, com o braço um pouco para cima",
+        "q1o3": "Com o braço apontando para o chão",
+        "pulse": "Marque o pulso com o metrônomo: um toque por clique.",
+        "play": "Toque a 6ª corda solta, uma vez a cada clique."
+      },
+      "l122": {
+        "title": "Segure a palheta",
+        "objective": "Segurar a palheta entre o polegar e o indicador e tocar para baixo com pulso constante.",
+        "s1": "“A palheta é a ferramenta da guitarra elétrica. Pequena, mas manda.”",
+        "s2": "Dobre o indicador. Apoie a palheta na lateral da última falange e feche com o polegar, reto.",
+        "s3": "Deixe aparecer só a ponta. Toque para baixo, com o pulso, não com o cotovelo.",
+        "s4": "“Se a palheta gira ou cai, aperte um pouquinho mais. Só um pouquinho.”",
+        "c1t": "A pegada",
+        "c1b": "1: polegar reto por cima. 2: indicador dobrado por baixo. 3: aparece a ponta, uns 2 ou 3 mm. Se aparecer muito, a palheta prende na corda.",
+        "c2t": "Palhetada para baixo",
+        "c2b": "1: a palheta indo em direção ao chão. 2: este sinal, parecido com uma mesa, indica «palhetada para baixo» na partitura.",
+        "c3t": "Com o pulso",
+        "c3b": "O movimento é curto e sai do pulso, como se você sacudisse uma gota de água. O braço quase não se mexe.",
+        "q1": "Quanto da ponta da palheta aparece?",
+        "q1o1": "Metade da palheta",
+        "q1o2": "Nada, os dedos cobrem",
+        "q1o3": "Uns 2 ou 3 mm",
+        "q2": "Para começar, com qual parte da palheta você toca a corda?",
+        "q2o1": "Só com a ponta",
+        "q2o2": "Com a palheta inteira, bem fundo",
+        "play": "Palhetada para baixo na 4ª corda (Ré), uma vez a cada clique."
+      },
+      "l123": {
+        "title": "Palhetada para baixo em cada corda",
+        "objective": "Passar de uma corda para outra com palhetada para baixo sem perder o pulso.",
+        "s1": "“Você já sabe tocar uma corda. Agora vamos viajar pelas seis.”",
+        "s2": "Para mudar de corda, mova a mão inteira, não só a palheta. O movimento continua curto.",
+        "s3": "Quatro vezes cada corda, da 6ª à 1ª. Ouça.",
+        "s4": "“Se errar a corda, diminua o tempo. Primeiro preciso, depois rápido.”",
+        "c1t": "Cruzar cordas",
+        "c1b": "1: a mão viaja da 6ª à 1ª. 2: a palheta sempre à mesma distância da corda. Olhe para a corda seguinte, não para a que está tocando.",
+        "c2t": "Quatro por corda",
+        "c2b": "Toque o exemplo: quatro semínimas por corda, com o metrônomo. É assim que o exercício soa.",
+        "tab": "Leia a tablatura e toque cada nota na escala.",
+        "play": "Quatro vezes cada corda, da 6ª à 1ª, com palhetada para baixo."
+      },
+      "l124": {
+        "title": "Palhetada alternada",
+        "objective": "Alternar palhetada para baixo e para cima em colcheias a 60 bpm sem perder o pulso.",
+        "s1": "“Baixo, cima, baixo, cima. Assim a palheta toca o dobro sem trabalhar o dobro.”",
+        "s2": "No clique, para baixo. Entre um clique e outro, para cima. São colcheias: duas notas por pulso.",
+        "s3": "O sinal de mesa é para baixo; o V é para cima. Eles sempre se alternam, mesmo quando você muda de corda.",
+        "s4": "“Se misturar, diga em voz alta: “baixo”, “cima”. Funciona.”",
+        "c1t": "Para baixo e para cima",
+        "c1b": "1: palhetada para baixo, no pulso. 2: palhetada para cima, entre os pulsos. O movimento para cima é tão curto quanto o para baixo.",
+        "c2t": "Assim soam as colcheias",
+        "c2b": "Dezesseis colcheias na 3ª corda (Sol), com clique em cada pulso. Toque o exemplo e conte: “1 e 2 e 3 e 4 e”.",
+        "c3t": "Sempre alternada",
+        "c3b": "A palhetada alternada não para: mesmo que falte uma nota, a mão continua subindo e descendo. Assim você não perde o tempo.",
+        "tap": "Toque ↓ e ↑ alternados: dois toques a cada clique.",
+        "play": "Colcheias na 3ª corda (Sol): para baixo no clique, para cima entre os cliques."
+      },
+      "l125": {
+        "title": "Seu primeiro riff",
+        "objective": "Tocar um riff de 4 compassos em cordas soltas, a 60 bpm ou mais.",
+        "s1": "“Ouça isto! É um riff feito só com cordas soltas. Hoje quem toca é você.”",
+        "s2": "Ele pula entre a 6ª, a 5ª, a 4ª e a 3ª corda. Olhe bem a tablatura antes de tocar.",
+        "s3": "Agora limpo e mais devagar, com o metrônomo. É assim que você vai praticar.",
+        "s4": "“Quando sair a 60, suba para 70 e 80. Depois, experimente com crunch.”",
+        "c1t": "O riff",
+        "c1b": "Quatro compassos em cordas soltas. Toque o exemplo e siga a tablatura: o número 0 significa corda solta.",
+        "c2t": "Pular de corda",
+        "c2b": "1: a palheta pula de uma corda para outra sem se afastar muito. 2: olhe a corda seguinte antes de tocá-la.",
+        "c3t": "Com crunch",
+        "c3b": "Assim soa com um pouco de GAIN. Pratique no limpo; quando já sair, experimente o crunch só para curtir.",
+        "tab": "Leia o riff na tablatura e toque cada nota na escala.",
+        "play": "Toque o riff inteiro com o metrônomo."
+      }
+    }
+  },
+  "guitar": {
+    "ui": {
+      "onboarding": {
+        "appTag": "Aprenda guitarra elétrica do zero",
+        "welcomeBody": "Aulas curtas, desenhos animados e exercícios com e sem a guitarra. 15 minutos por dia.",
+        "hasBass": "Você tem uma guitarra elétrica?"
+      },
+      "lesson": {
+        "steps": {
+          "noBass": "Sem guitarra",
+          "withBass": "Com guitarra"
+        }
+      },
+      "paywall": {
+        "title": "Desbloqueie o curso inteiro"
+      },
+      "songbook": {
+        "intro": "Riffs originais para tocar por gênero. Eles são liberados com os módulos em que você aprende o que eles usam.",
+        "playPrompt": "Toque na guitarra, no tempo do metrônomo."
+      }
     }
   }
 }

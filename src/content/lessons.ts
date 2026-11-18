@@ -5,6 +5,8 @@
 import type { Lesson } from './types';
 import { LESSONS_2_6 } from './lessons26';
 import { midiToFreq } from '../music/notes';
+import { IS_GUITAR } from '../instruments/current';
+import { GUITAR_LESSONS } from './guitar/lessons';
 
 const k = (lesson: string, key: string) => `content.l${lesson.replace(/\./g, '')}.${key}`;
 
@@ -1234,7 +1236,7 @@ const l125: Lesson = {
   mastery: 0.8,
 };
 
-export const LESSONS: Record<string, Lesson> = {
+export const BASS_LESSONS: Record<string, Lesson> = {
   ...Object.fromEntries(LESSONS_2_6.map((l) => [l.id, l])),
   [l111.id]: l111,
   [l112.id]: l112,
@@ -1262,6 +1264,9 @@ export const LESSONS: Record<string, Lesson> = {
   [l154.id]: l154,
   [l155.id]: l155,
 };
+
+/** Lecciones del instrumento de esta build (la guitarra tiene las suyas en guitar/lessons.ts). */
+export const LESSONS: Record<string, Lesson> = IS_GUITAR ? GUITAR_LESSONS : BASS_LESSONS;
 
 export function getLesson(id: string): Lesson | undefined {
   return LESSONS[id];

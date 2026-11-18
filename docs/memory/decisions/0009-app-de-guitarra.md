@@ -6,8 +6,8 @@
 Marcelo quiere la misma app, pero para guitarra eléctrica de cero a intermedio. Eligió: dos apps separadas en Google Play con un motor común, Kordi como mascota de las dos, un nombre nuevo para la de guitarra (todavía sin definir) y su propio programa de 4 etapas como base del currículo (`docs/CURRICULUM-GUITAR.md`).
 
 ## Decisión
-- **Un repo, dos apps por variante de build**, no npm workspaces: `app.config.ts` lee `APP_INSTRUMENT` (`bass` por defecto, `guitar`) y cambia nombre, `slug`, `scheme` y paquete Android (`app.ludikordo.guitar`). Mismo resultado que un monorepo (dos fichas en Play, código común) sin mover cientos de archivos ni duplicar `node_modules`, Expo y CI.
-- **Perfil de instrumento** (`src/instruments/profiles.ts`, puro y con pruebas): cuerdas y afinación, trastes, rango del detector, transposición de los ejemplos sonoros y técnicas propias. Lo lee `src/instruments/active.ts` desde `extra.instrument`.
+- **Un repo, dos apps por variante de build**, no npm workspaces: `app.config.ts` y el bundle leen `EXPO_PUBLIC_INSTRUMENT` (`bass` por defecto, `guitar`) y cambia nombre, `slug`, `scheme` y paquete Android (`app.ludikordo.guitar`). Mismo resultado que un monorepo (dos fichas en Play, código común) sin mover cientos de archivos ni duplicar `node_modules`, Expo y CI.
+- **Perfil de instrumento** (`src/instruments/profiles.ts`, puro y con pruebas): cuerdas y afinación, trastes, rango del detector, transposición de los ejemplos sonoros y técnicas propias. El activo está en `src/instruments/current.ts` (constante de build; en las pruebas de Node, bajo). El currículo, las lecciones, los checkpoints, el cancionero y los textos de UI que nombran el instrumento se eligen con él.
 - El contenido de cada instrumento vive aparte (currículo, lecciones, cancionero, claves `content.*`); la interfaz (`ui.*`), el progreso, el audio y las reglas son comunes.
 - Kordi en las dos apps; en la de guitarra toca una guitarra eléctrica (nueva variante en Rive).
 - La suscripción de guitarra es otra app en Play y en RevenueCat; precios y si hay paquete combinado quedan para Marcelo (ADR 0004 sigue siendo hipótesis).
@@ -27,3 +27,12 @@ El equipo es contenido desde la primera lección (1.1: pastillas, volumen, tono 
 - Los bends y el vibrato se miden con YIN siguiendo la afinación en cents en el tiempo.
 - `eas.json` y los workflows (con dueño en CODEOWNERS) necesitan un perfil y un job para la variante de guitarra: se piden en un PR aparte con aprobación de Marcelo.
 - El nombre visible es provisional («Kordi Guitar», cambiable con `APP_GUITAR_NAME`); el paquete Android no depende del nombre.
+
+## Implementación (PR de la APK de guitarra)
+- El motor ya no asume 4 cuerdas: `STRINGS` sale del perfil activo; diapasón, tablatura, afinador, variables de los cartoons (`{{e}} {{a}} {{d}} {{g}} {{b}} {{e1}}`) y rango de YIN (opciones `minFreq`/`maxFreq` del módulo nativo; el algoritmo no cambió) se adaptan solos.
+- Contenido por instrumento: `LEVELS`, `LESSONS`, `CHECKPOINTS` y `SONGS` eligen según la build. La guitarra tiene la ruta completa y las 10 lecciones de 1.1 y 1.2; todavía sin checkpoints ni cancionero (la tarjeta del cancionero se oculta).
+- Textos: `content.g.*` (ruta y lecciones), `ui.gfig.*` (figuras) y `guitar.ui.*`, que en la app de guitarra reemplaza los textos de `ui` que nombran el bajo (`src/i18n/overlay.ts`).
+- Imágenes: figuras de guitarra eléctrica y ampli dibujadas en SVG con leyenda numerada (`GuitarFigures.tsx`). Kordi toca guitarra eléctrica en esa app.
+- Videos: mientras no hay `.riv`, cada escena trae su ilustración animada (`cartoon.visuals`) y su sonido (`cartoon.sounds`).
+- Sonidos: timbres sintetizados (`src/music/timbre.ts`): limpio, crunch, pastilla del mástil y del puente, apagado. El bajo suena igual que antes.
+- APK: el workflow `apk-test` acepta `instrument: guitar` (o push a `cc/apk-guitar`) y publica «LudiKordo-guitarra-prueba-N.apk».
