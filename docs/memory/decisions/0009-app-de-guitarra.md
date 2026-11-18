@@ -35,4 +35,6 @@ El equipo es contenido desde la primera lección (1.1: pastillas, volumen, tono 
 - Imágenes: figuras de guitarra eléctrica y ampli dibujadas en SVG con leyenda numerada (`GuitarFigures.tsx`). Kordi toca guitarra eléctrica en esa app.
 - Videos: mientras no hay `.riv`, cada escena trae su ilustración animada (`cartoon.visuals`) y su sonido (`cartoon.sounds`).
 - Sonidos: timbres sintetizados (`src/music/timbre.ts`): limpio, crunch, pastilla del mástil y del puente, apagado. El bajo suena igual que antes.
+- Tablatura con corcheas y silencios (`src/music/tab.ts`, `TabStaff`): en la guitarra toda partitura en modo tablatura se dibuja así, porque el pentagrama de la app es en clave de fa. El bajo sigue igual (pentagrama cuando hay corcheas o silencios).
+- Diagramas de acordes abiertos (Em, E, Am, A, C, G, D, Dm) en `src/music/chords.ts` + figuras `chord-*`, con prueba de que cada forma suena a su tríada.
 - APK: el workflow `apk-test` acepta `instrument: guitar` (o push a `cc/apk-guitar`) y publica «LudiKordo-guitarra-prueba-N.apk».

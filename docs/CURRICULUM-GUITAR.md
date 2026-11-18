@@ -18,7 +18,7 @@ Familiarizarse con el instrumento, controlar el ruido de las cuerdas y coordinar
 | 1.4 Silencio entre notas | 4 | Apagar las cuerdas que no suenan con las dos manos. |
 | 1.5 Leer guitarra | 5 | Leer diagramas de acordes y tablatura con negras, corcheas y silencios. |
 
-**Checkpoint 1**: riff original en cuerdas al aire con púa alternada, leído de TAB, sin ruido de cuerdas.
+**Checkpoint 1**: oído, lectura de una tablatura nueva, pulso a 80 bpm, cromático en las 6 cuerdas y un riff con corcheas y silencios, sin ruido.
 
 ## Nivel 2 · Acordes, ritmo y riffs (semanas 9–17)
 
@@ -99,7 +99,7 @@ Mismo esquema que el bajo (ADR 0008): riffs y progresiones **originales**, desbl
 
 ## Estado
 
-Escritos: módulos 1.1 (5 lecciones) y 1.2 (5 lecciones) en los 3 idiomas, con figuras, cartoons animados y ejemplos sonoros (`src/content/guitar/lessons.ts`). El resto de la ruta se ve con título y objetivo, sin lecciones todavía.
+Escrito: **nivel 1 completo** (24 lecciones, módulos 1.1–1.5) y el checkpoint 1, en los 3 idiomas, con figuras, cartoons animados y ejemplos sonoros (`src/content/guitar/lessons.ts` y `level1.ts`). Los niveles 2 a 4 se ven con título y objetivo; se escriben de a un nivel por PR.
 
 ## Gratis
 

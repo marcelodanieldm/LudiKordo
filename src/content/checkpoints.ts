@@ -6,6 +6,7 @@
 import { KORDI_GROOVE_1 } from './lessons';
 import { midiToFreq } from '../music/notes';
 import { IS_GUITAR } from '../instruments/current';
+import { GUITAR_CP1 } from './guitar/level1';
 import type { Exercise } from './types';
 
 export interface Checkpoint {
@@ -89,8 +90,8 @@ const cp1: Checkpoint = {
   ],
 };
 
-/** La guitarra todavía no tiene checkpoints: la pantalla muestra «todavía no está lista». */
-export const CHECKPOINTS: Record<number, Checkpoint> = IS_GUITAR ? {} : { [cp1.level]: cp1 };
+/** Checkpoints del instrumento de esta build (los de guitarra están en guitar/level*.ts). */
+export const CHECKPOINTS: Record<number, Checkpoint> = IS_GUITAR ? { [GUITAR_CP1.level]: GUITAR_CP1 } : { [cp1.level]: cp1 };
 
 export function getCheckpoint(level: number): Checkpoint | undefined {
   return CHECKPOINTS[level];

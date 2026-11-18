@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from './ui';
 import { Staff } from './Staff';
 import { TabStaff } from './TabStaff';
+import { IS_GUITAR } from '../instruments/current';
 import { playSequence, type SequenceHandle } from '../audio/engine';
 import { LISTEN_COUNT_IN, listenLengthSec, listenSchedule } from '../music/listen';
 import { isRest } from '../music/staff';
@@ -23,6 +24,9 @@ function asTab(events: ScoreEvent[]): TabNote[] | null {
 export function Score({ events, notation, width, current, noteNames }: { events: ScoreEvent[]; notation: 'tab' | 'staff'; width: number; current?: number; noteNames?: boolean }) {
   const tab = notation === 'tab' ? asTab(events) : null;
   if (tab) return <TabStaff notes={tab} width={width} current={current} />;
+  // La guitarra no tiene pentagrama todavía (el de la app es en clave de fa, del bajo):
+  // corcheas y silencios también van en tablatura.
+  if (notation === 'tab' && IS_GUITAR) return <TabStaff notes={events} width={width} current={current} />;
   return <Staff events={events} width={width} current={current} noteNames={noteNames} />;
 }
 

@@ -7,7 +7,8 @@ import { Fretboard } from './Fretboard';
 import { STRINGS } from '../music/notes';
 import { colors } from '../theme';
 import type { Figure } from '../content/types';
-import { LEGEND_COUNT, RATIO } from './guitarFigureMeta';
+import { CHORD_FIGURES, LEGEND_COUNT, RATIO } from './guitarFigureMeta';
+import { CHORDS, type ChordId } from '../music/chords';
 
 export { isGuitarFigure } from './guitarFigureMeta';
 
@@ -130,6 +131,81 @@ function Arrow({ x1, y1, x2, y2, color }: { x1: number; y1: number; x2: number; 
     <G>
       <Line x1={x1} y1={y1} x2={x2} y2={y2} stroke={color} strokeWidth={3} strokeLinecap="round" />
       <Polygon points={`${x2},${y2} ${p1} ${p2}`} fill={color} />
+    </G>
+  );
+}
+
+/**
+ * Diagrama de acorde como se ve en los cancioneros: cuerdas verticales (la 6.ª
+ * a la izquierda; a la derecha para zurdos), trastes horizontales, cejuela
+ * gruesa arriba, X/O sobre la cejuela y el número de dedo en cada punto.
+ */
+function ChordDiagram({ chord, left, callouts = false }: { chord: ChordId; left: boolean; callouts?: boolean }) {
+  const shape = CHORDS[chord];
+  const x0 = 150;
+  const gap = 26;
+  const top = 52;
+  const fretH = 34;
+  // Los diagramas no se espejan para zurdos: los cancioneros los dibujan siempre igual.
+  void left;
+  const sx = (i: number) => x0 + i * gap;
+  return (
+    <G>
+      <SvgText x={70} y={118} fontSize={34} fontWeight="900" fill={colors.ink} textAnchor="middle">
+        {chord}
+      </SvgText>
+      <Rect x={x0} y={top} width={gap * 5} height={fretH * 4} fill={colors.wood} opacity={0.35} />
+      <Rect x={x0 - 2} y={top - 5} width={gap * 5 + 4} height={6} fill={colors.nut} />
+      {[1, 2, 3, 4].map((f) => (
+        <Line key={f} x1={x0} y1={top + f * fretH} x2={x0 + gap * 5} y2={top + f * fretH} stroke={colors.fret} strokeWidth={2} />
+      ))}
+      {[0, 1, 2, 3, 4, 5].map((i) => (
+        <Line key={i} x1={sx(i)} y1={top} x2={sx(i)} y2={top + fretH * 4} stroke={colors.stringColor} strokeWidth={2.6 - i * 0.3} />
+      ))}
+      {shape.frets.map((f, i) =>
+        f <= 0 ? (
+          <SvgText key={`m${i}`} x={sx(i)} y={top - 12} fontSize={14} fontWeight="900" fill={f < 0 ? colors.accent : colors.teal} textAnchor="middle">
+            {f < 0 ? 'X' : 'O'}
+          </SvgText>
+        ) : (
+          <G key={`d${i}`}>
+            <Circle cx={sx(i)} cy={top + (f - 0.5) * fretH} r={10} fill={colors.gold} />
+            <SvgText x={sx(i)} y={top + (f - 0.5) * fretH + 4} fontSize={12} fontWeight="900" fill={colors.onAccent} textAnchor="middle">
+              {shape.fingers[i]}
+            </SvgText>
+          </G>
+        ),
+      )}
+      {[6, 5, 4, 3, 2, 1].map((n, i) => (
+        <SvgText key={`n${n}`} x={sx(i)} y={top + fretH * 4 + 16} fontSize={10} fontWeight="800" fill={colors.muted} textAnchor="middle">
+          {n}
+        </SvgText>
+      ))}
+      {callouts ? (
+        <>
+          <Callout x={x0 - 24} y={top + fretH * 3} n={1} />
+          <Callout x={x0 + gap * 5 + 24} y={top + fretH * 2} n={2} />
+          <Callout x={x0 + gap * 5 + 24} y={top - 2} n={3} />
+          <Callout x={sx(2) + 22} y={top + 1.5 * fretH} n={4} />
+          <Callout x={x0 - 24} y={top - 14} n={5} />
+        </>
+      ) : null}
+    </G>
+  );
+}
+
+/** Tramo de mástil horizontal (trastes 1–4) que usan las figuras de la mano que pisa. */
+function NeckSection() {
+  return (
+    <G>
+      <Rect x={20} y={36} width={320} height={84} fill={colors.wood} />
+      <Rect x={20} y={36} width={6} height={84} fill={colors.nut} />
+      {[100, 176, 248, 316].map((x) => (
+        <Line key={x} x1={x} y1={36} x2={x} y2={120} stroke={colors.fret} strokeWidth={3} />
+      ))}
+      {[0, 1, 2, 3, 4, 5].map((i) => (
+        <Line key={i} x1={20} y1={44 + i * 14.4} x2={340} y2={44 + i * 14.4} stroke={colors.stringColor} strokeWidth={1.2 + (i * 1.6) / 5} />
+      ))}
     </G>
   );
 }
@@ -355,6 +431,74 @@ function Drawing({ id, left }: { id: Figure; left: boolean }) {
           })}
         </Svg>
       );
+    case 'fret-hand': {
+      const mirror = (x: number) => (left ? 360 - x : x);
+      // Cada dedo pisa justo detrás de su traste (del lado de la cejuela).
+      const fretCenters = [88, 164, 236, 304];
+      return (
+        <Svg viewBox="0 0 360 150" width="100%" height="100%">
+          <G transform={left ? 'translate(360,0) scale(-1,1)' : undefined}>
+            <NeckSection />
+            {/* Pulgar detrás del mástil, a la altura del dedo 2 */}
+            <Ellipse cx={150} cy={134} rx={34} ry={10} fill="#C9874F" opacity={0.85} />
+          </G>
+          {fretCenters.map((x, i) => (
+            <G key={x}>
+              <Circle cx={mirror(x)} cy={116} r={12} fill={colors.gold} />
+              <SvgText x={mirror(x)} y={120} fontSize={13} fontWeight="900" fill={colors.onAccent} textAnchor="middle">
+                {i + 1}
+              </SvgText>
+            </G>
+          ))}
+          <Callout x={mirror(196)} y={140} n={5} />
+          {[1, 2, 3, 4].map((n, i) => (
+            <SvgText key={n} x={mirror(fretCenters[i])} y={26} fontSize={11} fontWeight="800" fill={colors.muted} textAnchor="middle">
+              {n}
+            </SvgText>
+          ))}
+        </Svg>
+      );
+    }
+    case 'mute-fret-hand':
+      return (
+        <Svg viewBox="0 0 360 140" width="100%" height="100%">
+          <G transform={left ? 'translate(360,0) scale(-1,1)' : undefined}>
+            <NeckSection />
+            {/* Dedo apoyado sin apretar, a lo ancho de las cuerdas */}
+            <Rect x={196} y={34} width={30} height={90} rx={15} fill="#C9874F" opacity={0.7} />
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <SvgText key={i} x={300} y={48 + i * 14.4} fontSize={12} fontWeight="900" fill={colors.accent} textAnchor="middle">
+                ×
+              </SvgText>
+            ))}
+          </G>
+          <Callout x={left ? 360 - 211 : 211} y={20} n={1} />
+          <Callout x={left ? 360 - 300 : 300} y={132} n={2} />
+        </Svg>
+      );
+    case 'mute-pick-hand':
+      return (
+        <Svg viewBox="0 0 360 140" width="100%" height="100%">
+          <G transform={left ? 'translate(360,0) scale(-1,1)' : undefined}>
+            <Rect x={0} y={20} width={360} height={110} fill={BODY} />
+            <Rect x={250} y={34} width={22} height={84} rx={3} fill={METAL} />
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <Line key={i} x1={0} y1={44 + i * 14.4} x2={262} y2={44 + i * 14.4} stroke={colors.stringColor} strokeWidth={2.8 - (i * 1.6) / 5} />
+            ))}
+            {/* Canto de la palma sobre las cuerdas graves, justo antes del puente */}
+            <Path d="M200 40 C230 34 252 50 250 80 C248 102 228 112 210 106 C196 100 190 60 200 40 Z" fill="#C9874F" opacity={0.85} />
+            <Pick x={170} y={100} scale={1} />
+          </G>
+          <Callout x={left ? 360 - 222 : 222} y={22} n={1} />
+          <Callout x={left ? 360 - 120 : 120} y={22} n={2} />
+        </Svg>
+      );
+    case 'chord-diagram-how':
+      return (
+        <Svg viewBox="0 0 360 216" width="100%" height="100%">
+          <ChordDiagram chord="Em" left={left} callouts />
+        </Svg>
+      );
     case 'string-crossing':
       return (
         <Svg viewBox="0 0 360 150" width="100%" height="100%">
@@ -375,8 +519,14 @@ function Drawing({ id, left }: { id: Figure; left: boolean }) {
           <Callout x={240} y={44} n={2} />
         </Svg>
       );
-    default:
-      return null;
+    default: {
+      const chord = CHORD_FIGURES[id];
+      return chord ? (
+        <Svg viewBox="0 0 360 216" width="100%" height="100%">
+          <ChordDiagram chord={chord} left={left} />
+        </Svg>
+      ) : null;
+    }
   }
 }
 
