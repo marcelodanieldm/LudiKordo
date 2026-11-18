@@ -301,3 +301,29 @@ export const OCTAVE: GridDiagram = {
   ],
   marks: [null, 'x', null, 'x', 'x', 'x'],
 };
+
+// ───────────── Acordes por nombre (pistas del cancionero) ─────────────
+
+const LETTER_PC: Record<string, number> = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
+/** Intervalos desde la tónica de cada tipo de acorde, como un rasgueo simple de guitarra. */
+const QUALITY: Record<string, number[]> = {
+  '': [0, 7, 12, 16],
+  m: [0, 7, 12, 15],
+  '7': [0, 7, 10, 16],
+  m7: [0, 7, 10, 15],
+  maj7: [0, 7, 11, 16],
+  '5': [0, 7, 12],
+};
+
+/**
+ * Notas MIDI de un acorde escrito en cifrado americano («Am7», «F#», «Bb5»),
+ * con la tónica entre Mi2 y Re♯3 (registro de las cuerdas graves de la guitarra).
+ * Devuelve null si el tipo de acorde no está en la tabla.
+ */
+export function chordFromName(name: string): number[] | null {
+  const m = /^([A-G])([#b]?)(.*)$/.exec(name);
+  if (!m || !Object.prototype.hasOwnProperty.call(QUALITY, m[3])) return null;
+  const pc = (LETTER_PC[m[1]] + (m[2] === '#' ? 1 : m[2] === 'b' ? -1 : 0) + 12) % 12;
+  const root = 40 + ((pc - 4 + 12) % 12);
+  return QUALITY[m[3]].map((i) => root + i);
+}

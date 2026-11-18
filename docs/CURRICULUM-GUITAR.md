@@ -110,3 +110,22 @@ Acordes en el nivel 2: mientras la app no reconoce acordes, cada uno se practica
 ## Gratis
 
 Igual que en el bajo: módulos 1.1 y 1.2, afinador y metrónomo.
+
+## Cancionero
+
+10 canciones originales, dos por género (rock, pop, funk, jazz y gospel, elegidos por Marcelo el 18 nov 2026), en `src/content/guitar/songs.ts`. La guitarra toca la melodía o el riff y la app acompaña con una pista armada desde el cifrado (`chordFromName` en `src/music/chords.ts`). Se desbloquean por módulos:
+
+| Canción | Género | Nivel | Pide |
+| --- | --- | --- | --- |
+| Primer sol | Pop | 1 | 1.5 |
+| Motor en Mi | Rock | 1 | 1.5 |
+| Domingo de mañana | Gospel | 2 | 2.3 |
+| Freno de mano | Funk | 2 | 2.5 |
+| Ruta de noche | Rock | 3 | 3.4 |
+| Ciudad de vidrio | Pop | 3 | 3.7 |
+| Taller de groove | Funk | 4 | 4.4 |
+| Martes en el club | Jazz | 4 | 4.3 |
+| Luz de madrugada | Jazz | 4 | 4.3, 4.7 |
+| Coro del barrio | Gospel | 4 | 4.5 |
+
+Reglas probadas: compases completos, un acorde por compás, la nota del tiempo 1 es del acorde, corcheas a 80 bpm o menos al empezar y sin bends (la altura se mide al atacar).

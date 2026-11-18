@@ -382,7 +382,7 @@ export interface Level {
   modules: Module[];
 }
 
-export type Genre = 'reggae' | 'bossa' | 'soul' | 'blues' | 'rock' | 'pop' | 'ballad';
+export type Genre = 'reggae' | 'bossa' | 'soul' | 'blues' | 'rock' | 'pop' | 'ballad' | 'funk' | 'jazz' | 'gospel';
 
 /** Canción del cancionero: una línea de bajo original para tocar sobre su cifrado. */
 export interface Song {
@@ -404,4 +404,11 @@ export interface Song {
   line: ScoreEvent[];
   notation: ScoreNotation;
   skills: Skill[];
+  /**
+   * Guitarra: rasgueo de la pista que acompaña el ejemplo (los acordes salen del
+   * cifrado). Sin esto, el ejemplo es solo la línea.
+   */
+  strum?: Stroke[];
+  /** Timbre de la línea en el ejemplo (guitarra). */
+  tone?: Tone;
 }
