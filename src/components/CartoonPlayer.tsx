@@ -14,6 +14,7 @@ import { playClip } from '../audio/voice';
 import { STRINGS, noteName, type Locale } from '../music/notes';
 import { useSettings } from '../state/settings';
 import { GuitarDrawingFor, isGuitarFigure } from './GuitarFigures';
+import { RATIO } from './guitarFigureMeta';
 import { playSequence } from '../audio/engine';
 import { LISTEN_COUNT_IN, listenLengthSec, listenSchedule } from '../music/listen';
 import type { Figure, ListenExample } from '../content/types';
@@ -29,7 +30,8 @@ const STAGE_H = 210;
  *   `subtitle`. Sin él, Kordi bajo el foco con el subtítulo debajo y, si la
  *   lección lo trae (`cartoon.visuals`), la ilustración de la escena animada.
  * - `cartoon.sounds`: el ejemplo sonoro de la escena suena al empezarla, y la
- *   escena dura al menos lo que el sonido.
+ *   escena dura al menos lo que el sonido (sin voz grabada; las lecciones con
+ *   sonidos de escena todavía no tienen voces).
  */
 export function CartoonPlayer({ lesson }: { lesson: Lesson }) {
   const { t, i18n } = useTranslation();
@@ -232,7 +234,8 @@ function SceneVisual({ figure, playing }: { figure: Figure; playing: boolean }) 
     return () => loop.stop();
   }, [breathe, playing]);
 
-  const figW = Math.max(0, w - 92);
+  // El dibujo entra entero en el escenario: se limita por ancho y por alto (tablet).
+  const figW = Math.max(0, Math.min(w - 92, (STAGE_H - 46) / (RATIO[figure] ?? 0.4)));
   const style = {
     opacity: enter,
     transform: [
@@ -245,7 +248,7 @@ function SceneVisual({ figure, playing }: { figure: Figure; playing: boolean }) 
       <Kordi size={88} mood="happy" />
       {w > 0 && isGuitarFigure(figure) ? (
         <Animated.View style={[{ width: figW, maxHeight: STAGE_H - 46, justifyContent: 'center' }, style]}>
-          <GuitarDrawingFor id={figure} width={figW} leftHanded={left} />
+          <GuitarDrawingFor id={figure} width={figW} leftHanded={left} compact />
         </Animated.View>
       ) : null}
     </View>

@@ -73,7 +73,11 @@ function scheduleVoice(c: AudioContext, freq: number, at: number, durSec: number
   gain.gain.setValueAtTime(0, at);
   gain.gain.linearRampToValueAtTime(peak, at + voice.attack);
   if (voice.envelope === 'sustain') {
-    gain.gain.setValueAtTime(peak * Math.max(0.05, voice.sustain), at + Math.max(voice.attack, ring * 0.7));
+    // Baja suave al nivel de sostenido, se mantiene y recién al final se apaga (sin escalones que hagan clic).
+    const level = peak * Math.max(0.05, voice.sustain);
+    const settle = Math.min(at + voice.attack + 0.05, at + ring * 0.7);
+    gain.gain.linearRampToValueAtTime(level, settle);
+    gain.gain.setValueAtTime(level, Math.max(settle, at + ring * 0.7));
   }
   gain.gain.exponentialRampToValueAtTime(0.001, at + ring);
   gain.connect(c.destination);

@@ -236,6 +236,13 @@
       "trialEnding": "Tu prueba gratis termina en 2 días. Puedes cancelarla desde Perfil."
     },
     "gfig": {
+      "amp": {
+        "gain": "GAIN",
+        "bass": "BASS",
+        "middle": "MIDDLE",
+        "treble": "TREBLE",
+        "volume": "VOLUME"
+      },
       "guitar_parts": {
         "a11y": "Guitarra eléctrica con 9 partes numeradas",
         "l1": "Clavijas: afinan cada cuerda.",

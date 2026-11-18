@@ -135,6 +135,7 @@ function Arrow({ x1, y1, x2, y2, color }: { x1: number; y1: number; x2: number; 
 }
 
 function Drawing({ id, left }: { id: Figure; left: boolean }) {
+  const { t } = useTranslation();
   switch (id) {
     case 'guitar-parts':
       return (
@@ -205,12 +206,13 @@ function Drawing({ id, left }: { id: Figure; left: boolean }) {
     case 'amp-clean':
     case 'amp-crunch': {
       const gain = id === 'amp-crunch' ? 6 : 2;
+      // Rótulos del panel: en todos los idiomas, como vienen serigrafiados en los amplis (en inglés).
       const knobs: [string, number][] = [
-        ['GAIN', id === 'amp-panel' ? 3 : gain],
-        ['BASS', 5],
-        ['MIDDLE', 5],
-        ['TREBLE', id === 'amp-crunch' ? 6 : 5],
-        ['VOLUME', id === 'amp-crunch' ? 3 : 4],
+        [t('ui.gfig.amp.gain'), id === 'amp-panel' ? 3 : gain],
+        [t('ui.gfig.amp.bass'), 5],
+        [t('ui.gfig.amp.middle'), 5],
+        [t('ui.gfig.amp.treble'), id === 'amp-crunch' ? 6 : 5],
+        [t('ui.gfig.amp.volume'), id === 'amp-crunch' ? 3 : 4],
       ];
       return (
         <Svg viewBox="0 0 360 130" width="100%" height="100%">
@@ -257,7 +259,7 @@ function Drawing({ id, left }: { id: Figure; left: boolean }) {
           <Line x1={180} y1={112} x2={196} y2={14} stroke={colors.accent} strokeWidth={4} strokeLinecap="round" />
           <Circle cx={180} cy={112} r={7} fill={colors.ink} />
           {STRINGS.map((s, k) => (
-            <SvgText key={s.id} x={180 + (k - (STRINGS.length - 1) / 2) * 44} y={142} fontSize={16} fontWeight="900" fill={k === 1 ? colors.teal : colors.muted} textAnchor="middle">
+            <SvgText key={s.id} x={180 + (k - (STRINGS.length - 1) / 2) * 44} y={142} fontSize={16} fontWeight="900" fill={colors.muted} textAnchor="middle">
               {s.id.toUpperCase()}
             </SvgText>
           ))}
@@ -333,6 +335,26 @@ function Drawing({ id, left }: { id: Figure; left: boolean }) {
         </Svg>
       );
     }
+    case 'guitar-strings':
+      // Versión compacta para el escenario del cartoon (el diapasón completo no entra).
+      return (
+        <Svg viewBox="0 0 360 150" width="100%" height="100%">
+          <Rect x={40} y={14} width={312} height={122} rx={6} fill={colors.wood} />
+          <Rect x={40} y={14} width={6} height={122} fill={colors.nut} />
+          {STRINGS.map((s, k) => {
+            const y = 24 + (STRINGS.length - 1 - k) * (100 / Math.max(1, STRINGS.length - 1));
+            return (
+              <G key={s.id}>
+                <Line x1={46} y1={y} x2={352} y2={y} stroke={colors.stringColor} strokeWidth={3.2 - (k * 2) / Math.max(1, STRINGS.length - 1)} />
+                <Circle cx={22} cy={y} r={10} fill={colors.teal} />
+                <SvgText x={22} y={y + 4} fontSize={11} fontWeight="900" fill={colors.onTeal} textAnchor="middle">
+                  {s.number}
+                </SvgText>
+              </G>
+            );
+          })}
+        </Svg>
+      );
     case 'string-crossing':
       return (
         <Svg viewBox="0 0 360 150" width="100%" height="100%">
@@ -358,9 +380,12 @@ function Drawing({ id, left }: { id: Figure; left: boolean }) {
   }
 }
 
-/** Solo el dibujo (sin leyenda): lo usa el reproductor de cartoons. */
-export function GuitarDrawingFor({ id, width, leftHanded }: { id: Figure; width: number; leftHanded: boolean }) {
-  if (id === 'guitar-strings') {
+/**
+ * Solo el dibujo (sin leyenda). `compact` lo usa el reproductor de cartoons: las
+ * cuerdas se dibujan sin el diapasón completo para que entren en el escenario.
+ */
+export function GuitarDrawingFor({ id, width, leftHanded, compact = false }: { id: Figure; width: number; leftHanded: boolean; compact?: boolean }) {
+  if (id === 'guitar-strings' && !compact) {
     return (
       <Fretboard
         width={width}

@@ -314,3 +314,17 @@ test('ficha teórica: junta las tarjetas del módulo y respeta Premium', async (
   // Un módulo sin lecciones escritas da una ficha vacía, no un error.
   assert.equal(theorySheet('4.7', () => true)!.sections.length, 0);
 });
+
+test('las lecciones del bajo usan solo sus 4 cuerdas (E A D G)', () => {
+  const bass = new Set(['E', 'A', 'D', 'G']);
+  for (const lesson of Object.values(LESSONS)) {
+    for (const ex of lesson.exercises) {
+      const strings = [
+        ...('notes' in ex ? ex.notes.map((n) => n.string) : []),
+        ...('sequence' in ex ? ex.sequence.map((n) => n.string) : []),
+        ...('score' in ex && ex.score ? ex.score.flatMap((e) => ('string' in e ? [e.string] : [])) : []),
+      ];
+      for (const s of strings) assert.ok(bass.has(s), `${ex.id}: cuerda «${s}» no existe en el bajo`);
+    }
+  }
+});

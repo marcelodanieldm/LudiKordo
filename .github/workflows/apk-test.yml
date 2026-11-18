@@ -34,7 +34,8 @@ jobs:
       EXPO_PUBLIC_TEST_BUILD: "1"
       EXPO_PUBLIC_DEV_PREMIUM: "1"
       EXPO_PUBLIC_INSTRUMENT: ${{ inputs.instrument || (github.ref_name == 'cc/apk-guitar' && 'guitar') || 'bass' }}
-      APK_NAME: ${{ (inputs.instrument == 'guitar' || github.ref_name == 'cc/apk-guitar') && 'LudiKordo-guitarra' || 'LudiKordo' }}
+      # Misma expresión que EXPO_PUBLIC_INSTRUMENT, para que el nombre siempre coincida con lo compilado.
+      APK_NAME: ${{ (inputs.instrument || (github.ref_name == 'cc/apk-guitar' && 'guitar') || 'bass') == 'guitar' && 'LudiKordo-guitarra' || 'LudiKordo' }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v5
@@ -48,6 +49,9 @@ jobs:
           cache: gradle
       - run: npm ci
       - name: Pruebas de lógica
+        # Las pruebas corren como bajo (el contenido de guitarra se prueba aparte, en tests/guitar.test.ts).
+        env:
+          EXPO_PUBLIC_INSTRUMENT: bass
         run: npm test
       - name: Generar el proyecto Android
         run: npx expo prebuild --platform android --no-install

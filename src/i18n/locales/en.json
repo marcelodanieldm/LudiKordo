@@ -236,6 +236,13 @@
       "trialEnding": "Your free trial ends in 2 days. You can cancel it from Profile."
     },
     "gfig": {
+      "amp": {
+        "gain": "GAIN",
+        "bass": "BASS",
+        "middle": "MIDDLE",
+        "treble": "TREBLE",
+        "volume": "VOLUME"
+      },
       "guitar_parts": {
         "a11y": "Electric guitar with 9 numbered parts",
         "l1": "Tuning pegs: tune each string.",

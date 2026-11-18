@@ -38,6 +38,8 @@ export const LEGEND_COUNT: Partial<Record<Figure, number>> = {
 };
 
 export const RATIO: Partial<Record<Figure, number>> = {
+  // Versión compacta (escenario del cartoon); en las tarjetas se usa el diapasón.
+  'guitar-strings': 150 / 360,
   'guitar-parts': 130 / 360,
   'pickup-selector': 150 / 360,
   'guitar-knobs': 120 / 360,
