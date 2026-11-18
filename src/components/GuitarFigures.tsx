@@ -8,7 +8,7 @@ import { STRINGS } from '../music/notes';
 import { colors } from '../theme';
 import type { Figure } from '../content/types';
 import { CHORD_FIGURES, LEGEND_COUNT, RATIO } from './guitarFigureMeta';
-import { CHORDS, type ChordId } from '../music/chords';
+import { chordDiagram, diagramOf, type GridDiagram } from '../music/chords';
 
 export { isGuitarFigure } from './guitarFigureMeta';
 
@@ -136,48 +136,62 @@ function Arrow({ x1, y1, x2, y2, color }: { x1: number; y1: number; x2: number; 
 }
 
 /**
- * Diagrama de acorde como se ve en los cancioneros: cuerdas verticales (la 6.ª
- * a la izquierda; a la derecha para zurdos), trastes horizontales, cejuela
- * gruesa arriba, X/O sobre la cejuela y el número de dedo en cada punto.
+ * Diagrama en grilla, como en los cancioneros: cuerdas verticales (la 6.ª a la
+ * izquierda), trastes horizontales, cejuela gruesa arriba (o el número del primer
+ * traste si la forma está más arriba), X/O sobre las cuerdas y el dedo en cada
+ * punto; la tónica va en otro color. Sirve para acordes, power chords y cajas de
+ * escala. No se espeja para zurdos: los cancioneros lo dibujan siempre igual.
  */
-function ChordDiagram({ chord, left, callouts = false }: { chord: ChordId; left: boolean; callouts?: boolean }) {
-  const shape = CHORDS[chord];
+function GridDiagramView({ d, callouts = false }: { d: GridDiagram; callouts?: boolean }) {
   const x0 = 150;
   const gap = 26;
   const top = 52;
   const fretH = 34;
-  // Los diagramas no se espejan para zurdos: los cancioneros los dibujan siempre igual.
-  void left;
+  const rows = 4;
   const sx = (i: number) => x0 + i * gap;
+  const withNut = d.startFret === 1;
   return (
     <G>
       <SvgText x={70} y={118} fontSize={34} fontWeight="900" fill={colors.ink} textAnchor="middle">
-        {chord}
+        {d.name}
       </SvgText>
-      <Rect x={x0} y={top} width={gap * 5} height={fretH * 4} fill={colors.wood} opacity={0.35} />
-      <Rect x={x0 - 2} y={top - 5} width={gap * 5 + 4} height={6} fill={colors.nut} />
-      {[1, 2, 3, 4].map((f) => (
+      <Rect x={x0} y={top} width={gap * 5} height={fretH * rows} fill={colors.wood} opacity={0.35} />
+      {withNut ? (
+        <Rect x={x0 - 2} y={top - 5} width={gap * 5 + 4} height={6} fill={colors.nut} />
+      ) : (
+        <>
+          <Line x1={x0} y1={top} x2={x0 + gap * 5} y2={top} stroke={colors.fret} strokeWidth={2} />
+          <SvgText x={x0 + gap * 5 + 12} y={top + fretH / 2 + 5} fontSize={13} fontWeight="900" fill={colors.muted}>
+            {`${d.startFret}`}
+          </SvgText>
+        </>
+      )}
+      {Array.from({ length: rows }, (_, k) => k + 1).map((f) => (
         <Line key={f} x1={x0} y1={top + f * fretH} x2={x0 + gap * 5} y2={top + f * fretH} stroke={colors.fret} strokeWidth={2} />
       ))}
       {[0, 1, 2, 3, 4, 5].map((i) => (
-        <Line key={i} x1={sx(i)} y1={top} x2={sx(i)} y2={top + fretH * 4} stroke={colors.stringColor} strokeWidth={2.6 - i * 0.3} />
+        <Line key={i} x1={sx(i)} y1={top} x2={sx(i)} y2={top + fretH * rows} stroke={colors.stringColor} strokeWidth={2.6 - i * 0.3} />
       ))}
-      {shape.frets.map((f, i) =>
-        f <= 0 ? (
-          <SvgText key={`m${i}`} x={sx(i)} y={top - 12} fontSize={14} fontWeight="900" fill={f < 0 ? colors.accent : colors.teal} textAnchor="middle">
-            {f < 0 ? 'X' : 'O'}
+      {d.marks.map((m, i) =>
+        m ? (
+          <SvgText key={`m${i}`} x={sx(i)} y={top - 12} fontSize={14} fontWeight="900" fill={m === 'x' ? colors.accent : colors.teal} textAnchor="middle">
+            {m === 'x' ? 'X' : 'O'}
           </SvgText>
-        ) : (
-          <G key={`d${i}`}>
-            <Circle cx={sx(i)} cy={top + (f - 0.5) * fretH} r={10} fill={colors.gold} />
-            <SvgText x={sx(i)} y={top + (f - 0.5) * fretH + 4} fontSize={12} fontWeight="900" fill={colors.onAccent} textAnchor="middle">
-              {shape.fingers[i]}
+        ) : null,
+      )}
+      {d.dots.map((dot, k) => {
+        const cy = top + (dot.fret - d.startFret + 0.5) * fretH;
+        return (
+          <G key={`d${k}`}>
+            <Circle cx={sx(dot.string)} cy={cy} r={10} fill={dot.root ? colors.accent : colors.gold} />
+            <SvgText x={sx(dot.string)} y={cy + 4} fontSize={12} fontWeight="900" fill={colors.onAccent} textAnchor="middle">
+              {dot.finger}
             </SvgText>
           </G>
-        ),
-      )}
+        );
+      })}
       {[6, 5, 4, 3, 2, 1].map((n, i) => (
-        <SvgText key={`n${n}`} x={sx(i)} y={top + fretH * 4 + 16} fontSize={10} fontWeight="800" fill={colors.muted} textAnchor="middle">
+        <SvgText key={`n${n}`} x={sx(i)} y={top + fretH * rows + 16} fontSize={10} fontWeight="800" fill={colors.muted} textAnchor="middle">
           {n}
         </SvgText>
       ))}
@@ -477,6 +491,8 @@ function Drawing({ id, left }: { id: Figure; left: boolean }) {
         </Svg>
       );
     case 'mute-pick-hand':
+    case 'palm-mute':
+      // Misma posición de la mano: para apagar se apoya más; para palm mute, apenas sobre el puente.
       return (
         <Svg viewBox="0 0 360 140" width="100%" height="100%">
           <G transform={left ? 'translate(360,0) scale(-1,1)' : undefined}>
@@ -496,7 +512,7 @@ function Drawing({ id, left }: { id: Figure; left: boolean }) {
     case 'chord-diagram-how':
       return (
         <Svg viewBox="0 0 360 216" width="100%" height="100%">
-          <ChordDiagram chord="Em" left={left} callouts />
+          <GridDiagramView d={chordDiagram('Em')} callouts />
         </Svg>
       );
     case 'string-crossing':
@@ -520,10 +536,10 @@ function Drawing({ id, left }: { id: Figure; left: boolean }) {
         </Svg>
       );
     default: {
-      const chord = CHORD_FIGURES[id];
-      return chord ? (
+      const diagram = CHORD_FIGURES[id];
+      return diagram ? (
         <Svg viewBox="0 0 360 216" width="100%" height="100%">
-          <ChordDiagram chord={chord} left={left} />
+          <GridDiagramView d={diagramOf(diagram)} />
         </Svg>
       ) : null;
     }

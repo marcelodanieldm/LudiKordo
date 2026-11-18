@@ -7,6 +7,8 @@ import type { Beats, ListenExample, ScoreEvent, TabNote } from '../types';
 import type { StringId } from '../../instruments/profiles';
 import { GUITAR, midiOn } from '../../instruments/profiles';
 import { midiToFreq } from '../../music/notes';
+import { CHORDS, chordMidi, type ChordId } from '../../music/chords';
+import type { Stroke } from '../../music/strum';
 
 export const k = (lesson: string, key: string) => `content.g.l${lesson.replace(/\./g, '')}.${key}`;
 export const scenes = (lesson: string) => [1, 2, 3, 4].map((n) => k(lesson, `s${n}`));
@@ -41,3 +43,23 @@ export const listen = (events: ScoreEvent[], bpm: number, extra: Partial<ListenE
 
 /** Total de pulsos de una partitura. */
 export const beatsOf = (score: ScoreEvent[]) => score.reduce((a, e) => a + e.beats, 0);
+
+// ───────────── Acordes ─────────────
+
+
+const GUITAR_STRING_IDS: StringId[] = ['E', 'A', 'D', 'G', 'B', 'e'];
+
+/** Las notas de un acorde de grave a agudo (cuerdas que suenan), para tocarlas de a una. */
+export function chordArp(id: ChordId): { string: StringId; fret: number }[] {
+  return CHORDS[id].frets.flatMap((f, i) => (f < 0 ? [] : [{ string: GUITAR_STRING_IDS[i], fret: f }]));
+}
+
+/** Las notas pisadas de un acorde (para tocarlas en el diapasón virtual). */
+export function chordFretted(id: ChordId): { string: StringId; fret: number }[] {
+  return chordArp(id).filter((n) => n.fret > 0);
+}
+
+/** Ejemplo sonoro rasgueado: un acorde por compás. */
+export function strumListen(chords: (ChordId | number[])[], pattern: Stroke[], bpm: number, extra: Partial<ListenExample> = {}): ListenExample {
+  return { events: [], bpm, strum: { chords: chords.map((c) => (Array.isArray(c) ? c : chordMidi(c))), pattern }, ...extra };
+}

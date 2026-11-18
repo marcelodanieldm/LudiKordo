@@ -25,6 +25,7 @@ class StartOptions : Record {
  * Escucha el micrófono y emite:
  * - onPitch: altura cuadro a cuadro (afinador).
  * - onNote: un evento por ataque, cuando la energía sube de golpe y la altura se estabiliza.
+ * - onAttack: un evento por ataque aunque no tenga altura clara (rasgueos de acordes).
  * - onLevel: nivel RMS, para avisar si hay mucho ruido.
  * El tiempo se cuenta en muestras leídas, así no depende del reloj del sistema.
  */
@@ -34,7 +35,7 @@ class PitchDetectorModule : Module() {
 
   override fun definition() = ModuleDefinition {
     Name("PitchDetector")
-    Events("onNote", "onPitch", "onLevel")
+    Events("onNote", "onPitch", "onLevel", "onAttack")
 
     AsyncFunction("start") { options: StartOptions ->
       startListening(options)
@@ -76,6 +77,8 @@ class PitchDetectorModule : Module() {
       var prevRms = 0f
       var pendingOnsetMs = -1.0
       var framesSinceOnset = 0
+      var lastAttackMs = -1000.0
+      var attackRms = 0f
       try {
         while (running) {
           val n = record.read(hop, 0, hop.size, AudioRecord.READ_BLOCKING)
@@ -96,6 +99,19 @@ class PitchDetectorModule : Module() {
             framesSinceOnset = 0
           }
           prevRms = rms * 0.7f + prevRms * 0.3f
+
+          // Golpe de rasgueo: umbral propio, más bajo (un golpe hacia arriba sobre un
+          // acorde que todavía suena rara vez duplica la energía). Cuenta aunque no
+          // haya altura clara. Dos subidas a menos de 60 ms son el mismo golpe.
+          // No toca la detección de notas (onNote) ni YIN.
+          if (rms > 0.01f && rms > attackRms * 1.3f) {
+            val atMs = nowMs - n * 1000.0 / o.sampleRate
+            if (atMs - lastAttackMs > 60.0) {
+              sendEvent("onAttack", mapOf("elapsedMs" to atMs, "rms" to rms))
+              lastAttackMs = atMs
+            }
+          }
+          attackRms = rms * 0.6f + attackRms * 0.4f
 
           val res = if (rms > 0.005f) yin.detect(window) else null
           if (res != null && res.clarity > 0.8f) {

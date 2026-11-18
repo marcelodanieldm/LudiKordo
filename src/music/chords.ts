@@ -38,3 +38,104 @@ export function triadPitchClasses(id: ChordId): number[] {
   const { root, minor } = CHORDS[id];
   return [root, (root + (minor ? 3 : 4)) % 12, (root + 7) % 12];
 }
+
+// ───────────── Diagramas en grilla: acordes, power chords y cajas de escala ─────────────
+
+/** Formas que se dibujan como diagrama vertical (como un acorde). */
+export type DiagramId = ChordId | 'power-6' | 'power-5' | 'penta-a';
+
+export interface GridDot {
+  /** 0 = 6.ª cuerda (Mi grave) … 5 = 1.ª (Mi aguda). */
+  string: number;
+  /** Traste real (no relativo a la grilla). */
+  fret: number;
+  /** Dedo que pisa (1–4). */
+  finger: number;
+  /** Tónica: se pinta distinta. */
+  root?: boolean;
+}
+
+export interface GridDiagram {
+  name: string;
+  /** Primer traste que muestra la grilla (1 = con cejuela). */
+  startFret: number;
+  dots: GridDot[];
+  /** Arriba de cada cuerda: 'x' no suena, 'o' al aire, null nada. */
+  marks: ('x' | 'o' | null)[];
+}
+
+const STRING_INDEX: Record<StringId, number> = { E: 0, A: 1, D: 2, G: 3, B: 4, e: 5 };
+
+export function chordDiagram(id: ChordId): GridDiagram {
+  const shape = CHORDS[id];
+  return {
+    name: id,
+    startFret: 1,
+    dots: shape.frets.flatMap((f, i) => (f > 0 ? [{ string: i, fret: f, finger: shape.fingers[i], root: false }] : [])),
+    marks: shape.frets.map((f) => (f < 0 ? 'x' : f === 0 ? 'o' : null)),
+  };
+}
+
+/** Power chord (quinta) con tónica en la 6.ª: G5 en el traste 3. Móvil a lo largo del mástil. */
+export const POWER_6: GridDiagram = {
+  name: 'G5',
+  startFret: 3,
+  dots: [
+    { string: 0, fret: 3, finger: 1, root: true },
+    { string: 1, fret: 5, finger: 3 },
+  ],
+  marks: [null, null, 'x', 'x', 'x', 'x'],
+};
+
+/** Power chord con tónica en la 5.ª: C5 en el traste 3. */
+export const POWER_5: GridDiagram = {
+  name: 'C5',
+  startFret: 3,
+  dots: [
+    { string: 1, fret: 3, finger: 1, root: true },
+    { string: 2, fret: 5, finger: 3 },
+  ],
+  marks: ['x', null, null, 'x', 'x', 'x'],
+};
+
+/** Pentatónica menor de La, 1.ª posición (traste 5): dos notas por cuerda. */
+export const PENTA_A: GridDiagram = {
+  name: 'Am',
+  startFret: 5,
+  dots: (
+    [
+      ['E', 5, 1, true],
+      ['E', 8, 4, false],
+      ['A', 5, 1, false],
+      ['A', 7, 3, false],
+      ['D', 5, 1, false],
+      ['D', 7, 3, true],
+      ['G', 5, 1, false],
+      ['G', 7, 3, false],
+      ['B', 5, 1, false],
+      ['B', 8, 4, false],
+      ['e', 5, 1, true],
+      ['e', 8, 4, false],
+    ] as [StringId, number, number, boolean][]
+  ).map(([s, fret, finger, root]) => ({ string: STRING_INDEX[s], fret, finger, root })),
+  marks: [null, null, null, null, null, null],
+};
+
+export function diagramOf(id: DiagramId): GridDiagram {
+  if (id === 'power-6') return POWER_6;
+  if (id === 'power-5') return POWER_5;
+  if (id === 'penta-a') return PENTA_A;
+  return chordDiagram(id);
+}
+
+/** Notas MIDI de un diagrama (las que se pisan y las cuerdas al aire). */
+export function diagramMidi(d: GridDiagram): number[] {
+  const open = d.marks.flatMap((m, i) => (m === 'o' ? [GUITAR.strings[i].openMidi] : []));
+  return [...open, ...d.dots.map((dot) => GUITAR.strings[dot.string].openMidi + dot.fret)].sort((a, b) => a - b);
+}
+
+/** Power chord de dos notas con tónica en una cuerda y traste: tónica y quinta (cuerda siguiente, 2 trastes arriba). */
+export function powerMidi(root: 'E' | 'A' | 'D', fret: number): number[] {
+  const r = midiOn(GUITAR, root, fret);
+  return [r, r + 7];
+}

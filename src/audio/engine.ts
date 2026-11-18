@@ -133,7 +133,7 @@ export function stopActiveSequence(): void {
 }
 
 export function playSequence(
-  notes: { freq: number; startSec: number; durSec: number }[],
+  notes: { freq: number; startSec: number; durSec: number; tone?: Tone }[],
   clickBeats?: { bpm: number; beats: number },
   /** Se llama si otro ejemplo empieza y corta a este. */
   onInterrupt?: () => void,
@@ -149,7 +149,8 @@ export function playSequence(
     for (let i = 0; i < clickBeats.beats; i++) click(t0 + i * step, i % 4 === 0);
   }
   const voice = voiceFor(tone, IS_GUITAR);
-  for (const n of notes) scheduleVoice(c, n.freq, t0 + n.startSec, n.durSec, voice);
+  // Una nota puede traer su propio timbre (corcheas apagadas dentro de un riff con crunch).
+  for (const n of notes) scheduleVoice(c, n.freq, t0 + n.startSec, n.durSec, n.tone ? voiceFor(n.tone, IS_GUITAR) : voice);
   let stopped = false;
   const handle = {
     onInterrupt,

@@ -4,6 +4,7 @@
  */
 import type { StringId } from '../music/notes';
 import type { Tone } from '../music/timbre';
+import type { Stroke } from '../music/strum';
 
 export type Skill = 'technique' | 'rhythm' | 'fretboard' | 'theory' | 'ear';
 
@@ -17,7 +18,8 @@ export type ExerciseKind =
   | 'followHand'
   | 'playAlong'
   | 'tempoTrainer'
-  | 'recordYourself';
+  | 'recordYourself'
+  | 'strum';
 
 interface BaseExercise {
   id: string;
@@ -97,7 +99,7 @@ export type ScoreNotation = 'tab' | 'staff';
 export type Beats = 0.5 | 1 | 2 | 4;
 
 /** Un evento de partitura: una nota (cuerda y traste) o un silencio. */
-export type ScoreEvent = { string: StringId; fret: number; beats: Beats } | { rest: true; beats: Beats };
+export type ScoreEvent = { string: StringId; fret: number; beats: Beats; tone?: Tone } | { rest: true; beats: Beats };
 
 /** Ejemplo sonoro de una tarjeta: la app lo toca con un tono sintetizado. */
 export interface ListenExample {
@@ -111,6 +113,11 @@ export interface ListenExample {
   click?: boolean;
   /** Timbre del ejemplo (guitarra: limpio, crunch, pastilla…). Por defecto, el del instrumento. */
   tone?: Tone;
+  /**
+   * Rasgueo de acordes: notas MIDI de cada compás (de grave a agudo) y patrón de
+   * púa. Si está, suena esto en lugar de `events` (que puede quedar vacío).
+   */
+  strum?: { chords: number[][]; pattern: Stroke[] };
 }
 
 export interface TabReadingExercise extends BaseExercise {
@@ -133,6 +140,22 @@ export interface TempoTrainerExercise extends BaseExercise {
   audibleBeats: number;
 }
 
+/**
+ * Rasgueo con metrónomo (guitarra): se puntúa cuándo cae cada golpe de púa,
+ * escuchando ataques sin altura (la app todavía no reconoce acordes). Las notas
+ * de cada acorde se revisan aparte, de a una, con un `playAlong`.
+ */
+export interface StrumExercise extends BaseExercise {
+  kind: 'strum';
+  needsBass: true;
+  bpm: number;
+  /** 8 casillas por compás: 'D' abajo, 'U' arriba, '-' sin tocar. */
+  pattern: Stroke[];
+  /** Nombre del acorde de cada compás (se muestra tal cual: Em, G5…). */
+  chords: string[];
+  tempoSteps?: number[];
+}
+
 /** Tipos todavía no implementados en el código base; se muestran como «próximamente». */
 export interface PendingExercise extends BaseExercise {
   kind: 'followHand' | 'recordYourself';
@@ -145,6 +168,7 @@ export type Exercise =
   | PlayAlongExercise
   | TabReadingExercise
   | TempoTrainerExercise
+  | StrumExercise
   | PendingExercise;
 
 export type Figure =
@@ -182,7 +206,11 @@ export type Figure =
   | 'chord-c'
   | 'chord-g'
   | 'chord-d'
-  | 'chord-dm';
+  | 'chord-dm'
+  | 'power-6'
+  | 'power-5'
+  | 'penta-box'
+  | 'palm-mute';
 
 export interface Card {
   titleKey: string;

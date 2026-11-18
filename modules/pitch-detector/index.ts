@@ -7,6 +7,12 @@ export interface PitchEvent {
   clarity: number;
 }
 
+/** Ataque (golpe) detectado, tenga o no altura clara. */
+export interface AttackEvent {
+  elapsedMs: number;
+  rms: number;
+}
+
 export interface LevelEvent {
   rms: number;
 }
@@ -28,6 +34,8 @@ type Events = {
   onPitch: (e: PitchEvent) => void;
   /** Nivel de entrada, para el medidor de ruido. */
   onLevel: (e: LevelEvent) => void;
+  /** Cada golpe, aunque no tenga altura clara (rasgueos). */
+  onAttack: (e: AttackEvent) => void;
 };
 
 interface PitchDetectorNative {

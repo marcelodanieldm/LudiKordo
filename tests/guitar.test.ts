@@ -12,7 +12,11 @@ import { withInstrumentTexts } from '../src/i18n/overlay';
 import { LEGACY_VOICE, VOICES, peakGain, ringSec, voiceFor } from '../src/music/timbre';
 import type { Lesson, ScoreEvent } from '../src/content/types';
 import { CP1_RIFF, FULL_SPIDER, GUITAR_CP1, SIGHT_RIFF } from '../src/content/guitar/level1';
-import { CHORDS, chordMidi, triadPitchClasses, type ChordId } from '../src/music/chords';
+import { CHORDS, PENTA_A, POWER_5, POWER_6, chordMidi, diagramMidi, powerMidi, triadPitchClasses, type ChordId } from '../src/music/chords';
+import { BALLAD, DOWN_EIGHTHS, EIGHTHS, HALVES, QUARTERS, eighthAt, filterClicks, isValidPattern, scoreStrum, strokeTimes, strumSchedule } from '../src/music/strum';
+import { listenSchedule } from '../src/music/listen';
+import { exampleSchedule } from '../src/music/examples';
+import { CALL, GUITAR_CP2, PENTA_UP, RESPONSE, arpScore } from '../src/content/guitar/level2';
 import { barsAreComplete, figureOf, isTabRest, layoutTab } from '../src/music/tab';
 import { tabOf } from '../src/content/guitar/helpers';
 
@@ -46,9 +50,9 @@ test('ruta de guitarra: 4 niveles, 28 módulos, 132 lecciones, con el módulo de
   assert.equal(new Set(ids).size, ids.length);
 });
 
-test('el nivel 1 está completo y todas las lecciones existen en la ruta', () => {
+test('los niveles 1 y 2 están completos y todas las lecciones existen en la ruta', () => {
   const route = new Set(GUITAR_LEVELS.flatMap((l) => l.modules.flatMap(lessonIdsOf)));
-  for (const mod of GUITAR_LEVELS[0].modules) {
+  for (const mod of [...GUITAR_LEVELS[0].modules, ...GUITAR_LEVELS[1].modules]) {
     for (const id of lessonIdsOf(mod)) assert.ok(GUITAR_LESSONS[id], `falta la lección ${id}`);
   }
   for (const id of Object.keys(GUITAR_LESSONS)) assert.ok(route.has(id), `${id} no está en la ruta`);
@@ -201,4 +205,94 @@ test('figuras y silencios de la tablatura', () => {
   assert.equal(l.notes.length, 4);
   assert.ok(l.notes[2].x > l.notes[1].x + l.beatW * 1.5);
   assert.equal(l.barsInRow.reduce((a, b) => a + b, 0), 2);
+});
+
+test('checkpoint 2 de guitarra: claves en 3 idiomas y respuesta del oído correcta', () => {
+  const used = [GUITAR_CP2.titleKey, GUITAR_CP2.introKey, ...GUITAR_CP2.parts.flatMap((p) => [p.promptKey, ...('options' in p ? p.options.filter((o) => !o.startsWith('=')) : [])])];
+  for (const [code, tree] of Object.entries(locales)) for (const k of used) assert.ok(lookup(tree, k), `${code}: falta ${k}`);
+  const ear = GUITAR_CP2.parts.find((p) => p.id === 'gcp2-ear');
+  assert.ok(ear && ear.kind === 'ear' && ear.tones);
+  // La, Do, Mi: tercera menor arriba de la tónica → «menor».
+  const midi = ear.tones.map((f) => Math.round(69 + 12 * Math.log2(f / 440)));
+  assert.equal(midi[1] - midi[0], 3);
+  assert.equal(ear.options[ear.correctIndex], 'content.g.cp2.minor');
+});
+
+test('rasgueo: patrones válidos, golpes a tiempo y ejercicios con acordes conocidos', () => {
+  for (const p of [QUARTERS, EIGHTHS, BALLAD, HALVES]) assert.ok(isValidPattern(p));
+  assert.equal(isValidPattern(['U', '-', '-', '-', '-', '-', '-', '-']), false);
+  const t = strokeTimes(BALLAD, 2, 60, 1000);
+  assert.equal(t.length, 12);
+  assert.deepEqual(t.slice(0, 6).map((s) => [s.timeMs, s.dir]), [[1000, 'D'], [2000, 'D'], [2500, 'U'], [3500, 'U'], [4000, 'D'], [4500, 'U']]);
+  assert.equal(eighthAt(999, 1000, 60), -1);
+  assert.equal(eighthAt(2600, 1000, 60), 3);
+  const known = new Set([...Object.keys(CHORDS), 'G5', 'A5', 'C5', 'D5', 'E5']);
+  const strums = [...lessons.flatMap((l) => l.exercises), ...GUITAR_CP2.parts].filter((e) => e.kind === 'strum');
+  assert.ok(strums.length >= 20);
+  for (const e of strums) {
+    if (e.kind !== 'strum') continue;
+    assert.ok(isValidPattern(e.pattern), e.id);
+    assert.ok(e.chords.length >= 2 && e.chords.every((c) => known.has(c)), e.id);
+    assert.ok(e.bpm <= 80, e.id);
+  }
+});
+
+test('ejemplos rasgueados: hacia abajo de grave a agudo, hacia arriba solo las 3 agudas', () => {
+  const em = chordMidi('Em');
+  const notes = strumSchedule([em], ['D', 'U', '-', '-', '-', '-', '-', '-'], 60);
+  assert.equal(notes.length, 6 + 3);
+  assert.ok(notes[0].freq < notes[5].freq && notes[0].startSec < notes[5].startSec);
+  assert.ok(notes[6].freq > notes[8].freq, 'hacia arriba empieza por la más aguda');
+  const ex = exampleSchedule({ events: [], bpm: 60, click: true, strum: { chords: [em, em], pattern: QUARTERS } });
+  assert.equal(ex.beats, 12);
+  assert.equal(ex.notes.length, 8 * 6);
+  assert.ok(ex.notes[0].startSec >= 4, 'la cuenta previa va antes del primer golpe');
+});
+
+test('power chords, pentatónica y arpegios de acordes', () => {
+  assert.deepEqual(powerMidi('E', 3), [43, 50]);
+  for (const d of [POWER_6, POWER_5]) {
+    const m = diagramMidi(d);
+    assert.equal(m[1] - m[0], 7, `${d.name}: quinta justa`);
+  }
+  const pcs = new Set(diagramMidi(PENTA_A).map((m) => m % 12));
+  assert.deepEqual([...pcs].sort((a, b) => a - b), [0, 2, 4, 7, 9]); // Do Re Mi Sol La
+  assert.equal(PENTA_UP.length, 12);
+  for (const id of Object.keys(CHORDS) as ChordId[]) assert.ok(barsAreComplete(arpScore(id)), id);
+  // La pregunta queda abierta (termina en Mi) y la respuesta vuelve a La.
+  const last = (s: ScoreEvent[]) => s.filter(isNote).slice(-1)[0];
+  const endMidi = (e: { string: string; fret: number }) => GUITAR.strings.find((x) => x.id === e.string)!.openMidi + e.fret;
+  assert.equal(endMidi(last(CALL)) % 12, 4);
+  assert.equal(endMidi(last(RESPONSE)) % 12, 9);
+});
+
+test('rasgueo: el clic que se cuela por el parlante no cuenta y los golpes de más restan', () => {
+  assert.ok(isValidPattern(DOWN_EIGHTHS));
+  const start = 4000;
+  const beat = 1000; // 60 bpm
+  // Durante la cuenta el micrófono oye el clic (rms 0,02); después, el clic y los golpes reales (0,08).
+  const clicks = [0, 1, 2, 3, 4, 5, 6, 7].map((i) => ({ timeMs: i * beat, rms: 0.02 }));
+  const strokes = [4000, 5000, 6000, 7000].map((t) => ({ timeMs: t + 10, rms: 0.08 }));
+  const kept = filterClicks([...clicks, ...strokes], start, 4 * beat);
+  assert.deepEqual(kept.map((a) => a.timeMs), [4010, 5010, 6010, 7010]);
+  // Solo el clic (sin tocar): no queda nada.
+  assert.equal(filterClicks(clicks, start, 4 * beat).length, 0);
+  // Con auriculares no entra nada en la cuenta: no se descarta ningún golpe.
+  assert.equal(filterClicks(strokes, start, 4 * beat).length, 4);
+
+  // Patrón de balada (6 golpes por compás) tocado como corcheas sin parar: 6 aciertos y 2 golpes de más.
+  const allEighths = Array.from({ length: 8 }, (_, i) => start + i * 500);
+  const r = scoreStrum(BALLAD, 1, 60, start, allEighths, 80);
+  assert.equal(r.hits, 6);
+  assert.equal(r.extras, 2);
+  assert.ok(r.accuracy < 0.8);
+  // El patrón justo: todo bien.
+  const exact = strokeTimes(BALLAD, 1, 60, start).map((x) => x.timeMs);
+  assert.equal(scoreStrum(BALLAD, 1, 60, start, exact, 80).accuracy, 1);
+});
+
+test('ejemplos: una nota puede traer su propio timbre (palm mute dentro de un riff)', () => {
+  const sched = listenSchedule([{ string: 'E', fret: 0, beats: 0.5, tone: 'muted' }, { string: 'E', fret: 3, beats: 1 }], 60);
+  assert.equal(sched[0].tone, 'muted');
+  assert.equal(sched[1].tone, undefined);
 });
