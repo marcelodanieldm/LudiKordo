@@ -114,7 +114,7 @@ export function VibratoExercise({
         // Lejos de la nota (otra cuerda, ruido): no se mide.
         if (Math.abs(cents) <= 150) samples.push({ tMs: now - startedAt, cents });
       });
-      if (!mounted.current) {
+      if (!mounted.current || done.current) {
         heard?.stop();
         return;
       }

@@ -45,7 +45,7 @@ const seq = (...xs: [StringId, number][]) => xs.map(([s, fret]) => ({ string: s,
 const rep = <T,>(xs: T[], times: number) => Array.from({ length: times }, () => xs).flat();
 const quarters = (xs: { string: StringId; fret: number }[]) => xs.map((x) => n(x.string, x.fret));
 const bent = (s: StringId, fret: number, beats: 1 | 2 | 4, semis: 1 | 2): ScoreEvent => ({ string: s, fret, beats, bend: semis });
-const vib = (s: StringId, fret: number, beats: 1 | 2 | 4): ScoreEvent => ({ string: s, fret, beats, vibrato: true });
+const vib = (s: StringId, fret: number, beats: 1 | 2 | 4, wide = false): ScoreEvent => ({ string: s, fret, beats, vibrato: wide ? 'wide' : true });
 
 // ───────────── 3.1 · Ligados ─────────────
 
@@ -85,7 +85,8 @@ const l314 = lesson('3.1.4', 10, {
   visuals: ['hammer-on', 'pull-off', null, null],
   sounds: [listen([...TRILL, ...TRILL], 80), null, null, null],
   cards: [{ listen: listen([...TRILL, ...TRILL], 70, { show: 'tab' }) }, {}],
-  exercises: [play('3.1.4', 'play', rep(seq(['G', 5], ['G', 7], ['G', 5]), 4), null)],
+  // Sin notas iguales seguidas: en el modo sin tempo, una nota repetida se daría por tocada sola.
+  exercises: [play('3.1.4', 'play', [...rep(seq(['G', 5], ['G', 7]), 6), ...seq(['G', 5])], null)],
 });
 
 const l315 = lesson('3.1.5', 12, {
@@ -122,7 +123,7 @@ const SHIFT = seq(['G', 5], ['G', 7], ['G', 9], ['B', 8], ['B', 10]);
 
 const l323 = lesson('3.2.3', 12, {
   visuals: ['penta-box', 'slide', null, null],
-  sounds: [listen([...quarters(SHIFT.slice(0, 4)), n('B', 10, 4)], 80), null, null, null],
+  sounds: [null, null, null, listen([...quarters(SHIFT.slice(0, 4)), n('B', 10, 4)], 80)],
   cards: [{ listen: listen([...quarters(SHIFT.slice(0, 4)), n('B', 10, 4)], 70, { show: 'tab' }) }, {}],
   exercises: [play('3.2.3', 'play', SHIFT, null)],
 });
@@ -154,7 +155,7 @@ const l333 = lesson('3.3.3', 12, {
   visuals: [null, 'bend', null, null],
   sounds: [listen([n('G', 9, 2), bent('G', 7, 2, 2)], 60), null, null, null],
   cards: [{ listen: listen([n('G', 9, 2), bent('G', 7, 2, 2), n('G', 9, 2), bent('G', 7, 2, 2)], 60, { show: 'tab' }) }, {}],
-  exercises: [play('3.3.3', 'play', seq(['G', 9], ['G', 9]), null), bend('3.3.3', 'bend', 'G', 7, 2, 3)],
+  exercises: [play('3.3.3', 'play', seq(['G', 9], ['G', 7], ['G', 9]), null), bend('3.3.3', 'bend', 'G', 7, 2, 3)],
 });
 
 const l334 = lesson('3.3.4', 12, {
@@ -179,21 +180,21 @@ const l341 = lesson('3.4.1', 10, {
   visuals: ['vibrato', 'vibrato', null, null],
   sounds: [listen([vib('B', 10, 4)], 60, CRUNCH), null, listen([n('B', 10, 4)], 60), listen([vib('B', 10, 4)], 60)],
   cards: [{ figure: 'vibrato' }, { listen: listen([vib('B', 10, 4)], 60) }],
-  exercises: [vibrato('3.4.1', 'vib', 'B', 10, 15, 4)],
+  exercises: [vibrato('3.4.1', 'vib', 'B', 10, 12, 4)],
 });
 
 const l342 = lesson('3.4.2', 10, {
   visuals: ['vibrato', null, null, null],
   sounds: [listen([vib('e', 5, 4)], 60), null, null, null],
   cards: [{ listen: listen([vib('e', 5, 4), vib('e', 5, 4)], 60) }, {}],
-  exercises: [vibrato('3.4.2', 'vib', 'e', 5, 20, 6)],
+  exercises: [vibrato('3.4.2', 'vib', 'e', 5, 15, 6)],
 });
 
 const l343 = lesson('3.4.3', 10, {
   visuals: ['vibrato', 'bend', null, null],
-  sounds: [listen([vib('D', 7, 4)], 60, CRUNCH), null, null, null],
-  cards: [{ listen: listen([vib('D', 7, 4)], 60, CRUNCH) }, {}],
-  exercises: [vibrato('3.4.3', 'vib', 'D', 7, 35, 5)],
+  sounds: [listen([vib('D', 7, 4, true)], 60, CRUNCH), null, null, null],
+  cards: [{ listen: listen([vib('D', 7, 4, true)], 60, CRUNCH) }, {}],
+  exercises: [vibrato('3.4.3', 'vib', 'D', 7, 22, 5)],
 });
 
 export const VIB_PHRASE: ScoreEvent[] = [n('e', 8), n('e', 5), n('B', 8), n('B', 5), vib('D', 7, 4)];
@@ -202,7 +203,7 @@ const l344 = lesson('3.4.4', 12, {
   visuals: [null, 'vibrato', null, null],
   sounds: [listen(VIB_PHRASE, 80, CRUNCH), null, null, null],
   cards: [{ listen: listen(VIB_PHRASE, 70, { show: 'tab' }) }, {}],
-  exercises: [play('3.4.4', 'play', seq(['e', 8], ['e', 5], ['B', 8], ['B', 5], ['D', 7]), null), vibrato('3.4.4', 'vib', 'D', 7, 25, 4)],
+  exercises: [play('3.4.4', 'play', seq(['e', 8], ['e', 5], ['B', 8], ['B', 5], ['D', 7]), null), vibrato('3.4.4', 'vib', 'D', 7, 15, 4)],
 });
 
 // ───────────── 3.5 y 3.6 · Cejillas ─────────────
@@ -216,6 +217,8 @@ const BARRE_FIG: Record<BarreId, Figure> = {
   'bar-c': 'barre-c',
   'bar-cm': 'barre-cm',
   'bar-dm': 'barre-dm',
+  'bar-c8': 'barre-c8',
+  'bar-only': 'barre-only',
 };
 const bm = (id: BarreId) => diagramMidi(BARRES[id]);
 const name = (id: BarreId) => BARRES[id].name;
@@ -233,7 +236,7 @@ function barreLesson(id: string, chord: BarreId): Lesson {
   const d = BARRES[chord];
   return lesson(id, 14, {
     visuals: [null, fig, fig, null],
-    sounds: [strumListen([bm(chord)], QUARTERS, 70), listen(barreArpScore(chord), 90), null, strumListen([bm(chord), bm(chord)], BALLAD, 80)],
+    sounds: [strumListen([bm(chord)], QUARTERS, 70), null, listen(barreArpScore(chord), 90), strumListen([bm(chord), bm(chord)], BALLAD, 80)],
     cards: [{ figure: fig, listen: listen(barreArpScore(chord), 70, { show: 'tab' }) }, {}],
     exercises: [
       tap(id, 'tap', d.dots.map((dot) => ({ string: (['E', 'A', 'D', 'G', 'B', 'e'] as StringId[])[dot.string], fret: dot.fret })), Math.max(5, d.startFret + 3)),
@@ -244,9 +247,9 @@ function barreLesson(id: string, chord: BarreId): Lesson {
 }
 
 const l351 = lesson('3.5.1', 12, {
-  visuals: ['barre-f', null, null, null],
-  sounds: [listen([n('E', 5), n('A', 5), n('D', 5), n('G', 5), n('B', 5, 2), n('e', 5, 2)], 80), null, null, null],
-  cards: [{ figure: 'barre-f' }, {}],
+  visuals: ['barre-only', 'barre-only', null, null],
+  sounds: [null, null, listen([n('E', 5), n('A', 5), n('D', 5), n('G', 5), n('B', 5, 2), n('e', 5, 2)], 80), null],
+  cards: [{ figure: 'barre-only' }, {}],
   exercises: [quiz('3.5.1', 'q1', [k('3.5.1', 'q1o1'), k('3.5.1', 'q1o2'), k('3.5.1', 'q1o3')], 2), play('3.5.1', 'play', seq(['E', 5], ['A', 5], ['D', 5], ['G', 5], ['B', 5], ['e', 5]), null)],
 });
 const l352 = barreLesson('3.5.2', 'bar-f');
@@ -254,7 +257,7 @@ const l353 = barreLesson('3.5.3', 'bar-fm');
 
 const l354 = lesson('3.5.4', 12, {
   visuals: ['barre-f', 'barre-g', 'barre-am', null],
-  sounds: [strumListen([bm('bar-f'), bm('bar-g'), bm('bar-am'), bm('bar-g')], HALVES, 80), null, null, null],
+  sounds: [null, null, null, strumListen([bm('bar-f'), bm('bar-g'), bm('bar-am'), bm('bar-g')], HALVES, 80)],
   cards: [{ figure: 'barre-g', listen: strumListen([bm('bar-g'), bm('bar-g')], QUARTERS, 70) }, { figure: 'barre-am', listen: strumListen([bm('bar-am'), bm('bar-am')], QUARTERS, 70) }],
   exercises: [
     quiz('3.5.4', 'q1', ['=A', '=G', '=C', '=E'], 0),
@@ -304,14 +307,14 @@ const l372 = lesson('3.7.2', 12, {
 
 const l373 = lesson('3.7.3', 12, {
   visuals: ['octave', 'octave', null, null],
-  sounds: [listen(quarters(OCTAVES).concat([n('E', 3), n('D', 5)]), 80), null, null, null],
+  sounds: [null, null, listen([n('E', 3, 2), n('D', 5, 2)], 70), null],
   cards: [{ figure: 'octave', listen: listen(quarters(OCTAVES).concat([n('E', 3), n('D', 5)]), 70, { show: 'tab' }) }, {}],
   exercises: [tap('3.7.3', 'tap', OCTAVES, 12), play('3.7.3', 'play', OCTAVES, null)],
 });
 
 const l374 = lesson('3.7.4', 12, {
-  visuals: [null, 'barre-c', 'barre-g', null],
-  sounds: [strumListen([bm('bar-g'), bm('bar-c')], HALVES, 80), null, null, null],
+  visuals: [null, 'barre-c8', 'barre-c', 'barre-g'],
+  sounds: [null, null, null, strumListen([bm('bar-g'), bm('bar-c')], HALVES, 80)],
   cards: [{ figure: 'naturals-6' }, { figure: 'naturals-5' }],
   exercises: [
     quiz('3.7.4', 'q1', ['=3', '=5', '=8', '=10'], 2),
@@ -342,7 +345,7 @@ export const GUITAR_CP3: Checkpoint = {
   parts: [
     { id: 'gcp3-legato', kind: 'playAlong', needsBass: true, skills: ['technique'], promptKey: ck('legato'), notes: tabOf(LEG_PHRASE).map(({ string, fret }) => ({ string, fret })), bpm: null },
     { id: 'gcp3-bend', kind: 'bend', needsBass: true, skills: ['technique', 'ear'], promptKey: ck('bend'), string: 'G', fret: 7, semitones: 2, release: true, reps: 2 },
-    { id: 'gcp3-vib', kind: 'vibrato', needsBass: true, skills: ['technique'], promptKey: ck('vib'), string: 'e', fret: 5, minDepthCents: 20, seconds: 4 },
+    { id: 'gcp3-vib', kind: 'vibrato', needsBass: true, skills: ['technique'], promptKey: ck('vib'), string: 'e', fret: 5, minDepthCents: 15, seconds: 4 },
     { id: 'gcp3-strum', kind: 'strum', needsBass: true, skills: ['rhythm', 'technique'], promptKey: ck('strum'), bpm: 70, pattern: QUARTERS, chords: ['F', 'G', 'Am', 'G'] },
     { id: 'gcp3-map', kind: 'fretboardTap', needsBass: false, skills: ['fretboard'], promptKey: ck('map'), sequence: NAT5, frets: 12 },
   ],

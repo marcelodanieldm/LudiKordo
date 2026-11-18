@@ -182,7 +182,7 @@
       "vibratoRecording": "Keep going: {{left}} s",
       "vibratoResult": "Width ±{{depth}} cents · {{rate}} waves per second",
       "vibratoNarrow": "Too narrow: move your wrist a little more.",
-      "vibratoSpeed": "Aim for 4 to 7 waves per second.",
+      "vibratoSpeed": "Aim for 3 to 8 waves per second; about 5 is ideal.",
       "vibratoIrregular": "Uneven: try to keep the same speed."
     },
     "practice": {
@@ -474,6 +474,12 @@
         "a11y": "Octave shape: G on the 6th string fret 3 and on the 4th string fret 5",
         "l1": "The note on the 6th string.",
         "l2": "The same note an octave up: two strings and two frets along."
+      },
+      "barre_c8": {
+        "a11y": "Diagram of C major in the E shape, barre at fret 8"
+      },
+      "barre_only": {
+        "a11y": "Diagram of a barre alone at fret 5, no other fingers"
       }
     }
   },
@@ -2181,7 +2187,7 @@
         "c1b": "Frets 5 and 7 on the 3rd string in eighth notes, legato. Play the example and follow the tab.",
         "c2t": "Finger 1 stays put",
         "c2b": "Finger 3 does all the work. Finger 1 stays firm on fret 5 so the pull-off has somewhere to land.",
-        "play": "Fret 5, hammer on to 7, pull off to 5, four times."
+        "play": "Fret 5, hammer on to 7, pull off to 5: six times in a row, ending on 5."
       },
       "l315": {
         "title": "Legato phrase",
@@ -2291,7 +2297,7 @@
         "c1b": "Fret 9, bend from 7, fret 9, bend from 7. Play the example and compare.",
         "c2t": "Tuning by ear",
         "c2b": "If the bend sounds \"low\" next to the target, push a little more. If it sounds \"high\", you went too far.",
-        "play": "Play the target note twice: fret 9 on the 3rd string.",
+        "play": "On the 3rd string: fret 9, fret 7, then fret 9 again, the target note.",
         "bend": "Now bend from fret 7 up to that note, three times."
       },
       "l334": {

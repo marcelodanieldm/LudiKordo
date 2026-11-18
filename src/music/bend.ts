@@ -53,7 +53,8 @@ export function stepBend(spec: BendSpec, s: BendState, freq: number | null): Ben
       const target = spec.semitones * 100;
       return { ...initialBend(), reps: s.reps, short: s.short + (s.peak < target - BEND_TOLERANCE_CENTS ? 1 : 0), over: s.over + (s.peak > target + BEND_TOLERANCE_CENTS ? 1 : 0) };
     }
-    return { ...s, rel: null, held: 0, phase: s.phase === 'release' ? 'release' : 'waitStart' };
+    // Si se apagó mientras soltaba, el intento no cuenta: hay que volver con la nota sonando.
+    return s.phase === 'release' ? { ...initialBend(), reps: s.reps, short: s.short, over: s.over } : { ...s, rel: null, held: 0, phase: 'waitStart' };
   }
   const rel = centsOff(freq, spec.startMidi);
   const target = spec.semitones * 100;
@@ -66,7 +67,7 @@ export function stepBend(spec: BendSpec, s: BendState, freq: number | null): Ben
       const held = inTarget ? s.held + 1 : 0;
       if (held >= BEND_HOLD_FRAMES) {
         if (spec.release) return { ...s, phase: 'release', rel, peak, held: 0 };
-        return { ...s, phase: 'waitStart', rel, peak: 0, held: 0, reps: s.reps + 1 };
+        return { ...s, phase: 'waitStart', rel, peak: 0, held: 0, reps: s.reps + 1, short: 0, over: 0 };
       }
       // Volvió a la nota de partida sin llegar: intento corto o pasado.
       if (s.peak > 30 && rel < 20) {
@@ -75,7 +76,7 @@ export function stepBend(spec: BendSpec, s: BendState, freq: number | null): Ben
       return { ...s, rel, peak, held };
     }
     case 'release':
-      return Math.abs(rel) <= START_WINDOW_CENTS ? { ...s, phase: 'waitStart', rel, peak: 0, held: 0, reps: s.reps + 1 } : { ...s, rel };
+      return Math.abs(rel) <= START_WINDOW_CENTS ? { ...s, phase: 'waitStart', rel, peak: 0, held: 0, reps: s.reps + 1, short: 0, over: 0 } : { ...s, rel };
   }
 }
 
@@ -134,6 +135,12 @@ export function analyzeVibrato(samples: PitchSample[]): VibratoResult | null {
 }
 
 export const VIBRATO_RATE = { min: 3, max: 8 };
+/**
+ * El detector mira ventanas de ~93 ms: eso suaviza la oscilación y el ancho
+ * medido sale menor que el real (un vibrato de ±30 cents se mide como ±20).
+ * Los anchos mínimos de las lecciones están pensados sobre el valor medido.
+ */
+export const DETECTOR_WINDOW_MS = 93;
 export const VIBRATO_MAX_IRREGULARITY = 0.45;
 
 export function vibratoOk(r: VibratoResult | null, minDepth: number): boolean {

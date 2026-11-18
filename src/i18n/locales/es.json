@@ -182,7 +182,7 @@
       "vibratoRecording": "Sigue: {{left}} s",
       "vibratoResult": "Ancho ±{{depth}} cents · {{rate}} oscilaciones por segundo",
       "vibratoNarrow": "Muy angosto: mueve un poco más la muñeca.",
-      "vibratoSpeed": "Busca entre 4 y 7 oscilaciones por segundo.",
+      "vibratoSpeed": "Busca entre 3 y 8 oscilaciones por segundo; lo ideal, unas 5.",
       "vibratoIrregular": "Desparejo: intenta mantener la misma velocidad."
     },
     "practice": {
@@ -474,6 +474,12 @@
         "a11y": "Forma de octava: Sol en la 6.ª cuerda traste 3 y en la 4.ª cuerda traste 5",
         "l1": "La nota en la 6.ª cuerda.",
         "l2": "La misma nota, una octava arriba: dos cuerdas y dos trastes más allá."
+      },
+      "barre_c8": {
+        "a11y": "Diagrama de Do mayor con forma de Mi y cejilla en el traste 8"
+      },
+      "barre_only": {
+        "a11y": "Diagrama de cejilla sola en el traste 5, sin otros dedos"
       }
     }
   },
@@ -2181,7 +2187,7 @@
         "c1b": "Traste 5 y 7 de la 3.ª cuerda en corcheas, ligados. Toca el ejemplo y sigue la tablatura.",
         "c2t": "El dedo 1 no se mueve",
         "c2b": "Toda la fuerza la hace el dedo 3. El 1 queda firme en el traste 5 para que el pull-off tenga a dónde ir.",
-        "play": "Traste 5, hammer-on al 7, pull-off al 5, cuatro veces."
+        "play": "Traste 5, hammer-on al 7, pull-off al 5: seis veces seguidas y termina en el 5."
       },
       "l315": {
         "title": "Frase con ligados",
@@ -2291,7 +2297,7 @@
         "c1b": "Traste 9, bend desde el 7, traste 9, bend desde el 7. Toca el ejemplo y compara.",
         "c2t": "Afinar con el oído",
         "c2b": "Si el bend suena «bajo» comparado con la nota de llegada, empuja un poco más. Si suena «alto», te pasaste.",
-        "play": "Toca dos veces la nota de llegada: traste 9 de la 3.ª cuerda.",
+        "play": "En la 3.ª cuerda: traste 9, traste 7 y otra vez traste 9, la nota de llegada.",
         "bend": "Ahora el bend desde el traste 7 hasta esa nota, tres veces."
       },
       "l334": {

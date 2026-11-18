@@ -101,7 +101,8 @@ export function BendExercise({
         setState(s);
         if (s.reps >= exercise.reps) finish(s);
       });
-      if (!mounted.current) {
+      // La pantalla se cerró o se tocó «Terminar» mientras arrancaba el micrófono.
+      if (!mounted.current || done.current) {
         heard?.stop();
         return;
       }

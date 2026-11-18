@@ -109,8 +109,8 @@ export type ScoreEvent =
       tone?: Tone;
       /** Bend de ½ (1) o 1 tono (2): en el ejemplo la nota sube; en la tablatura se marca ↗. */
       bend?: 1 | 2;
-      /** Vibrato al final de la nota: en el ejemplo oscila; en la tablatura se marca ~. */
-      vibrato?: boolean;
+      /** Vibrato al final de la nota: en el ejemplo oscila (más si es 'wide'); en la tablatura se marca ~. */
+      vibrato?: boolean | 'wide';
     }
   | { rest: true; beats: Beats };
 
@@ -270,6 +270,8 @@ export type Figure =
   | 'barre-c'
   | 'barre-cm'
   | 'barre-dm'
+  | 'barre-c8'
+  | 'barre-only'
   | 'octave'
   | 'naturals-6'
   | 'naturals-5';

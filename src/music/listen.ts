@@ -42,7 +42,7 @@ export function listenSchedule(events: ScoreEvent[], bpm: number, offsetBeats = 
         durSec: e.beats * beatSec * NOTE_GATE,
         ...(e.tone ? { tone: e.tone } : {}),
         ...(e.bend ? { bendCents: e.bend * 100 } : {}),
-        ...(e.vibrato ? { vibratoCents: 30 } : {}),
+        ...(e.vibrato ? { vibratoCents: e.vibrato === 'wide' ? 55 : 30 } : {}),
       });
     }
     beat += e.beats;

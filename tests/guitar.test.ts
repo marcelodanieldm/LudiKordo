@@ -19,7 +19,7 @@ import { exampleSchedule } from '../src/music/examples';
 import { CALL, GUITAR_CP2, PENTA_UP, RESPONSE, arpScore } from '../src/content/guitar/level2';
 import { BEND_PHRASE, GUITAR_CP3, LEG_PHRASE, SLIDE_PHRASE, VIB_PHRASE } from '../src/content/guitar/level3';
 import { BARRES, OCTAVE } from '../src/music/chords';
-import { analyzeVibrato, initialBend, scoreVibrato, stepBend, vibratoOk } from '../src/music/bend';
+import { DETECTOR_WINDOW_MS, analyzeVibrato, bendAdvice, initialBend, scoreVibrato, stepBend, vibratoOk } from '../src/music/bend';
 import { midiToFreq as m2f } from '../src/music/notes';
 import { barsAreComplete, figureOf, isTabRest, layoutTab } from '../src/music/tab';
 import { tabOf } from '../src/content/guitar/helpers';
@@ -365,4 +365,56 @@ test('nivel 3: frases en compases completos, bends y vibratos en cuerdas y trast
     // Los bends van en las cuerdas 1 a 3, como se enseña.
     if (e.kind === 'bend') assert.ok(['G', 'B', 'e'].includes(e.string), e.id);
   }
+});
+
+test('bend: si la nota se apaga mientras suelta, el intento no cuenta; al lograrlo se borra el consejo', () => {
+  const spec = { startMidi: 62, semitones: 2 as const, release: true };
+  const f = (c: number) => m2f(62) * 2 ** (c / 1200);
+  let s = initialBend();
+  for (const c of [0, 100, 200, 200, 200, 200, 200, 200, 200, 200, 200]) s = stepBend(spec, s, f(c));
+  assert.equal(s.phase, 'release');
+  s = stepBend(spec, s, null);
+  assert.equal(s.reps, 0, 'apagarse no es soltar');
+  assert.equal(s.phase, 'waitStart');
+  // Un intento corto deja consejo; uno logrado lo borra.
+  const hold = { startMidi: 62, semitones: 2 as const };
+  let h = initialBend();
+  for (const c of [0, 60, 120, 150, 100, 10]) h = stepBend(hold, h, f(c));
+  assert.equal(bendAdvice(h), 'short');
+  for (const c of [0, 100, 200, 200, 200, 200, 200, 200, 200, 200, 200]) h = stepBend(hold, h, f(c));
+  assert.equal(h.reps, 1);
+  assert.equal(bendAdvice(h), null);
+});
+
+test('ejemplos: bend y vibrato llegan al sonido (vibrato ancho más amplio)', () => {
+  // Las pruebas corren con el perfil de bajo: se usan cuerdas que existen en ambos.
+  const sch = listenSchedule(
+    [
+      { string: 'G', fret: 7, beats: 1, bend: 2 },
+      { string: 'A', fret: 10, beats: 1, vibrato: true },
+      { string: 'D', fret: 7, beats: 2, vibrato: 'wide' },
+    ],
+    80,
+  );
+  assert.equal(sch[0].bendCents, 200);
+  assert.equal(sch[1].vibratoCents, 30);
+  assert.equal(sch[2].vibratoCents, 55);
+});
+
+test('vibrato: con el suavizado del detector (~93 ms), un vibrato real normal aprueba los anchos de las lecciones', () => {
+  const raw = (hz: number, depth: number) => Array.from({ length: 260 }, (_, i) => ({ tMs: i * 23, cents: depth * Math.sin(2 * Math.PI * hz * i * 0.023) }));
+  // Media móvil de ~93 ms, como la ventana del detector.
+  const smooth = (xs: { tMs: number; cents: number }[]) =>
+    xs.map((x) => {
+      const w = xs.filter((o) => Math.abs(o.tMs - x.tMs) <= DETECTOR_WINDOW_MS / 2);
+      return { tMs: x.tMs, cents: w.reduce((a, o) => a + o.cents, 0) / w.length };
+    });
+  const normal = analyzeVibrato(smooth(raw(5.5, 30)));
+  assert.ok(vibratoOk(normal, 15), `±30 se mide como ${normal?.depthCents.toFixed(1)}`);
+  const wide = analyzeVibrato(smooth(raw(5, 50)));
+  assert.ok(vibratoOk(wide, 22), `±50 se mide como ${wide?.depthCents.toFixed(1)}`);
+  assert.equal(vibratoOk(analyzeVibrato(smooth(raw(5.5, 10))), 12), false, 'casi quieto no aprueba');
+  // Ningún ejercicio pide más ancho del que da un vibrato ancho real.
+  const parts = [...lessons.flatMap((l) => l.exercises), ...GUITAR_CP3.parts];
+  for (const e of parts) if (e.kind === 'vibrato') assert.ok(e.minDepthCents <= 22, e.id);
 });

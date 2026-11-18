@@ -26,6 +26,8 @@ export const CHORD_FIGURES: Partial<Record<Figure, DiagramId>> = {
   'barre-c': 'bar-c',
   'barre-cm': 'bar-cm',
   'barre-dm': 'bar-dm',
+  'barre-c8': 'bar-c8',
+  'barre-only': 'bar-only',
   octave: 'octave',
 };
 

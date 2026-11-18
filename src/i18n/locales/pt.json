@@ -182,7 +182,7 @@
       "vibratoRecording": "Continue: {{left}} s",
       "vibratoResult": "Largura ±{{depth}} cents · {{rate}} oscilações por segundo",
       "vibratoNarrow": "Muito estreito: mexa um pouco mais o pulso.",
-      "vibratoSpeed": "Busque entre 4 e 7 oscilações por segundo.",
+      "vibratoSpeed": "Busque entre 3 e 8 oscilações por segundo; o ideal é umas 5.",
       "vibratoIrregular": "Irregular: tente manter a mesma velocidade."
     },
     "practice": {
@@ -474,6 +474,12 @@
         "a11y": "Forma de oitava: Sol na 6ª corda casa 3 e na 4ª corda casa 5",
         "l1": "A nota na 6ª corda.",
         "l2": "A mesma nota uma oitava acima: duas cordas e duas casas adiante."
+      },
+      "barre_c8": {
+        "a11y": "Diagrama de Dó maior no formato de Mi, pestana na casa 8"
+      },
+      "barre_only": {
+        "a11y": "Diagrama de pestana sozinha na casa 5, sem outros dedos"
       }
     }
   },
@@ -2181,7 +2187,7 @@
         "c1b": "Casas 5 e 7 da 3ª corda em colcheias, ligadas. Toque o exemplo e siga a tablatura.",
         "c2t": "O dedo 1 não se mexe",
         "c2b": "Toda a força é do dedo 3. O 1 fica firme na casa 5 para o pull-off ter para onde ir.",
-        "play": "Casa 5, hammer-on na 7, pull-off na 5, quatro vezes."
+        "play": "Casa 5, hammer-on na 7, pull-off na 5: seis vezes seguidas, terminando na 5."
       },
       "l315": {
         "title": "Frase com ligados",
@@ -2212,7 +2218,7 @@
       },
       "l322": {
         "title": "Slide para baixo",
-        "objective": "Deslizar em direção à mão e chegar exatamente na nota.",
+        "objective": "Deslizar em direção às tarraxas e chegar exatamente na nota.",
         "s1": "“Agora o slide desce.”",
         "s2": "Casa 10 da 2ª corda, deslize até a 8 com o mesmo dedo.",
         "s3": "Descendo é mais fácil passar do ponto: pare com decisão.",
@@ -2264,7 +2270,7 @@
         "q1": "Na 2ª corda, para onde se empurra para fazer um bend?",
         "q1o1": "Em direção à 6ª corda (para cima)",
         "q1o2": "Em direção à ponte",
-        "q1o3": "Em direção à mão",
+        "q1o3": "Em direção à cabeça (tarraxas)",
         "bend": "Bend de meio tom na casa 8 da 2ª corda. Segure quando chegar. Três vezes."
       },
       "l332": {
@@ -2291,7 +2297,7 @@
         "c1b": "Casa 9, bend a partir da 7, casa 9, bend a partir da 7. Toque o exemplo e compare.",
         "c2t": "Afinar de ouvido",
         "c2b": "Se o bend soar “baixo” comparado à nota de chegada, empurre mais um pouco. Se soar “alto”, passou do ponto.",
-        "play": "Toque duas vezes a nota de chegada: casa 9 da 3ª corda.",
+        "play": "Na 3ª corda: casa 9, casa 7 e de novo casa 9, a nota de chegada.",
         "bend": "Agora o bend a partir da casa 7 até essa nota, três vezes."
       },
       "l334": {
@@ -2377,7 +2383,7 @@
       "l351": {
         "title": "O dedo 1 deitado",
         "objective": "Fazer soar as 6 cordas com o dedo 1 deitado numa casa (pestana).",
-        "s1": "“Com a pestana, seu dedo 1 vira uma pestana móvel: a corda solta muda de lugar.”",
+        "s1": "“Com a pestana, seu dedo 1 vira um capotraste móvel: a corda solta muda de lugar.”",
         "s2": "Deite o dedo 1 sobre as 6 cordas na casa 5, com a lateral, não com a polpa.",
         "s3": "Ouça: as seis cordas têm que soar limpas.",
         "s4": "“Se alguma trastejar, gire um pouco o dedo ou aproxime do traste.”",

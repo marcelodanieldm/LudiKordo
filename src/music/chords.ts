@@ -186,7 +186,7 @@ export function aShape(name: string, fret: number, minor: boolean): GridDiagram 
   };
 }
 
-export type BarreId = 'bar-f' | 'bar-fm' | 'bar-g' | 'bar-am' | 'bar-bb' | 'bar-c' | 'bar-cm' | 'bar-dm';
+export type BarreId = 'bar-f' | 'bar-fm' | 'bar-g' | 'bar-am' | 'bar-bb' | 'bar-c' | 'bar-cm' | 'bar-dm' | 'bar-c8' | 'bar-only';
 
 export const BARRES: Record<BarreId, GridDiagram> = {
   'bar-f': eShape('F', 1, false),
@@ -197,6 +197,9 @@ export const BARRES: Record<BarreId, GridDiagram> = {
   'bar-c': aShape('C', 3, false),
   'bar-cm': aShape('Cm', 3, true),
   'bar-dm': aShape('Dm', 5, true),
+  'bar-c8': eShape('C', 8, false),
+  // Solo la cejilla, sin otros dedos (3.5.1).
+  'bar-only': { name: '', startFret: 5, barre: { fret: 5, from: 0, to: 5 }, dots: [], marks: [null, null, null, null, null, null] },
 };
 
 /** Octavas: la nota de la 6.ª cuerda se repite dos cuerdas más arriba, dos trastes más adelante. */
