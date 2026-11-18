@@ -16,7 +16,7 @@ import { useSettings } from '../state/settings';
 import { GuitarDrawingFor, isGuitarFigure } from './GuitarFigures';
 import { RATIO } from './guitarFigureMeta';
 import { playSequence } from '../audio/engine';
-import { LISTEN_COUNT_IN, listenLengthSec, listenSchedule } from '../music/listen';
+import { exampleSchedule } from '../music/examples';
 import type { Figure, ListenExample } from '../content/types';
 
 const STAGE_H = 210;
@@ -68,9 +68,8 @@ export function CartoonPlayer({ lesson }: { lesson: Lesson }) {
   useEffect(() => {
     const sound = sounds?.[scene];
     if (!playing || !sound) return;
-    const offset = sound.click ? LISTEN_COUNT_IN : 0;
-    const beats = sound.events.reduce((a, e) => a + e.beats, 0) + offset;
-    const handle = playSequence(listenSchedule(sound.events, sound.bpm, offset), sound.click ? { bpm: sound.bpm, beats } : undefined, undefined, sound.tone);
+    const { notes, beats } = exampleSchedule(sound);
+    const handle = playSequence(notes, sound.click ? { bpm: sound.bpm, beats } : undefined, undefined, sound.tone);
     return () => handle.stop();
   }, [playing, scene, sounds]);
 
@@ -205,7 +204,7 @@ export function CartoonPlayer({ lesson }: { lesson: Lesson }) {
 
 /** Duración de un sonido de escena, en ms (0 si no hay). */
 function soundMs(sound: ListenExample | null | undefined): number {
-  return sound ? listenLengthSec(sound.events, sound.bpm, sound.click) * 1000 : 0;
+  return sound ? exampleSchedule(sound).lengthSec * 1000 : 0;
 }
 
 /**

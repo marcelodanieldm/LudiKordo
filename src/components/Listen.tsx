@@ -6,7 +6,7 @@ import { Staff } from './Staff';
 import { TabStaff } from './TabStaff';
 import { IS_GUITAR } from '../instruments/current';
 import { playSequence, type SequenceHandle } from '../audio/engine';
-import { LISTEN_COUNT_IN, listenLengthSec, listenSchedule } from '../music/listen';
+import { exampleSchedule } from '../music/examples';
 import { isRest } from '../music/staff';
 import type { ListenExample, ScoreEvent, TabNote } from '../content/types';
 
@@ -52,9 +52,7 @@ export function Listen({ example, width, testID = 'listen' }: { example: ListenE
 
   const play = () => {
     stop();
-    const offset = example.click ? LISTEN_COUNT_IN : 0;
-    const notes = listenSchedule(example.events, example.bpm, offset);
-    const beats = example.events.reduce((a, e) => a + e.beats, 0) + offset;
+    const { notes, beats, lengthSec } = exampleSchedule(example);
     handle.current = playSequence(notes, example.click ? { bpm: example.bpm, beats } : undefined, () => {
       // Otro ejemplo empezó a sonar y cortó este.
       handle.current = null;
@@ -66,12 +64,12 @@ export function Listen({ example, width, testID = 'listen' }: { example: ListenE
     timer.current = setTimeout(() => {
       handle.current = null;
       setPlaying(false);
-    }, listenLengthSec(example.events, example.bpm, example.click) * 1000 + 400);
+    }, lengthSec * 1000 + 400);
   };
 
   return (
     <View style={{ gap: 10 }}>
-      {example.show ? <Score events={example.events} notation={example.show} width={width} noteNames={example.noteNames} /> : null}
+      {example.show && example.events.length > 0 ? <Score events={example.events} notation={example.show} width={width} noteNames={example.noteNames} /> : null}
       <Button
         variant="secondary"
         label={playing ? t('ui.listen.stop') : t('ui.listen.play')}

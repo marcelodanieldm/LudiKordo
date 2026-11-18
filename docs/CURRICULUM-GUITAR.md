@@ -99,7 +99,9 @@ Mismo esquema que el bajo (ADR 0008): riffs y progresiones **originales**, desbl
 
 ## Estado
 
-Escrito: **nivel 1 completo** (24 lecciones, módulos 1.1–1.5) y el checkpoint 1, en los 3 idiomas, con figuras, cartoons animados y ejemplos sonoros (`src/content/guitar/lessons.ts` y `level1.ts`). Los niveles 2 a 4 se ven con título y objetivo; se escriben de a un nivel por PR.
+Escrito: **niveles 1 y 2 completos** (54 lecciones) y los checkpoints 1 y 2, en los 3 idiomas, con figuras, cartoons animados y ejemplos sonoros (`src/content/guitar/lessons.ts`, `level1.ts`, `level2.ts`). Los niveles 3 y 4 se ven con título y objetivo; se escriben de a un nivel por PR.
+
+Acordes en el nivel 2: mientras la app no reconoce acordes, cada uno se practica en dos partes: sus notas de a una (la app espera cada nota) y el rasgueo a tiempo (ejercicio `strum`, que escucha los golpes sin mirar la altura). En los power chords la app escucha la nota grave.
 
 ## Gratis
 

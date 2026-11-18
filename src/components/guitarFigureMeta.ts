@@ -3,10 +3,10 @@
  * cuáles hay, cuántos ítems tiene cada leyenda y su proporción alto/ancho.
  */
 import type { Figure } from '../content/types';
-import type { ChordId } from '../music/chords';
+import type { DiagramId } from '../music/chords';
 
-/** Figuras de diagrama de acorde y el acorde que dibuja cada una. */
-export const CHORD_FIGURES: Partial<Record<Figure, ChordId>> = {
+/** Figuras que se dibujan como diagrama en grilla (acordes, power chords, caja de escala). */
+export const CHORD_FIGURES: Partial<Record<Figure, DiagramId>> = {
   'chord-em': 'Em',
   'chord-e': 'E',
   'chord-am': 'Am',
@@ -15,6 +15,9 @@ export const CHORD_FIGURES: Partial<Record<Figure, ChordId>> = {
   'chord-g': 'G',
   'chord-d': 'D',
   'chord-dm': 'Dm',
+  'power-6': 'power-6',
+  'power-5': 'power-5',
+  'penta-box': 'penta-a',
 };
 
 export const GUITAR_FIGURES: Figure[] = [
@@ -36,6 +39,7 @@ export const GUITAR_FIGURES: Figure[] = [
   'mute-fret-hand',
   'mute-pick-hand',
   'chord-diagram-how',
+  'palm-mute',
   ...(Object.keys(CHORD_FIGURES) as Figure[]),
 ];
 
@@ -57,6 +61,10 @@ export const LEGEND_COUNT: Partial<Record<Figure, number>> = {
   'mute-fret-hand': 2,
   'mute-pick-hand': 2,
   'chord-diagram-how': 5,
+  'palm-mute': 2,
+  'power-6': 2,
+  'power-5': 2,
+  'penta-box': 2,
 };
 
 export const RATIO: Partial<Record<Figure, number>> = {
@@ -78,6 +86,7 @@ export const RATIO: Partial<Record<Figure, number>> = {
   'fret-hand': 150 / 360,
   'mute-fret-hand': 140 / 360,
   'mute-pick-hand': 140 / 360,
+  'palm-mute': 140 / 360,
   'chord-diagram-how': 216 / 360,
   ...Object.fromEntries(Object.keys(CHORD_FIGURES).map((f) => [f, 216 / 360])),
 };

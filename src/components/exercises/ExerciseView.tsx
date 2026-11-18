@@ -8,13 +8,14 @@ import { FretboardTapExercise } from './FretboardTapExercise';
 import { PlayAlongExercise } from './PlayAlongExercise';
 import { TabReadingExercise } from './TabReadingExercise';
 import { TempoTrainerExercise } from './TempoTrainerExercise';
+import { StrumExercise } from './StrumExercise';
 import { Button } from '../ui';
 import { colors, fonts } from '../../theme';
 import type { Exercise } from '../../content/types';
 
 /**
- * Elige el componente de cada tipo de ejercicio. 6 de los 8 tipos están
- * implementados; el resto muestra «próximamente» y deja seguir.
+ * Elige el componente de cada tipo de ejercicio. Los tipos sin implementar
+ * (seguir la mano, grabarse) muestran «próximamente» y dejan seguir.
  */
 export function ExerciseView({
   exercise,
@@ -44,6 +45,8 @@ export function ExerciseView({
       return <TabReadingExercise key={exercise.id} exercise={exercise} onDone={onDone} width={width} mastery={mastery} />;
     case 'tempoTrainer':
       return <TempoTrainerExercise key={exercise.id} exercise={exercise} onDone={onDone} mastery={mastery} />;
+    case 'strum':
+      return <StrumExercise key={exercise.id} exercise={exercise} onDone={onDone} mastery={mastery} width={width} allowSelfCheck={allowSelfCheck} />;
     default:
       return (
         <View style={{ gap: 12 }}>

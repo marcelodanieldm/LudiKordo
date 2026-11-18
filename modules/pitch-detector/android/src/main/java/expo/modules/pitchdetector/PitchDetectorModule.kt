@@ -25,6 +25,7 @@ class StartOptions : Record {
  * Escucha el micrófono y emite:
  * - onPitch: altura cuadro a cuadro (afinador).
  * - onNote: un evento por ataque, cuando la energía sube de golpe y la altura se estabiliza.
+ * - onAttack: un evento por ataque aunque no tenga altura clara (rasgueos de acordes).
  * - onLevel: nivel RMS, para avisar si hay mucho ruido.
  * El tiempo se cuenta en muestras leídas, así no depende del reloj del sistema.
  */
@@ -34,7 +35,7 @@ class PitchDetectorModule : Module() {
 
   override fun definition() = ModuleDefinition {
     Name("PitchDetector")
-    Events("onNote", "onPitch", "onLevel")
+    Events("onNote", "onPitch", "onLevel", "onAttack")
 
     AsyncFunction("start") { options: StartOptions ->
       startListening(options)
@@ -76,6 +77,7 @@ class PitchDetectorModule : Module() {
       var prevRms = 0f
       var pendingOnsetMs = -1.0
       var framesSinceOnset = 0
+      var lastAttackMs = -1000.0
       try {
         while (running) {
           val n = record.read(hop, 0, hop.size, AudioRecord.READ_BLOCKING)
@@ -94,6 +96,12 @@ class PitchDetectorModule : Module() {
           if (rms > 0.01f && rms > prevRms * 1.8f) {
             pendingOnsetMs = nowMs - n * 1000.0 / o.sampleRate
             framesSinceOnset = 0
+            // Rasgueo: el golpe cuenta aunque un acorde no tenga una sola altura clara.
+            // Dos subidas a menos de 60 ms son el mismo golpe.
+            if (pendingOnsetMs - lastAttackMs > 60.0) {
+              sendEvent("onAttack", mapOf("elapsedMs" to pendingOnsetMs, "rms" to rms))
+              lastAttackMs = pendingOnsetMs
+            }
           }
           prevRms = rms * 0.7f + prevRms * 0.3f
 

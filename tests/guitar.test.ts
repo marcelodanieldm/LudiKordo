@@ -12,7 +12,10 @@ import { withInstrumentTexts } from '../src/i18n/overlay';
 import { LEGACY_VOICE, VOICES, peakGain, ringSec, voiceFor } from '../src/music/timbre';
 import type { Lesson, ScoreEvent } from '../src/content/types';
 import { CP1_RIFF, FULL_SPIDER, GUITAR_CP1, SIGHT_RIFF } from '../src/content/guitar/level1';
-import { CHORDS, chordMidi, triadPitchClasses, type ChordId } from '../src/music/chords';
+import { CHORDS, PENTA_A, POWER_5, POWER_6, chordMidi, diagramMidi, powerMidi, triadPitchClasses, type ChordId } from '../src/music/chords';
+import { BALLAD, EIGHTHS, HALVES, QUARTERS, eighthAt, isValidPattern, strokeTimes, strumSchedule } from '../src/music/strum';
+import { exampleSchedule } from '../src/music/examples';
+import { CALL, GUITAR_CP2, PENTA_UP, RESPONSE, arpScore } from '../src/content/guitar/level2';
 import { barsAreComplete, figureOf, isTabRest, layoutTab } from '../src/music/tab';
 import { tabOf } from '../src/content/guitar/helpers';
 
@@ -46,9 +49,9 @@ test('ruta de guitarra: 4 niveles, 28 módulos, 132 lecciones, con el módulo de
   assert.equal(new Set(ids).size, ids.length);
 });
 
-test('el nivel 1 está completo y todas las lecciones existen en la ruta', () => {
+test('los niveles 1 y 2 están completos y todas las lecciones existen en la ruta', () => {
   const route = new Set(GUITAR_LEVELS.flatMap((l) => l.modules.flatMap(lessonIdsOf)));
-  for (const mod of GUITAR_LEVELS[0].modules) {
+  for (const mod of [...GUITAR_LEVELS[0].modules, ...GUITAR_LEVELS[1].modules]) {
     for (const id of lessonIdsOf(mod)) assert.ok(GUITAR_LESSONS[id], `falta la lección ${id}`);
   }
   for (const id of Object.keys(GUITAR_LESSONS)) assert.ok(route.has(id), `${id} no está en la ruta`);
@@ -201,4 +204,63 @@ test('figuras y silencios de la tablatura', () => {
   assert.equal(l.notes.length, 4);
   assert.ok(l.notes[2].x > l.notes[1].x + l.beatW * 1.5);
   assert.equal(l.barsInRow.reduce((a, b) => a + b, 0), 2);
+});
+
+test('checkpoint 2 de guitarra: claves en 3 idiomas y respuesta del oído correcta', () => {
+  const used = [GUITAR_CP2.titleKey, GUITAR_CP2.introKey, ...GUITAR_CP2.parts.flatMap((p) => [p.promptKey, ...('options' in p ? p.options.filter((o) => !o.startsWith('=')) : [])])];
+  for (const [code, tree] of Object.entries(locales)) for (const k of used) assert.ok(lookup(tree, k), `${code}: falta ${k}`);
+  const ear = GUITAR_CP2.parts.find((p) => p.id === 'gcp2-ear');
+  assert.ok(ear && ear.kind === 'ear' && ear.tones);
+  // La, Do, Mi: tercera menor arriba de la tónica → «menor».
+  const midi = ear.tones.map((f) => Math.round(69 + 12 * Math.log2(f / 440)));
+  assert.equal(midi[1] - midi[0], 3);
+  assert.equal(ear.options[ear.correctIndex], 'content.g.cp2.minor');
+});
+
+test('rasgueo: patrones válidos, golpes a tiempo y ejercicios con acordes conocidos', () => {
+  for (const p of [QUARTERS, EIGHTHS, BALLAD, HALVES]) assert.ok(isValidPattern(p));
+  assert.equal(isValidPattern(['U', '-', '-', '-', '-', '-', '-', '-']), false);
+  const t = strokeTimes(BALLAD, 2, 60, 1000);
+  assert.equal(t.length, 12);
+  assert.deepEqual(t.slice(0, 6).map((s) => [s.timeMs, s.dir]), [[1000, 'D'], [2000, 'D'], [2500, 'U'], [3500, 'U'], [4000, 'D'], [4500, 'U']]);
+  assert.equal(eighthAt(999, 1000, 60), -1);
+  assert.equal(eighthAt(2600, 1000, 60), 3);
+  const known = new Set([...Object.keys(CHORDS), 'G5', 'A5', 'C5', 'D5', 'E5']);
+  const strums = [...lessons.flatMap((l) => l.exercises), ...GUITAR_CP2.parts].filter((e) => e.kind === 'strum');
+  assert.ok(strums.length >= 20);
+  for (const e of strums) {
+    if (e.kind !== 'strum') continue;
+    assert.ok(isValidPattern(e.pattern), e.id);
+    assert.ok(e.chords.length >= 2 && e.chords.every((c) => known.has(c)), e.id);
+    assert.ok(e.bpm <= 80, e.id);
+  }
+});
+
+test('ejemplos rasgueados: hacia abajo de grave a agudo, hacia arriba solo las 3 agudas', () => {
+  const em = chordMidi('Em');
+  const notes = strumSchedule([em], ['D', 'U', '-', '-', '-', '-', '-', '-'], 60);
+  assert.equal(notes.length, 6 + 3);
+  assert.ok(notes[0].freq < notes[5].freq && notes[0].startSec < notes[5].startSec);
+  assert.ok(notes[6].freq > notes[8].freq, 'hacia arriba empieza por la más aguda');
+  const ex = exampleSchedule({ events: [], bpm: 60, click: true, strum: { chords: [em, em], pattern: QUARTERS } });
+  assert.equal(ex.beats, 12);
+  assert.equal(ex.notes.length, 8 * 6);
+  assert.ok(ex.notes[0].startSec >= 4, 'la cuenta previa va antes del primer golpe');
+});
+
+test('power chords, pentatónica y arpegios de acordes', () => {
+  assert.deepEqual(powerMidi('E', 3), [43, 50]);
+  for (const d of [POWER_6, POWER_5]) {
+    const m = diagramMidi(d);
+    assert.equal(m[1] - m[0], 7, `${d.name}: quinta justa`);
+  }
+  const pcs = new Set(diagramMidi(PENTA_A).map((m) => m % 12));
+  assert.deepEqual([...pcs].sort((a, b) => a - b), [0, 2, 4, 7, 9]); // Do Re Mi Sol La
+  assert.equal(PENTA_UP.length, 12);
+  for (const id of Object.keys(CHORDS) as ChordId[]) assert.ok(barsAreComplete(arpScore(id)), id);
+  // La pregunta queda abierta (termina en Mi) y la respuesta vuelve a La.
+  const last = (s: ScoreEvent[]) => s.filter(isNote).slice(-1)[0];
+  const endMidi = (e: { string: string; fret: number }) => GUITAR.strings.find((x) => x.id === e.string)!.openMidi + e.fret;
+  assert.equal(endMidi(last(CALL)) % 12, 4);
+  assert.equal(endMidi(last(RESPONSE)) % 12, 9);
 });
