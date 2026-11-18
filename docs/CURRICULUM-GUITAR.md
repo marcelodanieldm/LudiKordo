@@ -122,9 +122,9 @@ Igual que en el bajo: módulos 1.1 y 1.2, afinador y metrónomo.
 | Domingo de mañana | Gospel | 2 | 2.3 |
 | Freno de mano | Funk | 2 | 2.5 |
 | Ruta de noche | Rock | 3 | 3.4 |
-| Martes en el club | Jazz | 3 | 3.4 |
 | Ciudad de vidrio | Pop | 3 | 3.7 |
 | Taller de groove | Funk | 4 | 4.4 |
+| Martes en el club | Jazz | 4 | 4.3 |
 | Luz de madrugada | Jazz | 4 | 4.3, 4.7 |
 | Coro del barrio | Gospel | 4 | 4.5 |
 

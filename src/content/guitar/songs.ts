@@ -60,7 +60,7 @@ export const GUITAR_SONGS: Song[] = [
     genre: 'rock',
     level: 1,
     requires: ['1.5'],
-    key: 'E',
+    key: 'Em',
     bpm: 80,
     tempoSteps: [80, 90, 100],
     chords: ['E5', 'E5', 'A5', 'E5', 'B5', 'A5', 'E5', 'E5'],
@@ -154,8 +154,9 @@ export const GUITAR_SONGS: Song[] = [
   song({
     id: 'g-jazz-1',
     genre: 'jazz',
-    level: 3,
-    requires: ['3.4'],
+    level: 4,
+    // Arpegios de séptima con notas fuera de la pentatónica: pide la escala mayor.
+    requires: ['4.3'],
     key: 'C',
     bpm: 76,
     tempoSteps: [76, 84, 92],

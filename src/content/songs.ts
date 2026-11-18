@@ -312,7 +312,8 @@ export function songExample(song: Song): ListenExample {
   const base: ListenExample = { events: song.line, bpm: song.bpm, show: song.notation, click: true, ...(song.tone ? { tone: song.tone } : {}) };
   if (!song.strum) return base;
   const chords = song.chords.map((c) => chordFromName(c) ?? []);
-  return { ...base, strum: { chords, pattern: song.strum, tone: 'clean', level: 0.4 } };
+  // En rock la pista suena con crunch, como una segunda guitarra; en el resto, limpia.
+  return { ...base, strum: { chords, pattern: song.strum, tone: song.tone === 'crunch' ? 'crunch' : 'clean', level: 0.4 } };
 }
 
 export function getSong(id: string): Song | undefined {

@@ -322,7 +322,7 @@ const QUALITY: Record<string, number[]> = {
  */
 export function chordFromName(name: string): number[] | null {
   const m = /^([A-G])([#b]?)(.*)$/.exec(name);
-  if (!m || !(m[3] in QUALITY)) return null;
+  if (!m || !Object.prototype.hasOwnProperty.call(QUALITY, m[3])) return null;
   const pc = (LETTER_PC[m[1]] + (m[2] === '#' ? 1 : m[2] === 'b' ? -1 : 0) + 12) % 12;
   const root = 40 + ((pc - 4 + 12) % 12);
   return QUALITY[m[3]].map((i) => root + i);

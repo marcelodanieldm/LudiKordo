@@ -33,6 +33,8 @@ export default function SongScreen() {
   const [round, setRound] = useState(0);
   const [saved, setSaved] = useState<number | null>(null);
   const contentWidth = isTablet ? Math.min(width - 96, 820) : width - 40;
+  // Memorizado: si cambia el ejemplo, Listen corta el sonido.
+  const example = useMemo(() => (song ? songExample(song) : null), [song]);
 
   const exercise = useMemo<PlayAlongExercise | null>(
     () =>
@@ -103,7 +105,7 @@ export default function SongScreen() {
             {!running ? (
               <Card style={{ gap: 10 }}>
                 <H2 style={{ fontSize: 18 }}>{t('ui.songbook.listen')}</H2>
-                <Listen example={songExample(song)} width={contentWidth - 34} testID={`listen-${song.id}`} />
+                {example ? <Listen example={example} width={contentWidth - 34} testID={`listen-${song.id}`} /> : null}
               </Card>
             ) : null}
             {saved !== null ? (
