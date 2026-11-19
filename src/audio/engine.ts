@@ -7,6 +7,8 @@ import { IS_GUITAR } from '../instruments/current';
 import { peakGain, ringSec, voiceFor, type Tone, type Voice } from '../music/timbre';
 
 let ctx: AudioContext | null = null;
+/** Nodo de ganancia de react-native-audio-api (no el del navegador). */
+type Gain = ReturnType<AudioContext['createGain']>;
 function context(): AudioContext {
   if (!ctx) ctx = new AudioContext();
   // Algunos Android crean el contexto suspendido hasta el primer gesto: lo despertamos.
@@ -87,7 +89,7 @@ interface PitchMod {
 /** Velocidad del vibrato de los ejemplos (oscilaciones por segundo). */
 const VIBRATO_HZ = 5.5;
 
-function scheduleVoice(c: AudioContext, freq: number, at: number, durSec: number, voice: Voice, level = 1, mod: PitchMod = {}, out?: GainNode): number {
+function scheduleVoice(c: AudioContext, freq: number, at: number, durSec: number, voice: Voice, level = 1, mod: PitchMod = {}, out?: Gain): number {
   const ring = ringSec(voice, durSec);
   const gain = c.createGain();
   // Normalizado: la suma de parciales nunca pasa de ~0,5, como el tono de siempre.
@@ -209,7 +211,7 @@ export function playSequence(
  * Batería sintetizada con osciladores (sin muestras grabadas): bombo con caída
  * de altura, caja y platillo con ondas cuadradas agudas y muy cortas.
  */
-function drum(c: AudioContext, at: number, kind: 'kick' | 'snare' | 'hat' | 'rim', level: number, out: GainNode) {
+function drum(c: AudioContext, at: number, kind: 'kick' | 'snare' | 'hat' | 'rim', level: number, out: Gain) {
   const parts: { type: 'sine' | 'square' | 'triangle'; f0: number; f1: number; gain: number; dur: number }[] =
     kind === 'kick'
       ? [
