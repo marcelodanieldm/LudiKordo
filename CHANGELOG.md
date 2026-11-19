@@ -4,6 +4,19 @@ Formato: [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versiones:
 
 ## [Sin publicar]
 
+## [0.3.0] — 2026-11-19
+
+### Nuevo
+- Práctica de habilidades (bajo y guitarra): 34 ejercicios por habilidad con evaluación en vivo nota por nota (a tiempo, antes, tarde, otra nota, perdida), racha, estrellas y tempos que se desbloquean.
+- Banda que acompaña: batería sintetizada en 9 estilos (rock, pop, funk, balada, shuffle, jazz, soul, reggae, bossa), bajo o guitarra y teclado según el cifrado; cada parte se prende o apaga.
+- Improvisación con la escala y «Practicar con la banda» en cada canción del cancionero.
+- Dibujos de la mano que se mueven con el sonido; tono del bajo más audible en el teléfono.
+- APK de prueba numerados con la versión de app.json.
+
+### Arreglos
+- El cancionero de guitarra mostraba los nombres de módulo del bajo.
+- El afinador y el metrónomo se apagan al salir de la pestaña Practicar.
+
 ## [0.2.0] — 2026-11-18
 
 Primera versión en APK para instalar a mano (teléfonos y tablets), de las dos apps. No sale por Google Play.
