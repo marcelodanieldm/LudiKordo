@@ -2,7 +2,10 @@
 # - Release con el JavaScript incluido (no necesita Metro ni computadora).
 # - Firmado con la clave de depuración de Expo: sirve para probar, no para Google Play.
 # - Todo el contenido abierto (Premium de prueba): no hay compras en este APK.
-# Se publica como pre-release «apk-test-<n>» para descargarlo desde el teléfono.
+# Respeta la versión de app.json: pre-release «apk-test-v<versión>-<n>», archivo
+# «LudiKordo-bajo-<versión>-prueba-<n>.apk», versionName «<versión>-test.<n>» y el mismo
+# versionCode que el APK de versión (apk-release.yml: 0.2.0 → 200). Así se instala encima
+# del APK de versión de esa misma versión, y el de la versión siguiente se instala encima.
 # Instrumento (ADR 0009): bajo por defecto; guitarra eléctrica eligiendo «guitar» al
 # lanzarlo a mano, o con un push a la rama cc/apk-guitar.
 name: apk-test
@@ -35,7 +38,8 @@ jobs:
       EXPO_PUBLIC_DEV_PREMIUM: "1"
       EXPO_PUBLIC_INSTRUMENT: ${{ inputs.instrument || (github.ref_name == 'cc/apk-guitar' && 'guitar') || 'bass' }}
       # Misma expresión que EXPO_PUBLIC_INSTRUMENT, para que el nombre siempre coincida con lo compilado.
-      APK_NAME: ${{ (inputs.instrument || (github.ref_name == 'cc/apk-guitar' && 'guitar') || 'bass') == 'guitar' && 'LudiKordo-guitarra' || 'LudiKordo' }}
+      APK_NAME: ${{ (inputs.instrument || (github.ref_name == 'cc/apk-guitar' && 'guitar') || 'bass') == 'guitar' && 'LudiKordo-guitarra' || 'LudiKordo-bajo' }}
+      BUILD: ${{ github.run_number }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v5
@@ -48,6 +52,19 @@ jobs:
           java-version: 17
           cache: gradle
       - run: npm ci
+      - name: Versión (app.json)
+        run: |
+          v=$(node -p "require('./app.json').expo.version")
+          [[ "$v" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || { echo "app.json tiene una versión inválida: $v"; exit 1; }
+          IFS=. read -r major minor patch <<< "$v"
+          {
+            echo "APP_VERSION=$v"
+            # Misma fórmula que apk-release.yml; app.config.ts la aplica en el prebuild.
+            echo "APK_VERSION_CODE=$((major * 10000 + minor * 100 + patch))"
+            echo "APK_VERSION_NAME=$v-test.$BUILD"
+            echo "APK_FILE=$APK_NAME-$v-prueba-$BUILD.apk"
+            echo "TAG=apk-test-v$v-$BUILD"
+          } >> "$GITHUB_ENV"
       - name: Pruebas de lógica
         # Las pruebas corren como bajo (el contenido de guitarra se prueba aparte, en tests/guitar.test.ts).
         env:
@@ -55,6 +72,10 @@ jobs:
         run: npm test
       - name: Generar el proyecto Android
         run: npx expo prebuild --platform android --no-install
+      - name: El proyecto lleva la versión
+        run: |
+          grep -q "versionCode $APK_VERSION_CODE" android/app/build.gradle || { echo "versionCode distinto de $APK_VERSION_CODE"; exit 1; }
+          grep -q "versionName \"$APK_VERSION_NAME\"" android/app/build.gradle || { echo "versionName distinto de $APK_VERSION_NAME"; exit 1; }
       - name: Módulos nativos que enlaza Expo (diagnóstico)
         run: npx expo-modules-autolinking resolve --platform android --json | node -e "const d=JSON.parse(require('fs').readFileSync(0,'utf8'));for(const m of d.modules){console.log(m.packageName, m.packageVersion, JSON.stringify((m.projects||[]).map(p=>({name:p.name,publication:p.publication}))))}"
       - name: Compilar el APK (release, arm64)
@@ -62,18 +83,18 @@ jobs:
         # La mayoría de los teléfonos de los últimos años son arm64: el APK queda más chico y compila más rápido.
         run: ./gradlew :app:assembleRelease --no-daemon -PreactNativeArchitectures=arm64-v8a
       - name: Renombrar
-        run: cp android/app/build/outputs/apk/release/app-release.apk "${APK_NAME}-prueba-${{ github.run_number }}.apk"
+        run: cp android/app/build/outputs/apk/release/app-release.apk "$APK_FILE"
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.APK_NAME }}-apk-prueba
-          path: ${{ env.APK_NAME }}-prueba-*.apk
+          name: ${{ env.APK_NAME }}-${{ env.APP_VERSION }}-prueba-${{ env.BUILD }}
+          path: ${{ env.APK_FILE }}
           retention-days: 14
       - name: Publicar como pre-release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "apk-test-${{ github.run_number }}" ${APK_NAME}-prueba-*.apk \
+          gh release create "$TAG" "$APK_FILE" \
             --prerelease \
             --target "${{ github.sha }}" \
-            --title "APK de prueba ${{ github.run_number }} (${{ env.EXPO_PUBLIC_INSTRUMENT == 'guitar' && 'guitarra eléctrica' || 'bajo' }})" \
-            --notes "APK para probar en un teléfono Android (arm64). No es la versión de Google Play: está firmado con una clave de prueba y tiene todo el contenido abierto. Para instalarlo, abre este enlace desde el teléfono, descarga el .apk y permite instalar apps de este origen. Commit: ${{ github.sha }}"
+            --title "APK de prueba $APP_VERSION · build $BUILD (${{ env.EXPO_PUBLIC_INSTRUMENT == 'guitar' && 'guitarra eléctrica' || 'bajo' }})" \
+            --notes "Versión $APK_VERSION_NAME (versionCode $APK_VERSION_CODE). APK para probar en un teléfono Android (arm64). No es la versión de Google Play: está firmado con una clave de prueba y tiene todo el contenido abierto. Para instalarlo, abre este enlace desde el teléfono, descarga el .apk y permite instalar apps de este origen. Commit: ${{ github.sha }}"
