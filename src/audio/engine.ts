@@ -80,6 +80,8 @@ export function startMetronome(bpm: number, beats: number, countIn = 4, beatsPer
 interface PitchMod {
   bendCents?: number;
   vibratoCents?: number;
+  /** Desafinación fija (la copia del chorus). */
+  detuneCents?: number;
 }
 
 /** Velocidad del vibrato de los ejemplos (oscilaciones por segundo). */
@@ -107,7 +109,7 @@ function scheduleVoice(c: AudioContext, freq: number, at: number, durSec: number
     const pg = c.createGain();
     osc.type = p.type;
     // Desafinación aplicada a la frecuencia (no todas las versiones exponen `detune`).
-    const f = freq * Math.pow(2, p.detune / 1200);
+    const f = freq * Math.pow(2, (p.detune + (mod.detuneCents ?? 0)) / 1200);
     osc.frequency.value = f;
     // Bend: sube en el primer tercio y se sostiene. Vibrato: oscila desde la mitad.
     const bentF = mod.bendCents ? f * Math.pow(2, mod.bendCents / 1200) : f;
@@ -148,6 +150,8 @@ export async function playTones(freqs: number[], timbres?: Tone[]): Promise<void
 
 export interface SequenceHandle {
   stop: () => void;
+  /** Momento (ms, reloj de audio) en que empieza a sonar el ejemplo: el 0 de `startSec`. */
+  startMs: number;
 }
 
 /**
@@ -166,7 +170,7 @@ export function stopActiveSequence(): void {
 }
 
 export function playSequence(
-  notes: { freq: number; startSec: number; durSec: number; tone?: Tone; bendCents?: number; vibratoCents?: number }[],
+  notes: { freq: number; startSec: number; durSec: number; tone?: Tone; bendCents?: number; vibratoCents?: number; detuneCents?: number; level?: number }[],
   clickBeats?: { bpm: number; beats: number },
   /** Se llama si otro ejemplo empieza y corta a este. */
   onInterrupt?: () => void,
@@ -183,7 +187,8 @@ export function playSequence(
   }
   const voice = voiceFor(tone, IS_GUITAR);
   // Una nota puede traer su propio timbre (corcheas apagadas dentro de un riff con crunch).
-  for (const n of notes) scheduleVoice(c, n.freq, t0 + n.startSec, n.durSec, n.tone ? voiceFor(n.tone, IS_GUITAR) : voice, 1, n);
+  // Ecos, reverb y pista de acompañamiento traen su propio volumen (`level`).
+  for (const n of notes) scheduleVoice(c, n.freq, t0 + n.startSec, n.durSec, n.tone ? voiceFor(n.tone, IS_GUITAR) : voice, n.level ?? 1, n);
   let stopped = false;
   const handle = {
     onInterrupt,
@@ -197,5 +202,5 @@ export function playSequence(
     },
   };
   activeSequence = handle;
-  return { stop: handle.stop };
+  return { stop: handle.stop, startMs: t0 * 1000 };
 }

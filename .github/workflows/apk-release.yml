@@ -1,0 +1,144 @@
+# Versiones en APK para instalar a mano en teléfonos y tablets Android: LudiKordo (bajo)
+# y la app de guitarra eléctrica (ADR 0009), las dos en la misma versión.
+#
+# Se lanza a mano desde Actions sobre main con la versión X.Y.Z (= `expo.version` de
+# app.json): el workflow crea el tag `apk-vX.Y.Z` al publicar. También corre si alguien
+# empuja ese tag sobre main. NO es la versión de Google Play: esa sale con el tag
+# `vX.Y.Z` y release.yml. Estos APK:
+# - llevan el JavaScript incluido (no necesitan computadora);
+# - sirven en teléfonos y tablets: ARM de 64 y 32 bits, y x86_64 (Chromebooks y emuladores);
+# - están firmados con la clave de prueba de Expo (se instalan encima de la versión anterior,
+#   no de la de Google Play) y tienen todo el contenido abierto: sin compras.
+name: apk-release
+
+on:
+  push:
+    tags: ["apk-v*.*.*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Versión X.Y.Z (la de app.json); se lanza sobre main
+        required: true
+
+concurrency:
+  group: apk-release-${{ inputs.version || github.ref_name }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+env:
+  TAG: ${{ inputs.version && format('apk-v{0}', inputs.version) || github.ref_name }}
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      version: ${{ steps.v.outputs.version }}
+      code: ${{ steps.v.outputs.code }}
+      sha: ${{ steps.v.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: El commit es de main
+        run: test "${{ github.event_name }}" != workflow_dispatch || test "$GITHUB_REF_NAME" = main || { echo "Lánzalo sobre main"; exit 1; }
+      - name: La versión no existe todavía
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then echo "Ya hay una versión $TAG"; exit 1; fi
+      - name: El commit está en main
+        run: git merge-base --is-ancestor HEAD origin/main || { echo "El tag no está sobre main"; exit 1; }
+      - name: El tag coincide con app.json
+        id: v
+        run: |
+          v=$(node -p "require('./app.json').expo.version")
+          test "apk-v$v" = "$TAG" || { echo "app.json dice $v y el tag es $TAG"; exit 1; }
+          IFS=. read -r major minor patch <<< "$v"
+          echo "version=$v" >> "$GITHUB_OUTPUT"
+          echo "code=$((major * 10000 + minor * 100 + patch))" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run verify
+
+  apk:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - instrument: bass
+            file: LudiKordo-bajo
+          - instrument: guitar
+            file: LudiKordo-guitarra
+    env:
+      EXPO_PUBLIC_TEST_BUILD: "1"
+      EXPO_PUBLIC_DEV_PREMIUM: "1"
+      EXPO_PUBLIC_INSTRUMENT: ${{ matrix.instrument }}
+      APK_VERSION_CODE: ${{ needs.verify.outputs.code }}
+      APK_FILE: ${{ matrix.file }}-${{ needs.verify.outputs.version }}.apk
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - run: npm ci
+      - name: Generar el proyecto Android
+        run: npx expo prebuild --platform android --no-install
+      - name: Compilar el APK (release; teléfonos, tablets y Chromebooks)
+        working-directory: android
+        run: ./gradlew :app:assembleRelease --no-daemon -PreactNativeArchitectures=arm64-v8a,armeabi-v7a,x86_64
+      - name: Renombrar
+        run: cp android/app/build/outputs/apk/release/app-release.apk "$APK_FILE"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.file }}
+          path: ${{ env.APK_FILE }}
+          retention-days: 30
+
+  publish:
+    needs: [verify, apk]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v4
+        with:
+          path: apks
+          merge-multiple: true
+      - name: Publicar la versión
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.verify.outputs.version }}
+        run: |
+          {
+            echo "Dos apps para Android, en teléfonos y tablets:"
+            echo
+            echo "- **LudiKordo-bajo-$VERSION.apk**: bajo de 4 cuerdas."
+            echo "- **LudiKordo-guitarra-$VERSION.apk**: guitarra eléctrica."
+            echo
+            echo "### Novedades"
+            echo
+            cat "release-notes/v$VERSION/es-419.txt"
+            echo
+            echo
+            echo "### Cómo instalarla"
+            echo
+            echo "Abre esta página desde el teléfono o la tablet, descarga el .apk y permite instalar apps de este origen. Se instala encima de la versión anterior de estos APK, sin perder el progreso. Se pueden tener las dos apps a la vez."
+            echo
+            echo "No es la versión de Google Play: está firmada con una clave de prueba y tiene todo el contenido abierto (sin compras)."
+          } > notes.md
+          gh release create "$TAG" apks/*.apk --target "${{ needs.verify.outputs.sha }}" --title "LudiKordo $VERSION (APK)" --notes-file notes.md

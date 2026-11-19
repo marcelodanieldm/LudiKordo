@@ -42,7 +42,7 @@ export function triadPitchClasses(id: ChordId): number[] {
 // ───────────── Diagramas en grilla: acordes, power chords y cajas de escala ─────────────
 
 /** Formas que se dibujan como diagrama vertical (como un acorde). */
-export type DiagramId = ChordId | 'power-6' | 'power-5' | 'penta-a' | BarreId | 'octave';
+export type DiagramId = ChordId | 'power-6' | 'power-5' | 'penta-a' | BarreId | 'octave' | ScaleGridId;
 
 export interface GridDot {
   /** 0 = 6.ª cuerda (Mi grave) … 5 = 1.ª (Mi aguda). */
@@ -123,7 +123,96 @@ export const PENTA_A: GridDiagram = {
   marks: [null, null, null, null, null, null],
 };
 
+// ───────────── Escalas, tríadas y notas dobles (nivel 4) ─────────────
+
+/**
+ * Grilla de una posición de escala: `pos` es el traste del dedo 1; cada traste
+ * va con el dedo que le toca (los de más abajo con el 1, los estirados con el 4).
+ */
+export function scaleGrid(name: string, pos: number, notes: [StringId, number][], rootPc: number): GridDiagram {
+  return {
+    name,
+    startFret: Math.min(...notes.map(([, f]) => f)),
+    dots: notes.map(([s, fret]) => ({
+      string: STRING_INDEX[s],
+      fret,
+      finger: Math.min(4, Math.max(1, fret - pos + 1)),
+      root: (midiOn(GUITAR, s, fret) - rootPc) % 12 === 0,
+    })),
+    marks: [null, null, null, null, null, null],
+  };
+}
+
+/** Forma con dedos elegidos a mano (tríadas, notas dobles); las cuerdas sin nota no suenan. */
+function shapeGrid(name: string, notes: [StringId, number, number][], rootPc: number): GridDiagram {
+  const used = new Set(notes.map(([s]) => STRING_INDEX[s]));
+  return {
+    name,
+    startFret: Math.min(...notes.map(([, f]) => f)),
+    dots: notes.map(([s, fret, finger]) => ({ string: STRING_INDEX[s], fret, finger, root: (midiOn(GUITAR, s, fret) - rootPc) % 12 === 0 })),
+    marks: [0, 1, 2, 3, 4, 5].map((i) => (used.has(i) ? null : 'x')),
+  };
+}
+
+const A = 9;
+/** Las cinco cajas de la pentatónica menor de La, de grave a agudo en cada cuerda. */
+export const PENTA_BOXES: Record<1 | 2 | 3 | 4 | 5, [StringId, number][]> = {
+  1: [['E', 5], ['E', 8], ['A', 5], ['A', 7], ['D', 5], ['D', 7], ['G', 5], ['G', 7], ['B', 5], ['B', 8], ['e', 5], ['e', 8]],
+  2: [['E', 8], ['E', 10], ['A', 7], ['A', 10], ['D', 7], ['D', 10], ['G', 7], ['G', 9], ['B', 8], ['B', 10], ['e', 8], ['e', 10]],
+  3: [['E', 10], ['E', 12], ['A', 10], ['A', 12], ['D', 10], ['D', 12], ['G', 9], ['G', 12], ['B', 10], ['B', 13], ['e', 10], ['e', 12]],
+  4: [['E', 12], ['E', 15], ['A', 12], ['A', 15], ['D', 12], ['D', 14], ['G', 12], ['G', 14], ['B', 13], ['B', 15], ['e', 12], ['e', 15]],
+  5: [['E', 3], ['E', 5], ['A', 3], ['A', 5], ['D', 2], ['D', 5], ['G', 2], ['G', 5], ['B', 3], ['B', 5], ['e', 3], ['e', 5]],
+};
+const BOX_POS = { 1: 5, 2: 7, 3: 9, 4: 12, 5: 2 } as const;
+
+/** Sol mayor en 2.ª posición y La menor natural en 5.ª: las dos posiciones del módulo 4.3. */
+export const MAJOR_G_NOTES: [StringId, number][] = [
+  ['E', 3], ['E', 5], ['A', 2], ['A', 3], ['A', 5], ['D', 2], ['D', 4], ['D', 5], ['G', 2], ['G', 4], ['G', 5], ['B', 3], ['B', 5], ['e', 2], ['e', 3], ['e', 5],
+];
+export const MINOR_A_NOTES: [StringId, number][] = [
+  ['E', 5], ['E', 7], ['E', 8], ['A', 5], ['A', 7], ['A', 8], ['D', 5], ['D', 7], ['G', 4], ['G', 5], ['G', 7], ['B', 5], ['B', 6], ['B', 8], ['e', 5], ['e', 7], ['e', 8],
+];
+
+export type ScaleGridId =
+  | 'penta-2'
+  | 'penta-3'
+  | 'penta-4'
+  | 'penta-5'
+  | 'major-g'
+  | 'minor-a'
+  | 'dorian-a'
+  | 'mixo-a'
+  | 'phryg-a'
+  | 'triad-d'
+  | 'triad-dm'
+  | 'dstop-12'
+  | 'dstop-23';
+
+/** Modos de La en 5.ª posición, una octava desde la 6.ª cuerda (módulo 4.4). */
+export const DORIAN_A_NOTES: [StringId, number][] = [['E', 5], ['E', 7], ['E', 8], ['A', 5], ['A', 7], ['A', 9], ['D', 5], ['D', 7]];
+export const MIXO_A_NOTES: [StringId, number][] = [['E', 5], ['E', 7], ['E', 9], ['A', 5], ['A', 7], ['A', 9], ['D', 5], ['D', 7]];
+export const PHRYG_A_NOTES: [StringId, number][] = [['E', 5], ['E', 6], ['E', 8], ['A', 5], ['A', 7], ['A', 8], ['D', 5], ['D', 7]];
+
+export const SCALE_GRIDS: Record<ScaleGridId, GridDiagram> = {
+  'penta-2': scaleGrid('Am', BOX_POS[2], PENTA_BOXES[2], A),
+  'penta-3': scaleGrid('Am', BOX_POS[3], PENTA_BOXES[3], A),
+  'penta-4': scaleGrid('Am', BOX_POS[4], PENTA_BOXES[4], A),
+  'penta-5': scaleGrid('Am', BOX_POS[5], PENTA_BOXES[5], A),
+  'major-g': scaleGrid('G', 2, MAJOR_G_NOTES, 7),
+  'minor-a': scaleGrid('Am', 5, MINOR_A_NOTES, A),
+  'dorian-a': scaleGrid('A', 5, DORIAN_A_NOTES, A),
+  'mixo-a': scaleGrid('A', 5, MIXO_A_NOTES, A),
+  'phryg-a': scaleGrid('A', 5, PHRYG_A_NOTES, A),
+  // Tríadas en las tres cuerdas agudas (forma de Re abierto, movible).
+  'triad-d': shapeGrid('D', [['G', 7, 2], ['B', 7, 3], ['e', 5, 1]], 2),
+  'triad-dm': shapeGrid('Dm', [['G', 7, 3], ['B', 6, 2], ['e', 5, 1]], 2),
+  // Notas dobles: 1.ª y 2.ª con un dedo; 3.ª y 2.ª con dos.
+  'dstop-12': shapeGrid('', [['B', 8, 3], ['e', 8, 3]], A),
+  'dstop-23': shapeGrid('', [['G', 7, 1], ['B', 8, 2]], A),
+};
+
 export function diagramOf(id: DiagramId): GridDiagram {
+  if (id in SCALE_GRIDS) return SCALE_GRIDS[id as ScaleGridId];
   if (id in BARRES) return BARRES[id as BarreId];
   if (id === 'octave') return OCTAVE;
   if (id === 'power-6') return POWER_6;
@@ -212,3 +301,29 @@ export const OCTAVE: GridDiagram = {
   ],
   marks: [null, 'x', null, 'x', 'x', 'x'],
 };
+
+// ───────────── Acordes por nombre (pistas del cancionero) ─────────────
+
+const LETTER_PC: Record<string, number> = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
+/** Intervalos desde la tónica de cada tipo de acorde, como un rasgueo simple de guitarra. */
+const QUALITY: Record<string, number[]> = {
+  '': [0, 7, 12, 16],
+  m: [0, 7, 12, 15],
+  '7': [0, 7, 10, 16],
+  m7: [0, 7, 10, 15],
+  maj7: [0, 7, 11, 16],
+  '5': [0, 7, 12],
+};
+
+/**
+ * Notas MIDI de un acorde escrito en cifrado americano («Am7», «F#», «Bb5»),
+ * con la tónica entre Mi2 y Re♯3 (registro de las cuerdas graves de la guitarra).
+ * Devuelve null si el tipo de acorde no está en la tabla.
+ */
+export function chordFromName(name: string): number[] | null {
+  const m = /^([A-G])([#b]?)(.*)$/.exec(name);
+  if (!m || !Object.prototype.hasOwnProperty.call(QUALITY, m[3])) return null;
+  const pc = (LETTER_PC[m[1]] + (m[2] === '#' ? 1 : m[2] === 'b' ? -1 : 0) + 12) % 12;
+  const root = 40 + ((pc - 4 + 12) % 12);
+  return QUALITY[m[3]].map((i) => root + i);
+}

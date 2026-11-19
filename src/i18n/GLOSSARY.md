@@ -63,6 +63,19 @@ Usar siempre estos términos en interfaz y lecciones. Cambiarlos solo con acuerd
 | Vibrato | Vibrato | Vibrato |
 | Octave | Octava | Oitava |
 | Headstock | Clavijero | Cabeça (tarraxas) |
+| Box (pentatonic position) | Caja | Caixa |
+| Major / natural minor scale | Escala mayor / menor natural | Escala maior / menor natural |
+| Relative minor | Relativa menor | Relativa menor |
+| Mode: Dorian, Mixolydian, Phrygian | Modo: dórico, mixolidio, frigio | Modo: dórico, mixolídio, frígio |
+| Backing track | Pista (de acompañamiento) | Base (de acompanhamento) |
+| Target note | Nota objetivo (de llegada) | Nota-alvo |
+| Call and response | Pregunta y respuesta | Pergunta e resposta |
+| Double stop | Nota doble | Nota dupla (double stop) |
+| Triad | Tríada | Tríade |
+| Tapping | Tapping | Tapping |
+| Overdrive / distortion | Overdrive / distorsión | Overdrive / distorção |
+| Delay / reverb / chorus / wah | Delay / reverb / chorus / wah | Delay / reverb / chorus / wah |
+| Effects chain | Cadena de efectos | Cadeia de efeitos |
 
 Notas de estilo:
 

@@ -99,7 +99,9 @@ Mismo esquema que el bajo (ADR 0008): riffs y progresiones **originales**, desbl
 
 ## Estado
 
-Escrito: **niveles 1, 2 y 3 completos** (86 lecciones) y los checkpoints 1 a 3, en los 3 idiomas, con figuras, cartoons animados y ejemplos sonoros (`src/content/guitar/lessons.ts`, `level1.ts`, `level2.ts`, `level3.ts`). El nivel 4 se ve con título y objetivo.
+Escrito: **los 4 niveles completos** (132 lecciones) y los checkpoints 1 a 4, en los 3 idiomas, con figuras, cartoons animados y ejemplos sonoros (`src/content/guitar/lessons.ts`, `level1.ts` a `level4.ts`).
+
+Nivel 4: improvisar se practica con el ejercicio `improvise` (`src/music/improv.ts`): la app toca una pista sintetizada (acordes rasgueados en limpio, más bajos) y escucha; puntúa la fracción de notas en la escala, que se toquen suficientes y, cuando la lección lo pide, si en cada cambio de acorde se llega a una nota del acorde. Las notas que coinciden con un golpe de la pista se descartan, porque el micrófono también oye el parlante (mejor con auriculares). Los efectos del módulo 4.9 suenan con copias de las notas (`src/music/fx.ts`: delay, reverb, chorus) y la distorsión es un timbre más (`lead`); el phaser y el wah se explican, no se sintetizan. Las notas dobles se practican de a una (altura) y juntas como rasgueo (ataques), igual que los acordes.
 
 Nivel 3: ligados y slides se practican sin tempo (la app sigue la altura y espera cada nota, porque un ligado no tiene ataque de púa); bends y vibrato tienen ejercicios propios que miden la altura en el tiempo (`src/music/bend.ts`).
 
@@ -108,3 +110,22 @@ Acordes en el nivel 2: mientras la app no reconoce acordes, cada uno se practica
 ## Gratis
 
 Igual que en el bajo: módulos 1.1 y 1.2, afinador y metrónomo.
+
+## Cancionero
+
+10 canciones originales, dos por género (rock, pop, funk, jazz y gospel, elegidos por Marcelo el 18 nov 2026), en `src/content/guitar/songs.ts`. La guitarra toca la melodía o el riff y la app acompaña con una pista armada desde el cifrado (`chordFromName` en `src/music/chords.ts`). Se desbloquean por módulos:
+
+| Canción | Género | Nivel | Pide |
+| --- | --- | --- | --- |
+| Primer sol | Pop | 1 | 1.5 |
+| Motor en Mi | Rock | 1 | 1.5 |
+| Domingo de mañana | Gospel | 2 | 2.3 |
+| Freno de mano | Funk | 2 | 2.5 |
+| Ruta de noche | Rock | 3 | 3.4 |
+| Ciudad de vidrio | Pop | 3 | 3.7 |
+| Taller de groove | Funk | 4 | 4.4 |
+| Martes en el club | Jazz | 4 | 4.3 |
+| Luz de madrugada | Jazz | 4 | 4.3, 4.7 |
+| Coro del barrio | Gospel | 4 | 4.5 |
+
+Reglas probadas: compases completos, un acorde por compás, la nota del tiempo 1 es del acorde, corcheas a 80 bpm o menos al empezar y sin bends (la altura se mide al atacar).
