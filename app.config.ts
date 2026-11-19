@@ -25,12 +25,24 @@ function apkVersionCode(): number | undefined {
   return Number.isInteger(v) && v > 0 ? v : undefined;
 }
 
+/**
+ * APK de prueba (workflow apk-test): el versionName lleva la versión de app.json y
+ * el número de build (0.2.0-test.14), para saber en Ajustes de Android qué build está
+ * instalado. Sin la variable queda la versión de app.json.
+ */
+function apkVersionName(): string | undefined {
+  const v = process.env.APK_VERSION_NAME?.trim();
+  return v ? v : undefined;
+}
+
 export default ({ config }: ConfigContext): ExpoConfig => {
   // La misma variable elige el contenido dentro del bundle (src/instruments/current.ts).
   const instrument = process.env.EXPO_PUBLIC_INSTRUMENT === 'guitar' ? 'guitar' : 'bass';
   const versionCode = apkVersionCode();
+  const versionName = apkVersionName();
   const raw = config as ExpoConfig;
-  const base: ExpoConfig = versionCode ? { ...raw, android: { ...raw.android, versionCode } } : raw;
+  const named: ExpoConfig = versionName ? { ...raw, version: versionName } : raw;
+  const base: ExpoConfig = versionCode ? { ...named, android: { ...named.android, versionCode } } : named;
   const extra = { ...base.extra, instrument };
 
   if (instrument === 'bass') return { ...base, extra };
