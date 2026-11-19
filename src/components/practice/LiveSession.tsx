@@ -15,6 +15,7 @@ import { eventAt, isRest, noteStartBeats } from '../../music/staff';
 import { freqToMidi, midiAt, noteName, type Locale } from '../../music/notes';
 import { starsFor, TIMING_TOLERANCE_MS, type DetectedNote } from '../../music/scoring';
 import { drillExerciseId, type Drill } from '../../content/practice';
+import type { ScoreEvent } from '../../content/types';
 import { useProgress } from '../../state/progress';
 import { useSettings } from '../../state/settings';
 
@@ -24,7 +25,11 @@ const MASTERY = 0.8;
 const STYLES = Object.keys(DRUM_STYLES) as DrumStyle[];
 const LOOPS = [1, 2, 4] as const;
 
-type Phase = 'setup' | 'running' | 'result';
+type Phase = 'setup' | 'starting' | 'running' | 'result';
+
+const NO_LINE: ScoreEvent[] = [];
+/** La partitura solo se vuelve a dibujar cuando cambia la nota actual. */
+const MemoScore = React.memo(Score);
 
 interface Result {
   stars: number;
@@ -91,7 +96,7 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
     [],
   );
 
-  const line = drill.line ?? [];
+  const line = drill.line ?? NO_LINE;
   const lineBeats = drill.chords.length * 4;
   const eventStarts = useMemo(() => line.map((_, i) => line.slice(0, i).reduce((a, e) => a + e.beats, 0)), [line]);
   const noteBeats = useMemo(() => noteStartBeats(line), [line]);
@@ -105,6 +110,7 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
     const myRun = ++runId.current;
     try {
       stopActiveSequence();
+      setPhase('starting');
       const status = await requestMic();
       if (!mounted.current || myRun !== runId.current) return;
       const scored = status === 'ok';
@@ -131,12 +137,14 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
       const startMs = jam.current.startMs;
       const t0 = startMs - COUNT_IN * step;
       const backing = sched.notes.map((n) => ({ timeMs: t0 + n.startSec * 1000, midi: Math.round(freqToMidi(n.freq)) }));
-      const kicks = sched.drums.filter((d) => d.kind === 'kick').map((d) => t0 + d.startSec * 1000);
+      // Bombo y caja tienen altura: el detector puede tomarlos por notas.
+      const drumHits = sched.drums.filter((d) => d.kind === 'kick' || d.kind === 'snare').map((d) => t0 + d.startSec * 1000);
       const targets: LiveTarget[] = Array.from({ length: loops }, (_, loop) =>
         noteBeats.map((b, k) => ({ timeMs: startMs + (loop * lineBeats + b) * step, midi: noteMidis[k] })),
       ).flat();
-      const targetSet = new Set(noteMidis);
-      const clean = () => cleanDetections(detected, backing, kicks, targetSet).filter((d) => d.timeMs >= startMs - 300);
+      const clean = () => cleanDetections(detected, backing, drumHits, targets).filter((d) => d.timeMs >= startMs - 300);
+      // Solo se vuelve a dibujar cuando cambia algo (una nota nueva o un veredicto).
+      let lastKey = '';
 
       timers.current.tick = setInterval(() => {
         const now = nowMs();
@@ -144,9 +152,18 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
         setCountdown(beat < 0 ? Math.ceil(-beat) : null);
         if (drill.kind === 'line') {
           setEventPos(beat < 0 ? -1 : eventAt(eventStarts, beat % lineBeats));
-          if (listener.current) setLive(judgeLive(targets, clean(), now));
+          if (listener.current) {
+            const s = judgeLive(targets, clean(), now);
+            const key = s.verdicts.join(',');
+            if (key !== lastKey) {
+              lastKey = key;
+              setLive(s);
+            }
+          }
         } else if (listener.current) {
           const notes = clean();
+          if (String(notes.length) === lastKey) return;
+          lastKey = String(notes.length);
           const pcs = notes.map((d) => ((Math.round(freqToMidi(d.freq)) % 12) + 12) % 12);
           const inScale = pcs.filter((pc) => drill.scale!.includes(pc)).length;
           const lastNote = notes[notes.length - 1];
@@ -202,6 +219,8 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
       );
     } finally {
       starting.current = false;
+      // Si algo cortó el arranque, volver a la configuración.
+      if (mounted.current && myRun === runId.current && !jam.current) setPhase((p) => (p === 'starting' ? 'setup' : p));
     }
   };
 
@@ -252,7 +271,7 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
 
   return (
     <View style={{ gap: 14 }}>
-      {phase === 'setup' ? (
+      {phase === 'setup' || phase === 'starting' ? (
         <Card style={{ gap: 14 }}>
           {row(
             t('ui.drills.tempo'),
@@ -269,13 +288,13 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
             LOOPS.map((n) => chip(`l${n}`, t('ui.drills.loopsN', { n }), loops === n, () => setLoops(n))),
           )}
           <Muted>{t('ui.drills.headphones')}</Muted>
-          <Button label={t('ui.drills.start')} onPress={() => void start()} testID="drill-start" />
+          <Button label={t('ui.drills.start')} disabled={phase === 'starting'} onPress={() => void start()} testID="drill-start" />
         </Card>
       ) : null}
 
       {drill.kind === 'line' ? (
         <Card style={{ gap: 10, alignItems: 'center' }}>
-          <Score events={line} notation={drill.notation ?? 'tab'} width={width - 34} current={phase === 'running' ? eventPos : -1} />
+          <MemoScore events={line} notation={drill.notation ?? 'tab'} width={width - 34} current={phase === 'running' ? eventPos : -1} />
           {phase === 'running' && loops > 1 ? <Muted>{t('ui.drills.loopOf', { n: Math.min(loops, loopNow + 1), total: loops })}</Muted> : null}
         </Card>
       ) : (
@@ -315,7 +334,7 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
           {!noMic && drill.kind === 'line' && live ? (
             <>
               <View style={{ flexDirection: 'row', gap: 10, alignSelf: 'stretch' }}>
-                <Stat label={t('ui.drills.accuracy')} value={`${Math.round(live.accuracy * 100)} %`} />
+                <Stat label={t('ui.drills.accuracy')} value={t('ui.drills.percent', { n: Math.round(live.accuracy * 100) })} />
                 <Stat label={t('ui.drills.streak')} value={String(live.streak)} />
                 <Stat label={t('ui.drills.notes')} value={`${live.decided}/${live.verdicts.length}`} />
               </View>
@@ -329,7 +348,7 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
           ) : null}
           {!noMic && drill.kind === 'improv' && improvLive ? (
             <View style={{ flexDirection: 'row', gap: 10, alignSelf: 'stretch' }}>
-              <Stat label={t('ui.drills.inScalePct')} value={`${Math.round(improvLive.inScale * 100)} %`} />
+              <Stat label={t('ui.drills.inScalePct')} value={t('ui.drills.percent', { n: Math.round(improvLive.inScale * 100) })} />
               <Stat label={t('ui.drills.notes')} value={`${improvLive.count}/${drill.minNotes! * loops}`} />
             </View>
           ) : null}
@@ -370,8 +389,9 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
 }
 
 function Stat({ label, value }: { label: string; value: string }) {
+  const { t } = useTranslation();
   return (
-    <View accessible accessibilityLabel={`${label}: ${value}`} style={{ flex: 1, padding: 10, borderRadius: radius.lg, backgroundColor: colors.raised, alignItems: 'center', gap: 2 }}>
+    <View accessible accessibilityLabel={t('ui.drills.statA11y', { label, value })} style={{ flex: 1, padding: 10, borderRadius: radius.lg, backgroundColor: colors.raised, alignItems: 'center', gap: 2 }}>
       <Text style={{ fontFamily: fonts.display, fontSize: 24, lineHeight: 28, color: colors.ink }}>{value}</Text>
       <Text style={{ fontSize: 12, fontWeight: '800', color: colors.muted, textAlign: 'center' }}>{label}</Text>
     </View>
@@ -380,9 +400,10 @@ function Stat({ label, value }: { label: string; value: string }) {
 
 /** Dónde cayó la última nota respecto del pulso: a la izquierda, antes; a la derecha, tarde. */
 function TimingMeter({ offset, label, early, late }: { offset: number | null; label: string; early: string; late: string }) {
+  const { t } = useTranslation();
   const pos = offset === null ? null : Math.max(-1, Math.min(1, offset / TIMING_TOLERANCE_MS));
   return (
-    <View accessible accessibilityLabel={offset === null ? label : `${label}: ${Math.round(offset)} ms`} style={{ alignSelf: 'stretch', gap: 4 }}>
+    <View accessible accessibilityLabel={offset === null ? label : t('ui.drills.statA11y', { label, value: t('ui.drills.ms', { n: Math.round(offset) }) })} style={{ alignSelf: 'stretch', gap: 4 }}>
       <View style={{ height: 14, borderRadius: 7, backgroundColor: colors.raised, justifyContent: 'center' }}>
         <View style={{ position: 'absolute', left: '50%', width: 2, height: 14, marginLeft: -1, backgroundColor: colors.teal }} />
         {pos !== null ? <View style={{ position: 'absolute', left: `${50 + pos * 46}%`, width: 14, height: 14, marginLeft: -7, borderRadius: 7, backgroundColor: Math.abs(pos) <= 0.5 ? colors.teal : colors.gold }} /> : null}

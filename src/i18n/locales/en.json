@@ -79,7 +79,10 @@
       "bestStreak": "Best streak: {{n}} notes in a row",
       "rushing": "You tend to rush: listen to the kick and wait for the beat.",
       "dragging": "You tend to drag: anticipate each note a little.",
-      "unlocked": "New tempo unlocked: {{bpm}} bpm!"
+      "unlocked": "New tempo unlocked: {{bpm}} bpm!",
+      "percent": "{{n}}%",
+      "statA11y": "{{label}}: {{value}}",
+      "ms": "{{n}} ms"
     },
     "songbook": {
       "eyebrow": "Songbook",

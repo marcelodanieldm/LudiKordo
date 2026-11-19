@@ -36,6 +36,13 @@ export interface LiveState {
 
 export const isHit = (v: NoteVerdict) => v === 'hit' || v === 'early' || v === 'late';
 
+/**
+ * Lo que tarda una nota en llegar del micrófono a la app (búfer del detector y
+ * puente nativo). Una nota sin tocar recién se da por perdida pasado este margen,
+ * para que no aparezca «perdida» y un instante después «acierto».
+ */
+export const DETECTOR_LATENCY_MS = 250;
+
 export function judgeLive(
   targets: LiveTarget[],
   detected: DetectedNote[],
@@ -44,52 +51,51 @@ export function judgeLive(
   toleranceCents = PITCH_TOLERANCE_CENTS,
 ): LiveState {
   const used = new Set<number>();
-  const verdicts: NoteVerdict[] = [];
-  const offsets: (number | null)[] = [];
-  const played: (number | null)[] = [];
-  let last = -1;
+  const verdicts: NoteVerdict[] = targets.map(() => 'pending');
+  const offsets: (number | null)[] = targets.map(() => null);
+  const played: (number | null)[] = targets.map(() => null);
+  const near = (d: DetectedNote, t: LiveTarget) => Math.abs(d.timeMs - t.timeMs) <= toleranceMs;
+  const sameNote = (d: DetectedNote, t: LiveTarget) => Math.abs(centsOff(d.freq, t.midi)) <= toleranceCents;
+  // 1.ª pasada: aciertos (nota correcta cerca de su tiempo), en orden.
   targets.forEach((t, i) => {
     let best = -1;
     let bestDist = Infinity;
     detected.forEach((d, j) => {
-      if (used.has(j) || Math.abs(centsOff(d.freq, t.midi)) > toleranceCents) return;
+      if (used.has(j) || !sameNote(d, t) || !near(d, t)) return;
       const dist = Math.abs(d.timeMs - t.timeMs);
-      if (dist <= toleranceMs && dist < bestDist) {
+      if (dist < bestDist) {
         best = j;
         bestDist = dist;
       }
     });
-    if (best >= 0) {
-      used.add(best);
-      const off = detected[best].timeMs - t.timeMs;
-      verdicts.push(Math.abs(off) <= ON_TIME_MS ? 'hit' : off < 0 ? 'early' : 'late');
-      offsets.push(off);
-      played.push(null);
-      last = i;
-      return;
-    }
-    if (nowMs <= t.timeMs + toleranceMs) {
-      verdicts.push('pending');
-      offsets.push(null);
-      played.push(null);
-      return;
-    }
-    // Ventana cerrada sin la nota correcta: ¿hubo otro ataque cerca?
+    if (best < 0) return;
+    used.add(best);
+    const off = detected[best].timeMs - t.timeMs;
+    verdicts[i] = Math.abs(off) <= ON_TIME_MS ? 'hit' : off < 0 ? 'early' : 'late';
+    offsets[i] = off;
+  });
+  // 2.ª pasada: las que ya no pueden llegar son equivocadas (hubo otro ataque) o perdidas.
+  // Un ataque que es la nota correcta de otra nota cercana no cuenta como «equivocada» de esta.
+  targets.forEach((t, i) => {
+    if (verdicts[i] !== 'pending' || nowMs <= t.timeMs + toleranceMs + DETECTOR_LATENCY_MS) return;
     let wrong = -1;
     let wrongDist = Infinity;
     detected.forEach((d, j) => {
-      if (used.has(j)) return;
+      if (used.has(j) || !near(d, t)) return;
+      if (targets.some((o, k) => k !== i && sameNote(d, o) && near(d, o))) return;
       const dist = Math.abs(d.timeMs - t.timeMs);
-      if (dist <= toleranceMs && dist < wrongDist) {
+      if (dist < wrongDist) {
         wrong = j;
         wrongDist = dist;
       }
     });
     if (wrong >= 0) used.add(wrong);
-    verdicts.push(wrong >= 0 ? 'wrong' : 'miss');
-    offsets.push(null);
-    played.push(wrong >= 0 ? Math.round(freqToMidi(detected[wrong].freq)) : null);
-    last = i;
+    verdicts[i] = wrong >= 0 ? 'wrong' : 'miss';
+    played[i] = wrong >= 0 ? Math.round(freqToMidi(detected[wrong].freq)) : null;
+  });
+  let last = -1;
+  verdicts.forEach((v, i) => {
+    if (v !== 'pending') last = i;
   });
   let streak = 0;
   let bestStreak = 0;
@@ -107,18 +113,22 @@ export function judgeLive(
   return { verdicts, offsets, played, decided, hits, accuracy: decided ? hits / decided : 0, streak, bestStreak, last };
 }
 
-/** Lo que el bombo puede «sonar» en el micrófono, después del golpe. */
-export const KICK_WINDOW_MS = 150;
+/** Lo que un golpe de bombo o de caja puede «sonar» en el micrófono, después del golpe. */
+export const DRUM_WINDOW_MS = 150;
 
 /**
  * Saca lo que el micrófono oyó del acompañamiento: notas de la pista con la misma
- * altura justo después de sonar (ver `filterBacking`) y ataques graves justo
- * después de un golpe de bombo que no sean ninguna de las notas del ejercicio.
+ * altura justo después de sonar (ver `filterBacking`) y ataques justo después de
+ * un golpe de bombo o caja (tienen altura y el detector los toma por notas).
+ * Nunca saca una nota que es la que el alumno tenía que tocar en ese momento:
+ * la pista suele tocar las mismas notas en el mismo pulso.
  */
-export function cleanDetections(detected: DetectedNote[], backing: BackingNote[], kicksMs: number[], targetMidis: ReadonlySet<number>): DetectedNote[] {
-  return filterBacking(detected, backing).filter((d) => {
-    const midi = Math.round(freqToMidi(d.freq));
-    if (targetMidis.has(midi)) return true;
-    return !kicksMs.some((k) => d.timeMs >= k - 20 && d.timeMs <= k + KICK_WINDOW_MS);
+export function cleanDetections(detected: DetectedNote[], backing: BackingNote[], drumHitsMs: number[], targets: LiveTarget[] = [], toleranceMs = TIMING_TOLERANCE_MS): DetectedNote[] {
+  const expected = (d: DetectedNote) => targets.some((t) => Math.abs(d.timeMs - t.timeMs) <= toleranceMs && Math.abs(centsOff(d.freq, t.midi)) <= PITCH_TOLERANCE_CENTS);
+  const kept = new Set(filterBacking(detected, backing));
+  return detected.filter((d) => {
+    if (expected(d)) return true;
+    if (!kept.has(d)) return false;
+    return !drumHitsMs.some((k) => d.timeMs >= k - 20 && d.timeMs <= k + DRUM_WINDOW_MS);
   });
 }

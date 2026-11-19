@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { Text } from '../../src/components/Text';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -8,7 +8,7 @@ import { listenPitch, requestMic, type Listener } from '../../src/audio/mic';
 import { startMetronome, type MetronomeHandle } from '../../src/audio/engine';
 import { STRINGS, centsOff, noteName, type Locale } from '../../src/music/notes';
 import { useSettings } from '../../src/state/settings';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { useSongbook } from '../../src/components/SongbookHooks';
 import { useDrills } from '../../src/components/PracticeHooks';
 import { firstSongModule, recommendedSong } from '../../src/content/songbook';
@@ -107,6 +107,18 @@ function Tuner() {
   const [freq, setFreq] = useState<number | null>(null);
   const listener = useRef<Listener | null>(null);
   useEffect(() => () => listener.current?.stop(), []);
+  // La pestaña sigue montada debajo de otras pantallas (práctica, cancionero): al salir, el afinador se apaga.
+  useFocusEffect(
+    useCallback(
+      () => () => {
+        listener.current?.stop();
+        listener.current = null;
+        setOn(false);
+        setFreq(null);
+      },
+      [],
+    ),
+  );
 
   // La cuerda más cercana a la frecuencia detectada.
   const nearest = freq ? STRINGS.reduce((a, b) => (Math.abs(centsOff(freq, b.openMidi)) < Math.abs(centsOff(freq, a.openMidi)) ? b : a)) : null;
@@ -180,6 +192,17 @@ function Metronome() {
   const handle = useRef<MetronomeHandle | null>(null);
   const [running, setRunning] = useState(false);
   useEffect(() => () => handle.current?.stop(), []);
+  // Igual que el afinador: al salir de la pestaña, el metrónomo se detiene.
+  useFocusEffect(
+    useCallback(
+      () => () => {
+        handle.current?.stop();
+        handle.current = null;
+        setRunning(false);
+      },
+      [],
+    ),
+  );
 
   const toggle = () => {
     if (running) {

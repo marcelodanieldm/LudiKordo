@@ -79,7 +79,10 @@
       "bestStreak": "Mejor racha: {{n}} notas seguidas",
       "rushing": "Tiendes a adelantarte: escucha el bombo y espera el pulso.",
       "dragging": "Tiendes a atrasarte: anticipa un poco cada nota.",
-      "unlocked": "¡Nuevo tempo abierto: {{bpm}} bpm!"
+      "unlocked": "¡Nuevo tempo abierto: {{bpm}} bpm!",
+      "percent": "{{n}} %",
+      "statA11y": "{{label}}: {{value}}",
+      "ms": "{{n}} ms"
     },
     "songbook": {
       "eyebrow": "Cancionero",

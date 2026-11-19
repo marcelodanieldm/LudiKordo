@@ -202,6 +202,8 @@ export function playSequence(
 /** Frecuencias metálicas (las de las cajas de ritmo clásicas, más agudas) para hi-hat, ride y el chasquido de la caja. */
 const METAL_HZ = [1642, 2435, 2957, 4182, 4320, 6400];
 
+type OscillatorKind = 'sine' | 'square' | 'triangle' | 'sawtooth';
+
 function hitGain(c: AudioContext, at: number, peak: number, decay: number) {
   const g = c.createGain();
   g.gain.setValueAtTime(0, at);
@@ -211,20 +213,16 @@ function hitGain(c: AudioContext, at: number, peak: number, decay: number) {
   return g;
 }
 
-function osc(c: AudioContext, type: OscillatorKind, freq: number, at: number, dur: number, out: ReturnType<AudioContext['createGain']>, gain = 1) {
+/** Oscilador conectado directo al volumen del golpe (sin un nodo de volumen propio). */
+function osc(c: AudioContext, type: OscillatorKind, freq: number, at: number, dur: number, out: ReturnType<AudioContext['createGain']>) {
   const o = c.createOscillator();
-  const pg = c.createGain();
   o.type = type;
   o.frequency.value = freq;
-  pg.gain.value = gain;
-  o.connect(pg);
-  pg.connect(out);
+  o.connect(out);
   o.start(at);
   o.stop(at + dur + 0.02);
   return o;
 }
-
-type OscillatorKind = 'sine' | 'square' | 'triangle' | 'sawtooth';
 
 /** Un golpe de batería, solo con osciladores (no hace falta ruido ni filtros). */
 function scheduleDrum(c: AudioContext, kind: DrumHit['kind'], at: number, level: number) {
@@ -238,16 +236,16 @@ function scheduleDrum(c: AudioContext, kind: DrumHit['kind'], at: number, level:
   }
   if (kind === 'snare') {
     // Cuerpo (dos tonos) más chasquido metálico corto.
-    const body = hitGain(c, at, 0.45 * level, 0.12);
+    const body = hitGain(c, at, 0.3 * level, 0.12);
     osc(c, 'triangle', 185, at, 0.12, body);
-    osc(c, 'triangle', 330, at, 0.12, body, 0.6);
-    const snap = hitGain(c, at, 0.12 * level, 0.16);
-    for (const f of METAL_HZ) osc(c, 'square', f * 0.9, at, 0.16, snap, 1 / METAL_HZ.length);
+    osc(c, 'triangle', 330, at, 0.12, body);
+    const snap = hitGain(c, at, (0.12 * level) / METAL_HZ.length, 0.16);
+    for (const f of METAL_HZ) osc(c, 'square', f * 0.9, at, 0.16, snap);
     return;
   }
   const decay = kind === 'hat' ? 0.05 : 0.45;
-  const out = hitGain(c, at, (kind === 'hat' ? 0.09 : 0.06) * level, decay);
-  for (const f of METAL_HZ) osc(c, 'square', kind === 'ride' ? f * 1.4 : f * 2, at, decay, out, 1 / METAL_HZ.length);
+  const out = hitGain(c, at, ((kind === 'hat' ? 0.09 : 0.06) * level) / METAL_HZ.length, decay);
+  for (const f of METAL_HZ) osc(c, 'square', kind === 'ride' ? f * 1.4 : f * 2, at, decay, out);
 }
 
 export interface JamHandle {
@@ -256,28 +254,54 @@ export interface JamHandle {
   stop: () => void;
 }
 
+/** Cuánto se programa por adelantado: lo justo para no cortarse, sin crear miles de nodos de golpe. */
+const JAM_HORIZON_SEC = 2;
+const JAM_REFILL_MS = 400;
+
 /**
  * Toca el acompañamiento de la práctica (src/music/jam.ts) con su cuenta previa:
  * clics en la cuenta y, si no hay batería, también durante la música para no
- * perder el pulso. Corta cualquier ejemplo que esté sonando.
+ * perder el pulso. Corta cualquier ejemplo que esté sonando. Programa de a dos
+ * segundos (un timer rellena), así una toma larga no crea miles de nodos al empezar
+ * ni desfasa el arranque.
  */
 export function startJam(jam: { notes: { freq: number; startSec: number; durSec: number; tone?: Tone; level?: number }[]; drums: DrumHit[]; bpm: number; countIn: number; bodyBeats: number }): JamHandle {
   stopActiveSequence();
   const c = context();
-  const t0 = c.currentTime + 0.2;
+  const t0 = c.currentTime + 0.25;
   const step = 60 / jam.bpm;
-  const clicks = jam.countIn + (jam.drums.length ? 0 : jam.bodyBeats);
-  for (let i = 0; i < clicks; i++) click(t0 + i * step, i % 4 === 0);
   const voice = voiceFor(undefined, IS_GUITAR);
-  for (const n of jam.notes) scheduleVoice(c, n.freq, t0 + n.startSec, n.durSec, n.tone ? voiceFor(n.tone, IS_GUITAR) : voice, n.level ?? 1);
-  for (const d of jam.drums) scheduleDrum(c, d.kind, t0 + d.startSec, d.level);
+  const clicks = jam.countIn + (jam.drums.length ? 0 : jam.bodyBeats);
+  type Ev = { at: number; play: () => void };
+  const events: Ev[] = [
+    ...Array.from({ length: clicks }, (_, i) => ({ at: i * step, play: () => click(t0 + i * step, i % 4 === 0) })),
+    ...jam.notes.map((n) => ({ at: n.startSec, play: () => void scheduleVoice(c, n.freq, t0 + n.startSec, n.durSec, n.tone ? voiceFor(n.tone, IS_GUITAR) : voice, n.level ?? 1) })),
+    ...jam.drums.map((d) => ({ at: d.startSec, play: () => scheduleDrum(c, d.kind, t0 + d.startSec, d.level) })),
+  ].sort((a, b) => a.at - b.at);
+  let next = 0;
+  const fill = () => {
+    try {
+      const horizon = c.currentTime - t0 + JAM_HORIZON_SEC;
+      while (next < events.length && events[next].at <= horizon) events[next++].play();
+    } catch {
+      // El contexto se cerró desde otro lado (otro sonido de la app): no queda nada por programar.
+      next = events.length;
+    }
+  };
+  fill();
+  const timer = setInterval(() => {
+    fill();
+    if (next >= events.length) clearInterval(timer);
+  }, JAM_REFILL_MS);
   let stopped = false;
   return {
     startMs: (t0 + jam.countIn * step) * 1000,
     stop: () => {
       if (stopped) return;
       stopped = true;
-      void c.close();
+      clearInterval(timer);
+      // Cerrar el contexto corta lo ya programado; si otro ya lo cerró, no pasa nada.
+      Promise.resolve(c.close()).catch(() => undefined);
       if (ctx === c) ctx = null;
     },
   };

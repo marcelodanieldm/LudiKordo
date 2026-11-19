@@ -79,7 +79,10 @@
       "bestStreak": "Melhor sequência: {{n}} notas seguidas",
       "rushing": "Você tende a correr: escute o bumbo e espere o pulso.",
       "dragging": "Você tende a atrasar: antecipe um pouco cada nota.",
-      "unlocked": "Novo andamento liberado: {{bpm}} bpm!"
+      "unlocked": "Novo andamento liberado: {{bpm}} bpm!",
+      "percent": "{{n}}%",
+      "statA11y": "{{label}}: {{value}}",
+      "ms": "{{n}} ms"
     },
     "songbook": {
       "eyebrow": "Cancioneiro",

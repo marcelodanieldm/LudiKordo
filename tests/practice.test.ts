@@ -92,15 +92,37 @@ test('en vivo: acierto a tiempo, antes, tarde, nota equivocada, perdida y pendie
   assert.equal(twice.hits, 1);
 });
 
-test('en vivo: se descarta lo que el micrófono oye del acompañamiento', () => {
+test('en vivo: se descarta lo que el micrófono oye del acompañamiento, pero nunca la nota esperada', () => {
   const detected = [
     { timeMs: 1050, freq: f(40) }, // eco de la pista (misma nota, justo después)
     { timeMs: 2040, freq: f(31) }, // retumbe del bombo
-    { timeMs: 2050, freq: f(33) }, // nota del ejercicio justo después del bombo: queda
+    { timeMs: 2050, freq: f(33) }, // la nota que tocaba justo después del bombo: queda
     { timeMs: 3000, freq: f(40) }, // nota tuya lejos de todo: queda
+    { timeMs: 4010, freq: f(45) }, // la pista toca la misma nota que tú en el mismo pulso: queda
   ];
-  const kept = cleanDetections(detected, [{ timeMs: 1000, midi: 40 }], [2000], new Set([33, 40]));
-  assert.deepEqual(kept.map((d) => d.timeMs), [2050, 3000]);
+  const kept = cleanDetections(detected, [{ timeMs: 1000, midi: 40 }, { timeMs: 4000, midi: 45 }], [2000], [{ timeMs: 2000, midi: 33 }, { timeMs: 4000, midi: 45 }]);
+  assert.deepEqual(kept.map((d) => d.timeMs), [2050, 3000, 4010]);
+});
+
+test('en vivo: con bajo y teclado tocando las mismas notas, tocar perfecto da 100 %', () => {
+  const sched = jamSchedule({ chords: ['Am', 'Am'], bpm: 60, style: 'pop', loops: 1, parts: ['drums', 'bass', 'keys'], countIn: 0 });
+  const backing = sched.notes.map((n) => ({ timeMs: n.startSec * 1000, midi: Math.round(12 * Math.log2(n.freq / 440) + 69) }));
+  const drumHits = sched.drums.filter((d) => d.kind !== 'hat' && d.kind !== 'ride').map((d) => d.startSec * 1000);
+  // El alumno toca justo las notas de la pista (tónica y quinta) en cada pulso.
+  const targets = Array.from({ length: 8 }, (_, i) => ({ timeMs: i * 1000, midi: backing.find((b) => Math.abs(b.timeMs - i * 1000) < 1)?.midi ?? 45 }));
+  const detected = targets.map((t) => ({ timeMs: t.timeMs + 10, freq: f(t.midi) }));
+  const s = judgeLive(targets, cleanDetections(detected, backing, drumHits, targets), Infinity);
+  assert.equal(s.hits, targets.length);
+});
+
+test('en vivo: no marca «perdida» antes de que la nota pueda llegar, y una nota no roba el acierto de la siguiente', () => {
+  const targets = [{ timeMs: 1000, midi: 45 }, { timeMs: 1136, midi: 47 }];
+  // La nota llega al detector un poco tarde: a los 1090 ms todavía no se la da por perdida.
+  assert.equal(judgeLive(targets, [], 1090).verdicts[0], 'pending');
+  assert.deepEqual(judgeLive(targets, [{ timeMs: 1030, freq: f(45) }], 1150).verdicts.slice(0, 1), ['hit']);
+  // Tocar la segunda nota antes de tiempo no la convierte en «equivocada» de la primera.
+  const s = judgeLive(targets, [{ timeMs: 1070, freq: f(47) }], 5000);
+  assert.deepEqual(s.verdicts, ['miss', 'early']);
 });
 
 const levelsOf = { bass: LEVELS, guitar: GUITAR_LEVELS };
