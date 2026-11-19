@@ -41,7 +41,10 @@
         "funk": "Funk",
         "ballad": "Balada",
         "shuffle": "Shuffle",
-        "jazz": "Jazz"
+        "jazz": "Jazz",
+        "soul": "Soul",
+        "reggae": "Reggae",
+        "bossa": "Bossa nova"
       },
       "loops": "Voltas",
       "loopsN": "×{{n}}",
@@ -82,7 +85,8 @@
       "unlocked": "Novo andamento liberado: {{bpm}} bpm!",
       "percent": "{{n}}%",
       "statA11y": "{{label}}: {{value}}",
-      "ms": "{{n}} ms"
+      "ms": "{{n}} ms",
+      "withBand": "Praticar com a banda"
     },
     "motion": {
       "play": "Ver e ouvir",
@@ -777,6 +781,34 @@
       "b_improv": {
         "title": "Invente sua linha",
         "desc": "Improvise uma linha de baixo com a pentatônica de Lá menor sobre a progressão. Comece pelas tônicas."
+      },
+      "b_rock_quarters": {
+        "title": "Semínimas no rock",
+        "desc": "Semínimas regulares nas cordas soltas sobre uma batida de rock. Toque junto com o bumbo e a caixa."
+      },
+      "b_blues_roots": {
+        "title": "Tônicas do blues",
+        "desc": "As tônicas de um blues de 12 compassos em Lá, em semínimas, com bateria shuffle. Sinta quando o acorde muda."
+      },
+      "b_roots_ea": {
+        "title": "Tônicas em Mi e Lá",
+        "desc": "Dó, Sol, Lá e Fá nas cordas Mi e Lá sobre um pop: encontre cada tônica no tempo."
+      },
+      "b_soul_root_fifth": {
+        "title": "Tônica e quinta no soul",
+        "desc": "Tônica e quinta em mínimas sobre Sol, Dó e Ré, com bateria e teclado de soul."
+      },
+      "b_bossa_root_fifth": {
+        "title": "Bossa com tônica e quinta",
+        "desc": "A base da bossa nova: tônica e quinta em mínimas, com o teclado e a bateria do estilo."
+      },
+      "b_pop_eighths": {
+        "title": "Colcheias de pop",
+        "desc": "Colcheias constantes sobre Lá menor, Fá, Dó e Sol. Mantenha a mão relaxada e escute o chimbal."
+      },
+      "b_one_drop": {
+        "title": "One drop",
+        "desc": "Reggae: o primeiro tempo fica vazio e você entra com duas colcheias. Escute o bumbo no terceiro tempo."
       }
     },
     "song": {

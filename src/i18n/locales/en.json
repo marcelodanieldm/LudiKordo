@@ -41,7 +41,10 @@
         "funk": "Funk",
         "ballad": "Ballad",
         "shuffle": "Shuffle",
-        "jazz": "Jazz"
+        "jazz": "Jazz",
+        "soul": "Soul",
+        "reggae": "Reggae",
+        "bossa": "Bossa nova"
       },
       "loops": "Loops",
       "loopsN": "×{{n}}",
@@ -82,7 +85,8 @@
       "unlocked": "New tempo unlocked: {{bpm}} bpm!",
       "percent": "{{n}}%",
       "statA11y": "{{label}}: {{value}}",
-      "ms": "{{n}} ms"
+      "ms": "{{n}} ms",
+      "withBand": "Practice with the band"
     },
     "motion": {
       "play": "Watch and listen",
@@ -777,6 +781,34 @@
       "b_improv": {
         "title": "Make up your line",
         "desc": "Improvise a bass line with A minor pentatonic over the progression. Start with the roots."
+      },
+      "b_rock_quarters": {
+        "title": "Rock quarter notes",
+        "desc": "Even quarter notes on open strings over a rock beat. Lock in with the kick and snare."
+      },
+      "b_blues_roots": {
+        "title": "Blues roots",
+        "desc": "The roots of a 12-bar blues in A, in quarter notes, over a shuffle beat. Feel when the chord changes."
+      },
+      "b_roots_ea": {
+        "title": "Roots on E and A",
+        "desc": "C, G, A and F on the E and A strings over a pop groove: find each root in time."
+      },
+      "b_soul_root_fifth": {
+        "title": "Root and fifth in soul",
+        "desc": "Root and fifth in half notes over G, C and D, with soul drums and keys."
+      },
+      "b_bossa_root_fifth": {
+        "title": "Bossa with root and fifth",
+        "desc": "The foundation of bossa nova: root and fifth in half notes, with the style's keys and drums."
+      },
+      "b_pop_eighths": {
+        "title": "Pop eighth notes",
+        "desc": "Steady eighth notes over A minor, F, C and G. Keep your hand relaxed and listen to the hi-hat."
+      },
+      "b_one_drop": {
+        "title": "One drop",
+        "desc": "Reggae: beat one stays silent and you come in with two eighth notes. Listen for the kick on beat three."
       }
     },
     "song": {

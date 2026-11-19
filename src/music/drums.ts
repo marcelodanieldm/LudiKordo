@@ -4,8 +4,8 @@
  * estilos rectos y 12 (tresillos de corchea) para los que van con swing.
  * El motor (src/audio/engine.ts) arma cada golpe con osciladores.
  */
-export type DrumKind = 'kick' | 'snare' | 'hat' | 'ride';
-export type DrumStyle = 'rock' | 'pop' | 'funk' | 'ballad' | 'shuffle' | 'jazz';
+export type DrumKind = 'kick' | 'snare' | 'hat' | 'ride' | 'rim';
+export type DrumStyle = 'rock' | 'pop' | 'funk' | 'ballad' | 'shuffle' | 'jazz' | 'soul' | 'reggae' | 'bossa';
 
 export interface DrumPattern {
   steps: 12 | 16;
@@ -13,6 +13,8 @@ export interface DrumPattern {
   snare: number[];
   hat: number[];
   ride: number[];
+  /** Golpe de aro (rim click): bossa y reggae. */
+  rim?: number[];
 }
 
 export const DRUM_STYLES: Record<DrumStyle, DrumPattern> = {
@@ -27,10 +29,14 @@ export const DRUM_STYLES: Record<DrumStyle, DrumPattern> = {
   shuffle: { steps: 12, kick: [0, 6], snare: [3, 9], hat: [0, 2, 3, 5, 6, 8, 9, 11], ride: [] },
   // Ride con swing, hi-hat de pie en 2 y 4, bombo suave en cada tiempo.
   jazz: { steps: 12, kick: [0, 3, 6, 9], snare: [], hat: [3, 9], ride: [0, 3, 5, 6, 9, 11] },
+  soul: { steps: 16, kick: [0, 6, 8], snare: [4, 12], hat: [0, 2, 4, 6, 8, 10, 12, 14], ride: [] },
+  // One drop: el 1 vacío; bombo y aro juntos en el 3.
+  reggae: { steps: 16, kick: [8], snare: [], hat: [2, 4, 6, 8, 10, 12, 14], ride: [], rim: [8] },
+  bossa: { steps: 16, kick: [0, 6, 8, 14], snare: [], hat: [0, 2, 4, 6, 8, 10, 12, 14], ride: [], rim: [0, 3, 6, 10, 12] },
 };
 
 /** Volumen relativo de cada golpe. */
-export const DRUM_LEVEL: Record<DrumKind, number> = { kick: 0.9, snare: 0.6, hat: 0.35, ride: 0.3 };
+export const DRUM_LEVEL: Record<DrumKind, number> = { kick: 0.9, snare: 0.6, hat: 0.35, ride: 0.3, rim: 0.4 };
 
 export interface DrumHit {
   kind: DrumKind;
@@ -49,8 +55,8 @@ export function drumSchedule(style: DrumStyle, bars: number, bpm: number, offset
   const hits: DrumHit[] = [];
   for (let bar = 0; bar < bars; bar++) {
     const barStart = (offsetBeats + bar * 4) * beatSec;
-    for (const kind of ['kick', 'snare', 'hat', 'ride'] as const) {
-      for (const step of p[kind]) {
+    for (const kind of ['kick', 'snare', 'hat', 'ride', 'rim'] as const) {
+      for (const step of p[kind] ?? []) {
         const accent = step % (p.steps / 4) === 0 ? 1 : 0.75;
         const level = DRUM_LEVEL[kind] * accent * (style === 'jazz' && kind === 'kick' ? 0.35 : 1);
         hits.push({ kind, startSec: barStart + step * stepSec, level });

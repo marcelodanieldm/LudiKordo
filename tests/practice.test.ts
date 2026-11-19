@@ -10,7 +10,8 @@ import { chordFromName } from '../src/music/chords';
 import { midiToFreq } from '../src/music/notes';
 import { barsAreComplete } from '../src/music/tab';
 import { BASS, GUITAR, midiOn, type StringId } from '../src/instruments/profiles';
-import { BASS_DRILLS, DRILLS, DRILL_CATEGORIES, GUITAR_DRILLS, drillState, missingModule } from '../src/content/practice';
+import { BASS_DRILLS, DRILLS, DRILL_CATEGORIES, GENRE_STYLE, GUITAR_DRILLS, drillState, getDrill, missingModule } from '../src/content/practice';
+import { BASS_SONGS } from '../src/content/songs';
 import { LEVELS } from '../src/content/curriculum';
 import { GUITAR_LEVELS } from '../src/content/guitar/curriculum';
 import { GUITAR_GENRES } from '../src/content/songs';
@@ -19,8 +20,9 @@ const f = midiToFreq;
 
 test('batería: patrones dentro del compás y golpes en su lugar', () => {
   for (const [style, p] of Object.entries(DRUM_STYLES)) {
-    for (const k of ['kick', 'snare', 'hat', 'ride'] as const) assert.ok(p[k].every((s) => s >= 0 && s < p.steps), `${style} ${k}`);
-    assert.ok(p.kick.includes(0), `${style}: bombo en el 1`);
+    for (const k of ['kick', 'snare', 'hat', 'ride', 'rim'] as const) assert.ok((p[k] ?? []).every((s) => s >= 0 && s < p.steps), `${style} ${k}`);
+    // El one drop del reggae deja el 1 vacío a propósito.
+    if (style !== 'reggae') assert.ok(p.kick.includes(0), `${style}: bombo en el 1`);
   }
   // Rock a 60 bpm: 2 compases después de 4 pulsos de cuenta.
   const hits = drumSchedule('rock', 2, 60, 4);
@@ -183,5 +185,27 @@ test('ejercicios de práctica: títulos, descripciones y textos de la pantalla e
     for (const p of ['drums', 'bass', 'guitar', 'keys']) assert.equal(typeof get(`ui.drills.part.${p}`), 'string', `${lang}: ${p}`);
     for (const s of Object.keys(DRUM_STYLES) as DrumStyle[]) assert.equal(typeof get(`ui.drills.style.${s}`), 'string', `${lang}: ${s}`);
     for (const v of ['hit', 'early', 'late', 'wrong', 'miss']) assert.equal(typeof get(`ui.drills.verdict.${v}`), 'string', `${lang}: ${v}`);
+  }
+});
+
+test('acompañamiento: dos acordes en un compás cambian en el tercer tiempo; acordes con bajo indicado', () => {
+  const j = jamSchedule({ chords: ['Dm G'], bpm: 60, style: 'ballad', loops: 1, parts: ['bass'], countIn: 0 });
+  const midi = (x: number) => Math.round(12 * Math.log2(x / 440) + 69);
+  assert.equal(midi(j.notes[0].freq) % 12, 2, 'Re en el 1');
+  // En balada el bajo toca tónica (1) y quinta (3): la del 3 ya es del Sol (Re es su quinta).
+  assert.equal(midi(j.notes[1].freq) % 12, 2, 'quinta de Sol = Re');
+  assert.equal(chordFromName('C/E')![0] % 12, 4);
+  assert.equal(chordFromName('Am/G')![0] % 12, 7);
+});
+
+test('cancionero: cada canción se puede practicar con la banda', () => {
+  const s = BASS_SONGS[0];
+  const d = getDrill(`song-${s.id}`)!;
+  assert.equal(d.line, s.line);
+  assert.equal(d.style, GENRE_STYLE[s.genre]);
+  assert.ok(d.parts.includes('drums') && !d.parts.includes('bass'));
+  for (const song of BASS_SONGS) {
+    const sched = jamSchedule({ chords: song.chords, bpm: song.bpm, style: GENRE_STYLE[song.genre], loops: 1, parts: ['drums', 'guitar', 'keys'], countIn: 4 });
+    assert.ok(sched.notes.every((n) => Number.isFinite(n.freq) && n.freq > 30), song.id);
   }
 });

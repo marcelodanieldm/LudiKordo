@@ -30,6 +30,10 @@ const BASS: Record<DrumStyle, BassStep[]> = {
   shuffle: [[0, 0, 1], [1, 7, 1], [2, 9, 1], [3, 7, 1]],
   // Walking: tónica, tercera, quinta y una nota de paso hacia la tónica del próximo acorde.
   jazz: [[0, 0, 1], [1, 'third', 1], [2, 7, 1], [3, 'next', 1]],
+  soul: [[0, 0, 1.5], [1.5, 0, 0.5], [2, 7, 1], [3, 12, 0.5], [3.5, 7, 0.5]],
+  // One drop: el bajo deja el 1 vacío.
+  reggae: [[1, 0, 0.5], [1.5, 0, 0.5], [2, 7, 1], [3, 0, 1]],
+  bossa: [[0, 0, 1.5], [1.5, 7, 0.5], [2, 7, 1.5], [3.5, 0, 0.5]],
 };
 
 /** [pulso, duración] de los acordes del teclado. */
@@ -41,6 +45,10 @@ const KEYS: Record<DrumStyle, [number, number][]> = {
   shuffle: [[1, 0.5], [3, 0.5]],
   // Comping «charleston»: en el 1 y en la corchea antes del 2.
   jazz: [[0, 0.75], [1.5, 0.75]],
+  soul: [[0, 1.5], [1.5, 1], [2.5, 1.5]],
+  // Skank: acordes cortos en el «y» de cada tiempo.
+  reggae: [[0.5, 0.25], [1.5, 0.25], [2.5, 0.25], [3.5, 0.25]],
+  bossa: [[0, 0.5], [1.5, 0.5], [2.5, 0.5], [3.5, 0.5]],
 };
 
 const GUITAR: Record<DrumStyle, { pattern: Stroke[]; tone: Tone }> = {
@@ -50,10 +58,13 @@ const GUITAR: Record<DrumStyle, { pattern: Stroke[]; tone: Tone }> = {
   ballad: { pattern: HALVES, tone: 'clean' },
   shuffle: { pattern: QUARTERS, tone: 'clean' },
   jazz: { pattern: HALVES, tone: 'neck' },
+  soul: { pattern: BALLAD, tone: 'clean' },
+  reggae: { pattern: ['-', 'D', '-', 'D', '-', 'D', '-', 'D'], tone: 'muted' },
+  bossa: { pattern: ['D', '-', '-', 'D', '-', 'D', '-', 'D'], tone: 'clean' },
 };
 
 export interface JamOptions {
-  /** Un acorde por compás (cifrado americano). */
+  /** Un acorde por compás (cifrado americano); dos separados por espacio cambian en el tercer tiempo. */
   chords: string[];
   bpm: number;
   style: DrumStyle;
@@ -78,16 +89,20 @@ export function jamSchedule(o: JamOptions): JamSchedule {
   const bars = o.chords.length * o.loops;
   const beatSec = 60 / o.bpm;
   const at = (bar: number, beat: number) => (o.countIn + bar * 4 + beat) * beatSec;
-  const chordOf = (bar: number) => o.chords[bar % o.chords.length];
+  /** El acorde que suena en un pulso del compás (con dos, el segundo desde el tercer tiempo). */
+  const chordOf = (bar: number, beat = 0) => {
+    const parts = o.chords[bar % o.chords.length].trim().split(/\s+/);
+    return parts[beat >= 2 && parts.length > 1 ? 1 : 0];
+  };
   const notes: ScheduledNote[] = [];
 
   if (o.parts.includes('bass')) {
     for (let bar = 0; bar < bars; bar++) {
-      const v = voicing(chordOf(bar));
-      const root = v[0];
-      const third = v[v.length - 1] - 12;
-      const next = voicing(chordOf(bar + 1))[0];
       for (const [beat, iv, dur] of BASS[o.style]) {
+        const v = voicing(chordOf(bar, beat));
+        const root = v[0];
+        const third = v[v.length - 1] - 12;
+        const next = voicing(chordOf(bar + 1))[0];
         const midi = iv === 'third' ? third : iv === 'next' ? next + (next > root ? -1 : 1) : root + iv;
         notes.push({ freq: midiToFreq(midi), startSec: at(bar, beat), durSec: dur * beatSec, tone: 'ebass', level: PART_LEVEL.bass });
       }
@@ -95,17 +110,20 @@ export function jamSchedule(o: JamOptions): JamSchedule {
   }
   if (o.parts.includes('keys')) {
     for (let bar = 0; bar < bars; bar++) {
-      // Sin la tónica grave (la toca el bajo): el resto del acorde, una octava más arriba.
-      const v = voicing(chordOf(bar)).slice(1).map((m) => m + 12);
       for (const [beat, dur] of KEYS[o.style]) {
+        // Sin la tónica grave (la toca el bajo): el resto del acorde, una octava más arriba.
+        const v = voicing(chordOf(bar, beat)).slice(1).map((m) => m + 12);
         for (const m of v) notes.push({ freq: midiToFreq(m), startSec: at(bar, beat), durSec: dur * beatSec, tone: 'keys', level: PART_LEVEL.keys });
       }
     }
   }
   if (o.parts.includes('guitar')) {
     const g = GUITAR[o.style];
-    const chords = Array.from({ length: bars }, (_, bar) => voicing(chordOf(bar)));
-    for (const n of strumSchedule(chords, g.pattern, o.bpm, o.countIn)) notes.push({ ...n, tone: g.tone, level: PART_LEVEL.guitar });
+    // Dos rasgueos (primer y segundo acorde de cada compás) y de cada uno se toma su mitad.
+    const first = strumSchedule(Array.from({ length: bars }, (_, bar) => voicing(chordOf(bar, 0))), g.pattern, o.bpm, o.countIn);
+    const second = strumSchedule(Array.from({ length: bars }, (_, bar) => voicing(chordOf(bar, 2))), g.pattern, o.bpm, o.countIn);
+    const halfOf = (sec: number) => Math.floor((sec / beatSec - o.countIn) / 2) % 2;
+    for (const n of [...first.filter((x) => halfOf(x.startSec) === 0), ...second.filter((x) => halfOf(x.startSec) === 1)]) notes.push({ ...n, tone: g.tone, level: PART_LEVEL.guitar });
   }
   const drums = o.parts.includes('drums') ? drumSchedule(o.style, bars, o.bpm, o.countIn) : [];
   const bodyBeats = bars * 4;

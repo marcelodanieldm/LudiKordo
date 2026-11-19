@@ -41,7 +41,10 @@
         "funk": "Funk",
         "ballad": "Balada",
         "shuffle": "Shuffle",
-        "jazz": "Jazz"
+        "jazz": "Jazz",
+        "soul": "Soul",
+        "reggae": "Reggae",
+        "bossa": "Bossa nova"
       },
       "loops": "Vueltas",
       "loopsN": "×{{n}}",
@@ -82,7 +85,8 @@
       "unlocked": "¡Nuevo tempo abierto: {{bpm}} bpm!",
       "percent": "{{n}} %",
       "statA11y": "{{label}}: {{value}}",
-      "ms": "{{n}} ms"
+      "ms": "{{n}} ms",
+      "withBand": "Practicar con la banda"
     },
     "motion": {
       "play": "Ver y escuchar",
@@ -777,6 +781,34 @@
       "b_improv": {
         "title": "Inventa tu línea",
         "desc": "Improvisa una línea de bajo con la pentatónica de La menor sobre la progresión. Empieza por las tónicas."
+      },
+      "b_rock_quarters": {
+        "title": "Negras con el rock",
+        "desc": "Negras parejas en las cuerdas al aire sobre una batería de rock. Toca junto con el bombo y la caja."
+      },
+      "b_blues_roots": {
+        "title": "Raíces del blues",
+        "desc": "Las raíces de un blues de 12 compases en La, en negras, con batería shuffle. Siente cuándo cambia el acorde."
+      },
+      "b_roots_ea": {
+        "title": "Raíces en Mi y La",
+        "desc": "Do, Sol, La y Fa en las cuerdas Mi y La sobre un pop: encuentra cada raíz a tiempo."
+      },
+      "b_soul_root_fifth": {
+        "title": "Raíz y quinta en soul",
+        "desc": "Raíz y quinta en blancas sobre Sol, Do y Re, con batería y teclado de soul."
+      },
+      "b_bossa_root_fifth": {
+        "title": "Bossa con raíz y quinta",
+        "desc": "La base de la bossa nova: raíz y quinta en blancas, con el teclado y la batería del estilo."
+      },
+      "b_pop_eighths": {
+        "title": "Corcheas de pop",
+        "desc": "Corcheas constantes sobre La menor, Fa, Do y Sol. Mantén la mano relajada y escucha el platillo."
+      },
+      "b_one_drop": {
+        "title": "One drop",
+        "desc": "Reggae: el primer tiempo queda en silencio y entras con dos corcheas. Escucha el bombo en el tercer tiempo."
       }
     },
     "song": {

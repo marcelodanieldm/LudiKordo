@@ -6,7 +6,9 @@ import { useTranslation } from 'react-i18next';
 import { Text } from '../../src/components/Text';
 import { Button, Card, CloseButton, Eyebrow, H1, Muted } from '../../src/components/ui';
 import { LiveSession } from '../../src/components/practice/LiveSession';
-import { useModuleLabel, useDrills } from '../../src/components/PracticeHooks';
+import { useModuleLabel, useDrills, type DrillStatus } from '../../src/components/PracticeHooks';
+import { useSongbook } from '../../src/components/SongbookHooks';
+import { getDrill } from '../../src/content/practice';
 import { useLayout } from '../../src/hooks/useLayout';
 import { colors } from '../../src/theme';
 
@@ -16,7 +18,14 @@ export default function DrillScreen() {
   const { t } = useTranslation();
   const { isTablet, width } = useLayout();
   const moduleLabel = useModuleLabel();
-  const status = useDrills().find((d) => d.drill.id === String(id));
+  const drills = useDrills();
+  const songs = useSongbook();
+  // Una canción del cancionero (`song-<id>`) se practica igual, con el estado de la canción.
+  const songStatus = String(id).startsWith('song-') ? songs.find((s) => `song-${s.song.id}` === String(id)) : undefined;
+  const songDrill = songStatus ? getDrill(String(id)) : undefined;
+  const status: DrillStatus | undefined = songStatus && songDrill
+    ? { drill: songDrill, state: songStatus.state, missing: songStatus.missing[0], stars: 0 }
+    : drills.find((d) => d.drill.id === String(id));
   const contentWidth = isTablet ? Math.min(width - 96, 820) : width - 40;
 
   const close = (

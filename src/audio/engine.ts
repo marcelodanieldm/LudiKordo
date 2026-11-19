@@ -252,6 +252,13 @@ function scheduleDrum(c: AudioContext, kind: DrumHit['kind'], at: number, level:
     for (const f of METAL_HZ) osc(c, 'square', f * 0.9, at, 0.16, snap);
     return;
   }
+  if (kind === 'rim') {
+    // Aro: un «toc» corto y agudo.
+    const out = hitGain(c, at, 0.35 * level, 0.04);
+    osc(c, 'triangle', 1700, at, 0.04, out);
+    osc(c, 'square', 820, at, 0.04, out);
+    return;
+  }
   const decay = kind === 'hat' ? 0.05 : 0.45;
   const out = hitGain(c, at, ((kind === 'hat' ? 0.09 : 0.06) * level) / METAL_HZ.length, decay);
   for (const f of METAL_HZ) osc(c, 'square', kind === 'ride' ? f * 1.4 : f * 2, at, decay, out);
