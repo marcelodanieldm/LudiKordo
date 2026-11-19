@@ -84,6 +84,15 @@
       "statA11y": "{{label}}: {{value}}",
       "ms": "{{n}} ms"
     },
+    "motion": {
+      "play": "Watch and listen",
+      "stop": "Stop",
+      "label": "Moving drawing, step {{step}} of {{total}}",
+      "stepOf": "Step {{step}} of {{total}}",
+      "ok": "Just behind the fret: clean sound",
+      "onFret": "On top of the fret: muted",
+      "middle": "Middle of the space: it buzzes"
+    },
     "songbook": {
       "eyebrow": "Songbook",
       "title": "Songs for your level",

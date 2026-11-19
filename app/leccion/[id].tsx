@@ -15,6 +15,7 @@ import { Figure } from '../../src/components/Figure';
 import { ExerciseView } from '../../src/components/exercises/ExerciseView';
 import { Button, Card, CloseButton, Eyebrow, Muted, Stars } from '../../src/components/ui';
 import { Listen } from '../../src/components/Listen';
+import { MotionFigure } from '../../src/components/MotionFigure';
 import { Kordi } from '../../src/components/Kordi';
 import { colors, fonts, radius } from '../../src/theme';
 import { xpFor } from '../../src/music/scoring';
@@ -104,7 +105,11 @@ export default function LessonScreen() {
         <>
           <Card>
             <Text style={{ fontFamily: fonts.display, fontSize: 24, lineHeight: 29 }}>{t(lesson.cards[card].titleKey)}</Text>
-            {lesson.cards[card].figure ? <Figure id={lesson.cards[card].figure!} width={contentWidth - 34} /> : null}
+            {lesson.cards[card].figure && lesson.cards[card].motion ? (
+              <MotionFigure id={lesson.cards[card].figure!} motion={lesson.cards[card].motion!} width={contentWidth - 34} testID={`motion-${lesson.id}-${card}`} />
+            ) : lesson.cards[card].figure ? (
+              <Figure id={lesson.cards[card].figure!} width={contentWidth - 34} />
+            ) : null}
             <Text style={{ fontSize: 16, lineHeight: 24, color: colors.ink }}>{t(lesson.cards[card].bodyKey)}</Text>
             {lesson.cards[card].listen ? <Listen example={lesson.cards[card].listen!} width={contentWidth - 34} /> : null}
           </Card>

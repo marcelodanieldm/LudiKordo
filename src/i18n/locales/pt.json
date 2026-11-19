@@ -84,6 +84,15 @@
       "statA11y": "{{label}}: {{value}}",
       "ms": "{{n}} ms"
     },
+    "motion": {
+      "play": "Ver e ouvir",
+      "stop": "Parar",
+      "label": "Desenho com movimento, passo {{step}} de {{total}}",
+      "stepOf": "Passo {{step}} de {{total}}",
+      "ok": "Logo atrás do traste: som limpo",
+      "onFret": "Em cima do traste: som abafado",
+      "middle": "No meio da casa: trasteja"
+    },
     "songbook": {
       "eyebrow": "Cancioneiro",
       "title": "Músicas para o seu nível",

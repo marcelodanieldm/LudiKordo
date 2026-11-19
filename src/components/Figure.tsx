@@ -8,7 +8,9 @@ import { Kordi } from './Kordi';
 import { GuitarFigure, isGuitarFigure } from './GuitarFigures';
 import { colors } from '../theme';
 import { useSettings } from '../state/settings';
-import type { Figure as FigureId } from '../content/types';
+import type { Figure as FigureId, FigureMotion, MotionStep } from '../content/types';
+import { LeftHandFigure, RightHandFigure } from './HandFigures';
+import { motionPositions } from '../music/motion';
 import { STRINGS, noteName, type Locale } from '../music/notes';
 
 /**
@@ -16,14 +18,28 @@ import { STRINGS, noteName, type Locale } from '../music/notes';
  * las ilustraciones a mano (partes del bajo, manos) llegan como SVG del ilustrador
  * y se muestran aquí mismo. Mientras tanto, un marcador con Kordi.
  */
-export function Figure({ id, width }: { id: FigureId; width: number }) {
+export function Figure({ id, width, step, motion }: { id: FigureId; width: number; step?: MotionStep; motion?: FigureMotion }) {
   const { t, i18n } = useTranslation();
   const { notation, hand } = useSettings();
   const locale = i18n.language as Locale;
   const left = hand === 'left';
 
   if (isGuitarFigure(id)) return <GuitarFigure id={id} width={width} leftHanded={left} />;
+  // Con movimiento, el diapasón marca todas las posiciones del recorrido y resalta la que suena.
+  const moving = motion ? motionPositions(motion) : null;
+  const activeKey = step?.note ? `${step.note.string}${step.note.fret}` : '';
+  const motionDots = moving?.map((p) => ({
+    string: p.string,
+    fret: p.fret,
+    label: p.fret === 0 ? undefined : String(p.fret),
+    color: `${p.string}${p.fret}` === activeKey ? colors.gold : colors.raised,
+    labelColor: `${p.string}${p.fret}` === activeKey ? colors.onAccent : colors.ink,
+  }));
   switch (id) {
+    case 'right-hand':
+      return <RightHandFigure width={width} step={step} leftHanded={left} />;
+    case 'left-hand':
+      return <LeftHandFigure width={width} step={step} leftHanded={left} labels={{ ok: t('ui.motion.ok'), onFret: t('ui.motion.onFret'), middle: t('ui.motion.middle') }} />;
     case 'tuner':
       // El afinador sirve igual para los dos instrumentos: muestra las cuerdas de esta build.
       return <GuitarFigure id="guitar-tuner" width={width} leftHanded={left} />;
@@ -51,7 +67,7 @@ export function Figure({ id, width }: { id: FigureId; width: number }) {
           frets={5}
           leftHanded={left}
           showNoteNames={{ locale, notation }}
-          dots={[1, 2, 3, 4].map((f) => ({ string: 'E' as const, fret: f, label: String(f) }))}
+          dots={motionDots ?? [1, 2, 3, 4].map((f) => ({ string: 'E' as const, fret: f, label: String(f) }))}
         />
       );
     case 'strings':
@@ -60,7 +76,11 @@ export function Figure({ id, width }: { id: FigureId; width: number }) {
           width={width}
           frets={3}
           leftHanded={left}
-          dots={(['E', 'A', 'D', 'G'] as const).map((s, i) => ({ string: s, fret: 0, label: String(4 - i) }))}
+          dots={
+            motionDots
+              ? (['E', 'A', 'D', 'G'] as const).map((s, i) => ({ string: s, fret: 0, label: String(4 - i), color: `${s}0` === activeKey ? colors.gold : undefined }))
+              : (['E', 'A', 'D', 'G'] as const).map((s, i) => ({ string: s, fret: 0, label: String(4 - i) }))
+          }
         />
       );
     case 'fret5':
@@ -70,11 +90,13 @@ export function Figure({ id, width }: { id: FigureId; width: number }) {
           frets={5}
           leftHanded={left}
           showNoteNames={{ locale, notation }}
-          dots={[
-            { string: 'E', fret: 5, label: '5', color: colors.accent },
-            { string: 'A', fret: 5, label: '5', color: colors.accent },
-            { string: 'D', fret: 5, label: '5', color: colors.accent },
-          ]}
+          dots={
+            motionDots ?? [
+              { string: 'E', fret: 5, label: '5', color: colors.accent },
+              { string: 'A', fret: 5, label: '5', color: colors.accent },
+              { string: 'D', fret: 5, label: '5', color: colors.accent },
+            ]
+          }
         />
       );
     default:
