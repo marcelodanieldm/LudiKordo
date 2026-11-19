@@ -6,22 +6,22 @@ import { useTranslation } from 'react-i18next';
 import { Text } from '../../src/components/Text';
 import { Button, Card, CloseButton, Eyebrow, H1, H2, Muted, Stars } from '../../src/components/ui';
 import { Score } from '../../src/components/Listen';
-import { usePracticeList } from '../../src/components/SongbookHooks';
+import { usePracticeList, useSongbook } from '../../src/components/SongbookHooks';
 import { practiceItem } from '../../src/content/drills';
-import { availableTempos, liveExerciseId } from '../../src/content/practice';
+import { availableTempos, liveExerciseId, liveResult, liveTargets, practiceStatusFromSong } from '../../src/content/practice';
 import { backingSchedule } from '../../src/music/backing';
-import { expireMissed, initLive, judgeOnset, liveAdvice, liveStats, type LiveState, type LiveVerdict } from '../../src/music/live';
-import { eventAt, isRest, noteStartBeats } from '../../src/music/staff';
-import { midiAt } from '../../src/music/notes';
-import { starsFor, TIMING_TOLERANCE_MS } from '../../src/music/scoring';
+import { expireMissed, initLive, judgeOnset, liveAdvice, liveStats, maxHzFor, type LiveState, type LiveVerdict } from '../../src/music/live';
+import { eventAt } from '../../src/music/staff';
+import { PITCH_TOLERANCE_CENTS, starsFor, TIMING_TOLERANCE_MS } from '../../src/music/scoring';
 import { nowMs, playBacking, type BackingHandle } from '../../src/audio/engine';
 import { listenNotes, requestMic, type Listener } from '../../src/audio/mic';
 import { useProgress } from '../../src/state/progress';
 import { useLayout } from '../../src/hooks/useLayout';
 import { colors, fonts, radius } from '../../src/theme';
 
-type Phase = 'setup' | 'running' | 'done';
-const LEVELS = { low: 0.35, mid: 0.6, high: 0.9 } as const;
+type Phase = 'setup' | 'starting' | 'running' | 'done';
+/** Volumen de la banda. «Medio» = 0,4, como la pista de las canciones, hasta medirlo en teléfonos (learnings.md). */
+const LEVELS = { low: 0.25, mid: 0.4, high: 0.6 } as const;
 type Level = keyof typeof LEVELS;
 
 const VERDICT_COLOR: Record<LiveVerdict, string> = {
@@ -39,7 +39,10 @@ export default function LivePracticeScreen() {
   const { isTablet, width } = useLayout();
   const item = practiceItem(String(id));
   const statuses = usePracticeList();
-  const status = statuses.find((s) => s.item.id === item?.id);
+  const songs = useSongbook();
+  // Una canción del cancionero usa el estado del cancionero (bloqueo y Premium).
+  const songStatus = item?.id.startsWith('song-') ? songs.find((x) => `song-${x.song.id}` === item.id) : undefined;
+  const status = item ? (songStatus ? practiceStatusFromSong(item, songStatus) : statuses.find((x) => x.item.id === item.id)) : undefined;
   const unlocked = useProgress((s) => (item ? s.tempo[liveExerciseId(item.id)] : undefined));
   const recordExercise = useProgress((s) => s.recordExercise);
   const unlockTempo = useProgress((s) => s.unlockTempo);
@@ -63,10 +66,13 @@ export default function LivePracticeScreen() {
   const tick = useRef<ReturnType<typeof setInterval> | null>(null);
   const liveRef = useRef<LiveState | null>(null);
   const mounted = useRef(true);
+  /** Cada toma tiene un número: lo que llega tarde de una toma anterior se descarta. */
+  const session = useRef(0);
 
   const contentWidth = isTablet ? Math.min(width - 96, 820) : width - 40;
 
   const stopAll = () => {
+    session.current += 1;
     backing.current?.stop();
     backing.current = null;
     mic.current?.stop();
@@ -82,9 +88,7 @@ export default function LivePracticeScreen() {
     };
   }, []);
 
-  const startBeats = useMemo(() => (item ? noteStartBeats(item.line) : []), [item]);
   const eventStarts = useMemo(() => (item ? item.line.map((_, i) => item.line.slice(0, i).reduce((a, e) => a + e.beats, 0)) : []), [item]);
-  const noteEvents = useMemo(() => (item ? item.line.flatMap((e, i) => (isRest(e) ? [] : [i])) : []), [item]);
 
   if (!item || !status) {
     return (
@@ -107,24 +111,24 @@ export default function LivePracticeScreen() {
     setPhase('done');
     setEventPos(-1);
     if (!final) return;
-    const st = liveStats(final);
-    const accuracy = final.targets.length ? st.hits / final.targets.length : 0;
-    const stars = starsFor(accuracy, 0.8);
-    recordExercise(liveExerciseId(item.id), stars, item.skills);
-    const minutes = Math.round(totalBeats / playedBpm);
-    if (minutes > 0) addMinutes(minutes);
-    const next = stars === 3 ? item.tempoSteps.find((b) => b > playedBpm) : undefined;
-    if (next) unlockTempo(liveExerciseId(item.id), next);
-    setNextTempo(next ?? null);
+    const res = liveResult(final, item, playedBpm, unlocked);
+    recordExercise(liveExerciseId(item.id), res.stars, item.skills);
+    if (res.minutes > 0) addMinutes(res.minutes);
+    if (res.unlockedNow) unlockTempo(liveExerciseId(item.id), res.unlockedNow);
+    setNextTempo(res.unlockedNow);
   };
 
   const start = async (playBpm: number) => {
+    stopAll();
+    const me = session.current;
+    const stale = () => !mounted.current || session.current !== me;
     setFlash(null);
     setNextTempo(null);
+    setPhase('starting');
     let withMic = false;
     if (evaluate) {
       const st = await requestMic();
-      if (!mounted.current) return;
+      if (stale()) return;
       withMic = st === 'ok';
       if (!withMic) setEvaluate(false);
     }
@@ -132,31 +136,39 @@ export default function LivePracticeScreen() {
     backing.current = playBacking(schedule, { drums: drums ? LEVELS[level] : 0, keys: keys ? LEVELS[level] : 0 });
     const startMs = backing.current.startMs;
     const beatMs = (60 / playBpm) * 1000;
-    const state = withMic
-      ? initLive(startBeats.map((b, i) => {
-          const e = item.line[noteEvents[i]];
-          return { timeMs: startMs + b * beatMs, midi: isRest(e) ? 0 : midiAt(e.string, e.fret) };
-        }))
-      : null;
+    const targets = liveTargets(item, startMs, playBpm);
+    const maxHz = maxHzFor(targets);
+    const state = withMic ? initLive(targets) : null;
     liveRef.current = state;
     setLive(state);
     setPhase('running');
     if (withMic) {
-      mic.current = await listenNotes((n) => {
-        if (!liveRef.current) return;
-        const res = judgeOnset(liveRef.current, n);
-        if (res.verdict) {
-          liveRef.current = res.state;
-          setLive(res.state);
-          setFlash(res.verdict);
+      try {
+        const listener = await listenNotes((n) => {
+          if (session.current !== me || !liveRef.current) return;
+          const res = judgeOnset(liveRef.current, n, TIMING_TOLERANCE_MS, PITCH_TOLERANCE_CENTS, maxHz);
+          if (res.verdict) {
+            liveRef.current = res.state;
+            setLive(res.state);
+            setFlash(res.verdict);
+          }
+        });
+        // Se detuvo o se cerró la pantalla mientras se abría el micrófono: apagar lo que llegó tarde.
+        if (stale()) {
+          listener?.stop();
+          return;
         }
-      });
-      if (!mounted.current) {
-        stopAll();
-        return;
+        mic.current = listener;
+      } catch {
+        // No se pudo abrir el micrófono: se sigue tocando con la banda, sin evaluar.
+        if (stale()) return;
+        liveRef.current = null;
+        setLive(null);
+        setEvaluate(false);
       }
     }
-    const endMs = startMs + totalBeats * beatMs + TIMING_TOLERANCE_MS + 150;
+    // Margen para el último aviso del micrófono, como en el play-along.
+    const endMs = startMs + totalBeats * beatMs + TIMING_TOLERANCE_MS + 800;
     tick.current = setInterval(() => {
       const now = nowMs();
       const beat = (now - startMs) / beatMs;
@@ -172,6 +184,7 @@ export default function LivePracticeScreen() {
       if (now >= endMs) finish(liveRef.current, playBpm);
     }, 50);
   };
+  const busy = phase === 'running' || phase === 'starting';
 
   const stopEarly = () => {
     stopAll();
@@ -185,21 +198,23 @@ export default function LivePracticeScreen() {
       key={testID}
       testID={testID}
       accessibilityRole="switch"
-      accessibilityState={{ checked: on, disabled: phase === 'running' }}
-      disabled={phase === 'running'}
+      accessibilityState={{ checked: on, disabled: busy }}
+      accessibilityLabel={label}
+      disabled={busy}
       onPress={() => set(!on)}
       style={{ minHeight: 44, paddingHorizontal: 16, borderRadius: 22, justifyContent: 'center', backgroundColor: on ? colors.accent : colors.card, borderWidth: 1, borderColor: on ? colors.accent : colors.border }}
     >
       <Text style={{ fontWeight: '800', color: on ? colors.onAccent : colors.ink }}>{`${on ? '✓ ' : ''}${label}`}</Text>
     </Pressable>
   );
-  const choice = <T extends string | number>(value: T, current: T, label: string, set: (v: T) => void, testID: string) => (
+  const choice = <T extends string | number>(value: T, current: T, label: string, set: (v: T) => void, testID: string, a11y?: string) => (
     <Pressable
       key={testID}
       testID={testID}
       accessibilityRole="radio"
-      accessibilityState={{ checked: value === current, disabled: phase === 'running' }}
-      disabled={phase === 'running'}
+      accessibilityState={{ checked: value === current, disabled: busy }}
+      accessibilityLabel={a11y ?? label}
+      disabled={busy}
       onPress={() => set(value)}
       style={{ minHeight: 44, minWidth: 64, paddingHorizontal: 14, borderRadius: radius.md, alignItems: 'center', justifyContent: 'center', backgroundColor: value === current ? colors.raised : colors.card, borderWidth: 2, borderColor: value === current ? colors.gold : colors.border }}
     >
@@ -245,7 +260,12 @@ export default function LivePracticeScreen() {
               </View>
               <Muted>{t('ui.practiceLive.tempo')}</Muted>
               <View accessibilityRole="radiogroup" style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-                {tempos.map((b) => choice(b, bpm, `${b}`, setBpm, `bpm-${b}`))}
+                {tempos.map((b) =>
+                  choice(b, bpm, `${b}`, (v) => {
+                    setBpm(v);
+                    setNextTempo(null);
+                  }, `bpm-${b}`, t('ui.practiceLive.bpmLabel', { bpm: b })),
+                )}
               </View>
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
                 {toggle(t('ui.practiceLive.evaluate'), evaluate, setEvaluate, 'band-evaluate')}
@@ -256,7 +276,12 @@ export default function LivePracticeScreen() {
             <Card style={{ gap: 12 }}>
               <Score events={item.line} notation={item.notation} width={contentWidth - 34} current={phase === 'running' ? eventPos : -1} />
               {live ? (
-                <View accessible accessibilityRole="progressbar" accessibilityLabel={t('ui.practiceLive.progress', { done: stats?.judged ?? 0, total: live.targets.length })} style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
+                <View
+                  accessible
+                  accessibilityRole="progressbar"
+                  accessibilityLabel={t('ui.practiceLive.progress', { done: stats?.judged ?? 0, total: live.targets.length })}
+                  accessibilityValue={{ min: 0, max: live.targets.length, now: stats?.judged ?? 0 }}
+                  style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
                   {live.verdicts.map((v, i) => (
                     <View key={i} style={{ width: 12, height: 12, borderRadius: 6, backgroundColor: v ? VERDICT_COLOR[v] : colors.raised }} />
                   ))}
@@ -282,15 +307,15 @@ export default function LivePracticeScreen() {
                 </View>
               ) : null}
               {phase === 'done' && !live ? <Muted>{t('ui.practiceLive.doneNoEval')}</Muted> : null}
-              {phase === 'running' ? (
+              {busy ? (
                 <Button variant="secondary" label={t('ui.practiceLive.stop')} onPress={stopEarly} testID="live-stop" />
               ) : (
                 <Button
                   label={phase === 'done' ? t('ui.practiceLive.again') : t('ui.practiceLive.start')}
                   onPress={() => {
+                    // Después de desbloquear un tempo, «Otra vez» sube al nuevo; si no, repite el elegido.
                     const playBpm = nextTempo ?? bpm;
                     if (nextTempo) setBpm(nextTempo);
-                    setPhase('setup');
                     void start(playBpm);
                   }}
                   testID="live-start"

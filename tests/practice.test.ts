@@ -1,9 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { backingSchedule, BACKING_STYLES, compBar, drumBar, parseChord, voiceChord } from '../src/music/backing';
-import { BASS_MAX_HZ, expireMissed, initLive, judgeOnset, liveAdvice, liveStats } from '../src/music/live';
+import { BASS_MAX_HZ, LIVE_DETECTION_DELAY_MS, expireMissed, initLive, judgeOnset, liveAdvice, liveStats, maxHzFor } from '../src/music/live';
 import { DRILLS, practiceItem } from '../src/content/drills';
-import { availableTempos, liveExerciseId, practiceStatuses } from '../src/content/practice';
+import { availableTempos, liveExerciseId, liveResult, liveTargets, practiceStatuses } from '../src/content/practice';
 import { isRest, scoreBarsComplete } from '../src/music/staff';
 import { midiAt, midiToFreq } from '../src/music/notes';
 import { LEVELS, lessonIdsOf } from '../src/content/curriculum';
@@ -21,6 +21,12 @@ test('acompañamiento: lee el cifrado (calidades, alteraciones e inversiones)', 
   assert.equal(parseChord('Bb')?.root, 10);
   assert.equal(parseChord('G/B')?.bass, 11);
   assert.deepEqual(parseChord('E5')?.intervals, [0, 7]);
+  // «maj» sin 7 es mayor (no menor), y otras calidades comunes.
+  assert.deepEqual(parseChord('Cmaj')?.intervals, [0, 4, 7]);
+  assert.deepEqual(parseChord('Dsus2')?.intervals, [0, 2, 7]);
+  assert.deepEqual(parseChord('C6')?.intervals, [0, 4, 7, 9]);
+  assert.deepEqual(parseChord('Caug')?.intervals, [0, 4, 8]);
+  assert.deepEqual(parseChord('C+')?.intervals, [0, 4, 8]);
   assert.equal(parseChord('xyz'), null);
 });
 
@@ -30,10 +36,10 @@ test('acompañamiento: el teclado toca las notas del acorde lejos del registro d
     const v = voiceChord(ch);
     assert.equal(v.length, ch.intervals.length);
     for (const m of v) {
-      assert.ok(m >= 56 && m <= 67, `${sym}: ${m}`);
+      assert.ok(m >= 68 && m <= 79, `${sym}: ${m}`);
       assert.ok(ch.intervals.includes((m - ch.root + 120) % 12), `${sym}: ${m} no es del acorde`);
-      // Muy por encima de lo que el juez de notas acepta como bajo.
-      assert.ok(midiToFreq(m) > BASS_MAX_HZ - 140);
+      // Por encima de todo lo que el juez acepta como bajo: la banda no se cuenta como nota.
+      assert.ok(midiToFreq(m) > BASS_MAX_HZ, `${sym}: ${midiToFreq(m)} Hz`);
     }
   }
 });
@@ -93,13 +99,59 @@ test('evaluación en vivo: a tiempo, antes, después, otra nota, perdida e inter
   assert.equal(s.bestStreak, 3);
   // Lejos de toda nota pendiente: nada cambia.
   assert.equal(judgeOnset(s, { timeMs: 2750, freq: hz(28) }).verdict, null);
-  const ex = expireMissed(s, 3200);
+  // El aviso del micrófono llega tarde: recién después de la demora se da por perdida.
+  assert.deepEqual(expireMissed(s, 3200).missed, []);
+  const ex = expireMissed(s, 3000 + 80 + LIVE_DETECTION_DELAY_MS + 1);
   assert.deepEqual(ex.missed, [4]);
   const st = liveStats(ex.state);
   assert.deepEqual([st.hits, st.early, st.late, st.wrong, st.missed, st.judged], [3, 1, 1, 1, 1, 5]);
   assert.equal(liveAdvice({ ...st, accuracy: 0.9, early: 0, late: 0, hits: 9, judged: 10, wrong: 1, missed: 0 }), 'great');
   assert.equal(liveAdvice({ judged: 10, hits: 6, accuracy: 0.6, early: 4, late: 1, wrong: 0, missed: 0 }), 'early');
   assert.equal(liveAdvice({ judged: 10, hits: 2, accuracy: 0.2, early: 0, late: 0, wrong: 1, missed: 7 }), 'missing');
+});
+
+test('evaluación en vivo: aviso tardío, octava de arriba y corrección de una nota equivocada', () => {
+  const hz = (m: number) => midiToFreq(m);
+  const t = [{ timeMs: 1000, midi: 28 }, { timeMs: 1375, midi: 28 }];
+  // Un aviso que llega 200 ms tarde con su sello de tiempo a tiempo sigue siendo acierto.
+  let s = expireMissed(initLive(t), 1200).state;
+  let r = judgeOnset(s, { timeMs: 1005, freq: hz(28) });
+  assert.equal(r.verdict, 'hit');
+  s = r.state;
+  // El teléfono reporta el Mi grave una octava arriba: no es nota equivocada.
+  r = judgeOnset(s, { timeMs: 1380, freq: hz(40) });
+  assert.equal(r.verdict, 'hit');
+  // Primero una altura vieja (otra nota) y enseguida la buena: se corrige a acierto.
+  let u = initLive([{ timeMs: 1000, midi: 33 }]);
+  u = judgeOnset(u, { timeMs: 990, freq: hz(28) }).state;
+  assert.equal(u.verdicts[0], 'wrongNote');
+  r = judgeOnset(u, { timeMs: 1020, freq: hz(33) });
+  assert.equal(r.verdict, 'hit');
+  assert.equal(liveStats(r.state).hits, 1);
+  // Tope por ejercicio: nota más aguda una octava arriba + 3 semitonos (nunca más que el tope general).
+  assert.ok(Math.abs(maxHzFor([{ timeMs: 0, midi: 28 }]) - midiToFreq(43)) < 1e-6);
+  assert.equal(maxHzFor([{ timeMs: 0, midi: 70 }]), BASS_MAX_HZ);
+  // La octava del Mi grave pasa el tope; el teclado de la banda, no.
+  assert.equal(judgeOnset(initLive(t), { timeMs: 1000, freq: hz(40) }, 80, 50, maxHzFor(t)).verdict, 'hit');
+  assert.equal(judgeOnset(initLive(t), { timeMs: 1000, freq: hz(60) }, 80, 50, maxHzFor(t)).verdict, null);
+});
+
+test('práctica: objetivos y resultado de una toma (estrellas, minutos, tempo nuevo)', () => {
+  const d = DRILLS.find((x) => x.id === 'one-drop')!;
+  const tg = liveTargets(d, 10000, 60);
+  assert.equal(tg.length, d.line.filter((e) => !isRest(e)).length);
+  assert.equal(tg[0].timeMs, 11000); // el uno es silencio: la primera nota entra en el 2
+  assert.equal(tg[0].midi, midiAt('A', 0));
+  const all = initLive(tg);
+  const perfect = { ...all, verdicts: all.verdicts.map(() => 'hit' as const) };
+  const res = liveResult(perfect, d, 72, undefined);
+  assert.equal(res.stars, 3);
+  assert.equal(res.unlockedNow, 80);
+  // Si ya tenía 80 desbloqueado, no se anuncia otra vez.
+  assert.equal(liveResult(perfect, d, 72, 80).unlockedNow, null);
+  const none = liveResult(all, d, 72, undefined);
+  assert.equal(none.stars, 0);
+  assert.equal(none.unlockedNow, null);
 });
 
 test('práctica: ejercicios bien escritos, con banda y un nivel que coincide con lo que piden', () => {
@@ -112,7 +164,7 @@ test('práctica: ejercicios bien escritos, con banda y un nivel que coincide con
     for (const m of d.requires) assert.ok(modules.includes(m), `${d.id}: ${m}`);
     assert.equal(d.level, Math.max(...d.requires.map((m) => Number(m[0]))), `${d.id}: nivel`);
     assert.equal(d.tempoSteps[0], d.bpm);
-    if (d.line.some((e) => e.beats < 1)) assert.ok(d.bpm <= 80, `${d.id}: corcheas a más de 80 bpm`);
+    if (d.line.some((e) => e.beats < 1)) assert.ok(d.tempoSteps.every((b) => b <= 80), `${d.id}: corcheas a más de 80 bpm`);
     if (d.notation === 'tab') assert.ok(d.line.every((e) => !isRest(e) && e.beats >= 1), `${d.id}: tablatura`);
     // La primera nota de cada compás es la raíz del acorde (salvo el ejercicio cromático).
     if (d.id !== 'spider-groove') {
@@ -125,7 +177,7 @@ test('práctica: ejercicios bien escritos, con banda y un nivel que coincide con
       }
       d.chords.forEach((c, bar) => assert.equal(first.get(bar), pc(c.split(' ')[0]).root, `${d.id} compás ${bar + 1}`));
     }
-    for (const tree of [en, es, pt] as Record<string, any>[]) assert.ok(tree.content.drill[d.id.replace(/-/g, '_')]?.title, `${d.id}: textos`); // eslint-disable-line @typescript-eslint/no-explicit-any
+    for (const tree of [en, es, pt] as unknown as { content: { drill: Record<string, { title?: string }> } }[]) assert.ok(tree.content.drill[d.id.replace(/-/g, '_')]?.title, `${d.id}: textos`);
   }
 });
 

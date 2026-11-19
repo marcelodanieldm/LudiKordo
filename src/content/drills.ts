@@ -141,7 +141,7 @@ const BASS_DRILLS: PracticeItem[] = [
     notation: 'staff',
     // Corcheas repetidas: tempo inicial que el micrófono puede seguir (ver learnings.md).
     bpm: 72,
-    tempoSteps: [72, 80, 88],
+    tempoSteps: [72, 80],
   }),
   drill({
     id: 'one-drop',

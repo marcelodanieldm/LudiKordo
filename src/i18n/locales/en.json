@@ -1,6 +1,7 @@
 {
   "ui": {
     "practiceLive": {
+      "bpmLabel": "Tempo: {{bpm}} beats per minute",
       "eyebrow": "Skill practice",
       "title": "Practice live with a band",
       "intro": "Short exercises to play with drums and keys. The app listens and tells you how you're doing, note by note.",
@@ -16,7 +17,7 @@
       "volume": "Band volume",
       "tempo": "Tempo (bpm)",
       "evaluate": "Live scoring",
-      "headphones": "Scoring is more accurate with headphones: the microphone won't hear the band.",
+      "headphones": "Wired headphones make scoring more accurate: the microphone won't hear the band. Bluetooth adds delay and doesn't work for scoring.",
       "level": {"low": "Low", "mid": "Medium", "high": "High"},
       "style": {"rock": "Rock", "pop": "Pop", "ballad": "Ballad", "blues": "Blues", "reggae": "Reggae", "bossa": "Bossa nova", "soul": "Soul", "funk": "Funk"},
       "start": "Start",

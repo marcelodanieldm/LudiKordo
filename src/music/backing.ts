@@ -20,6 +20,7 @@ export interface ParsedChord {
 
 const QUALITIES: [RegExp, number[]][] = [
   [/^maj7/, [0, 4, 7, 11]],
+  [/^maj(?!7)/, [0, 4, 7]],
   [/^m7b5|^ø/, [0, 3, 6, 10]],
   [/^m7/, [0, 3, 7, 10]],
   [/^m/, [0, 3, 7]],
@@ -27,6 +28,9 @@ const QUALITIES: [RegExp, number[]][] = [
   [/^7/, [0, 4, 7, 10]],
   [/^5/, [0, 7]],
   [/^sus4/, [0, 5, 7]],
+  [/^sus2/, [0, 2, 7]],
+  [/^6/, [0, 4, 7, 9]],
+  [/^(aug|\+)/, [0, 4, 8]],
   [/^/, [0, 4, 7]],
 ];
 
@@ -49,10 +53,11 @@ export function parseChord(symbol: string): ParsedChord | null {
 }
 
 /**
- * Voces del teclado: las notas del acorde en registro medio (cerca de `center`),
- * lejos del registro del bajo para no taparlo ni confundir al micrófono.
+ * Voces del teclado: las notas del acorde en registro medio-agudo (cerca de
+ * `center`, todas por encima de 390 Hz), lejos del registro del bajo para no
+ * taparlo ni confundir al micrófono.
  */
-export function voiceChord(chord: ParsedChord, center = 62): number[] {
+export function voiceChord(chord: ParsedChord, center = 74): number[] {
   return chord.intervals
     .map((iv) => {
       const pc = (chord.root + iv) % 12;

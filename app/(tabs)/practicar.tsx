@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { Text } from '../../src/components/Text';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -8,7 +8,7 @@ import { listenPitch, requestMic, type Listener } from '../../src/audio/mic';
 import { startMetronome, type MetronomeHandle } from '../../src/audio/engine';
 import { STRINGS, centsOff, noteName, type Locale } from '../../src/music/notes';
 import { useSettings } from '../../src/state/settings';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { usePracticeList, useSongbook } from '../../src/components/SongbookHooks';
 import { firstSongModule, recommendedSong } from '../../src/content/songbook';
 import Svg, { Circle, Path, Text as SvgText } from 'react-native-svg';
@@ -106,6 +106,17 @@ function Tuner() {
   const [freq, setFreq] = useState<number | null>(null);
   const listener = useRef<Listener | null>(null);
   useEffect(() => () => listener.current?.stop(), []);
+  // Al salir de la pestaña (por ejemplo, a practicar con banda) se apaga: el detector es uno solo.
+  useFocusEffect(
+    useCallback(
+      () => () => {
+        listener.current?.stop();
+        listener.current = null;
+        setOn(false);
+      },
+      [],
+    ),
+  );
 
   // La cuerda más cercana a la frecuencia detectada.
   const nearest = freq ? STRINGS.reduce((a, b) => (Math.abs(centsOff(freq, b.openMidi)) < Math.abs(centsOff(freq, a.openMidi)) ? b : a)) : null;
@@ -179,6 +190,17 @@ function Metronome() {
   const handle = useRef<MetronomeHandle | null>(null);
   const [running, setRunning] = useState(false);
   useEffect(() => () => handle.current?.stop(), []);
+  // Al salir de la pestaña se detiene, para no sonar debajo de la banda.
+  useFocusEffect(
+    useCallback(
+      () => () => {
+        handle.current?.stop();
+        handle.current = null;
+        setRunning(false);
+      },
+      [],
+    ),
+  );
 
   const toggle = () => {
     if (running) {

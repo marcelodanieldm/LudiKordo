@@ -87,7 +87,7 @@ interface PitchMod {
 /** Velocidad del vibrato de los ejemplos (oscilaciones por segundo). */
 const VIBRATO_HZ = 5.5;
 
-function scheduleVoice(c: AudioContext, freq: number, at: number, durSec: number, voice: Voice, level = 1, mod: PitchMod = {}): number {
+function scheduleVoice(c: AudioContext, freq: number, at: number, durSec: number, voice: Voice, level = 1, mod: PitchMod = {}, out?: GainNode): number {
   const ring = ringSec(voice, durSec);
   const gain = c.createGain();
   // Normalizado: la suma de parciales nunca pasa de ~0,5, como el tono de siempre.
@@ -102,7 +102,7 @@ function scheduleVoice(c: AudioContext, freq: number, at: number, durSec: number
     gain.gain.setValueAtTime(level, Math.max(settle, at + ring * 0.7));
   }
   gain.gain.exponentialRampToValueAtTime(0.001, at + ring);
-  gain.connect(c.destination);
+  gain.connect(out ?? c.destination);
   const total = peakGain(voice);
   for (const p of voice.partials) {
     const osc = c.createOscillator();
@@ -209,10 +209,14 @@ export function playSequence(
  * Batería sintetizada con osciladores (sin muestras grabadas): bombo con caída
  * de altura, caja y platillo con ondas cuadradas agudas y muy cortas.
  */
-function drum(c: AudioContext, at: number, kind: 'kick' | 'snare' | 'hat' | 'rim', level: number) {
+function drum(c: AudioContext, at: number, kind: 'kick' | 'snare' | 'hat' | 'rim', level: number, out: GainNode) {
   const parts: { type: 'sine' | 'square' | 'triangle'; f0: number; f1: number; gain: number; dur: number }[] =
     kind === 'kick'
-      ? [{ type: 'sine', f0: 120, f1: 42, gain: 0.9, dur: 0.28 }]
+      ? [
+          { type: 'sine', f0: 120, f1: 42, gain: 0.5, dur: 0.28 },
+          // El parlante del teléfono no da los graves: un golpe corto agudo hace oír el bombo.
+          { type: 'square', f0: 1500, f1: 900, gain: 0.06, dur: 0.02 },
+        ]
       : kind === 'snare'
         ? [
             { type: 'triangle', f0: 200, f1: 160, gain: 0.35, dur: 0.12 },
@@ -234,7 +238,7 @@ function drum(c: AudioContext, at: number, kind: 'kick' | 'snare' | 'hat' | 'rim
     g.gain.setValueAtTime(p.gain * level, at);
     g.gain.exponentialRampToValueAtTime(0.001, at + p.dur);
     osc.connect(g);
-    g.connect(c.destination);
+    g.connect(out);
     osc.start(at);
     osc.stop(at + p.dur + 0.02);
   }
@@ -274,12 +278,16 @@ export function playBacking(
   stopActiveSequence();
   const c = context();
   const t0 = c.currentTime + 0.2;
+  // Bus maestro: la banda entera pasa por acá para que bombo + teclado no saturen.
+  const master = c.createGain();
+  master.gain.value = 0.5;
+  master.connect(c.destination);
   for (const k of schedule.clicks) click(t0 + k.timeSec, k.accent);
-  for (const d of schedule.drums) drum(c, t0 + d.timeSec, d.kind, levels.drums);
+  for (const d of schedule.drums) drum(c, t0 + d.timeSec, d.kind, levels.drums, master);
   for (const k of schedule.keys) {
     // Acorde de 3–4 notas: cada voz más baja para que la suma no sature.
     const each = levels.keys / Math.max(2, k.midis.length);
-    for (const m of k.midis) scheduleVoice(c, 440 * Math.pow(2, (m - 69) / 12), t0 + k.timeSec, k.durSec, KEYS_VOICE, each * 2);
+    for (const m of k.midis) scheduleVoice(c, 440 * Math.pow(2, (m - 69) / 12), t0 + k.timeSec, k.durSec, KEYS_VOICE, each * 2, {}, master);
   }
   let stopped = false;
   return {

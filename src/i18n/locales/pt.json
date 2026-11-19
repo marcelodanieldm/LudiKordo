@@ -1,6 +1,7 @@
 {
   "ui": {
     "practiceLive": {
+      "bpmLabel": "Andamento: {{bpm}} batidas por minuto",
       "eyebrow": "Prática de habilidades",
       "title": "Pratique ao vivo com banda",
       "intro": "Exercícios curtos para tocar com bateria e teclado. O app escuta você e diz, nota por nota, como você está indo.",
@@ -16,7 +17,7 @@
       "volume": "Volume da banda",
       "tempo": "Andamento (bpm)",
       "evaluate": "Avaliar ao vivo",
-      "headphones": "Com fones a avaliação fica mais precisa: o microfone não ouve a banda.",
+      "headphones": "Com fones com fio a avaliação fica mais precisa: o microfone não ouve a banda. Fones Bluetooth têm atraso e não servem para avaliar.",
       "level": {"low": "Baixo", "mid": "Médio", "high": "Alto"},
       "style": {"rock": "Rock", "pop": "Pop", "ballad": "Balada", "blues": "Blues", "reggae": "Reggae", "bossa": "Bossa nova", "soul": "Soul", "funk": "Funk"},
       "start": "Começar",
