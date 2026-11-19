@@ -3,7 +3,7 @@
     "name": "LudiKordo",
     "slug": "ludikordo",
     "scheme": "ludikordo",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "orientation": "default",
     "userInterfaceStyle": "dark",
     "backgroundColor": "#14121F",
