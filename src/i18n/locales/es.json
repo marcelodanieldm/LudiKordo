@@ -1,5 +1,93 @@
 {
   "ui": {
+    "drills": {
+      "eyebrow": "Práctica",
+      "title": "Práctica de habilidades",
+      "intro": "Ejercicios para repetir con una banda que te acompaña. La app te escucha y te dice nota por nota cómo vas, mientras tocas.",
+      "all": "Todos",
+      "category": {
+        "technique": "Técnica",
+        "riffs": "Riffs y grooves",
+        "scales": "Escalas",
+        "arpeggios": "Arpegios",
+        "phrases": "Frases",
+        "reading": "Lectura",
+        "improv": "Improvisación"
+      },
+      "meta": "{{category}} · Nivel {{level}} · desde {{bpm}} bpm",
+      "needs": "Se abre al terminar el módulo {{module}}.",
+      "lockedHint": "Todavía no está abierto.",
+      "premium": "Este ejercicio es parte de Premium.",
+      "notFound": "No encontramos este ejercicio.",
+      "count": "{{open}} de {{total}} ejercicios abiertos, con una banda que te acompaña.",
+      "none": "Termina tus primeros módulos para abrir los ejercicios.",
+      "today": "Practicar: {{title}}",
+      "open": "Ver todos los ejercicios",
+      "tempo": "Tempo",
+      "slow": "Lento · {{bpm}}",
+      "bpm": "{{bpm}} bpm",
+      "tempoLocked": "Los tempos más rápidos se abren con 3 estrellas en el anterior.",
+      "with": "Te acompañan",
+      "part": {
+        "drums": "Batería",
+        "bass": "Bajo",
+        "guitar": "Guitarra",
+        "keys": "Teclado"
+      },
+      "styleTitle": "Estilo",
+      "style": {
+        "rock": "Rock",
+        "pop": "Pop",
+        "funk": "Funk",
+        "ballad": "Balada",
+        "shuffle": "Shuffle",
+        "jazz": "Jazz",
+        "soul": "Soul",
+        "reggae": "Reggae",
+        "bossa": "Bossa nova"
+      },
+      "loops": "Vueltas",
+      "loopsN": "×{{n}}",
+      "headphones": "Mejor con auriculares: así la app te oye a ti y no al acompañamiento.",
+      "start": "Empezar",
+      "stop": "Detener",
+      "again": "Otra vez",
+      "settings": "Cambiar ajustes",
+      "scale": "Notas de la escala",
+      "chordsLine": "Acordes: {{chords}}",
+      "loopOf": "Vuelta {{n}} de {{total}}",
+      "noMicPlaying": "Sin micrófono: toca con la banda; esta vez no se evalúa.",
+      "go": "¡Ahora tú!",
+      "goImprov": "¡Improvisa!",
+      "verdict": {
+        "hit": "¡A tiempo!",
+        "early": "Un poco antes",
+        "late": "Un poco tarde",
+        "wrong": "Otra nota",
+        "miss": "Se te pasó"
+      },
+      "wrongNote": "Era {{expected}}, tocaste {{played}}",
+      "inScale": "{{note}}: en la escala",
+      "outScale": "{{note}}: fuera de la escala",
+      "accuracy": "Aciertos",
+      "streak": "Racha",
+      "notes": "Notas",
+      "inScalePct": "En la escala",
+      "timing": "Dónde cayó la última nota",
+      "dotsLabel": "{{hits}} aciertos de {{decided}} notas",
+      "unscored": "Tocaste con la banda sin micrófono, así que esta vez no hay puntaje.",
+      "resultLine": "{{percent}} % de aciertos",
+      "resultImprov": "{{percent}} % en la escala · {{notes}} notas",
+      "breakdown": "A tiempo: {{hit}} · Antes: {{early}} · Tarde: {{late}} · Otra nota: {{wrong}} · Perdidas: {{miss}}",
+      "bestStreak": "Mejor racha: {{n}} notas seguidas",
+      "rushing": "Tiendes a adelantarte: escucha el bombo y espera el pulso.",
+      "dragging": "Tiendes a atrasarte: anticipa un poco cada nota.",
+      "unlocked": "¡Nuevo tempo abierto: {{bpm}} bpm!",
+      "percent": "{{n}} %",
+      "statA11y": "{{label}}: {{value}}",
+      "ms": "{{n}} ms",
+      "withBand": "Practicar con la banda"
+    },
     "motion": {
       "play": "Ver y escuchar",
       "stop": "Detener",
@@ -585,6 +673,144 @@
     }
   },
   "content": {
+    "practice": {
+      "g_rest_groove": {
+        "title": "Groove con silencios",
+        "desc": "Notas y silencios en las cuerdas graves sobre E5, A5 y D5. Apaga cada nota a tiempo para que el silencio se oiga."
+      },
+      "g_first_riff": {
+        "title": "Tu primer riff",
+        "desc": "El riff del checkpoint 1 con batería y bajo. Púa hacia abajo, pareja, y el pie marcando el pulso."
+      },
+      "g_sight": {
+        "title": "Lectura de tablatura",
+        "desc": "Una línea en La menor para leer a tempo. Mira un compás adelante de lo que tocas."
+      },
+      "g_power": {
+        "title": "Riff de power chords",
+        "desc": "Sol, La y Do en la 6.ª y 5.ª cuerda, con el bombo. Toca la nota grave del power chord: la app la sigue."
+      },
+      "g_palm_mute": {
+        "title": "Palm mute con banda",
+        "desc": "Corcheas apagadas en el Mi grave con acentos. La palma apoyada justo sobre el puente."
+      },
+      "g_penta_run": {
+        "title": "Pentatónica en corcheas",
+        "desc": "La caja 1 de La menor de ida y vuelta, en corcheas parejas sobre la batería."
+      },
+      "g_penta_lick": {
+        "title": "Lick con shuffle",
+        "desc": "Una frase de la caja 1 sobre un shuffle de blues. Deja que el lick respire en el swing."
+      },
+      "g_legato": {
+        "title": "Ligados a tempo",
+        "desc": "Hammer-ons y pull-offs en la caja 1, ahora con pulso fijo. Cada ligado tiene que sonar tan fuerte como la nota pulsada."
+      },
+      "g_slides": {
+        "title": "Slides con banda",
+        "desc": "Frase con slides sobre una balada. Llega justo a tiempo a la nota de destino."
+      },
+      "g_vibrato": {
+        "title": "Notas largas con vibrato",
+        "desc": "Una frase corta que termina en una nota larga: el vibrato se nota cuando la banda deja espacio."
+      },
+      "g_major": {
+        "title": "Sol mayor a tempo",
+        "desc": "La escala de Sol mayor en 2.ª posición, una octava, con bajo y teclado."
+      },
+      "g_fours": {
+        "title": "Grupos de cuatro",
+        "desc": "La secuencia de la caja 1 en grupos de cuatro corcheas. Sube el tempo de a poco."
+      },
+      "g_triads": {
+        "title": "Tríadas sobre la progresión",
+        "desc": "Arpegios de Am, G y F en las cuerdas agudas, cada uno sobre su acorde."
+      },
+      "g_motif": {
+        "title": "Motivo y variaciones",
+        "desc": "Una idea de un compás que se repite y cambia sobre Am – G – F – G."
+      },
+      "g_targets": {
+        "title": "Notas objetivo",
+        "desc": "Cada compás empieza en una nota del acorde. Escucha cómo «aterriza» sobre la banda."
+      },
+      "g_solo": {
+        "title": "Tu solo de ocho compases",
+        "desc": "El solo del proyecto final, con la banda completa."
+      },
+      "g_improv_penta": {
+        "title": "Improvisa: pentatónica",
+        "desc": "Improvisa con la pentatónica de La menor sobre rock. La app te dice si cada nota está en la escala."
+      },
+      "g_improv_blues": {
+        "title": "Improvisa: blues",
+        "desc": "Shuffle de blues en La (A7 – D7 – A7 – E7). La pentatónica menor suena bien sobre todo el blues."
+      },
+      "g_improv_dorian": {
+        "title": "Improvisa: dórico funk",
+        "desc": "Groove de funk con Am7 y D7. Usa La dórico y busca el Fa♯ sobre el D7."
+      },
+      "g_improv_mixo": {
+        "title": "Improvisa: mixolidio",
+        "desc": "Rock en La con A y G. La mixolidio: alegre, con la 7.ª baja."
+      },
+      "g_improv_jazz": {
+        "title": "Improvisa: II – V – I",
+        "desc": "Dm7 – G7 – Cmaj7 con ride de jazz. Usa Do mayor y apunta a las notas de cada acorde."
+      },
+      "b_open": {
+        "title": "Cuerdas al aire con batería",
+        "desc": "Negras en Mi, La y Re al aire con batería y guitarra. Firme con el bombo."
+      },
+      "b_spider": {
+        "title": "Araña con bombo",
+        "desc": "Trastes 1 a 4 en cada cuerda, un dedo por traste, a tempo con la batería."
+      },
+      "b_roots": {
+        "title": "Tónicas de la progresión",
+        "desc": "Las tónicas de Am – G – F – G en negras. Es el trabajo básico del bajo en una banda."
+      },
+      "b_root_fifth": {
+        "title": "Tónica y quinta",
+        "desc": "Tónica y quinta en blancas sobre una balada. La quinta une un acorde con el siguiente."
+      },
+      "b_read": {
+        "title": "Leer en clave de fa",
+        "desc": "Do mayor en pentagrama, sube y baja, con batería y teclado."
+      },
+      "b_improv": {
+        "title": "Inventa tu línea",
+        "desc": "Improvisa una línea de bajo con la pentatónica de La menor sobre la progresión. Empieza por las tónicas."
+      },
+      "b_rock_quarters": {
+        "title": "Negras con el rock",
+        "desc": "Negras parejas en las cuerdas al aire sobre una batería de rock. Toca junto con el bombo y la caja."
+      },
+      "b_blues_roots": {
+        "title": "Raíces del blues",
+        "desc": "Las raíces de un blues de 12 compases en La, en negras, con batería shuffle. Siente cuándo cambia el acorde."
+      },
+      "b_roots_ea": {
+        "title": "Raíces en Mi y La",
+        "desc": "Do, Sol, La y Fa en las cuerdas Mi y La sobre un pop: encuentra cada raíz a tiempo."
+      },
+      "b_soul_root_fifth": {
+        "title": "Raíz y quinta en soul",
+        "desc": "Raíz y quinta en blancas sobre Sol, Do y Re, con batería y teclado de soul."
+      },
+      "b_bossa_root_fifth": {
+        "title": "Bossa con raíz y quinta",
+        "desc": "La base de la bossa nova: raíz y quinta en blancas, con el teclado y la batería del estilo."
+      },
+      "b_pop_eighths": {
+        "title": "Corcheas de pop",
+        "desc": "Corcheas constantes sobre La menor, Fa, Do y Sol. Mantén la mano relajada y escucha el platillo."
+      },
+      "b_one_drop": {
+        "title": "One drop",
+        "desc": "Reggae: el primer tiempo queda en silencio y entras con dos corcheas. Escucha el bombo en el tercer tiempo."
+      }
+    },
     "song": {
       "pop_1": { "title": "Paseo de domingo", "desc": "Pop en Mi con la progresión I–V–vi–IV. Blanca y dos negras por compás: practica cambiar de acorde sin perder el pulso." },
       "rock_1": { "title": "Motor en marcha", "desc": "Rock en La con negras constantes en las cuerdas al aire. El secreto: que todas suenen igual de fuertes y parejas." },

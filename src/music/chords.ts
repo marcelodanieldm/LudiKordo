@@ -321,6 +321,14 @@ const QUALITY: Record<string, number[]> = {
  * Devuelve null si el tipo de acorde no está en la tabla.
  */
 export function chordFromName(name: string): number[] | null {
+  // Con bajo indicado («C/E»): el mismo acorde con esa nota abajo.
+  const slash = /^(.+)\/([A-G])([#b]?)$/.exec(name);
+  if (slash) {
+    const upper = chordFromName(slash[1]);
+    if (!upper) return null;
+    const bassPc = (LETTER_PC[slash[2]] + (slash[3] === '#' ? 1 : slash[3] === 'b' ? -1 : 0) + 12) % 12;
+    return [40 + ((bassPc - 4 + 12) % 12), ...upper.slice(1)];
+  }
   const m = /^([A-G])([#b]?)(.*)$/.exec(name);
   if (!m || !Object.prototype.hasOwnProperty.call(QUALITY, m[3])) return null;
   const pc = (LETTER_PC[m[1]] + (m[2] === '#' ? 1 : m[2] === 'b' ? -1 : 0) + 12) % 12;

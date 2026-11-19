@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { Text } from '../../src/components/Text';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -8,8 +8,9 @@ import { listenPitch, requestMic, type Listener } from '../../src/audio/mic';
 import { startMetronome, type MetronomeHandle } from '../../src/audio/engine';
 import { STRINGS, centsOff, noteName, type Locale } from '../../src/music/notes';
 import { useSettings } from '../../src/state/settings';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { useSongbook } from '../../src/components/SongbookHooks';
+import { useDrills } from '../../src/components/PracticeHooks';
 import { firstSongModule, recommendedSong } from '../../src/content/songbook';
 import Svg, { Circle, Path, Text as SvgText } from 'react-native-svg';
 import { colors, fonts, radius } from '../../src/theme';
@@ -20,12 +21,12 @@ export default function Practice() {
   const tools = [
     { k: 'fretboard', color: colors.accentInk, d: 'M3 7h18M3 12h18M3 17h18M8 4v16M14 4v16' },
     { k: 'rhythm', color: colors.gold, d: 'M9 18V5l10-2v13M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM16 19a3 3 0 1 0 0-6 3 3 0 0 0 0 6z' },
-    { k: 'jam', color: colors.teal, d: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z' },
   ] as const;
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
       <ScrollView contentContainerStyle={{ padding: 20, gap: 14, maxWidth: 720, width: '100%', alignSelf: 'center' }}>
         <H1>{t('ui.practice.title')}</H1>
+        <DrillsCard />
         <SongbookCard />
         <Tuner />
         <Metronome />
@@ -42,6 +43,22 @@ export default function Practice() {
         <Muted>{t('ui.common.comingSoon')}</Muted>
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+/** Práctica de habilidades con acompañamiento y evaluación en vivo, con el ejercicio sugerido. */
+function DrillsCard() {
+  const { t } = useTranslation();
+  const list = useDrills();
+  const open = list.filter((d) => d.state === 'open');
+  const next = open.find((d) => d.stars < 3) ?? open[0];
+  return (
+    <Card style={{ gap: 10 }}>
+      <H2>{t('ui.drills.title')}</H2>
+      <Muted>{open.length > 0 ? t('ui.drills.count', { open: open.length, total: list.length }) : t('ui.drills.none')}</Muted>
+      {next ? <Button label={t('ui.drills.today', { title: t(next.drill.titleKey) })} onPress={() => router.push(`/practica/${next.drill.id}`)} /> : null}
+      <Button variant="secondary" label={t('ui.drills.open')} onPress={() => router.push('/practica')} testID="open-drills" />
+    </Card>
   );
 }
 
@@ -90,6 +107,18 @@ function Tuner() {
   const [freq, setFreq] = useState<number | null>(null);
   const listener = useRef<Listener | null>(null);
   useEffect(() => () => listener.current?.stop(), []);
+  // La pestaña sigue montada debajo de otras pantallas (práctica, cancionero): al salir, el afinador se apaga.
+  useFocusEffect(
+    useCallback(
+      () => () => {
+        listener.current?.stop();
+        listener.current = null;
+        setOn(false);
+        setFreq(null);
+      },
+      [],
+    ),
+  );
 
   // La cuerda más cercana a la frecuencia detectada.
   const nearest = freq ? STRINGS.reduce((a, b) => (Math.abs(centsOff(freq, b.openMidi)) < Math.abs(centsOff(freq, a.openMidi)) ? b : a)) : null;
@@ -163,6 +192,17 @@ function Metronome() {
   const handle = useRef<MetronomeHandle | null>(null);
   const [running, setRunning] = useState(false);
   useEffect(() => () => handle.current?.stop(), []);
+  // Igual que el afinador: al salir de la pestaña, el metrónomo se detiene.
+  useFocusEffect(
+    useCallback(
+      () => () => {
+        handle.current?.stop();
+        handle.current = null;
+        setRunning(false);
+      },
+      [],
+    ),
+  );
 
   const toggle = () => {
     if (running) {
