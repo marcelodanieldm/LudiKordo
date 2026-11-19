@@ -7,6 +7,7 @@ import { Text } from '../../src/components/Text';
 import { Button, Card, CloseButton, Eyebrow, H1, Muted } from '../../src/components/ui';
 import { Figure } from '../../src/components/Figure';
 import { Listen } from '../../src/components/Listen';
+import { MotionFigure } from '../../src/components/MotionFigure';
 import { theorySheet } from '../../src/content/theory';
 import { canOpenLesson } from '../../src/billing/access';
 import { useBilling } from '../../src/billing/purchases';
@@ -43,7 +44,11 @@ export default function TheorySheetScreen() {
                 {sec.cards.map((c, i) => (
                   <Card key={c.titleKey} style={{ gap: 10 }}>
                     <Text style={{ fontFamily: fonts.display, fontSize: 18, lineHeight: 24 }}>{t(c.titleKey)}</Text>
-                    {c.figure ? <Figure id={c.figure} width={cardInner} /> : null}
+                    {c.figure && c.motion ? (
+                      <MotionFigure id={c.figure} motion={c.motion} width={cardInner} testID={`motion-${sec.lessonId}-${i}`} />
+                    ) : c.figure ? (
+                      <Figure id={c.figure} width={cardInner} />
+                    ) : null}
                     <Text style={{ fontSize: 16, lineHeight: 24, color: colors.ink }}>{t(c.bodyKey)}</Text>
                     {c.listen ? <Listen example={c.listen} width={cardInner} testID={`listen-${sec.lessonId}-${i}`} /> : null}
                   </Card>

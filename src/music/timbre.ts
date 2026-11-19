@@ -29,10 +29,18 @@ export interface Voice {
   sustain: number;
 }
 
-/** El tono suave de siempre (bajo): sube en 15 ms y cae hasta el final de la nota. */
+/**
+ * El tono del bajo: fundamental triangular más armónicos (diente de sierra y la
+ * octava) para que se oiga en el parlante de un teléfono, que no reproduce los
+ * graves. Sube en 12 ms y cae hasta el final de la nota.
+ */
 export const LEGACY_VOICE: Voice = {
-  partials: [{ type: 'triangle', detune: 0, gain: 0.45 }],
-  attack: 0.015,
+  partials: [
+    { type: 'triangle', detune: 0, gain: 0.24 },
+    { type: 'sawtooth', detune: 0, gain: 0.16 },
+    { type: 'sine', detune: 1200, gain: 0.1 },
+  ],
+  attack: 0.012,
   envelope: 'pluck',
   maxRing: 8,
   sustain: 0,

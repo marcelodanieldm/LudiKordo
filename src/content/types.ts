@@ -337,6 +337,30 @@ export interface Card {
   figure?: Figure;
   /** Ejemplo sonoro con botón «Escuchar». */
   listen?: ListenExample;
+  /** El dibujo se anima paso a paso, con el sonido de cada movimiento. */
+  motion?: FigureMotion;
+}
+
+/** Dedo que se mueve en un paso: i/m de la mano que pulsa, 1–4 de la que pisa. */
+export type HandFinger = 'i' | 'm' | 1 | 2 | 3 | 4;
+
+/** Un paso del movimiento de un dibujo: qué se mueve y qué suena. */
+export interface MotionStep {
+  beats: Beats;
+  /** Nota que suena en este paso (sin nota: solo se mueve). */
+  note?: { string: StringId; fret: number };
+  finger?: HandFinger;
+  /** Dónde apoya el pulgar de la mano que pulsa. */
+  thumb?: 'pickup' | 'E';
+  /** Dónde pisa el dedo (dibujo de colocación): bien, encima del traste o en el medio. */
+  mark?: 'ok' | 'onFret' | 'middle';
+  /** Suena apagada (dedo mal colocado). */
+  muted?: boolean;
+}
+
+export interface FigureMotion {
+  bpm: number;
+  steps: MotionStep[];
 }
 
 export interface Lesson {
