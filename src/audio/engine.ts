@@ -204,3 +204,91 @@ export function playSequence(
   activeSequence = handle;
   return { stop: handle.stop, startMs: t0 * 1000 };
 }
+
+/**
+ * Batería sintetizada con osciladores (sin muestras grabadas): bombo con caída
+ * de altura, caja y platillo con ondas cuadradas agudas y muy cortas.
+ */
+function drum(c: AudioContext, at: number, kind: 'kick' | 'snare' | 'hat' | 'rim', level: number) {
+  const parts: { type: 'sine' | 'square' | 'triangle'; f0: number; f1: number; gain: number; dur: number }[] =
+    kind === 'kick'
+      ? [{ type: 'sine', f0: 120, f1: 42, gain: 0.9, dur: 0.28 }]
+      : kind === 'snare'
+        ? [
+            { type: 'triangle', f0: 200, f1: 160, gain: 0.35, dur: 0.12 },
+            { type: 'square', f0: 2900, f1: 2900, gain: 0.05, dur: 0.1 },
+            { type: 'square', f0: 4100, f1: 4100, gain: 0.04, dur: 0.09 },
+          ]
+        : kind === 'rim'
+          ? [{ type: 'square', f0: 1700, f1: 1600, gain: 0.08, dur: 0.035 }]
+          : [
+              { type: 'square', f0: 7100, f1: 7100, gain: 0.025, dur: 0.035 },
+              { type: 'square', f0: 9300, f1: 9300, gain: 0.02, dur: 0.03 },
+            ];
+  for (const p of parts) {
+    const osc = c.createOscillator();
+    const g = c.createGain();
+    osc.type = p.type;
+    osc.frequency.setValueAtTime(p.f0, at);
+    if (p.f1 !== p.f0) osc.frequency.exponentialRampToValueAtTime(p.f1, at + p.dur * 0.8);
+    g.gain.setValueAtTime(p.gain * level, at);
+    g.gain.exponentialRampToValueAtTime(0.001, at + p.dur);
+    osc.connect(g);
+    g.connect(c.destination);
+    osc.start(at);
+    osc.stop(at + p.dur + 0.02);
+  }
+}
+
+/** Timbre del teclado del acompañamiento: suave, para no tapar el bajo. */
+const KEYS_VOICE: Voice = {
+  partials: [
+    { type: 'triangle', detune: 0, gain: 0.3 },
+    { type: 'sine', detune: 1200, gain: 0.08 },
+  ],
+  attack: 0.01,
+  envelope: 'pluck',
+  maxRing: 4,
+  sustain: 0,
+};
+
+export interface BackingHandle {
+  /** Momento (reloj de audio, ms) en que empieza el compás 1, para comparar con el micrófono. */
+  startMs: number;
+  stop: () => void;
+}
+
+/**
+ * Toca un acompañamiento ya calculado (src/music/backing.ts): batería, teclado
+ * y clic. Usa el mismo reloj que el micrófono. `levels` de 0 a 1 por parte.
+ */
+export function playBacking(
+  schedule: {
+    drums: { timeSec: number; kind: 'kick' | 'snare' | 'hat' | 'rim' }[];
+    keys: { timeSec: number; durSec: number; midis: number[] }[];
+    clicks: { timeSec: number; accent: boolean }[];
+    startSec: number;
+  },
+  levels: { drums: number; keys: number } = { drums: 0.8, keys: 0.6 },
+): BackingHandle {
+  stopActiveSequence();
+  const c = context();
+  const t0 = c.currentTime + 0.2;
+  for (const k of schedule.clicks) click(t0 + k.timeSec, k.accent);
+  for (const d of schedule.drums) drum(c, t0 + d.timeSec, d.kind, levels.drums);
+  for (const k of schedule.keys) {
+    // Acorde de 3–4 notas: cada voz más baja para que la suma no sature.
+    const each = levels.keys / Math.max(2, k.midis.length);
+    for (const m of k.midis) scheduleVoice(c, 440 * Math.pow(2, (m - 69) / 12), t0 + k.timeSec, k.durSec, KEYS_VOICE, each * 2);
+  }
+  let stopped = false;
+  return {
+    startMs: (t0 + schedule.startSec) * 1000,
+    stop: () => {
+      if (stopped) return;
+      stopped = true;
+      void c.close();
+      if (ctx === c) ctx = null;
+    },
+  };
+}

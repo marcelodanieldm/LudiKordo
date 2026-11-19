@@ -1,5 +1,38 @@
 {
   "ui": {
+    "practiceLive": {
+      "eyebrow": "Prática de habilidades",
+      "title": "Pratique ao vivo com banda",
+      "intro": "Exercícios curtos para tocar com bateria e teclado. O app escuta você e diz, nota por nota, como você está indo.",
+      "card": "{{open}} de {{total}} exercícios disponíveis, com bateria e teclado.",
+      "open": "Praticar com banda",
+      "withBand": "Praticar ao vivo com banda",
+      "notFound": "Não encontramos este exercício.",
+      "meta": "{{style}} · Nível {{level}} · {{bpm}} bpm",
+      "band": "Acompanhamento",
+      "drums": "Bateria",
+      "keys": "Teclado",
+      "click": "Clique",
+      "volume": "Volume da banda",
+      "tempo": "Andamento (bpm)",
+      "evaluate": "Avaliar ao vivo",
+      "headphones": "Com fones a avaliação fica mais precisa: o microfone não ouve a banda.",
+      "level": {"low": "Baixo", "mid": "Médio", "high": "Alto"},
+      "style": {"rock": "Rock", "pop": "Pop", "ballad": "Balada", "blues": "Blues", "reggae": "Reggae", "bossa": "Bossa nova", "soul": "Soul", "funk": "Funk"},
+      "start": "Começar",
+      "stop": "Parar",
+      "again": "De novo",
+      "listening": "Estou ouvindo…",
+      "noEval": "Toque com a banda",
+      "progress": "{{done}} de {{total}} notas",
+      "verdict": {"hit": "Boa!", "early": "Um pouco antes", "late": "Um pouco depois", "wrongNote": "Outra nota", "miss": "Escapou"},
+      "running": "Acertos: {{pct}}% · Sequência: {{streak}}",
+      "result": "{{hits}} de {{total}} notas",
+      "detail": "Antes: {{early}} · Depois: {{late}} · Outra nota: {{wrong}} · Sem tocar: {{missed}} · Melhor sequência: {{best}}",
+      "advice": {"great": "Muito bem! Você está tocando junto com a banda.", "early": "Você está correndo: escute o bumbo e espere por ele.", "late": "Você está atrasando: prepare a mão antes de cada nota.", "wrongNotes": "Confira as notas na partitura antes de subir o andamento.", "missing": "Várias notas escaparam: tente num andamento mais lento."},
+      "unlocked": "Novo andamento liberado: {{bpm}} bpm!",
+      "doneNoEval": "Pronto. Ative «Avaliar ao vivo» para ver seu resultado."
+    },
     "motion": {
       "play": "Ver e ouvir",
       "stop": "Parar",
@@ -585,6 +618,16 @@
     }
   },
   "content": {
+    "drill": {
+      "rock_quarters": { "title": "Semínimas no rock", "desc": "Semínimas regulares nas cordas soltas sobre uma batida de rock. Toque junto com o bumbo e a caixa." },
+      "spider_groove": { "title": "Aranha com groove", "desc": "O exercício 1-2-3-4 pelas 4 cordas, no tempo da bateria: um dedo por casa, sem parar." },
+      "blues_roots": { "title": "Tônicas do blues", "desc": "As tônicas de um blues de 12 compassos em Lá, em semínimas, com bateria shuffle. Sinta quando o acorde muda." },
+      "roots_ea": { "title": "Tônicas em Mi e Lá", "desc": "Dó, Sol, Lá e Fá nas cordas Mi e Lá sobre um pop: encontre cada tônica no tempo." },
+      "root_fifth_soul": { "title": "Tônica e quinta no soul", "desc": "Tônica e quinta em mínimas sobre Sol, Dó e Ré, com bateria e teclado de soul." },
+      "bossa_root_fifth": { "title": "Bossa com tônica e quinta", "desc": "A base da bossa nova: tônica e quinta em mínimas, com o teclado e a bateria do estilo." },
+      "pop_eighths": { "title": "Colcheias de pop", "desc": "Colcheias constantes sobre Lá menor, Fá, Dó e Sol. Mantenha a mão relaxada e escute o chimbal." },
+      "one_drop": { "title": "One drop", "desc": "Reggae: o primeiro tempo fica vazio e você entra com duas colcheias. Escute o bumbo no terceiro tempo." }
+    },
     "song": {
       "pop_1": { "title": "Passeio de domingo", "desc": "Pop em Mi sobre a progressão I–V–vi–IV. Uma mínima e duas semínimas por compasso: pratique trocar de acorde sem perder o pulso." },
       "rock_1": { "title": "Motor ligado", "desc": "Rock em Lá com semínimas constantes nas cordas soltas. O segredo: todas as notas igualmente fortes e regulares." },

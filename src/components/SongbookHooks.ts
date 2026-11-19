@@ -2,6 +2,8 @@ import { useMemo } from 'react';
 import { canOpenLesson } from '../billing/access';
 import { useBilling } from '../billing/purchases';
 import { keyParts, songbook, songExerciseId } from '../content/songbook';
+import { DRILLS } from '../content/drills';
+import { liveExerciseId, practiceStatuses } from '../content/practice';
 import { letterNoteLabel, type Locale } from '../music/notes';
 import { useSettings } from '../state/settings';
 import { useTranslation } from 'react-i18next';
@@ -35,4 +37,16 @@ export function useKeyLabel() {
     const note = letterNoteLabel(letter, i18n.language as Locale, notation) ?? letter;
     return t(minor ? 'ui.songbook.keyMinor' : 'ui.songbook.keyMajor', { note });
   };
+}
+
+/** Ejercicios de práctica con su estado (abierto, bloqueado o Premium) y mejor resultado. */
+export function usePracticeList() {
+  const isPremium = useBilling((s) => s.isPremium);
+  const lessons = useProgress((s) => s.lessons);
+  const skipped = useProgress((s) => s.skippedLevels);
+  const exercises = useProgress((s) => s.exercises);
+  return useMemo(() => {
+    const completed = new Set(Object.entries(lessons).filter(([, r]) => r.stars > 0).map(([id]) => id));
+    return practiceStatuses(DRILLS, completed, new Set(skipped), (m) => canOpenLesson(`${m}.1`, isPremium), (id) => exercises[liveExerciseId(id)] ?? 0);
+  }, [lessons, skipped, exercises, isPremium]);
 }

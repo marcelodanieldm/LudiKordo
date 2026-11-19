@@ -9,7 +9,7 @@ import { startMetronome, type MetronomeHandle } from '../../src/audio/engine';
 import { STRINGS, centsOff, noteName, type Locale } from '../../src/music/notes';
 import { useSettings } from '../../src/state/settings';
 import { router } from 'expo-router';
-import { useSongbook } from '../../src/components/SongbookHooks';
+import { usePracticeList, useSongbook } from '../../src/components/SongbookHooks';
 import { firstSongModule, recommendedSong } from '../../src/content/songbook';
 import Svg, { Circle, Path, Text as SvgText } from 'react-native-svg';
 import { colors, fonts, radius } from '../../src/theme';
@@ -26,6 +26,7 @@ export default function Practice() {
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
       <ScrollView contentContainerStyle={{ padding: 20, gap: 14, maxWidth: 720, width: '100%', alignSelf: 'center' }}>
         <H1>{t('ui.practice.title')}</H1>
+        <SkillPracticeCard />
         <SongbookCard />
         <Tuner />
         <Metronome />
@@ -42,6 +43,21 @@ export default function Practice() {
         <Muted>{t('ui.common.comingSoon')}</Muted>
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+/** Acceso a la práctica de habilidades en vivo, con banda. */
+function SkillPracticeCard() {
+  const { t } = useTranslation();
+  const list = usePracticeList();
+  if (list.length === 0) return null;
+  const open = list.filter((s) => s.state === 'open').length;
+  return (
+    <Card style={{ gap: 10 }}>
+      <H2>{t('ui.practiceLive.title')}</H2>
+      <Muted>{t('ui.practiceLive.card', { open, total: list.length })}</Muted>
+      <Button label={t('ui.practiceLive.open')} onPress={() => router.push('/practica')} testID="open-practice" />
+    </Card>
   );
 }
 

@@ -10,6 +10,7 @@ import { PlayAlongExercise as PlayAlong } from '../../src/components/exercises/P
 import { useKeyLabel, useSongbook } from '../../src/components/SongbookHooks';
 import { songExerciseId } from '../../src/content/songbook';
 import { getSong, songExample } from '../../src/content/songs';
+import { IS_GUITAR } from '../../src/instruments/current';
 import { isRest } from '../../src/music/staff';
 import { useProgress } from '../../src/state/progress';
 import { useLayout } from '../../src/hooks/useLayout';
@@ -101,6 +102,9 @@ export default function SongScreen() {
 
         {status.state === 'open' ? (
           <>
+            {!running && !IS_GUITAR ? (
+              <Button variant="secondary" label={t('ui.practiceLive.withBand')} onPress={() => router.push(`/practica/song-${song.id}`)} testID={`band-${song.id}`} />
+            ) : null}
             {/* Durante la toma no se muestra el ejemplo: el micrófono lo oiría. */}
             {!running ? (
               <Card style={{ gap: 10 }}>

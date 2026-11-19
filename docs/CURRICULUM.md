@@ -125,3 +125,12 @@ Una canción se abre cuando el alumno termina los módulos que pide (o saltó es
 Reglas: solo música original o de dominio público (nunca letras, cifrados ni líneas de canciones con derechos); un acorde por compás (o dos, cambiando en el tercer tiempo), con la raíz (o el bajo de la inversión) en la primera nota de cada acorde; con corcheas, tempo inicial de 80 bpm o menos; tablatura solo con negras, blancas y redondas; corcheas y silencios en pentagrama, después de 2.6. Las pruebas de `tests/songbook.test.ts` lo controlan.
 
 Para sumar una canción: agregarla a `SONGS`, sus textos en `content.song.<id>` de los 3 idiomas y correr `npm test`.
+
+## Práctica de habilidades
+
+Ejercicios cortos para tocar **en vivo con banda** (`src/content/drills.ts`, pantallas `app/practica/`, acceso desde Practicar). También cada canción del cancionero tiene «Practicar en vivo con banda».
+
+- **Acompañamiento sintetizado** (`src/music/backing.ts`): batería y teclado según el cifrado y el estilo (rock, pop, balada, blues con shuffle, reggae one drop con skank, bossa, soul, funk), más clic opcional. Se elige qué suena, el volumen y el tempo (los tempos se desbloquean al dominar el ejercicio).
+- **Evaluación en vivo** (`src/music/live.ts`): cada ataque del micrófono se juzga al instante contra la nota esperada: a tiempo, antes, después, otra nota o perdida; racha y porcentaje mientras se toca, y un consejo al final. Lo que suena por encima del registro del bajo (la banda que se cuela por el parlante) se ignora; con auriculares es más preciso.
+- Se desbloquea igual que las canciones (módulos aprendidos o nivel saltado) y respeta Premium. Progreso en `live-<id>`.
+- Solo bajo por ahora: la build de guitarra no muestra la sección hasta tener sus propios ejercicios.

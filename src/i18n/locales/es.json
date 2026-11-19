@@ -1,5 +1,38 @@
 {
   "ui": {
+    "practiceLive": {
+      "eyebrow": "Práctica de habilidades",
+      "title": "Practica en vivo con banda",
+      "intro": "Ejercicios cortos para tocar con batería y teclado. La app te escucha y te dice nota por nota cómo vas.",
+      "card": "{{open}} de {{total}} ejercicios disponibles, con batería y teclado.",
+      "open": "Practicar con banda",
+      "withBand": "Practicar en vivo con banda",
+      "notFound": "No encontramos este ejercicio.",
+      "meta": "{{style}} · Nivel {{level}} · {{bpm}} bpm",
+      "band": "Acompañamiento",
+      "drums": "Batería",
+      "keys": "Teclado",
+      "click": "Clic",
+      "volume": "Volumen de la banda",
+      "tempo": "Tempo (bpm)",
+      "evaluate": "Evaluar en vivo",
+      "headphones": "Con auriculares la evaluación es más precisa: el micrófono no oye a la banda.",
+      "level": {"low": "Bajo", "mid": "Medio", "high": "Alto"},
+      "style": {"rock": "Rock", "pop": "Pop", "ballad": "Balada", "blues": "Blues", "reggae": "Reggae", "bossa": "Bossa nova", "soul": "Soul", "funk": "Funk"},
+      "start": "Empezar",
+      "stop": "Detener",
+      "again": "Otra vez",
+      "listening": "Te escucho…",
+      "noEval": "Toca con la banda",
+      "progress": "{{done}} de {{total}} notas",
+      "verdict": {"hit": "¡Bien!", "early": "Un poco antes", "late": "Un poco después", "wrongNote": "Otra nota", "miss": "Se escapó"},
+      "running": "Aciertos: {{pct}} % · Racha: {{streak}}",
+      "result": "{{hits}} de {{total}} notas",
+      "detail": "Antes: {{early}} · Después: {{late}} · Otra nota: {{wrong}} · Sin tocar: {{missed}} · Mejor racha: {{best}}",
+      "advice": {"great": "¡Muy bien! Estás tocando con la banda.", "early": "Te adelantas: escucha el bombo y espéralo.", "late": "Llegas tarde: prepara la mano antes de cada nota.", "wrongNotes": "Revisa las notas en la partitura antes de subir el tempo.", "missing": "Se escaparon varias notas: prueba a un tempo más lento."},
+      "unlocked": "¡Nuevo tempo desbloqueado: {{bpm}} bpm!",
+      "doneNoEval": "Listo. Activa «Evaluar en vivo» para ver tu resultado."
+    },
     "motion": {
       "play": "Ver y escuchar",
       "stop": "Detener",
@@ -585,6 +618,16 @@
     }
   },
   "content": {
+    "drill": {
+      "rock_quarters": { "title": "Negras con el rock", "desc": "Negras parejas en las cuerdas al aire sobre una batería de rock. Toca junto con el bombo y la caja." },
+      "spider_groove": { "title": "Araña con groove", "desc": "El ejercicio 1-2-3-4 por las 4 cuerdas, a tempo con la batería: un dedo por traste y sin parar." },
+      "blues_roots": { "title": "Raíces del blues", "desc": "Las raíces de un blues de 12 compases en La, en negras, con batería shuffle. Siente cuándo cambia el acorde." },
+      "roots_ea": { "title": "Raíces en Mi y La", "desc": "Do, Sol, La y Fa en las cuerdas Mi y La sobre un pop: encuentra cada raíz a tiempo." },
+      "root_fifth_soul": { "title": "Raíz y quinta en soul", "desc": "Raíz y quinta en blancas sobre Sol, Do y Re, con batería y teclado de soul." },
+      "bossa_root_fifth": { "title": "Bossa con raíz y quinta", "desc": "La base de la bossa nova: raíz y quinta en blancas, con el teclado y la batería del estilo." },
+      "pop_eighths": { "title": "Corcheas de pop", "desc": "Corcheas constantes sobre La menor, Fa, Do y Sol. Mantén la mano relajada y escucha el platillo." },
+      "one_drop": { "title": "One drop", "desc": "Reggae: el primer tiempo queda en silencio y entras con dos corcheas. Escucha el bombo en el tercer tiempo." }
+    },
     "song": {
       "pop_1": { "title": "Paseo de domingo", "desc": "Pop en Mi con la progresión I–V–vi–IV. Blanca y dos negras por compás: practica cambiar de acorde sin perder el pulso." },
       "rock_1": { "title": "Motor en marcha", "desc": "Rock en La con negras constantes en las cuerdas al aire. El secreto: que todas suenen igual de fuertes y parejas." },

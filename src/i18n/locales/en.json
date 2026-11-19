@@ -1,5 +1,38 @@
 {
   "ui": {
+    "practiceLive": {
+      "eyebrow": "Skill practice",
+      "title": "Practice live with a band",
+      "intro": "Short exercises to play with drums and keys. The app listens and tells you how you're doing, note by note.",
+      "card": "{{open}} of {{total}} exercises available, with drums and keys.",
+      "open": "Practice with the band",
+      "withBand": "Practice live with the band",
+      "notFound": "We couldn't find this exercise.",
+      "meta": "{{style}} · Level {{level}} · {{bpm}} bpm",
+      "band": "Backing band",
+      "drums": "Drums",
+      "keys": "Keys",
+      "click": "Click",
+      "volume": "Band volume",
+      "tempo": "Tempo (bpm)",
+      "evaluate": "Live scoring",
+      "headphones": "Scoring is more accurate with headphones: the microphone won't hear the band.",
+      "level": {"low": "Low", "mid": "Medium", "high": "High"},
+      "style": {"rock": "Rock", "pop": "Pop", "ballad": "Ballad", "blues": "Blues", "reggae": "Reggae", "bossa": "Bossa nova", "soul": "Soul", "funk": "Funk"},
+      "start": "Start",
+      "stop": "Stop",
+      "again": "Again",
+      "listening": "Listening…",
+      "noEval": "Play along with the band",
+      "progress": "{{done}} of {{total}} notes",
+      "verdict": {"hit": "Nice!", "early": "A bit early", "late": "A bit late", "wrongNote": "Wrong note", "miss": "Missed"},
+      "running": "Accuracy: {{pct}}% · Streak: {{streak}}",
+      "result": "{{hits}} of {{total}} notes",
+      "detail": "Early: {{early}} · Late: {{late}} · Wrong note: {{wrong}} · Missed: {{missed}} · Best streak: {{best}}",
+      "advice": {"great": "Great! You're locked in with the band.", "early": "You're rushing: listen for the kick drum and wait for it.", "late": "You're dragging: get your hand ready before each note.", "wrongNotes": "Check the notes on the score before speeding up.", "missing": "Several notes slipped by: try a slower tempo."},
+      "unlocked": "New tempo unlocked: {{bpm}} bpm!",
+      "doneNoEval": "Done. Turn on \"Live scoring\" to see your result."
+    },
     "motion": {
       "play": "Watch and listen",
       "stop": "Stop",
@@ -585,6 +618,16 @@
     }
   },
   "content": {
+    "drill": {
+      "rock_quarters": { "title": "Rock quarter notes", "desc": "Even quarter notes on open strings over a rock beat. Lock in with the kick and snare." },
+      "spider_groove": { "title": "Spider with a groove", "desc": "The 1-2-3-4 exercise across all 4 strings, in time with the drums: one finger per fret, no stopping." },
+      "blues_roots": { "title": "Blues roots", "desc": "The roots of a 12-bar blues in A, in quarter notes, over a shuffle beat. Feel when the chord changes." },
+      "roots_ea": { "title": "Roots on E and A", "desc": "C, G, A and F on the E and A strings over a pop groove: find each root in time." },
+      "root_fifth_soul": { "title": "Root and fifth in soul", "desc": "Root and fifth in half notes over G, C and D, with soul drums and keys." },
+      "bossa_root_fifth": { "title": "Bossa with root and fifth", "desc": "The foundation of bossa nova: root and fifth in half notes, with the style's keys and drums." },
+      "pop_eighths": { "title": "Pop eighth notes", "desc": "Steady eighth notes over A minor, F, C and G. Keep your hand relaxed and listen to the hi-hat." },
+      "one_drop": { "title": "One drop", "desc": "Reggae: beat one stays silent and you come in with two eighth notes. Listen for the kick on beat three." }
+    },
     "song": {
       "pop_1": { "title": "Sunday Stroll", "desc": "Pop in E over the I–V–vi–IV progression. A half note and two quarters per bar: practice changing chords without losing the beat." },
       "rock_1": { "title": "Engine Running", "desc": "Rock in A with steady quarter notes on open strings. The secret: every note equally strong and even." },
