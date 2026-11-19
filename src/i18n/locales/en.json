@@ -1,5 +1,86 @@
 {
   "ui": {
+    "drills": {
+      "eyebrow": "Practice",
+      "title": "Skills practice",
+      "intro": "Drills to repeat with a band backing you. The app listens and tells you note by note how you are doing, while you play.",
+      "all": "All",
+      "category": {
+        "technique": "Technique",
+        "riffs": "Riffs and grooves",
+        "scales": "Scales",
+        "arpeggios": "Arpeggios",
+        "phrases": "Phrases",
+        "reading": "Reading",
+        "improv": "Improvisation"
+      },
+      "meta": "{{category}} · Level {{level}} · from {{bpm}} bpm",
+      "needs": "Unlocks when you finish module {{module}}.",
+      "lockedHint": "Not unlocked yet.",
+      "premium": "This drill is part of Premium.",
+      "notFound": "We couldn't find this drill.",
+      "count": "{{open}} of {{total}} drills unlocked, with a band backing you.",
+      "none": "Finish your first modules to unlock the drills.",
+      "today": "Practice: {{title}}",
+      "open": "See all drills",
+      "tempo": "Tempo",
+      "slow": "Slow · {{bpm}}",
+      "bpm": "{{bpm}} bpm",
+      "tempoLocked": "Faster tempos unlock with 3 stars on the previous one.",
+      "with": "Backing you",
+      "part": {
+        "drums": "Drums",
+        "bass": "Bass",
+        "guitar": "Guitar",
+        "keys": "Keys"
+      },
+      "styleTitle": "Style",
+      "style": {
+        "rock": "Rock",
+        "pop": "Pop",
+        "funk": "Funk",
+        "ballad": "Ballad",
+        "shuffle": "Shuffle",
+        "jazz": "Jazz"
+      },
+      "loops": "Loops",
+      "loopsN": "×{{n}}",
+      "headphones": "Best with headphones, so the app hears you and not the backing.",
+      "start": "Start",
+      "stop": "Stop",
+      "again": "Again",
+      "settings": "Change settings",
+      "scale": "Scale notes",
+      "chordsLine": "Chords: {{chords}}",
+      "loopOf": "Loop {{n}} of {{total}}",
+      "noMicPlaying": "No microphone: play along with the band; this time it isn't scored.",
+      "go": "Your turn!",
+      "goImprov": "Improvise!",
+      "verdict": {
+        "hit": "On time!",
+        "early": "A bit early",
+        "late": "A bit late",
+        "wrong": "Wrong note",
+        "miss": "Missed it"
+      },
+      "wrongNote": "It was {{expected}}, you played {{played}}",
+      "inScale": "{{note}}: in the scale",
+      "outScale": "{{note}}: outside the scale",
+      "accuracy": "Hits",
+      "streak": "Streak",
+      "notes": "Notes",
+      "inScalePct": "In the scale",
+      "timing": "Where your last note landed",
+      "dotsLabel": "{{hits}} hits out of {{decided}} notes",
+      "unscored": "You played with the band without a microphone, so there's no score this time.",
+      "resultLine": "{{percent}}% hits",
+      "resultImprov": "{{percent}}% in the scale · {{notes}} notes",
+      "breakdown": "On time: {{hit}} · Early: {{early}} · Late: {{late}} · Wrong note: {{wrong}} · Missed: {{miss}}",
+      "bestStreak": "Best streak: {{n}} notes in a row",
+      "rushing": "You tend to rush: listen to the kick and wait for the beat.",
+      "dragging": "You tend to drag: anticipate each note a little.",
+      "unlocked": "New tempo unlocked: {{bpm}} bpm!"
+    },
     "songbook": {
       "eyebrow": "Songbook",
       "title": "Songs for your level",
@@ -576,6 +657,116 @@
     }
   },
   "content": {
+    "practice": {
+      "g_rest_groove": {
+        "title": "Groove with rests",
+        "desc": "Notes and rests on the low strings over E5, A5 and D5. Mute each note on time so the rest is heard."
+      },
+      "g_first_riff": {
+        "title": "Your first riff",
+        "desc": "The checkpoint 1 riff with drums and bass. Even downstrokes, and tap your foot on the beat."
+      },
+      "g_sight": {
+        "title": "Tab reading",
+        "desc": "An A minor line to read in time. Look one bar ahead of what you're playing."
+      },
+      "g_power": {
+        "title": "Power chord riff",
+        "desc": "G, A and C on the 6th and 5th strings, with the kick drum. Play the low note of each power chord: the app follows it."
+      },
+      "g_palm_mute": {
+        "title": "Palm muting with a band",
+        "desc": "Muted eighth notes on the low E with accents. Rest your palm right on the bridge."
+      },
+      "g_penta_run": {
+        "title": "Pentatonic in eighth notes",
+        "desc": "Box 1 of A minor up and down, in even eighth notes over the drums."
+      },
+      "g_penta_lick": {
+        "title": "Shuffle lick",
+        "desc": "A box 1 phrase over a blues shuffle. Let the lick breathe in the swing."
+      },
+      "g_legato": {
+        "title": "Legato in time",
+        "desc": "Hammer-ons and pull-offs in box 1, now with a steady beat. Each slurred note should be as loud as the picked one."
+      },
+      "g_slides": {
+        "title": "Slides with a band",
+        "desc": "A phrase with slides over a ballad. Land right on time on the target note."
+      },
+      "g_vibrato": {
+        "title": "Long notes with vibrato",
+        "desc": "A short phrase ending on a long note: vibrato shines when the band leaves space."
+      },
+      "g_major": {
+        "title": "G major in time",
+        "desc": "The G major scale in 2nd position, one octave, with bass and keys."
+      },
+      "g_fours": {
+        "title": "Groups of four",
+        "desc": "The box 1 sequence in groups of four eighth notes. Raise the tempo little by little."
+      },
+      "g_triads": {
+        "title": "Triads over the progression",
+        "desc": "Am, G and F arpeggios on the high strings, each over its chord."
+      },
+      "g_motif": {
+        "title": "Motif and variations",
+        "desc": "A one-bar idea that repeats and changes over Am – G – F – G."
+      },
+      "g_targets": {
+        "title": "Target notes",
+        "desc": "Every bar starts on a chord tone. Hear how it \"lands\" over the band."
+      },
+      "g_solo": {
+        "title": "Your eight-bar solo",
+        "desc": "The final project solo, with the full band."
+      },
+      "g_improv_penta": {
+        "title": "Improvise: pentatonic",
+        "desc": "Improvise with A minor pentatonic over rock. The app tells you whether each note is in the scale."
+      },
+      "g_improv_blues": {
+        "title": "Improvise: blues",
+        "desc": "A blues shuffle in A (A7 – D7 – A7 – E7). Minor pentatonic works over the whole blues."
+      },
+      "g_improv_dorian": {
+        "title": "Improvise: Dorian funk",
+        "desc": "A funk groove with Am7 and D7. Use A Dorian and go for the F♯ over D7."
+      },
+      "g_improv_mixo": {
+        "title": "Improvise: Mixolydian",
+        "desc": "Rock in A with A and G. A Mixolydian: bright, with a flat 7th."
+      },
+      "g_improv_jazz": {
+        "title": "Improvise: ii – V – I",
+        "desc": "Dm7 – G7 – Cmaj7 with a jazz ride. Use C major and aim for each chord's tones."
+      },
+      "b_open": {
+        "title": "Open strings with drums",
+        "desc": "Quarter notes on open E, A and D with drums and guitar. Lock in with the kick."
+      },
+      "b_spider": {
+        "title": "Spider with the kick",
+        "desc": "Frets 1 to 4 on every string, one finger per fret, in time with the drums."
+      },
+      "b_roots": {
+        "title": "Roots of the progression",
+        "desc": "The roots of Am – G – F – G in quarter notes. The bass player's core job in a band."
+      },
+      "b_root_fifth": {
+        "title": "Root and fifth",
+        "desc": "Root and fifth in half notes over a ballad. The fifth connects one chord to the next."
+      },
+      "b_read": {
+        "title": "Reading bass clef",
+        "desc": "C major on the staff, up and down, with drums and keys."
+      },
+      "b_improv": {
+        "title": "Make up your line",
+        "desc": "Improvise a bass line with A minor pentatonic over the progression. Start with the roots."
+      }
+    },
     "song": {
       "pop_1": { "title": "Sunday Stroll", "desc": "Pop in E over the I–V–vi–IV progression. A half note and two quarters per bar: practice changing chords without losing the beat." },
       "rock_1": { "title": "Engine Running", "desc": "Rock in A with steady quarter notes on open strings. The secret: every note equally strong and even." },

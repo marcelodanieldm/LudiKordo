@@ -5,6 +5,7 @@
 import { AudioContext } from 'react-native-audio-api';
 import { IS_GUITAR } from '../instruments/current';
 import { peakGain, ringSec, voiceFor, type Tone, type Voice } from '../music/timbre';
+import type { DrumHit } from '../music/drums';
 
 let ctx: AudioContext | null = null;
 function context(): AudioContext {
@@ -194,4 +195,90 @@ export function playSequence(
   };
   activeSequence = handle;
   return { stop: handle.stop, startMs: t0 * 1000 };
+}
+
+// ───────────── Acompañamiento de la práctica ─────────────
+
+/** Frecuencias metálicas (las de las cajas de ritmo clásicas, más agudas) para hi-hat, ride y el chasquido de la caja. */
+const METAL_HZ = [1642, 2435, 2957, 4182, 4320, 6400];
+
+function hitGain(c: AudioContext, at: number, peak: number, decay: number) {
+  const g = c.createGain();
+  g.gain.setValueAtTime(0, at);
+  g.gain.linearRampToValueAtTime(peak, at + 0.002);
+  g.gain.exponentialRampToValueAtTime(0.001, at + decay);
+  g.connect(c.destination);
+  return g;
+}
+
+function osc(c: AudioContext, type: OscillatorKind, freq: number, at: number, dur: number, out: ReturnType<AudioContext['createGain']>, gain = 1) {
+  const o = c.createOscillator();
+  const pg = c.createGain();
+  o.type = type;
+  o.frequency.value = freq;
+  pg.gain.value = gain;
+  o.connect(pg);
+  pg.connect(out);
+  o.start(at);
+  o.stop(at + dur + 0.02);
+  return o;
+}
+
+type OscillatorKind = 'sine' | 'square' | 'triangle' | 'sawtooth';
+
+/** Un golpe de batería, solo con osciladores (no hace falta ruido ni filtros). */
+function scheduleDrum(c: AudioContext, kind: DrumHit['kind'], at: number, level: number) {
+  if (kind === 'kick') {
+    // Seno que cae de 150 a 45 Hz: el «bum».
+    const out = hitGain(c, at, 0.9 * level, 0.35);
+    const o = osc(c, 'sine', 150, at, 0.35, out);
+    o.frequency.setValueAtTime(150, at);
+    o.frequency.exponentialRampToValueAtTime(45, at + 0.12);
+    return;
+  }
+  if (kind === 'snare') {
+    // Cuerpo (dos tonos) más chasquido metálico corto.
+    const body = hitGain(c, at, 0.45 * level, 0.12);
+    osc(c, 'triangle', 185, at, 0.12, body);
+    osc(c, 'triangle', 330, at, 0.12, body, 0.6);
+    const snap = hitGain(c, at, 0.12 * level, 0.16);
+    for (const f of METAL_HZ) osc(c, 'square', f * 0.9, at, 0.16, snap, 1 / METAL_HZ.length);
+    return;
+  }
+  const decay = kind === 'hat' ? 0.05 : 0.45;
+  const out = hitGain(c, at, (kind === 'hat' ? 0.09 : 0.06) * level, decay);
+  for (const f of METAL_HZ) osc(c, 'square', kind === 'ride' ? f * 1.4 : f * 2, at, decay, out, 1 / METAL_HZ.length);
+}
+
+export interface JamHandle {
+  /** Momento (ms, reloj de audio) del primer pulso después de la cuenta. */
+  startMs: number;
+  stop: () => void;
+}
+
+/**
+ * Toca el acompañamiento de la práctica (src/music/jam.ts) con su cuenta previa:
+ * clics en la cuenta y, si no hay batería, también durante la música para no
+ * perder el pulso. Corta cualquier ejemplo que esté sonando.
+ */
+export function startJam(jam: { notes: { freq: number; startSec: number; durSec: number; tone?: Tone; level?: number }[]; drums: DrumHit[]; bpm: number; countIn: number; bodyBeats: number }): JamHandle {
+  stopActiveSequence();
+  const c = context();
+  const t0 = c.currentTime + 0.2;
+  const step = 60 / jam.bpm;
+  const clicks = jam.countIn + (jam.drums.length ? 0 : jam.bodyBeats);
+  for (let i = 0; i < clicks; i++) click(t0 + i * step, i % 4 === 0);
+  const voice = voiceFor(undefined, IS_GUITAR);
+  for (const n of jam.notes) scheduleVoice(c, n.freq, t0 + n.startSec, n.durSec, n.tone ? voiceFor(n.tone, IS_GUITAR) : voice, n.level ?? 1);
+  for (const d of jam.drums) scheduleDrum(c, d.kind, t0 + d.startSec, d.level);
+  let stopped = false;
+  return {
+    startMs: (t0 + jam.countIn * step) * 1000,
+    stop: () => {
+      if (stopped) return;
+      stopped = true;
+      void c.close();
+      if (ctx === c) ctx = null;
+    },
+  };
 }

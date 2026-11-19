@@ -6,7 +6,7 @@
  * clara la diferencia que enseña la lección: limpio vs crunch, pastilla del
  * mástil (oscura) vs del puente (brillante), nota apagada (palm mute).
  */
-export type Tone = 'clean' | 'crunch' | 'lead' | 'neck' | 'bridge' | 'muted';
+export type Tone = 'clean' | 'crunch' | 'lead' | 'neck' | 'bridge' | 'muted' | 'keys' | 'ebass';
 export type OscType = 'sine' | 'triangle' | 'square' | 'sawtooth';
 
 export interface VoicePartial {
@@ -94,6 +94,30 @@ export const VOICES: Record<Tone, Voice> = {
     envelope: 'sustain',
     maxRing: 6,
     sustain: 0.92,
+  },
+  // Acompañamiento de la práctica: piano eléctrico (fundamental redonda y un brillo de octava).
+  keys: {
+    partials: [
+      { type: 'sine', detune: 0, gain: 0.4 },
+      { type: 'sine', detune: 1200, gain: 0.12 },
+      { type: 'triangle', detune: 1902, gain: 0.04 },
+    ],
+    attack: 0.006,
+    envelope: 'pluck',
+    maxRing: 2.5,
+    sustain: 0,
+  },
+  // Bajo eléctrico del acompañamiento: grave y redondo, con un poco de ataque.
+  ebass: {
+    partials: [
+      { type: 'triangle', detune: 0, gain: 0.45 },
+      { type: 'sine', detune: 1200, gain: 0.1 },
+      { type: 'square', detune: 0, gain: 0.03 },
+    ],
+    attack: 0.01,
+    envelope: 'pluck',
+    maxRing: 1.6,
+    sustain: 0,
   },
   muted: {
     partials: [

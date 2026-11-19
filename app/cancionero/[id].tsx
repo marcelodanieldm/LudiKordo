@@ -8,6 +8,7 @@ import { Button, Card, CloseButton, Eyebrow, H1, H2, Muted, Stars } from '../../
 import { Listen } from '../../src/components/Listen';
 import { PlayAlongExercise as PlayAlong } from '../../src/components/exercises/PlayAlongExercise';
 import { useKeyLabel, useSongbook } from '../../src/components/SongbookHooks';
+import { useModuleLabel } from '../../src/components/PracticeHooks';
 import { songExerciseId } from '../../src/content/songbook';
 import { getSong, songExample } from '../../src/content/songs';
 import { isRest } from '../../src/music/staff';
@@ -26,6 +27,7 @@ export default function SongScreen() {
   const song = getSong(String(id));
   const status = useSongbook().find((s) => s.song.id === song?.id);
   const keyLabel = useKeyLabel();
+  const moduleLabel = useModuleLabel();
   const unlockedBpm = useProgress((s) => (song ? s.tempo[songExerciseId(song.id)] : undefined));
   const [running, setRunning] = useState(false);
   const recordExercise = useProgress((s) => s.recordExercise);
@@ -140,7 +142,7 @@ export default function SongScreen() {
         ) : (
           <Card style={{ gap: 10 }}>
             <Text style={{ fontSize: 16, lineHeight: 24 }}>
-              {t('ui.songbook.needs', { modules: status.missing.map((m) => `${m} ${t(`content.module.${m.replace('.', '_')}`)}`).join(' · ') })}
+              {t('ui.songbook.needs', { modules: status.missing.map((m) => moduleLabel(m)).join(' · ') })}
             </Text>
             <Button variant="secondary" label={t('ui.songbook.toPath')} onPress={() => router.push('/ruta')} />
           </Card>

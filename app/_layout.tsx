@@ -59,6 +59,8 @@ export default function RootLayout() {
           <Stack.Screen name="ficha/[module]" />
           <Stack.Screen name="cancionero/index" />
           <Stack.Screen name="cancionero/[id]" />
+          <Stack.Screen name="practica/index" />
+          <Stack.Screen name="practica/[id]" />
         </Stack>
       </SafeAreaProvider>
     </I18nextProvider>

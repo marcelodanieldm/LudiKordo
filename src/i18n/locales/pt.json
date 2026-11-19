@@ -1,5 +1,86 @@
 {
   "ui": {
+    "drills": {
+      "eyebrow": "Prática",
+      "title": "Prática de habilidades",
+      "intro": "Exercícios para repetir com uma banda acompanhando você. O app escuta e diz nota por nota como você está indo, enquanto você toca.",
+      "all": "Todos",
+      "category": {
+        "technique": "Técnica",
+        "riffs": "Riffs e grooves",
+        "scales": "Escalas",
+        "arpeggios": "Arpejos",
+        "phrases": "Frases",
+        "reading": "Leitura",
+        "improv": "Improvisação"
+      },
+      "meta": "{{category}} · Nível {{level}} · a partir de {{bpm}} bpm",
+      "needs": "É liberado quando você termina o módulo {{module}}.",
+      "lockedHint": "Ainda não está liberado.",
+      "premium": "Este exercício faz parte do Premium.",
+      "notFound": "Não encontramos este exercício.",
+      "count": "{{open}} de {{total}} exercícios liberados, com uma banda acompanhando você.",
+      "none": "Termine seus primeiros módulos para liberar os exercícios.",
+      "today": "Praticar: {{title}}",
+      "open": "Ver todos os exercícios",
+      "tempo": "Andamento",
+      "slow": "Lento · {{bpm}}",
+      "bpm": "{{bpm}} bpm",
+      "tempoLocked": "Os andamentos mais rápidos são liberados com 3 estrelas no anterior.",
+      "with": "Acompanham você",
+      "part": {
+        "drums": "Bateria",
+        "bass": "Baixo",
+        "guitar": "Guitarra",
+        "keys": "Teclado"
+      },
+      "styleTitle": "Estilo",
+      "style": {
+        "rock": "Rock",
+        "pop": "Pop",
+        "funk": "Funk",
+        "ballad": "Balada",
+        "shuffle": "Shuffle",
+        "jazz": "Jazz"
+      },
+      "loops": "Voltas",
+      "loopsN": "×{{n}}",
+      "headphones": "Melhor com fones: assim o app ouve você e não o acompanhamento.",
+      "start": "Começar",
+      "stop": "Parar",
+      "again": "De novo",
+      "settings": "Mudar ajustes",
+      "scale": "Notas da escala",
+      "chordsLine": "Acordes: {{chords}}",
+      "loopOf": "Volta {{n}} de {{total}}",
+      "noMicPlaying": "Sem microfone: toque com a banda; desta vez não há avaliação.",
+      "go": "Sua vez!",
+      "goImprov": "Improvise!",
+      "verdict": {
+        "hit": "No tempo!",
+        "early": "Um pouco antes",
+        "late": "Um pouco atrasado",
+        "wrong": "Outra nota",
+        "miss": "Passou"
+      },
+      "wrongNote": "Era {{expected}}, você tocou {{played}}",
+      "inScale": "{{note}}: na escala",
+      "outScale": "{{note}}: fora da escala",
+      "accuracy": "Acertos",
+      "streak": "Sequência",
+      "notes": "Notas",
+      "inScalePct": "Na escala",
+      "timing": "Onde caiu a última nota",
+      "dotsLabel": "{{hits}} acertos de {{decided}} notas",
+      "unscored": "Você tocou com a banda sem microfone, então desta vez não há pontuação.",
+      "resultLine": "{{percent}}% de acertos",
+      "resultImprov": "{{percent}}% na escala · {{notes}} notas",
+      "breakdown": "No tempo: {{hit}} · Antes: {{early}} · Atrasadas: {{late}} · Outra nota: {{wrong}} · Perdidas: {{miss}}",
+      "bestStreak": "Melhor sequência: {{n}} notas seguidas",
+      "rushing": "Você tende a correr: escute o bumbo e espere o pulso.",
+      "dragging": "Você tende a atrasar: antecipe um pouco cada nota.",
+      "unlocked": "Novo andamento liberado: {{bpm}} bpm!"
+    },
     "songbook": {
       "eyebrow": "Cancioneiro",
       "title": "Músicas para o seu nível",
@@ -576,6 +657,116 @@
     }
   },
   "content": {
+    "practice": {
+      "g_rest_groove": {
+        "title": "Groove com pausas",
+        "desc": "Notas e pausas nas cordas graves sobre E5, A5 e D5. Abafe cada nota no tempo para a pausa aparecer."
+      },
+      "g_first_riff": {
+        "title": "Seu primeiro riff",
+        "desc": "O riff do checkpoint 1 com bateria e baixo. Palhetada para baixo, uniforme, e o pé marcando o pulso."
+      },
+      "g_sight": {
+        "title": "Leitura de tablatura",
+        "desc": "Uma linha em Lá menor para ler no tempo. Olhe um compasso à frente do que está tocando."
+      },
+      "g_power": {
+        "title": "Riff de power chords",
+        "desc": "Sol, Lá e Dó na 6ª e 5ª cordas, com o bumbo. Toque a nota grave do power chord: o app acompanha essa nota."
+      },
+      "g_palm_mute": {
+        "title": "Palm mute com banda",
+        "desc": "Colcheias abafadas no Mi grave com acentos. A palma apoiada bem sobre a ponte."
+      },
+      "g_penta_run": {
+        "title": "Pentatônica em colcheias",
+        "desc": "A caixa 1 de Lá menor indo e voltando, em colcheias iguais sobre a bateria."
+      },
+      "g_penta_lick": {
+        "title": "Lick com shuffle",
+        "desc": "Uma frase da caixa 1 sobre um shuffle de blues. Deixe o lick respirar no swing."
+      },
+      "g_legato": {
+        "title": "Ligados no tempo",
+        "desc": "Hammer-ons e pull-offs na caixa 1, agora com pulso fixo. Cada ligado deve soar tão forte quanto a nota palhetada."
+      },
+      "g_slides": {
+        "title": "Slides com banda",
+        "desc": "Frase com slides sobre uma balada. Chegue no tempo certo na nota de destino."
+      },
+      "g_vibrato": {
+        "title": "Notas longas com vibrato",
+        "desc": "Uma frase curta que termina numa nota longa: o vibrato aparece quando a banda deixa espaço."
+      },
+      "g_major": {
+        "title": "Sol maior no tempo",
+        "desc": "A escala de Sol maior na 2ª posição, uma oitava, com baixo e teclado."
+      },
+      "g_fours": {
+        "title": "Grupos de quatro",
+        "desc": "A sequência da caixa 1 em grupos de quatro colcheias. Suba o andamento aos poucos."
+      },
+      "g_triads": {
+        "title": "Tríades sobre a progressão",
+        "desc": "Arpejos de Am, G e F nas cordas agudas, cada um sobre seu acorde."
+      },
+      "g_motif": {
+        "title": "Motivo e variações",
+        "desc": "Uma ideia de um compasso que se repete e muda sobre Am – G – F – G."
+      },
+      "g_targets": {
+        "title": "Notas-alvo",
+        "desc": "Cada compasso começa numa nota do acorde. Escute como ela “pousa” sobre a banda."
+      },
+      "g_solo": {
+        "title": "Seu solo de oito compassos",
+        "desc": "O solo do projeto final, com a banda completa."
+      },
+      "g_improv_penta": {
+        "title": "Improvise: pentatônica",
+        "desc": "Improvise com a pentatônica de Lá menor sobre rock. O app diz se cada nota está na escala."
+      },
+      "g_improv_blues": {
+        "title": "Improvise: blues",
+        "desc": "Shuffle de blues em Lá (A7 – D7 – A7 – E7). A pentatônica menor soa bem sobre o blues inteiro."
+      },
+      "g_improv_dorian": {
+        "title": "Improvise: dórico funk",
+        "desc": "Groove de funk com Am7 e D7. Use Lá dórico e procure o Fá♯ sobre o D7."
+      },
+      "g_improv_mixo": {
+        "title": "Improvise: mixolídio",
+        "desc": "Rock em Lá com A e G. Lá mixolídio: alegre, com a 7ª menor."
+      },
+      "g_improv_jazz": {
+        "title": "Improvise: II – V – I",
+        "desc": "Dm7 – G7 – Cmaj7 com prato de condução de jazz. Use Dó maior e mire nas notas de cada acorde."
+      },
+      "b_open": {
+        "title": "Cordas soltas com bateria",
+        "desc": "Semínimas em Mi, Lá e Ré soltas com bateria e guitarra. Firme junto com o bumbo."
+      },
+      "b_spider": {
+        "title": "Aranha com bumbo",
+        "desc": "Casas 1 a 4 em cada corda, um dedo por casa, no tempo da bateria."
+      },
+      "b_roots": {
+        "title": "Tônicas da progressão",
+        "desc": "As tônicas de Am – G – F – G em semínimas. É o trabalho básico do baixo numa banda."
+      },
+      "b_root_fifth": {
+        "title": "Tônica e quinta",
+        "desc": "Tônica e quinta em mínimas sobre uma balada. A quinta liga um acorde ao próximo."
+      },
+      "b_read": {
+        "title": "Leitura na clave de fá",
+        "desc": "Dó maior na partitura, subindo e descendo, com bateria e teclado."
+      },
+      "b_improv": {
+        "title": "Invente sua linha",
+        "desc": "Improvise uma linha de baixo com a pentatônica de Lá menor sobre a progressão. Comece pelas tônicas."
+      }
+    },
     "song": {
       "pop_1": { "title": "Passeio de domingo", "desc": "Pop em Mi sobre a progressão I–V–vi–IV. Uma mínima e duas semínimas por compasso: pratique trocar de acorde sem perder o pulso." },
       "rock_1": { "title": "Motor ligado", "desc": "Rock em Lá com semínimas constantes nas cordas soltas. O segredo: todas as notas igualmente fortes e regulares." },

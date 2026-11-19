@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Text } from '../../src/components/Text';
 import { Chip, CloseButton, Eyebrow, H1, Muted, StarIcon } from '../../src/components/ui';
 import { useKeyLabel, useSongbook } from '../../src/components/SongbookHooks';
+import { useModuleLabel } from '../../src/components/PracticeHooks';
 import { GENRES } from '../../src/content/songs';
 import { colors, radius } from '../../src/theme';
 import type { Genre } from '../../src/content/types';
@@ -65,6 +66,7 @@ export default function SongbookScreen() {
 function SongRow({ status }: { status: SongStatus }) {
   const { t } = useTranslation();
   const keyLabel = useKeyLabel();
+  const moduleLabel = useModuleLabel();
   const { song, state, missing, stars } = status;
   const open = state === 'open';
   return (
@@ -97,7 +99,7 @@ function SongRow({ status }: { status: SongStatus }) {
       <Muted>{t('ui.songbook.meta', { genre: t(`ui.songbook.genre.${song.genre}`), level: song.level, key: keyLabel(song.key), bpm: song.bpm })}</Muted>
       {state === 'locked' ? (
         <Text style={{ fontSize: 14, color: colors.accentInk, fontWeight: '700' }}>
-          {t('ui.songbook.needs', { modules: missing.map((m) => `${m} ${t(`content.module.${m.replace('.', '_')}`)}`).join(' · ') })}
+          {t('ui.songbook.needs', { modules: missing.map((m) => moduleLabel(m)).join(' · ') })}
         </Text>
       ) : null}
       {state === 'premium' ? <Chip label={t('ui.path.premium')} color={colors.gold} bg={colors.goldSoft} /> : null}
