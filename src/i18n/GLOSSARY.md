@@ -76,6 +76,17 @@ Usar siempre estos términos en interfaz y lecciones. Cambiarlos solo con acuerd
 | Overdrive / distortion | Overdrive / distorsión | Overdrive / distorção |
 | Delay / reverb / chorus / wah | Delay / reverb / chorus / wah | Delay / reverb / chorus / wah |
 | Effects chain | Cadena de efectos | Cadeia de efeitos |
+| Classical guitar | Guitarra criolla | Violão |
+| Nylon string / wound string | Cuerda de nylon / entorchada | Corda de náilon / revestida |
+| Capo | Capotraste | Braçadeira (capo) |
+| Nut (criolla) | Cejuela | Nut (capotraste) |
+| Bridge (criolla) | Puente | Cavalete |
+| Soundhole / top / saddle | Boca / tapa / selleta | Boca / tampo / rastilho |
+| Footstool | Apoyapié | Banquinho (apoio de pé) |
+| Picking-hand fingers | p-i-m-a (pulgar, índice, medio, anular) | p-i-m-a (polegar, indicador, médio, anelar) |
+| Fingertip (flesh) / nail | Yema / uña | Polpa / unha |
+| Free stroke / rest stroke | Tirando / apoyando | Sem apoio / com apoio |
+| Arpeggio | Arpegio | Arpejo |
 
 Notas de estilo:
 
@@ -84,4 +95,5 @@ Notas de estilo:
 - Guitarra: las perillas del ampli se nombran como vienen impresas, en inglés y mayúsculas (GAIN, BASS, MIDDLE, TREBLE, VOLUME). Las cuerdas se numeran desde la más fina (1.ª = Mi aguda).
 - Nombres de notas: en inglés, letras (C D E). En es/pt, por defecto «Mi (E)»; la app permite elegir.
 - Portugués: «pestana» es solo la cejilla del dedo 1; la pieza del mástil junto al clavijero es «capotraste» o «nut», nunca «pestana».
+- Guitarra criolla (ADR 0010): «cejilla» es siempre el acorde con barra; el accesorio que se ajusta al mástil es «capotraste» (en pt, «braçadeira», porque «capotraste» ahí también nombra la cejuela). La técnica del curso es con yemas.
 - Kordi habla en primera persona, con humor amable, frases cortas.
