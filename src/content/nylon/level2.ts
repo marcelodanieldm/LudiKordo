@@ -139,7 +139,7 @@ function changeLesson(id: string, minutes: number, chords: OpenChordId[], patter
     visuals: figs,
     sounds: [strumListen(chords, pattern, 70), null, listen(pimi(chords), 70), null],
     cards: [{ listen: strumListen(chords, pattern, 70, { click: true }) }, { listen: listen(pimi(chords), 70, { click: true }) }],
-    exercises: [...extra, strum(id, 'strum', chords, pattern), play(id, 'pimi', pimi(chords), 60)],
+    exercises: [...extra, strum(id, 'strum', chords, pattern), play(id, 'pimi', scoreNotes(pimi(chords)), 60)],
   });
 }
 
