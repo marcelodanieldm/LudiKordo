@@ -12,6 +12,7 @@ import { withInstrumentTexts } from '../src/i18n/overlay';
 import { VOICES, peakGain, voiceFor } from '../src/music/timbre';
 import { midiToFreq } from '../src/music/notes';
 import type { ListenExample, ScoreEvent } from '../src/content/types';
+import { CP1_MELODY, CP1_TAB, EIGHTHS, FULL_SPIDER, NYLON_CP1, SIGHT_TAB, STOP_NOTES } from '../src/content/nylon/level1';
 
 type Tree = { [k: string]: string | Tree };
 const locales = { en, es, pt } as unknown as Record<string, Tree>;
@@ -61,9 +62,10 @@ test('ruta de criolla: 5 niveles, 31 módulos, 151 lecciones en 60 semanas segui
   for (let i = 1; i < NYLON_LEVELS.length; i++) assert.equal(NYLON_LEVELS[i].weeks[0], NYLON_LEVELS[i - 1].weeks[1] + 1);
 });
 
-test('los módulos gratuitos 1.1 y 1.2 están completos y toda lección está en la ruta', () => {
+test('el nivel 1 está completo (25 lecciones) y toda lección está en la ruta', () => {
   const route = new Set(NYLON_LEVELS.flatMap((l) => l.modules.flatMap(lessonIdsOf)));
-  for (const mod of NYLON_LEVELS[0].modules.slice(0, 2)) {
+  assert.equal(NYLON_LEVELS[0].modules.reduce((a, m) => a + m.lessonCount, 0), 25);
+  for (const mod of NYLON_LEVELS[0].modules) {
     for (const id of lessonIdsOf(mod)) assert.ok(NYLON_LESSONS[id], `falta la lección ${id}`);
   }
   for (const id of Object.keys(NYLON_LESSONS)) assert.ok(route.has(id), `${id} no está en la ruta`);
@@ -91,6 +93,12 @@ test('cada clave de la ruta, las lecciones y las figuras de criolla existe en lo
       if ('options' in ex) ex.options.filter((o) => !o.startsWith('=')).forEach((o) => used.add(o));
     }
   }
+  used.add(NYLON_CP1.titleKey);
+  used.add(NYLON_CP1.introKey);
+  for (const ex of NYLON_CP1.parts) {
+    used.add(ex.promptKey);
+    if ('options' in ex) ex.options.filter((o) => !o.startsWith('=')).forEach((o) => used.add(o));
+  }
   for (const [code, tree] of Object.entries(locales)) {
     for (const k of used) assert.ok(lookup(tree, k), `${code}: falta ${k}`);
   }
@@ -117,6 +125,14 @@ test('las lecciones de criolla tienen 4 escenas, respuestas válidas y solo cuer
           assert.ok(n.fret >= 0 && n.fret <= NYLON.frets, ex.id);
         });
         if (ex.bpm !== null) assert.ok(ex.bpm <= 80, `${ex.id}: empieza a 80 bpm o menos`);
+        if (ex.score) {
+          assert.deepEqual(ex.score.filter(isNote).map((e) => [e.string, e.fret]), ex.notes.map((x) => [x.string, x.fret]), `${ex.id}: notes = score sin silencios`);
+          assert.equal(ex.score.reduce((a, e) => a + e.beats, 0) % 4, 0, `${ex.id}: compases completos`);
+        }
+      }
+      if (ex.kind === 'tabReading') {
+        assert.equal(ex.notes.reduce((a, x) => a + x.beats, 0) % 4, 0, `${ex.id}: compases completos`);
+        ex.notes.forEach((x) => check(x.string, ex.id));
       }
       if (ex.kind === 'fretboardTap') ex.sequence.forEach((n) => check(n.string, ex.id));
     }
@@ -170,4 +186,29 @@ test('figuras nuevas de criolla: con proporción y leyenda', () => {
   }
   assert.equal(LEGEND_COUNT['nylon-parts'], 9);
   assert.equal(LEGEND_COUNT['pima-hand'], 4);
+});
+
+test('checkpoint 1 de criolla: oído, lectura, pulso a 80, cromático y melodía con corcheas', () => {
+  assert.equal(NYLON_CP1.level, 1);
+  assert.deepEqual(NYLON_CP1.parts.map((p) => p.kind), ['ear', 'tabReading', 'tempoTrainer', 'playAlong', 'playAlong']);
+  const ear = NYLON_CP1.parts[0];
+  assert.ok(ear.kind === 'ear' && ear.options[ear.correctIndex] === '=G' && ear.tones?.[1] === midiToFreq(midiOn(NYLON, 'G', 0)));
+  const melody = NYLON_CP1.parts[4];
+  assert.ok(melody.kind === 'playAlong' && melody.bpm === 80 && melody.score === CP1_MELODY);
+  assert.ok(CP1_MELODY.some((e) => e.beats === 0.5) && CP1_MELODY.some((e) => 'rest' in e));
+  // La tablatura del checkpoint es nueva (no la de la lectura a primera vista).
+  assert.notDeepEqual(CP1_TAB, SIGHT_TAB);
+  assert.equal(FULL_SPIDER.length, 48);
+});
+
+test('partituras del nivel 1: compases de 4/4 completos', () => {
+  for (const [name, score] of Object.entries({ CP1_MELODY, CP1_TAB, EIGHTHS, SIGHT_TAB, STOP_NOTES })) {
+    let bar = 0;
+    for (const e of score) {
+      bar += e.beats;
+      assert.ok(bar <= 4, `${name}: una nota cruza la barra de compás`);
+      if (bar === 4) bar = 0;
+    }
+    assert.equal(bar, 0, `${name}: último compás incompleto`);
+  }
 });
