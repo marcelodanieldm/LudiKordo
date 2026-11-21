@@ -6,6 +6,7 @@ Formato: [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versiones:
 
 ### Nuevo
 - App de guitarra criolla desde el mismo código (ADR 0010, `npm run android:nylon`): ruta de 5 niveles y 151 lecciones, y los módulos gratuitos 1.1 y 1.2 en es, en y pt, con timbre de nylon, figuras de la criolla y Kordi con guitarra criolla.
+- Guitarra criolla: álbum de acordes (los acordes desbloquean canciones), módulos 2.1–2.3 con 14 acordes abiertos (incluidas E7, A7, D7, G7, Em7 y Am7) y las dos primeras canciones del cancionero.
 - Guitarra criolla: nivel 1 completo (25 lecciones: pulsar tirando y apoyando, pulgar en los bajos, mano izquierda, cromático, pulso, figuras, corcheas y tablatura) y checkpoint 1.
 
 ## [0.3.0] — 2026-11-19

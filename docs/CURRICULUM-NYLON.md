@@ -106,4 +106,6 @@ Módulos 1.1 y 1.2, afinador y metrónomo.
 
 - Hecho: perfil y variante `nylon`, ruta completa, nivel 1 completo (25 lecciones) y checkpoint 1.
 - El pentagrama de la app es en clave de fa: la lectura en clave de sol (8va baja) espera a que exista; mientras, el nivel 1 lee tablatura.
-- Siguiente: nivel 2 con el álbum de acordes y las primeras canciones.
+- Hecho: módulos 2.1–2.3 (15 lecciones, 14 acordes en el álbum, con E7, A7, D7, G7, Em7 y Am7) y las primeras canciones: «Melodía del patio» (pop, 1.5) y «Ruta 3» (rock, 2.1).
+- El álbum de acordes está en `src/content/nylon/chordbook.ts`: cada canción en la que el alumno toca acordes arma su `requires` con `songRequires`, así se abre al tener sus acordes.
+- Siguiente: 2.4–2.7 (rasgueos, arpegios, teoría, pentatónica), checkpoint 2 y las canciones «Postal de domingo» y «Sombra en Am».
