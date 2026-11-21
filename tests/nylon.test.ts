@@ -16,9 +16,9 @@ import { CP1_MELODY, CP1_TAB, EIGHTHS, FULL_SPIDER, NYLON_CP1, SIGHT_TAB, STOP_N
 
 import { CHORDS, SEVENTHS, chordDiagram, chordMidi as openChordMidi, chordFromName, diagramMidi, seventhPitchClasses, shapeOf, type SeventhId } from '../src/music/chords';
 import { CHORD_UNLOCKS, allChords, chordModule, missingChords, songRequires, unlockedChords } from '../src/content/nylon/chordbook';
-import { CHORD_FIG, NYLON_LEVEL2_LESSONS } from '../src/content/nylon/level2';
+import { CHORD_FIG, NYLON_CP2, NYLON_LEVEL2_LESSONS, PENTA_AM, PENTA_OPEN } from '../src/content/nylon/level2';
 import { NYLON_GENRES, NYLON_SONGS } from '../src/content/nylon/songs';
-import { pimiBar } from '../src/content/nylon/helpers';
+import { altBassBar, balladBar, pamiBar, pimaBar, pimiBar, steadyBassBar } from '../src/content/nylon/helpers';
 import { CHORD_FIGURES } from '../src/components/guitarFigureMeta';
 
 type Tree = { [k: string]: string | Tree };
@@ -100,11 +100,13 @@ test('cada clave de la ruta, las lecciones y las figuras de criolla existe en lo
       if ('options' in ex) ex.options.filter((o) => !o.startsWith('=')).forEach((o) => used.add(o));
     }
   }
-  used.add(NYLON_CP1.titleKey);
-  used.add(NYLON_CP1.introKey);
-  for (const ex of NYLON_CP1.parts) {
-    used.add(ex.promptKey);
-    if ('options' in ex) ex.options.filter((o) => !o.startsWith('=')).forEach((o) => used.add(o));
+  for (const cp of [NYLON_CP1, NYLON_CP2]) {
+    used.add(cp.titleKey);
+    used.add(cp.introKey);
+    for (const ex of cp.parts) {
+      used.add(ex.promptKey);
+      if ('options' in ex) ex.options.filter((o) => !o.startsWith('=')).forEach((o) => used.add(o));
+    }
   }
   for (const [code, tree] of Object.entries(locales)) {
     for (const k of used) assert.ok(lookup(tree, k), `${code}: falta ${k}`);
@@ -308,4 +310,35 @@ test('cancionero de criolla: reglas de las canciones y desbloqueo por acordes', 
   const ruta = NYLON_SONGS.find((s) => s.id === 'n-rock-1')!;
   assert.deepEqual(ruta.requires, songRequires(['Em', 'D', 'A'], ['1.3']));
   assert.deepEqual(missingChords(ruta.chords, new Set(['1.3'])), ['Em', 'D', 'A']);
+});
+
+test('el nivel 2 está completo (35 lecciones) y el checkpoint 2 prueba rasgueo, arpegio, pentatónica y oído', () => {
+  const level2 = NYLON_LEVELS[1];
+  assert.equal(level2.modules.reduce((a, m) => a + m.lessonCount, 0), 35);
+  for (const mod of level2.modules) for (const id of lessonIdsOf(mod)) assert.ok(NYLON_LESSONS[id], `falta la lección ${id}`);
+  assert.deepEqual(NYLON_CP2.parts.map((p) => p.kind), ['ear', 'strum', 'playAlong', 'playAlong']);
+  for (const p of NYLON_CP2.parts) if (p.kind === 'strum') for (const c of p.chords) assert.ok(chordModule(c), `${c} fuera del álbum`);
+});
+
+test('patrones de mano derecha: compases de 4 pulsos con notas del acorde', () => {
+  const patterns = { pimaBar, pamiBar, altBassBar, balladBar, steadyBassBar };
+  for (const c of allChords() as (keyof typeof CHORD_FIG)[]) {
+    const pcs = new Set(openChordMidi(c).map((m) => m % 12));
+    for (const [name, bar] of Object.entries(patterns)) {
+      const score = bar(c);
+      assert.equal(score.reduce((a, e) => a + e.beats, 0), 4, `${name}(${c})`);
+      for (const x of score.filter(isNote)) assert.ok(pcs.has(midiOn(NYLON, x.string, x.fret) % 12), `${name}(${c}): ${x.string}${x.fret}`);
+    }
+    // El pulgar empieza siempre en el bajo del acorde.
+    const first = pimaBar(c)[0];
+    assert.ok(isNote(first) && midiOn(NYLON, first.string, first.fret) === openChordMidi(c)[0], c);
+  }
+});
+
+test('pentatónica menor de La en primera posición: solo La, Do, Re, Mi y Sol; improvisación con esa escala', () => {
+  assert.equal(PENTA_OPEN.length, 12);
+  for (const x of PENTA_OPEN) assert.ok(PENTA_AM.includes(midiOn(NYLON, x.string, x.fret) % 12), `${x.string}${x.fret}`);
+  const improv = Object.values(NYLON_LESSONS).flatMap((l) => l.exercises).filter((e) => e.kind === 'improvise');
+  assert.ok(improv.length >= 2);
+  for (const ex of improv) if (ex.kind === 'improvise') assert.deepEqual(ex.scale, PENTA_AM);
 });
