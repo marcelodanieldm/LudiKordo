@@ -67,7 +67,7 @@ export function triadPitchClasses(id: ChordId): number[] {
 // ───────────── Diagramas en grilla: acordes, power chords y cajas de escala ─────────────
 
 /** Formas que se dibujan como diagrama vertical (como un acorde). */
-export type DiagramId = ChordId | SeventhId | 'power-6' | 'power-5' | 'penta-a' | BarreId | 'octave' | ScaleGridId;
+export type DiagramId = ChordId | SeventhId | NylonGridId | 'power-6' | 'power-5' | 'penta-a' | BarreId | 'octave' | ScaleGridId;
 
 export interface GridDot {
   /** 0 = 6.ª cuerda (Mi grave) … 5 = 1.ª (Mi aguda). */
@@ -239,6 +239,7 @@ export const SCALE_GRIDS: Record<ScaleGridId, GridDiagram> = {
 export function diagramOf(id: DiagramId): GridDiagram {
   if (id in SCALE_GRIDS) return SCALE_GRIDS[id as ScaleGridId];
   if (id in BARRES) return BARRES[id as BarreId];
+  if (id in NYLON_GRIDS) return NYLON_GRIDS[id as NylonGridId];
   if (id === 'octave') return OCTAVE;
   if (id === 'power-6') return POWER_6;
   if (id === 'power-5') return POWER_5;
@@ -314,6 +315,103 @@ export const BARRES: Record<BarreId, GridDiagram> = {
   'bar-c8': eShape('C', 8, false),
   // Solo la cejilla, sin otros dedos (3.5.1).
   'bar-only': { name: '', startFret: 5, barre: { fret: 5, from: 0, to: 5 }, dots: [], marks: [null, null, null, null, null, null] },
+};
+
+/** Cejilla forma de E7 (1 3 1 2 1 1), móvil por la 6.ª. */
+export function eShape7(name: string, fret: number): GridDiagram {
+  return {
+    name,
+    startFret: fret,
+    barre: { fret, from: 0, to: 5 },
+    dots: [
+      { string: 0, fret, finger: 1, root: true },
+      { string: 1, fret: fret + 2, finger: 3 },
+      { string: 3, fret: fret + 1, finger: 2 },
+    ],
+    marks: [null, null, null, null, null, null],
+  };
+}
+
+/** Cejilla forma de Am7 (x 1 3 1 2 1), móvil por la 5.ª. */
+export function aShapeM7(name: string, fret: number): GridDiagram {
+  return {
+    name,
+    startFret: fret,
+    barre: { fret, from: 1, to: 5 },
+    dots: [
+      { string: 1, fret, finger: 1, root: true },
+      { string: 2, fret: fret + 2, finger: 3 },
+      { string: 4, fret: fret + 1, finger: 2 },
+    ],
+    marks: ['x', null, null, null, null, null],
+  };
+}
+
+/** Diagramas de la guitarra criolla, nivel 3: media cejilla, cejillas movidas y B7, C7. */
+export type NylonGridId = 'fmaj7' | 'f-half' | 'bm-half' | 'bar-f7' | 'bar-fsm' | 'bar-gm' | 'bar-bbm' | 'bar-bm7' | 'bar-csm' | 'b7' | 'c7';
+
+export const NYLON_GRIDS: Record<NylonGridId, GridDiagram> = {
+  fmaj7: {
+    name: 'Fmaj7',
+    startFret: 1,
+    dots: [
+      { string: 2, fret: 3, finger: 3 },
+      { string: 3, fret: 2, finger: 2 },
+      { string: 4, fret: 1, finger: 1 },
+    ],
+    marks: ['x', 'x', null, null, null, 'o'],
+  },
+  // Media cejilla: el dedo 1 acostado sobre la 2.ª y la 1.ª.
+  'f-half': {
+    name: 'F',
+    startFret: 1,
+    barre: { fret: 1, from: 4, to: 5 },
+    dots: [
+      { string: 2, fret: 3, finger: 3, root: true },
+      { string: 3, fret: 2, finger: 2 },
+    ],
+    marks: ['x', 'x', null, null, null, null],
+  },
+  // Bm en las 4 cuerdas agudas, con el dedo 1 en la 1.ª (paso previo a la cejilla).
+  'bm-half': {
+    name: 'Bm',
+    startFret: 2,
+    dots: [
+      { string: 2, fret: 4, finger: 3 },
+      { string: 3, fret: 4, finger: 4, root: true },
+      { string: 4, fret: 3, finger: 2 },
+      { string: 5, fret: 2, finger: 1 },
+    ],
+    marks: ['x', 'x', null, null, null, null],
+  },
+  'bar-f7': eShape7('F7', 1),
+  'bar-fsm': eShape('F#m', 2, true),
+  'bar-gm': eShape('Gm', 3, true),
+  'bar-bbm': aShape('Bbm', 1, true),
+  'bar-bm7': aShapeM7('Bm7', 2),
+  'bar-csm': aShape('C#m', 4, true),
+  b7: {
+    name: 'B7',
+    startFret: 1,
+    dots: [
+      { string: 1, fret: 2, finger: 2, root: true },
+      { string: 2, fret: 1, finger: 1 },
+      { string: 3, fret: 2, finger: 3 },
+      { string: 5, fret: 2, finger: 4 },
+    ],
+    marks: ['x', null, null, null, 'o', null],
+  },
+  c7: {
+    name: 'C7',
+    startFret: 1,
+    dots: [
+      { string: 1, fret: 3, finger: 3, root: true },
+      { string: 2, fret: 2, finger: 2 },
+      { string: 3, fret: 3, finger: 4 },
+      { string: 4, fret: 1, finger: 1 },
+    ],
+    marks: ['x', null, null, null, null, 'o'],
+  },
 };
 
 /** Octavas: la nota de la 6.ª cuerda se repite dos cuerdas más arriba, dos trastes más adelante. */
