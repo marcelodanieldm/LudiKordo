@@ -16,7 +16,7 @@ import type { ScoreEvent, Song } from '../types';
 import type { OpenChordId } from '../../music/chords';
 import { QUARTERS, BALLAD } from '../../music/strum';
 import { songRequires } from './chordbook';
-import { pimiBar } from './helpers';
+import { pimaBar, pimiBar } from './helpers';
 
 type B = 0.5 | 1 | 2 | 4;
 const n = (string: StringId, fret: number, beats: B = 1): ScoreEvent => ({ string, fret, beats });
@@ -27,6 +27,9 @@ const song = (s: Omit<Song, 'titleKey' | 'descriptionKey'>): Song => ({ ...s, ti
 const pimiSong = (chords: OpenChordId[]) => ({ chords: [...chords], line: chords.flatMap(pimiBar), requiresChords: chords });
 
 const RUTA_3 = pimiSong(['Em', 'Em', 'D', 'D', 'A', 'A', 'Em', 'Em']);
+
+/** Postal de domingo: p-i-m-a sobre G, C, D y Em (2.5). */
+const POSTAL: OpenChordId[] = ['G', 'C', 'D', 'Em', 'G', 'C', 'D', 'G'];
 
 export const NYLON_SONGS: Song[] = [
   // ── Nivel 1: melodía en las agudas; la banda toca los acordes ──
@@ -70,7 +73,47 @@ export const NYLON_SONGS: Song[] = [
     strum: QUARTERS,
     tone: 'nylon',
   }),
+  song({
+    id: 'n-pop-2',
+    genre: 'pop',
+    level: 2,
+    requires: songRequires(POSTAL, ['2.5']),
+    key: 'G',
+    bpm: 76,
+    tempoSteps: [76, 84, 92],
+    chords: [...POSTAL],
+    line: POSTAL.flatMap(pimaBar),
+    notation: 'tab',
+    skills: ['technique', 'rhythm'],
+    strum: BALLAD,
+    tone: 'nylon',
+  }),
+  // Melodía con la pentatónica menor; la banda toca Am, Dm y E7.
+  song({
+    id: 'n-blues-1',
+    genre: 'blues',
+    level: 2,
+    requires: songRequires([], ['2.7']),
+    key: 'Am',
+    bpm: 70,
+    tempoSteps: [70, 80, 90],
+    chords: ['Am', 'Am', 'Dm', 'Am', 'E7', 'Dm', 'Am', 'Am'],
+    line: [
+      n('G', 2, 2), n('B', 1), n('B', 3),
+      n('e', 0, 2), n('B', 3), n('B', 1),
+      n('B', 3, 2), n('B', 1), n('G', 2),
+      n('G', 2, 4),
+      n('e', 0, 2), n('e', 3), n('e', 0),
+      n('B', 3, 2), n('G', 2), n('G', 0),
+      n('G', 2), n('B', 1), n('G', 2), n('G', 0),
+      n('G', 2, 4),
+    ],
+    notation: 'tab',
+    skills: ['technique', 'ear'],
+    strum: QUARTERS,
+    tone: 'nylon',
+  }),
 ];
 
 /** Géneros con canciones en la criolla (se suman jazz, bossa y música popular con sus niveles). */
-export const NYLON_GENRES = ['pop', 'rock'] as const;
+export const NYLON_GENRES = ['pop', 'rock', 'blues'] as const;

@@ -93,3 +93,40 @@ export function pimiBar(id: OpenChordId): ScoreEvent[] {
 export function strumListen(chords: OpenChordId[], pattern: Stroke[], bpm: number, extra: Partial<ListenExample> = {}): ListenExample {
   return { events: [], bpm, strum: { chords: chords.map(chordMidi), pattern }, ...extra };
 }
+
+// ───────────── Patrones de mano derecha sobre un acorde (nivel 2.5) ─────────────
+
+const onString = (id: OpenChordId, s: StringId) => chordArp(id).find((x) => x.string === s)?.fret ?? 0;
+
+/** p-i-m-a en negras: bajo, 3.ª, 2.ª y 1.ª. */
+export function pimaBar(id: OpenChordId): ScoreEvent[] {
+  const b = chordArp(id)[0];
+  return [n(b.string, b.fret), n('G', onString(id, 'G')), n('B', onString(id, 'B')), n('e', onString(id, 'e'))];
+}
+
+/** p-a-m-i en negras: bajo, 1.ª, 2.ª y 3.ª. */
+export function pamiBar(id: OpenChordId): ScoreEvent[] {
+  const b = chordArp(id)[0];
+  return [n(b.string, b.fret), n('e', onString(id, 'e')), n('B', onString(id, 'B')), n('G', onString(id, 'G'))];
+}
+
+/** Bajo alternado en negras: bajo, 2.ª, segundo bajo (la cuerda siguiente del acorde) y 2.ª. */
+export function altBassBar(id: OpenChordId): ScoreEvent[] {
+  const [b, alt] = chordArp(id);
+  const top = n('B', onString(id, 'B'));
+  return [n(b.string, b.fret), top, n(alt.string, alt.fret), { ...top }];
+}
+
+/** Arpegio de balada en corcheas: p-i-m-a-m-i-m-i. */
+export function balladBar(id: OpenChordId): ScoreEvent[] {
+  const b = chordArp(id)[0];
+  const g = onString(id, 'G'), bb = onString(id, 'B'), e = onString(id, 'e');
+  return [n(b.string, b.fret, 0.5), n('G', g, 0.5), n('B', bb, 0.5), n('e', e, 0.5), n('B', bb, 0.5), n('G', g, 0.5), n('B', bb, 0.5), n('G', g, 0.5)];
+}
+
+/** Bajo constante en corcheas (fingerpicking): el pulgar alterna dos bajos y los dedos responden en la 2.ª y la 1.ª. */
+export function steadyBassBar(id: OpenChordId): ScoreEvent[] {
+  const [b, alt] = chordArp(id);
+  const bb = onString(id, 'B'), e = onString(id, 'e');
+  return [n(b.string, b.fret, 0.5), n('B', bb, 0.5), n(alt.string, alt.fret, 0.5), n('e', e, 0.5), n(b.string, b.fret, 0.5), n('B', bb, 0.5), n(alt.string, alt.fret, 0.5), n('e', e, 0.5)];
+}
