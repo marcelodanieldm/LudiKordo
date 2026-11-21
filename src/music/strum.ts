@@ -46,6 +46,8 @@ export const ZAMBA: Stroke[] = ['D', '-', 'D', 'U', 'D', '-'];
 export const CHACARERA: Stroke[] = ['D', '-', 'D', 'U', 'D', 'U'];
 /** Vals (3/4): un golpe por pulso, el primero más fuerte. */
 export const VALS: Stroke[] = ['D', '-', 'D', '-', 'D', '-'];
+/** Milonga (4/4): las 8 corcheas agrupadas 3 + 3 + 2. */
+export const MILONGA: Stroke[] = ['D', '-', '-', 'D', '-', '-', 'D', '-'];
 
 /**
  * Un patrón es válido si tiene 8 casillas y la púa alterna (abajo en los pulsos,

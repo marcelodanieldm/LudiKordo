@@ -18,8 +18,11 @@ import { CHORDS, SEVENTHS, chordDiagram, chordMidi as openChordMidi, chordFromNa
 import { CHORD_UNLOCKS, allChords, chordModule, missingChords, songRequires, unlockedChords } from '../src/content/nylon/chordbook';
 import { CHORD_FIG, NYLON_CP2, NYLON_LEVEL2_LESSONS, PENTA_AM, PENTA_OPEN } from '../src/content/nylon/level2';
 import { NYLON_GENRES, NYLON_SONGS } from '../src/content/nylon/songs';
-import { albumDiagram, albumMidi, altBassBar, balladBar, chordFigure, pamiBar, pimaBar, pimiBar, steadyBassBar } from '../src/content/nylon/helpers';
-import { BLUES_AM, BLUES_SCALE, NYLON_CP3, NYLON_LEVEL3_LESSONS, SLUR_PHRASE } from '../src/content/nylon/level3';
+import { albumDiagram, albumMidi, altBassBar, balladBar, chordFigure, pamiBar, pimaBar, pimiBar, steadyBassBar, waltzBar } from '../src/content/nylon/helpers';
+import { BLUES_AM, BLUES_SCALE, NYLON_CP3, NYLON_LEVEL3_LESSONS, SLUR_PHRASE, VALS_LINE, ZAMBA_LINE } from '../src/content/nylon/level3';
+import { MILONGA, barBeatsOf, isValidPattern } from '../src/music/strum';
+import { barBeatsOfStyle } from '../src/music/drums';
+import { barsAreComplete } from '../src/music/tab';
 import { CHORD_FIGURES } from '../src/components/guitarFigureMeta';
 
 type Tree = { [k: string]: string | Tree };
@@ -307,14 +310,15 @@ test('cancionero de criolla: reglas de las canciones y desbloqueo por acordes', 
   const chordPcs = (name: string) => new Set((chordFromName(name) ?? []).map((m) => m % 12));
   for (const s of NYLON_SONGS) {
     assert.ok((NYLON_GENRES as readonly string[]).includes(s.genre), `${s.id}: género`);
+    const bar = s.beatsPerBar ?? 4;
     const beats = s.line.reduce((a, e) => a + e.beats, 0);
-    assert.equal(beats, s.chords.length * 4, `${s.id}: un acorde por compás`);
+    assert.equal(beats, s.chords.length * bar, `${s.id}: un acorde por compás`);
     if (s.line.some((e) => e.beats === 0.5)) assert.ok(s.bpm <= 80, `${s.id}: corcheas a 80 o menos`);
     let t = 0;
     for (const e of s.line) {
-      if (t % 4 === 0 && isNote(e)) {
+      if (t % bar === 0 && isNote(e)) {
         const pc = midiOn(NYLON, e.string, e.fret) % 12;
-        assert.ok(chordPcs(s.chords[t / 4]).has(pc), `${s.id}: compás ${t / 4 + 1}, la nota del tiempo 1 no está en ${s.chords[t / 4]}`);
+        assert.ok(chordPcs(s.chords[t / bar]).has(pc), `${s.id}: compás ${t / bar + 1}, la nota del tiempo 1 no está en ${s.chords[t / bar]}`);
       }
       t += e.beats;
     }
@@ -386,4 +390,44 @@ test('nivel 3: ligados, escala de blues y checkpoint 3', () => {
   for (const x of SLUR_PHRASE.filter(isNote)) assert.ok(PENTA_AM.includes(midiOn(NYLON, x.string, x.fret) % 12));
   assert.deepEqual(NYLON_CP3.parts.map((p) => p.kind), ['ear', 'strum', 'strum', 'playAlong']);
   for (const p of NYLON_CP3.parts) if (p.kind === 'strum') for (const c of p.chords) assert.ok(chordModule(c), `${c} fuera del álbum`);
+});
+
+test('nivel 3 completo: 3.7 enseña 6/8, zamba, chacarera, tango, milonga y vals', () => {
+  const level3 = NYLON_LEVELS[2];
+  for (const mod of level3.modules) for (const id of lessonIdsOf(mod)) assert.ok(NYLON_LESSONS[id], `falta la lección ${id}`);
+  assert.ok(isValidPattern(MILONGA) && barBeatsOf(MILONGA) === 4);
+  const mod37 = level3.modules.find((m) => m.id === '3.7')!;
+  for (const id of lessonIdsOf(mod37)) {
+    const lesson = NYLON_LESSONS[id];
+    assert.ok(lesson.exercises.some((e) => e.needsBass), `${id}: sin ejercicio con guitarra`);
+    for (const ex of lesson.exercises) {
+      if (ex.kind === 'strum') {
+        assert.ok(isValidPattern(ex.pattern), ex.id);
+        for (const c of ex.chords) assert.ok(chordModule(c), `${ex.id}: ${c} fuera del álbum`);
+      }
+      if (ex.kind === 'playAlong' && ex.score) {
+        assert.equal(ex.beatsPerBar, 3, ex.id);
+        assert.ok(barsAreComplete(ex.score, 3), `${ex.id}: compases de 3 pulsos`);
+      }
+    }
+  }
+  // Los compases de vals: bajo y dos notas del acorde, 3 pulsos.
+  for (const c of allChords()) {
+    const bar = waltzBar(c);
+    assert.equal(bar.reduce((a, e) => a + e.beats, 0), 3, c);
+    const pcs = new Set(albumMidi(c).map((m) => m % 12));
+    for (const x of bar.filter(isNote)) assert.ok(pcs.has(midiOn(NYLON, x.string, x.fret) % 12), `${c}: ${x.string}${x.fret}`);
+  }
+  assert.ok(barsAreComplete(ZAMBA_LINE, 3) && barsAreComplete(VALS_LINE, 3));
+});
+
+test('música popular en el cancionero: compás, estilo de banda y rasgueo coinciden', () => {
+  const popular = NYLON_SONGS.filter((s) => s.genre === 'popular');
+  assert.deepEqual(popular.map((s) => s.style), ['zamba', 'chacarera', 'tango', 'vals']);
+  for (const s of popular) {
+    const bar = s.beatsPerBar ?? 4;
+    assert.equal(barBeatsOfStyle(s.style!), bar, `${s.id}: la banda va en ${bar}`);
+    assert.equal(barBeatsOf(s.strum!), bar, `${s.id}: el rasgueo va en ${bar}`);
+    assert.ok(s.requires.includes('3.7'), s.id);
+  }
 });

@@ -971,6 +971,22 @@
         "title": "Cidade de papel",
         "desc": "Balada pop em Sol com Bm: arpejo de balada em colcheias sobre G, D, Bm, Em e A."
       },
+      "n_popular_1": {
+        "title": "Zamba do pátio",
+        "desc": "Uma zamba em Lá menor. Você toca Am, Dm e E7 com o polegar, três semínimas por compasso, enquanto a banda vai em 6/8."
+      },
+      "n_popular_2": {
+        "title": "Chacarera da estrada",
+        "desc": "Uma chacarera em Lá menor com Am, E7 e Dm: baixo e duas notas por compasso sobre o bumbo e o repique."
+      },
+      "n_popular_3": {
+        "title": "Tango da esquina",
+        "desc": "Um tango em Lá menor. Você toca Am, Dm e E7 com baixo constante em colcheias; a banda marca as quatro semínimas."
+      },
+      "n_popular_4": {
+        "title": "Valsa da praça",
+        "desc": "Uma valsa crioula em Dó com C, G7 e F: baixo no 1 e acorde no 2 e no 3."
+      },
       "n_blues_2": {
         "title": "Blues da plataforma",
         "desc": "Blues de 12 compassos em Lá. Você toca A7, D7 e E7 com baixo alternado; a banda acompanha em shuffle."
@@ -5355,6 +5371,100 @@
         "c2b": "Acordes maiores e alegres: aqui vai a pentatônica maior de Dó.",
         "blues": "Improvise com a escala blues de Lá sobre o blues. Toque pelo menos 16 notas.",
         "major": "Improvise com a pentatônica maior de Dó sobre a base. Toque pelo menos 12 notas."
+      },
+      "l371": {
+        "title": "O 6/8",
+        "objective": "Sentir o 6/8 como dois grupos de três colcheias e fazer um golpe da batida em cada grupo.",
+        "s1": "“Até agora você contava de quatro em quatro. Hoje conta de três em três.”",
+        "s2": "Um compasso de 6/8 tem seis colcheias: UM dois três, QUA tro cin co.",
+        "s3": "Você toca na 1.ª e na 4.ª: dois golpes por compasso, como um balanço.",
+        "s4": "“É o ritmo da zamba e da chacarera.”",
+        "c1t": "Dois grupos de três",
+        "c1b": "Am e E7 em 6/8: um golpe no começo de cada grupo. Ouça o clique.",
+        "c2t": "Comparar com 4/4",
+        "c2b": "Os mesmos acordes em semínimas de 4/4. Percebe que balança diferente?",
+        "q1": "Quantas colcheias tem um compasso de 6/8?",
+        "q1o1": "Seis",
+        "q1o2": "Oito",
+        "q1o3": "Três",
+        "ear": "Ouça: está em 4/4 ou em 6/8?",
+        "four": "4/4 (de quatro em quatro)",
+        "six": "6/8 (dois grupos de três)",
+        "strum": "Faça a batida de Am e E7 em 6/8: um golpe no começo de cada grupo de três."
+      },
+      "l372": {
+        "title": "A zamba",
+        "objective": "Fazer a batida da zamba em 6/8 e tocar o acompanhamento com o polegar.",
+        "s1": "“A zamba é lenta e elegante: dança-se com lenços.”",
+        "s2": "Para baixo, pausa, para baixo, para cima, para baixo, pausa.",
+        "s3": "Com o polegar, a mesma zamba em semínimas: baixo e duas notas do acorde.",
+        "s4": "“Suas semínimas vão de três em três e a banda de dois em dois: essa mistura é a zamba.”",
+        "c1t": "A batida",
+        "c1b": "Am, Dm, E7 e Am com o padrão de batida da zamba. Ouça.",
+        "c2t": "Com o polegar",
+        "c2b": "Baixo no 1 e duas notas do acorde no 2 e no 3. Ouça.",
+        "q1": "No padrão da zamba, em quais colcheias você não toca?",
+        "q1o1": "Na 2.ª e na 6.ª",
+        "q1o2": "Na 1.ª e na 4.ª",
+        "q1o3": "Você toca em todas",
+        "strum": "Faça a batida da zamba: Am, Dm, E7 e Am.",
+        "play": "Toque o acompanhamento com o polegar: baixo e duas notas por compasso, no tempo."
+      },
+      "l373": {
+        "title": "A chacarera",
+        "objective": "Fazer a batida da chacarera em 6/8, mais rápida e marcada que a zamba.",
+        "s1": "“A chacarera é para sapatear: vai mais rápido.”",
+        "s2": "É como a zamba, mas o último golpe também vai para cima.",
+        "s3": "O bumbo marca o 1 e o resto do compasso repica.",
+        "s4": "“Mesma família da zamba, outro caráter.”",
+        "c1t": "A chacarera",
+        "c1b": "Am, E7, Dm e E7 com o padrão da chacarera. Ouça.",
+        "c2t": "E a zamba",
+        "c2b": "Os mesmos acordes com o padrão da zamba. Compare.",
+        "q1": "Como se agrupam as colcheias na chacarera?",
+        "q1o1": "Dois grupos de três",
+        "q1o2": "Quatro grupos de dois",
+        "q1o3": "Seis soltas, sem acentos",
+        "ear": "Ouça: é uma zamba ou uma chacarera?",
+        "zamba": "Zamba",
+        "chacarera": "Chacarera",
+        "strum": "Faça a batida da chacarera: Am, E7, Dm e E7."
+      },
+      "l374": {
+        "title": "Tango e milonga",
+        "objective": "Fazer a batida do tango em semínimas marcadas e a da milonga em 3 + 3 + 2.",
+        "s1": "“O tango volta ao 4/4, mas cada golpe é firme e curto.”",
+        "s2": "Tango: quatro golpes marcados por compasso.",
+        "s3": "Milonga: as oito colcheias se agrupam 3 + 3 + 2.",
+        "s4": "“Um, dois, três; um, dois, três; um, dois.”",
+        "c1t": "Tango marcato",
+        "c1b": "Am, Dm, E7 e Am em semínimas marcadas. Ouça.",
+        "c2t": "Milonga",
+        "c2b": "Os mesmos acordes com golpes na 1.ª, na 4.ª e na 7.ª colcheia. Ouça.",
+        "q1": "Como se agrupam as colcheias na milonga?",
+        "q1o1": "3 + 3 + 2",
+        "q1o2": "2 + 2 + 2 + 2",
+        "q1o3": "4 + 4",
+        "tango": "Faça a batida do tango em semínimas marcadas: Am, Dm, E7 e Am.",
+        "milonga": "Faça a batida da milonga em 3 + 3 + 2: Am, Dm, E7 e Am."
+      },
+      "l375": {
+        "title": "A valsa crioula",
+        "objective": "Tocar a valsa crioula em 3/4: baixo no 1 e acorde no 2 e no 3.",
+        "s1": "“A valsa crioula gira: um, dois, três.”",
+        "s2": "Três pulsos por compasso. O baixo no 1, o acorde no 2 e no 3.",
+        "s3": "Com o polegar: baixo e duas notas do acorde, uma por pulso.",
+        "s4": "“Dó e Sol com sétima: com dois acordes você já tem uma valsa.”",
+        "c1t": "A batida",
+        "c1b": "C, G7, G7 e C em 3/4: um golpe por pulso. Ouça.",
+        "c2t": "Com o polegar",
+        "c2b": "Baixo no 1 e duas notas do acorde no 2 e no 3. Ouça.",
+        "q1": "Quantos pulsos tem um compasso de valsa?",
+        "q1o1": "Três",
+        "q1o2": "Quatro",
+        "q1o3": "Seis",
+        "strum": "Faça a batida da valsa: C, G7, G7 e C, um golpe por pulso.",
+        "play": "Toque a valsa com o polegar: baixo e duas notas por compasso, no tempo."
       },
       "cp3": {
         "intro": "Mostre o que você aprendeu no nível 3: pestanas de forma de E e de A, o blues de 12 compassos e um solo com ligados.",

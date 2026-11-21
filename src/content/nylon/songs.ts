@@ -14,9 +14,9 @@
 import type { StringId } from '../../instruments/profiles';
 import type { ScoreEvent, Song } from '../types';
 import type { OpenChordId } from '../../music/chords';
-import { QUARTERS, BALLAD } from '../../music/strum';
+import { BALLAD, CHACARERA, QUARTERS, VALS, ZAMBA } from '../../music/strum';
 import { songRequires } from './chordbook';
-import { altBassBar, balladBar, pimaBar, pimiBar } from './helpers';
+import { altBassBar, balladBar, pimaBar, pimiBar, steadyBassBar, waltzBar } from './helpers';
 import { BLUES_A } from './level3';
 
 type B = 0.5 | 1 | 2 | 4;
@@ -35,6 +35,15 @@ const POSTAL: OpenChordId[] = ['G', 'C', 'D', 'Em', 'G', 'C', 'D', 'G'];
 /** Nivel 3: canciones con cejillas y blues. */
 const TERRAZA = ['E', 'G', 'A', 'F#m', 'E', 'G', 'A', 'E'];
 const CIUDAD = ['G', 'D', 'Bm', 'Em', 'G', 'D', 'A', 'G'];
+
+/**
+ * 3.7, música popular. En la zamba y la chacarera (6/8) el alumno toca negras de
+ * 3/4 (bajo y dos notas) sobre la banda en 6/8: es la sesquiáltera de estos ritmos.
+ */
+const ZAMBA_SONG = ['Am', 'Am', 'Dm', 'Dm', 'E7', 'E7', 'Am', 'Am', 'Dm', 'Am', 'E7', 'Am'];
+const CHACARERA_SONG = ['Am', 'E7', 'Am', 'E7', 'Dm', 'Am', 'E7', 'Am'];
+const TANGO_SONG = ['Am', 'Am', 'Dm', 'Am', 'E7', 'E7', 'Am', 'Am'];
+const VALS_SONG = ['C', 'C', 'G7', 'G7', 'G7', 'G7', 'C', 'C', 'F', 'F', 'C', 'C', 'G7', 'G7', 'C', 'C'];
 
 export const NYLON_SONGS: Song[] = [
   // ── Nivel 1: melodía en las agudas; la banda toca los acordes ──
@@ -164,7 +173,75 @@ export const NYLON_SONGS: Song[] = [
     strum: QUARTERS,
     tone: 'nylon',
   }),
+  // ── Nivel 3 · música popular (3.7) ──
+  song({
+    id: 'n-popular-1',
+    genre: 'popular',
+    level: 3,
+    requires: songRequires(ZAMBA_SONG, ['3.7']),
+    key: 'Am',
+    bpm: 60,
+    tempoSteps: [60, 66, 72],
+    chords: [...ZAMBA_SONG],
+    line: ZAMBA_SONG.flatMap(waltzBar),
+    notation: 'tab',
+    skills: ['technique', 'rhythm'],
+    strum: ZAMBA,
+    tone: 'nylon',
+    beatsPerBar: 3,
+    style: 'zamba',
+  }),
+  song({
+    id: 'n-popular-2',
+    genre: 'popular',
+    level: 3,
+    requires: songRequires(CHACARERA_SONG, ['3.7']),
+    key: 'Am',
+    bpm: 66,
+    tempoSteps: [66, 72, 80],
+    chords: [...CHACARERA_SONG],
+    line: CHACARERA_SONG.flatMap(waltzBar),
+    notation: 'tab',
+    skills: ['technique', 'rhythm'],
+    strum: CHACARERA,
+    tone: 'nylon',
+    beatsPerBar: 3,
+    style: 'chacarera',
+  }),
+  song({
+    id: 'n-popular-3',
+    genre: 'popular',
+    level: 3,
+    requires: songRequires(TANGO_SONG, ['3.7']),
+    key: 'Am',
+    bpm: 66,
+    tempoSteps: [66, 72, 80],
+    chords: [...TANGO_SONG],
+    line: TANGO_SONG.flatMap(steadyBassBar),
+    notation: 'tab',
+    skills: ['technique', 'rhythm'],
+    strum: QUARTERS,
+    tone: 'nylon',
+    style: 'tango',
+  }),
+  song({
+    id: 'n-popular-4',
+    genre: 'popular',
+    level: 3,
+    requires: songRequires(VALS_SONG, ['3.7']),
+    key: 'C',
+    bpm: 80,
+    tempoSteps: [80, 90, 100],
+    chords: [...VALS_SONG],
+    line: VALS_SONG.flatMap(waltzBar),
+    notation: 'tab',
+    skills: ['technique', 'rhythm'],
+    strum: VALS,
+    tone: 'nylon',
+    beatsPerBar: 3,
+    style: 'vals',
+  }),
 ];
 
-/** Géneros con canciones en la criolla (se suman jazz, bossa y música popular con sus niveles). */
-export const NYLON_GENRES = ['pop', 'rock', 'blues'] as const;
+/** Géneros con canciones en la criolla (se suman jazz y bossa nova con sus niveles). */
+export const NYLON_GENRES = ['pop', 'rock', 'blues', 'popular'] as const;

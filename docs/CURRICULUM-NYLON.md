@@ -112,4 +112,5 @@ Módulos 1.1 y 1.2, afinador y metrónomo.
 - Los patrones de rasgueo pueden ser de 8 corcheas (4/4) o de 6 (3/4 y 6/8, contados en negras: un compás de 6/8 dura 3 pulsos).
 - Hecho: módulos 3.1–3.4 (19 lecciones): media cejilla (Fmaj7, F, Bm en 4 cuerdas), cejillas formas de E y de A movidas, C7, B7, boogie, blues en Mi y en La y turnaround. Álbum: 28 acordes. Canciones nuevas: «Terraza» (rock, F#m), «Ciudad de papel» (pop, Bm) y «Blues del andén» (blues en La).
 - Hecho: 3.5 (ligados ascendentes y descendentes, arrastre, trino, adornos en la pentatónica), 3.6 (blue note, escala de blues, pentatónica mayor de Do, cajas 1 y 2, improvisar en mayor y menor) y el checkpoint 3. Total: 89 lecciones, 3 checkpoints, 7 canciones.
-- Siguiente: el contenido de 3.7 (6/8, zamba, chacarera, tango y vals). El motor ya tiene compases de 3/4 y 6/8, los estilos de banda y el género `popular`.
+- Hecho: 3.7 (6/8, zamba, chacarera, tango y milonga, vals criollo); nivel 3 completo. En la zamba y la chacarera el alumno toca negras de 3/4 (bajo y dos notas, `waltzBar`) sobre la banda en 6/8: es la sesquiáltera de estos ritmos. Canciones de música popular: «Zamba del patio», «Chacarera del camino», «Tango de la esquina» y «Vals de la plaza». Total: 94 lecciones, 3 checkpoints, 11 canciones.
+- Siguiente: nivel 4 (armonía, jazz y bossa).

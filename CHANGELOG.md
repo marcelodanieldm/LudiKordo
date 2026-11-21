@@ -5,6 +5,7 @@ Formato: [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versiones:
 ## [Sin publicar]
 
 ### Nuevo
+- Guitarra criolla: módulo 3.7 (6/8, zamba, chacarera, tango y milonga, vals criollo), nivel 3 completo y cuatro canciones de música popular.
 - Compases de 3/4 y 6/8 en el motor (rasgueo, batería, banda, ejemplos y tablatura) y cuatro estilos de banda nuevos: zamba, chacarera, tango y vals criollo; género «Música popular» en el cancionero.
 - App de guitarra criolla desde el mismo código (ADR 0010, `npm run android:nylon`): ruta de 5 niveles y 151 lecciones, y los módulos gratuitos 1.1 y 1.2 en es, en y pt, con timbre de nylon, figuras de la criolla y Kordi con guitarra criolla.
 - Guitarra criolla: módulos 3.5–3.6 (ligados, arrastre, trino, escala de blues, pentatónica mayor, cajas 1 y 2) y checkpoint 3.

@@ -971,6 +971,22 @@
         "title": "Ciudad de papel",
         "desc": "Balada pop en Sol con Bm: arpegio de balada en corcheas sobre G, D, Bm, Em y A."
       },
+      "n_popular_1": {
+        "title": "Zamba del patio",
+        "desc": "Una zamba en La menor. Tocas Am, Dm y E7 con el pulgar, de a tres negras, mientras la banda va en 6/8."
+      },
+      "n_popular_2": {
+        "title": "Chacarera del camino",
+        "desc": "Una chacarera en La menor con Am, E7 y Dm: bajo y dos notas por compás sobre el bombo y el repique."
+      },
+      "n_popular_3": {
+        "title": "Tango de la esquina",
+        "desc": "Un tango en La menor. Tocas Am, Dm y E7 con bajo constante en corcheas; la banda marca las cuatro negras."
+      },
+      "n_popular_4": {
+        "title": "Vals de la plaza",
+        "desc": "Un vals criollo en Do con C, G7 y F: bajo en el 1 y acorde en el 2 y el 3."
+      },
       "n_blues_2": {
         "title": "Blues del andén",
         "desc": "Blues de 12 compases en La. Tocas A7, D7 y E7 con bajo alternado; la banda acompaña en shuffle."
@@ -5355,6 +5371,100 @@
         "c2b": "Acordes mayores y alegres: aquí va la pentatónica mayor de Do.",
         "blues": "Improvisa con la escala de blues de La sobre el blues. Toca al menos 16 notas.",
         "major": "Improvisa con la pentatónica mayor de Do sobre la pista. Toca al menos 12 notas."
+      },
+      "l371": {
+        "title": "El 6/8",
+        "objective": "Sentir el 6/8 como dos grupos de tres corcheas y rasguear un pulso en cada grupo.",
+        "s1": "«Hasta ahora contabas de a cuatro. Hoy cuentas de a tres.»",
+        "s2": "Un compás de 6/8 tiene seis corcheas: UNO dos tres, CUA tro cin.",
+        "s3": "Rasgueas en la 1.ª y en la 4.ª: dos golpes por compás, como un columpio.",
+        "s4": "«Es el ritmo de la zamba y la chacarera.»",
+        "c1t": "Dos grupos de tres",
+        "c1b": "Am y E7 en 6/8: un golpe al principio de cada grupo. Escucha el clic.",
+        "c2t": "Comparar con 4/4",
+        "c2b": "Los mismos acordes en negras de 4/4. ¿Notas que se mece distinto?",
+        "q1": "¿Cuántas corcheas tiene un compás de 6/8?",
+        "q1o1": "Seis",
+        "q1o2": "Ocho",
+        "q1o3": "Tres",
+        "ear": "Escucha: ¿está en 4/4 o en 6/8?",
+        "four": "4/4 (de a cuatro)",
+        "six": "6/8 (dos grupos de tres)",
+        "strum": "Rasguea Am y E7 en 6/8: un golpe al principio de cada grupo de tres."
+      },
+      "l372": {
+        "title": "La zamba",
+        "objective": "Rasguear el patrón de la zamba en 6/8 y tocar su acompañamiento con el pulgar.",
+        "s1": "«La zamba es lenta y elegante: se baila con pañuelos.»",
+        "s2": "Abajo, silencio, abajo, arriba, abajo, silencio.",
+        "s3": "Con el pulgar, la misma zamba en negras: bajo y dos notas del acorde.",
+        "s4": "«Tus negras van de a tres y la banda de a dos: esa mezcla es la zamba.»",
+        "c1t": "El rasgueo",
+        "c1b": "Am, Dm, E7 y Am con el patrón de la zamba. Escucha.",
+        "c2t": "Con el pulgar",
+        "c2b": "Bajo en el 1 y dos notas del acorde en el 2 y el 3. Escucha.",
+        "q1": "En el patrón de la zamba, ¿en qué corcheas no rasgueas?",
+        "q1o1": "En la 2.ª y la 6.ª",
+        "q1o2": "En la 1.ª y la 4.ª",
+        "q1o3": "Rasgueas en todas",
+        "strum": "Rasguea la zamba: Am, Dm, E7 y Am.",
+        "play": "Toca el acompañamiento con el pulgar: bajo y dos notas por compás, a tempo."
+      },
+      "l373": {
+        "title": "La chacarera",
+        "objective": "Rasguear la chacarera en 6/8, más rápida y marcada que la zamba.",
+        "s1": "«La chacarera es para zapatear: va más rápido.»",
+        "s2": "Es como la zamba, pero el último golpe también va hacia arriba.",
+        "s3": "El bombo marca el 1 y el resto del compás repica.",
+        "s4": "«Misma familia que la zamba, otro carácter.»",
+        "c1t": "La chacarera",
+        "c1b": "Am, E7, Dm y E7 con el patrón de la chacarera. Escucha.",
+        "c2t": "Y la zamba",
+        "c2b": "Los mismos acordes con el patrón de la zamba. Compara.",
+        "q1": "¿Cómo se agrupan las corcheas en la chacarera?",
+        "q1o1": "Dos grupos de tres",
+        "q1o2": "Cuatro grupos de dos",
+        "q1o3": "Seis sueltas, sin acentos",
+        "ear": "Escucha: ¿es una zamba o una chacarera?",
+        "zamba": "Zamba",
+        "chacarera": "Chacarera",
+        "strum": "Rasguea la chacarera: Am, E7, Dm y E7."
+      },
+      "l374": {
+        "title": "Tango y milonga",
+        "objective": "Rasguear el tango en negras marcadas y la milonga en 3 + 3 + 2.",
+        "s1": "«El tango vuelve al 4/4, pero cada golpe es firme y corto.»",
+        "s2": "Tango: cuatro golpes marcados por compás.",
+        "s3": "Milonga: las ocho corcheas se agrupan 3 + 3 + 2.",
+        "s4": "«Uno, dos, tres; uno, dos, tres; uno, dos.»",
+        "c1t": "Tango marcato",
+        "c1b": "Am, Dm, E7 y Am en negras marcadas. Escucha.",
+        "c2t": "Milonga",
+        "c2b": "Los mismos acordes con golpes en la 1.ª, la 4.ª y la 7.ª corchea. Escucha.",
+        "q1": "¿Cómo se agrupan las corcheas en la milonga?",
+        "q1o1": "3 + 3 + 2",
+        "q1o2": "2 + 2 + 2 + 2",
+        "q1o3": "4 + 4",
+        "tango": "Rasguea el tango en negras marcadas: Am, Dm, E7 y Am.",
+        "milonga": "Rasguea la milonga en 3 + 3 + 2: Am, Dm, E7 y Am."
+      },
+      "l375": {
+        "title": "El vals criollo",
+        "objective": "Tocar el vals criollo en 3/4: bajo en el 1 y acorde en el 2 y el 3.",
+        "s1": "«El vals criollo gira: uno, dos, tres.»",
+        "s2": "Tres pulsos por compás. El bajo en el 1, el acorde en el 2 y el 3.",
+        "s3": "Con el pulgar: bajo y dos notas del acorde, una por pulso.",
+        "s4": "«Do y Sol siete: con dos acordes ya tienes un vals.»",
+        "c1t": "El rasgueo",
+        "c1b": "C, G7, G7 y C en 3/4: un golpe por pulso. Escucha.",
+        "c2t": "Con el pulgar",
+        "c2b": "Bajo en el 1 y dos notas del acorde en el 2 y el 3. Escucha.",
+        "q1": "¿Cuántos pulsos tiene un compás de vals?",
+        "q1o1": "Tres",
+        "q1o2": "Cuatro",
+        "q1o3": "Seis",
+        "strum": "Rasguea el vals: C, G7, G7 y C, un golpe por pulso.",
+        "play": "Toca el vals con el pulgar: bajo y dos notas por compás, a tempo."
       },
       "cp3": {
         "intro": "Muestra lo que aprendiste en el nivel 3: cejillas de forma de E y de A, el blues de 12 compases y un solo con ligados.",

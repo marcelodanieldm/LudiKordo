@@ -971,6 +971,22 @@
         "title": "Paper City",
         "desc": "A pop ballad in G with Bm: the ballad arpeggio in eighth notes over G, D, Bm, Em and A."
       },
+      "n_popular_1": {
+        "title": "Courtyard Zamba",
+        "desc": "A zamba in A minor. You play Am, Dm and E7 with your thumb, three quarter notes per bar, while the band plays in 6/8."
+      },
+      "n_popular_2": {
+        "title": "Road Chacarera",
+        "desc": "A chacarera in A minor with Am, E7 and Dm: bass and two notes per bar over the bass drum and the rattle."
+      },
+      "n_popular_3": {
+        "title": "Corner Tango",
+        "desc": "A tango in A minor. You play Am, Dm and E7 with a steady eighth-note bass; the band marks the four quarter notes."
+      },
+      "n_popular_4": {
+        "title": "Plaza Waltz",
+        "desc": "A creole waltz in C with C, G7 and F: bass on 1 and the chord on 2 and 3."
+      },
       "n_blues_2": {
         "title": "Platform Blues",
         "desc": "A 12-bar blues in A. You play A7, D7 and E7 with an alternating bass; the band backs you with a shuffle."
@@ -5355,6 +5371,100 @@
         "c2b": "Bright major chords: the C major pentatonic goes here.",
         "blues": "Improvise with the A blues scale over the blues. Play at least 16 notes.",
         "major": "Improvise with the C major pentatonic over the track. Play at least 12 notes."
+      },
+      "l371": {
+        "title": "6/8 time",
+        "objective": "Feel 6/8 as two groups of three eighth notes and strum one beat per group.",
+        "s1": "\"Until now you counted in fours. Today you count in threes.\"",
+        "s2": "A bar of 6/8 has six eighth notes: ONE two three, FOUR five six.",
+        "s3": "You strum on the 1st and the 4th: two strokes per bar, like a swing.",
+        "s4": "\"It is the rhythm of the zamba and the chacarera.\"",
+        "c1t": "Two groups of three",
+        "c1b": "Am and E7 in 6/8: one stroke at the start of each group. Listen to the click.",
+        "c2t": "Compare with 4/4",
+        "c2b": "The same chords in 4/4 quarter notes. Can you hear it rocks differently?",
+        "q1": "How many eighth notes are in a bar of 6/8?",
+        "q1o1": "Six",
+        "q1o2": "Eight",
+        "q1o3": "Three",
+        "ear": "Listen: is it in 4/4 or in 6/8?",
+        "four": "4/4 (in fours)",
+        "six": "6/8 (two groups of three)",
+        "strum": "Strum Am and E7 in 6/8: one stroke at the start of each group of three."
+      },
+      "l372": {
+        "title": "The zamba",
+        "objective": "Strum the zamba pattern in 6/8 and play its accompaniment with your thumb.",
+        "s1": "\"The zamba is slow and elegant: it is danced with handkerchiefs.\"",
+        "s2": "Down, rest, down, up, down, rest.",
+        "s3": "With your thumb, the same zamba in quarter notes: bass and two chord notes.",
+        "s4": "\"Your quarter notes go in threes and the band in twos: that blend is the zamba.\"",
+        "c1t": "The strum",
+        "c1b": "Am, Dm, E7 and Am with the zamba pattern. Listen.",
+        "c2t": "With the thumb",
+        "c2b": "Bass on 1 and two chord notes on 2 and 3. Listen.",
+        "q1": "In the zamba pattern, which eighth notes do you not strum?",
+        "q1o1": "The 2nd and the 6th",
+        "q1o2": "The 1st and the 4th",
+        "q1o3": "You strum all of them",
+        "strum": "Strum the zamba: Am, Dm, E7 and Am.",
+        "play": "Play the accompaniment with your thumb: bass and two notes per bar, in time."
+      },
+      "l373": {
+        "title": "The chacarera",
+        "objective": "Strum the chacarera in 6/8, faster and punchier than the zamba.",
+        "s1": "\"The chacarera is for stomping: it goes faster.\"",
+        "s2": "It is like the zamba, but the last stroke also goes up.",
+        "s3": "The bass drum marks beat 1 and the rest of the bar rattles.",
+        "s4": "\"Same family as the zamba, a different character.\"",
+        "c1t": "The chacarera",
+        "c1b": "Am, E7, Dm and E7 with the chacarera pattern. Listen.",
+        "c2t": "And the zamba",
+        "c2b": "The same chords with the zamba pattern. Compare.",
+        "q1": "How are the eighth notes grouped in the chacarera?",
+        "q1o1": "Two groups of three",
+        "q1o2": "Four groups of two",
+        "q1o3": "Six loose ones, no accents",
+        "ear": "Listen: is it a zamba or a chacarera?",
+        "zamba": "Zamba",
+        "chacarera": "Chacarera",
+        "strum": "Strum the chacarera: Am, E7, Dm and E7."
+      },
+      "l374": {
+        "title": "Tango and milonga",
+        "objective": "Strum the tango in accented quarter notes and the milonga in 3 + 3 + 2.",
+        "s1": "\"The tango goes back to 4/4, but every stroke is firm and short.\"",
+        "s2": "Tango: four accented strokes per bar.",
+        "s3": "Milonga: the eight eighth notes are grouped 3 + 3 + 2.",
+        "s4": "\"One, two, three; one, two, three; one, two.\"",
+        "c1t": "Tango marcato",
+        "c1b": "Am, Dm, E7 and Am in accented quarter notes. Listen.",
+        "c2t": "Milonga",
+        "c2b": "The same chords with strokes on the 1st, 4th and 7th eighth notes. Listen.",
+        "q1": "How are the eighth notes grouped in the milonga?",
+        "q1o1": "3 + 3 + 2",
+        "q1o2": "2 + 2 + 2 + 2",
+        "q1o3": "4 + 4",
+        "tango": "Strum the tango in accented quarter notes: Am, Dm, E7 and Am.",
+        "milonga": "Strum the milonga in 3 + 3 + 2: Am, Dm, E7 and Am."
+      },
+      "l375": {
+        "title": "The creole waltz",
+        "objective": "Play the creole waltz in 3/4: bass on 1 and the chord on 2 and 3.",
+        "s1": "\"The creole waltz turns: one, two, three.\"",
+        "s2": "Three beats per bar. The bass on 1, the chord on 2 and 3.",
+        "s3": "With your thumb: bass and two chord notes, one per beat.",
+        "s4": "\"C and G7: with two chords you already have a waltz.\"",
+        "c1t": "The strum",
+        "c1b": "C, G7, G7 and C in 3/4: one stroke per beat. Listen.",
+        "c2t": "With the thumb",
+        "c2b": "Bass on 1 and two chord notes on 2 and 3. Listen.",
+        "q1": "How many beats are in a waltz bar?",
+        "q1o1": "Three",
+        "q1o2": "Four",
+        "q1o3": "Six",
+        "strum": "Strum the waltz: C, G7, G7 and C, one stroke per beat.",
+        "play": "Play the waltz with your thumb: bass and two notes per bar, in time."
       },
       "cp3": {
         "intro": "Show what you learned in level 3: E- and A-shape barre chords, the 12-bar blues and a solo with slurs.",
