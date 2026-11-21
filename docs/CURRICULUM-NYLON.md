@@ -111,4 +111,5 @@ Módulos 1.1 y 1.2, afinador y metrónomo.
 - Hecho: nivel 2 completo (35 lecciones) y checkpoint 2; canciones «Postal de domingo» (pop, p-i-m-a) y «Sombra en Am» (blues, melodía pentatónica). Total: 60 lecciones, 2 checkpoints, 4 canciones.
 - Los patrones de rasgueo de la app son de 8 corcheas en 4/4: el 6/8 se enseña con la zamba y la chacarera en 3.7, junto con los estilos de banda nuevos.
 - Hecho: módulos 3.1–3.4 (19 lecciones): media cejilla (Fmaj7, F, Bm en 4 cuerdas), cejillas formas de E y de A movidas, C7, B7, boogie, blues en Mi y en La y turnaround. Álbum: 28 acordes. Canciones nuevas: «Terraza» (rock, F#m), «Ciudad de papel» (pop, Bm) y «Blues del andén» (blues en La).
-- Siguiente: 3.5–3.7 (ligados, escala de blues, ritmos de música popular con estilos de banda nuevos y el género `popular`) y el checkpoint 3.
+- Hecho: 3.5 (ligados ascendentes y descendentes, arrastre, trino, adornos en la pentatónica), 3.6 (blue note, escala de blues, pentatónica mayor de Do, cajas 1 y 2, improvisar en mayor y menor) y el checkpoint 3. Total: 89 lecciones, 3 checkpoints, 7 canciones.
+- Siguiente: 3.7 (6/8, zamba, chacarera, tango y vals). Necesita compases de 3/4 y 6/8 en el motor (rasgueo, batería, banda y tablatura), los estilos de banda nuevos y el género `popular`.
