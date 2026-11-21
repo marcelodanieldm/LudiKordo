@@ -359,6 +359,24 @@
       "trialEnding": "Seu teste grátis termina em 2 dias. Você pode cancelar pelo Perfil."
     },
     "gfig": {
+      "chord_e7": {
+        "a11y": "Diagrama do acorde E7"
+      },
+      "chord_a7": {
+        "a11y": "Diagrama do acorde A7"
+      },
+      "chord_d7": {
+        "a11y": "Diagrama do acorde D7"
+      },
+      "chord_g7": {
+        "a11y": "Diagrama do acorde G7"
+      },
+      "chord_em7": {
+        "a11y": "Diagrama do acorde Em7"
+      },
+      "chord_am7": {
+        "a11y": "Diagrama do acorde Am7"
+      },
       "nylon_parts": {
         "a11y": "Violão visto de frente com suas partes numeradas",
         "l1": "Cabeça (vazada).",
@@ -891,6 +909,14 @@
       "g_gospel_2": {
         "title": "Coral do bairro",
         "desc": "Gospel em Dó com pergunta e resposta. As pausas fazem parte da frase: conte-as."
+      },
+      "n_pop_1": {
+        "title": "Melodia do quintal",
+        "desc": "Pop em Dó: uma melodia nas três cordas agudas com mínimas e semínimas. A banda toca os acordes; você, a melodia com i-m."
+      },
+      "n_rock_1": {
+        "title": "Rota 3",
+        "desc": "Rock em Mi menor com Em, D e A. Você toca os acordes em p-i-m-i enquanto a banda empurra em semínimas."
       }
     },
     "l261": {
@@ -4276,6 +4302,234 @@
         "pulse": "Mantenha o pulso a 80 bpm. Na metade, o clique para.",
         "spider": "Cromático 1-2-3-4 nas 6 cordas, subindo e descendo, com i-m alternados.",
         "melody": "Toque a melodia com colcheias e pausas a 80 bpm, com i-m alternados."
+      },
+      "l211": {
+        "title": "Mi menor (Em)",
+        "objective": "Montar Mi menor (Em), fazer todas as notas soarem limpas e tocar a batida no tempo.",
+        "s1": "“Um acorde novo para o álbum: Mi menor (Em).”",
+        "s2": "Dedo 2 na casa 2 da 5ª e dedo 3 na casa 2 da 4ª. Soam as 6 cordas.",
+        "s3": "Toque corda por corda: se uma não soar, ajeite esse dedo.",
+        "s4": "“E agora com p-i-m-i, como no nível 1.”",
+        "c1t": "Como montar Mi menor (Em)",
+        "c1b": "Dedo 2 na casa 2 da 5ª e dedo 3 na casa 2 da 4ª. Soam as 6 cordas. Ouça as notas uma de cada vez.",
+        "c2t": "Com p-i-m-i",
+        "c2b": "Só dois dedos: é o acorde mais fácil para começar. Ouça no padrão p-i-m-i.",
+        "tap": "Aperte no braço as notas de Mi menor (Em).",
+        "arp": "Monte Mi menor (Em) e toque corda por corda, da grave à aguda.",
+        "strum": "Faça a batida de Mi menor (Em) com o polegar para baixo, em semínimas, no tempo."
+      },
+      "l212": {
+        "title": "Lá menor (Am)",
+        "objective": "Montar Lá menor (Am), fazer todas as notas soarem limpas e tocar a batida no tempo.",
+        "s1": "“Um acorde novo para o álbum: Lá menor (Am).”",
+        "s2": "Dedo 1 na casa 1 da 2ª, dedo 2 na casa 2 da 4ª e dedo 3 na casa 2 da 3ª. A 6ª não soa.",
+        "s3": "Toque corda por corda: se uma não soar, ajeite esse dedo.",
+        "s4": "“E agora com p-i-m-i, como no nível 1.”",
+        "c1t": "Como montar Lá menor (Am)",
+        "c1b": "Dedo 1 na casa 1 da 2ª, dedo 2 na casa 2 da 4ª e dedo 3 na casa 2 da 3ª. A 6ª não soa. Ouça as notas uma de cada vez.",
+        "c2t": "Com p-i-m-i",
+        "c2b": "O polegar começa na 5ª, Lá: é a nota que dá nome ao acorde. Ouça no padrão p-i-m-i.",
+        "tap": "Aperte no braço as notas de Lá menor (Am).",
+        "arp": "Monte Lá menor (Am) e toque corda por corda, da grave à aguda.",
+        "strum": "Faça a batida de Lá menor (Am) com o polegar para baixo, em semínimas, no tempo."
+      },
+      "l213": {
+        "title": "Mi maior (E)",
+        "objective": "Montar Mi maior (E), fazer todas as notas soarem limpas e tocar a batida no tempo.",
+        "s1": "“Um acorde novo para o álbum: Mi maior (E).”",
+        "s2": "Como Em, mais o dedo 1 na casa 1 da 3ª. Soam as 6 cordas.",
+        "s3": "Toque corda por corda: se uma não soar, ajeite esse dedo.",
+        "s4": "“E agora com p-i-m-i, como no nível 1.”",
+        "c1t": "Como montar Mi maior (E)",
+        "c1b": "Como Em, mais o dedo 1 na casa 1 da 3ª. Soam as 6 cordas. Ouça as notas uma de cada vez.",
+        "c2t": "Com p-i-m-i",
+        "c2b": "Um só dedo muda o acorde de triste para alegre: de menor para maior. Ouça no padrão p-i-m-i.",
+        "tap": "Aperte no braço as notas de Mi maior (E).",
+        "arp": "Monte Mi maior (E) e toque corda por corda, da grave à aguda.",
+        "strum": "Faça a batida de Mi maior (E) com o polegar para baixo, em semínimas, no tempo."
+      },
+      "l214": {
+        "title": "Lá maior (A)",
+        "objective": "Montar Lá maior (A), fazer todas as notas soarem limpas e tocar a batida no tempo.",
+        "s1": "“Um acorde novo para o álbum: Lá maior (A).”",
+        "s2": "Dedos 1, 2 e 3 na casa 2 da 4ª, da 3ª e da 2ª. A 6ª não soa.",
+        "s3": "Toque corda por corda: se uma não soar, ajeite esse dedo.",
+        "s4": "“E agora com p-i-m-i, como no nível 1.”",
+        "c1t": "Como montar Lá maior (A)",
+        "c1b": "Dedos 1, 2 e 3 na casa 2 da 4ª, da 3ª e da 2ª. A 6ª não soa. Ouça as notas uma de cada vez.",
+        "c2t": "Com p-i-m-i",
+        "c2b": "Três dedos na mesma casa: junte bem, porque o braço do violão é largo. Ouça no padrão p-i-m-i.",
+        "tap": "Aperte no braço as notas de Lá maior (A).",
+        "arp": "Monte Lá maior (A) e toque corda por corda, da grave à aguda.",
+        "strum": "Faça a batida de Lá maior (A) com o polegar para baixo, em semínimas, no tempo."
+      },
+      "l215": {
+        "title": "Ré maior (D)",
+        "objective": "Montar Ré maior (D), fazer todas as notas soarem limpas e tocar a batida no tempo.",
+        "s1": "“Um acorde novo para o álbum: Ré maior (D).”",
+        "s2": "Dedo 1 na casa 2 da 3ª, dedo 2 na casa 2 da 1ª e dedo 3 na casa 3 da 2ª. Soam da 4ª à 1ª.",
+        "s3": "Toque corda por corda: se uma não soar, ajeite esse dedo.",
+        "s4": "“E agora com p-i-m-i, como no nível 1.”",
+        "c1t": "Como montar Ré maior (D)",
+        "c1b": "Dedo 1 na casa 2 da 3ª, dedo 2 na casa 2 da 1ª e dedo 3 na casa 3 da 2ª. Soam da 4ª à 1ª. Ouça as notas uma de cada vez.",
+        "c2t": "Com p-i-m-i",
+        "c2b": "Um triângulo de dedos nas agudas. O polegar começa na 4ª, Ré. Ouça no padrão p-i-m-i.",
+        "tap": "Aperte no braço as notas de Ré maior (D).",
+        "arp": "Monte Ré maior (D) e toque corda por corda, da grave à aguda.",
+        "strum": "Faça a batida de Ré maior (D) com o polegar para baixo, em semínimas, no tempo."
+      },
+      "l221": {
+        "title": "Dó maior (C)",
+        "objective": "Montar Dó maior (C), fazer todas as notas soarem limpas e tocar a batida no tempo.",
+        "s1": "“Um acorde novo para o álbum: Dó maior (C).”",
+        "s2": "Dedo 3 na casa 3 da 5ª, dedo 2 na casa 2 da 4ª e dedo 1 na casa 1 da 2ª. A 6ª não soa.",
+        "s3": "Toque corda por corda: se uma não soar, ajeite esse dedo.",
+        "s4": "“E agora com p-i-m-i, como no nível 1.”",
+        "c1t": "Como montar Dó maior (C)",
+        "c1b": "Dedo 3 na casa 3 da 5ª, dedo 2 na casa 2 da 4ª e dedo 1 na casa 1 da 2ª. A 6ª não soa. Ouça as notas uma de cada vez.",
+        "c2t": "Com p-i-m-i",
+        "c2b": "Uma escada de dedos. Arqueie os dedos para a 3ª e a 1ª soarem soltas. Ouça no padrão p-i-m-i.",
+        "tap": "Aperte no braço as notas de Dó maior (C).",
+        "arp": "Monte Dó maior (C) e toque corda por corda, da grave à aguda.",
+        "strum": "Faça a batida de Dó maior (C) com o polegar para baixo, em semínimas, no tempo."
+      },
+      "l222": {
+        "title": "Sol maior (G)",
+        "objective": "Montar Sol maior (G), fazer todas as notas soarem limpas e tocar a batida no tempo.",
+        "s1": "“Um acorde novo para o álbum: Sol maior (G).”",
+        "s2": "Dedo 2 na casa 3 da 6ª, dedo 1 na casa 2 da 5ª e dedo 3 na casa 3 da 1ª. Soam as 6.",
+        "s3": "Toque corda por corda: se uma não soar, ajeite esse dedo.",
+        "s4": "“E agora com p-i-m-i, como no nível 1.”",
+        "c1t": "Como montar Sol maior (G)",
+        "c1b": "Dedo 2 na casa 3 da 6ª, dedo 1 na casa 2 da 5ª e dedo 3 na casa 3 da 1ª. Soam as 6. Ouça as notas uma de cada vez.",
+        "c2t": "Com p-i-m-i",
+        "c2b": "Os dedos ficam longe um do outro: abra bem a mão. Ouça no padrão p-i-m-i.",
+        "tap": "Aperte no braço as notas de Sol maior (G).",
+        "arp": "Monte Sol maior (G) e toque corda por corda, da grave à aguda.",
+        "strum": "Faça a batida de Sol maior (G) com o polegar para baixo, em semínimas, no tempo."
+      },
+      "l223": {
+        "title": "Ré menor (Dm)",
+        "objective": "Montar Ré menor (Dm), fazer todas as notas soarem limpas e tocar a batida no tempo.",
+        "s1": "“Um acorde novo para o álbum: Ré menor (Dm).”",
+        "s2": "Dedo 1 na casa 1 da 1ª, dedo 2 na casa 2 da 3ª e dedo 3 na casa 3 da 2ª. Soam da 4ª à 1ª.",
+        "s3": "Toque corda por corda: se uma não soar, ajeite esse dedo.",
+        "s4": "“E agora com p-i-m-i, como no nível 1.”",
+        "c1t": "Como montar Ré menor (Dm)",
+        "c1b": "Dedo 1 na casa 1 da 1ª, dedo 2 na casa 2 da 3ª e dedo 3 na casa 3 da 2ª. Soam da 4ª à 1ª. Ouça as notas uma de cada vez.",
+        "c2t": "Com p-i-m-i",
+        "c2b": "Compare com D: só muda a 1ª corda, e soa triste. Ouça no padrão p-i-m-i.",
+        "tap": "Aperte no braço as notas de Ré menor (Dm).",
+        "arp": "Monte Ré menor (Dm) e toque corda por corda, da grave à aguda.",
+        "strum": "Faça a batida de Ré menor (Dm) com o polegar para baixo, em semínimas, no tempo."
+      },
+      "l224": {
+        "title": "Mi com sétima (E7)",
+        "objective": "Montar Mi com sétima (E7), fazer todas as notas soarem limpas e tocar a batida no tempo.",
+        "s1": "“Um acorde novo para o álbum: Mi com sétima (E7).”",
+        "s2": "Como E sem o dedo 3: dedo 2 na casa 2 da 5ª e dedo 1 na casa 1 da 3ª. Soam as 6.",
+        "s3": "Toque corda por corda: se uma não soar, ajeite esse dedo.",
+        "s4": "“E agora com p-i-m-i, como no nível 1.”",
+        "c1t": "Como montar Mi com sétima (E7)",
+        "c1b": "Como E sem o dedo 3: dedo 2 na casa 2 da 5ª e dedo 1 na casa 1 da 3ª. Soam as 6. Ouça as notas uma de cada vez.",
+        "c2t": "Com p-i-m-i",
+        "c2b": "A sétima dá tensão: o acorde “pede” para resolver em Am ou A. Ouça no padrão p-i-m-i.",
+        "tap": "Aperte no braço as notas de Mi com sétima (E7).",
+        "arp": "Monte Mi com sétima (E7) e toque corda por corda, da grave à aguda.",
+        "strum": "Faça a batida de Mi com sétima (E7) com o polegar para baixo, em semínimas, no tempo."
+      },
+      "l225": {
+        "title": "Lá com sétima (A7)",
+        "objective": "Montar Lá com sétima (A7), fazer todas as notas soarem limpas e tocar a batida no tempo.",
+        "s1": "“Um acorde novo para o álbum: Lá com sétima (A7).”",
+        "s2": "Dedo 2 na casa 2 da 4ª e dedo 3 na casa 2 da 2ª; a 3ª soa solta. A 6ª não soa.",
+        "s3": "Toque corda por corda: se uma não soar, ajeite esse dedo.",
+        "s4": "“E agora com p-i-m-i, como no nível 1.”",
+        "c1t": "Como montar Lá com sétima (A7)",
+        "c1b": "Dedo 2 na casa 2 da 4ª e dedo 3 na casa 2 da 2ª; a 3ª soa solta. A 6ª não soa. Ouça as notas uma de cada vez.",
+        "c2t": "Com p-i-m-i",
+        "c2b": "É o acorde do blues: você vai usá-lo muito no nível 3. Ouça no padrão p-i-m-i.",
+        "tap": "Aperte no braço as notas de Lá com sétima (A7).",
+        "arp": "Monte Lá com sétima (A7) e toque corda por corda, da grave à aguda.",
+        "strum": "Faça a batida de Lá com sétima (A7) com o polegar para baixo, em semínimas, no tempo."
+      },
+      "l231": {
+        "title": "O dedo guia",
+        "objective": "Trocar entre Em e Em7, e entre Am e Am7, mexendo um só dedo e sem perder o pulso.",
+        "s1": "“Tem trocas que quase não custam: um dedo fica e outro se mexe.”",
+        "s2": "Em7: dedo 2 na casa 2 da 5ª e dedo 3 na casa 3 da 2ª; a 4ª soa solta.",
+        "s3": "Am7 é Am tirando o dedo 3: a 3ª soa solta.",
+        "s4": "“O dedo que não se mexe é o seu dedo guia.”",
+        "c1t": "Em, Em7, Am, Am7",
+        "c1b": "Dois acordes novos para o álbum: Em7 e Am7. Ouça os quatro, dois tempos cada um.",
+        "c2t": "Em p-i-m-i",
+        "c2b": "O mesmo com os dedos. Repare qual dedo fica parado em cada troca.",
+        "tap": "Aperte no braço as notas de Em7.",
+        "arp": "Monte Am7 e toque corda por corda.",
+        "strum": "Faça a batida de Em, Em7, Am e Am7 em mínimas, no tempo.",
+        "pimi": "Toque Em, Em7, Am e Am7 em p-i-m-i, no tempo."
+      },
+      "l232": {
+        "title": "Dedos em bloco",
+        "objective": "Trocar entre E e Am movendo os três dedos juntos, como um bloco.",
+        "s1": "“Olhe E e Am: é a mesma forma!”",
+        "s2": "Os três dedos do E descem uma corda e vira Am.",
+        "s3": "Mova a mão inteira, sem desmontar a forma.",
+        "s4": "“Primeiro no ar, depois nas cordas.”",
+        "c1t": "A mesma forma",
+        "c1b": "E e Am têm os dedos na mesma posição, uma corda abaixo. Ouça a troca em mínimas.",
+        "c2t": "Em p-i-m-i",
+        "c2b": "Troque no tempo 1 de cada compasso. O polegar passa da 6ª para a 5ª.",
+        "q1": "Você monta E e desce os três dedos uma corda (em direção ao chão). Que acorde fica?",
+        "strum": "Faça a batida de E e Am em mínimas, no tempo.",
+        "pimi": "Toque E e Am em p-i-m-i, no tempo."
+      },
+      "l233": {
+        "title": "Antecipar a troca",
+        "objective": "Somar D7 e G7, e trocar de acorde soltando a mão no último tempo do compasso.",
+        "s1": "“O truque de quem troca rápido: chegar um pouquinho antes.”",
+        "s2": "D7: dedo 1 na casa 1 da 2ª, dedo 2 na casa 2 da 3ª e dedo 3 na casa 2 da 1ª.",
+        "s3": "G7: dedo 3 na casa 3 da 6ª, dedo 2 na casa 2 da 5ª e dedo 1 na casa 1 da 1ª.",
+        "s4": "“No tempo 4 você já pode soltar: soa uma corda solta e ninguém percebe.”",
+        "c1t": "D, D7, G, G7",
+        "c1b": "Dois acordes novos para o álbum: D7 e G7. Ouça os quatro, em semínimas.",
+        "c2t": "Em p-i-m-i",
+        "c2b": "No último tempo de cada compasso, a mão já vai para o acorde seguinte.",
+        "tap": "Aperte no braço as notas de G7.",
+        "arp": "Monte D7 e toque corda por corda.",
+        "strum": "Faça a batida de D, D7, G e G7 em semínimas, no tempo.",
+        "pimi": "Toque D, D7, G e G7 em p-i-m-i, no tempo."
+      },
+      "l234": {
+        "title": "Trocas de um minuto",
+        "objective": "Repetir trocas difíceis (C e G, Em e Am, D e A) sem perder o pulso.",
+        "s1": "“As trocas que custam se praticam sozinhas, várias vezes.”",
+        "s2": "C e G: o dedo 3 passa da 5ª para a 1ª.",
+        "s3": "Comece devagar. Quando sair limpo, suba o tempo.",
+        "s4": "“Um minuto por par, todo dia. Funciona!”",
+        "c1t": "C e G",
+        "c1b": "A troca mais difícil desta parte. Ouça, em semínimas.",
+        "c2t": "Em p-i-m-i",
+        "c2b": "O polegar passa da 5ª (C) para a 6ª (G).",
+        "strum1": "Faça a batida de Em e Am em semínimas, no tempo.",
+        "strum2": "Faça a batida de D e A em semínimas, no tempo.",
+        "strum": "Faça a batida de C e G em semínimas, no tempo.",
+        "pimi": "Toque C e G em p-i-m-i, no tempo."
+      },
+      "l235": {
+        "title": "Progressões de 4 acordes",
+        "objective": "Encadear 4 acordes seguidos, na batida e em p-i-m-i, no tempo.",
+        "s1": "“Quatro acordes seguidos: é assim que as músicas soam.”",
+        "s2": "G, Em7, Am7 e D7: soa como música.",
+        "s3": "E Am, Dm, E7 e Am: soa como zamba ou tango.",
+        "s4": "“Com isso você já pode acompanhar músicas do cancioneiro.”",
+        "c1t": "G, Em7, Am7, D7",
+        "c1b": "Um compasso por acorde, na batida em semínimas. Ouça.",
+        "c2t": "Em p-i-m-i",
+        "c2b": "A mesma progressão com os dedos.",
+        "strum1": "Faça a batida de Am, Dm, E7 e Am em semínimas, no tempo.",
+        "strum": "Faça a batida de G, Em7, Am7 e D7 em semínimas, no tempo.",
+        "pimi": "Toque G, Em7, Am7 e D7 em p-i-m-i, no tempo."
       }
     }
   },

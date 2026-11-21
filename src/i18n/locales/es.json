@@ -359,6 +359,24 @@
       "trialEnding": "Tu prueba gratis termina en 2 días. Puedes cancelarla desde Perfil."
     },
     "gfig": {
+      "chord_e7": {
+        "a11y": "Diagrama del acorde E7"
+      },
+      "chord_a7": {
+        "a11y": "Diagrama del acorde A7"
+      },
+      "chord_d7": {
+        "a11y": "Diagrama del acorde D7"
+      },
+      "chord_g7": {
+        "a11y": "Diagrama del acorde G7"
+      },
+      "chord_em7": {
+        "a11y": "Diagrama del acorde Em7"
+      },
+      "chord_am7": {
+        "a11y": "Diagrama del acorde Am7"
+      },
       "nylon_parts": {
         "a11y": "Guitarra criolla de frente con sus partes numeradas",
         "l1": "Clavijero (calado).",
@@ -891,6 +909,14 @@
       "g_gospel_2": {
         "title": "Coro del barrio",
         "desc": "Gospel en Do con pregunta y respuesta. Los silencios son parte de la frase: cuéntalos."
+      },
+      "n_pop_1": {
+        "title": "Melodía del patio",
+        "desc": "Pop en Do: una melodía en las tres cuerdas agudas con blancas y negras. La banda toca los acordes; tú, la melodía con i-m."
+      },
+      "n_rock_1": {
+        "title": "Ruta 3",
+        "desc": "Rock en Mi menor con Em, D y A. Tocas los acordes en p-i-m-i mientras la banda empuja en negras."
       }
     },
     "l261": {
@@ -4276,6 +4302,234 @@
         "pulse": "Mantén el pulso a 80 bpm. A la mitad, el clic se apaga.",
         "spider": "Cromático 1-2-3-4 en las 6 cuerdas, subiendo y bajando, con i-m alternados.",
         "melody": "Toca la melodía con corcheas y silencios a 80 bpm, con i-m alternados."
+      },
+      "l211": {
+        "title": "Mi menor (Em)",
+        "objective": "Armar Mi menor (Em), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: Mi menor (Em).»",
+        "s2": "Dedo 2 en el traste 2 de la 5.ª y dedo 3 en el traste 2 de la 4.ª. Suenan las 6 cuerdas.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma Mi menor (Em)",
+        "c1b": "Dedo 2 en el traste 2 de la 5.ª y dedo 3 en el traste 2 de la 4.ª. Suenan las 6 cuerdas. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "Solo dos dedos: es el acorde más fácil para empezar. Escúchalo en el patrón p-i-m-i.",
+        "tap": "Pisa en el diapasón las notas de Mi menor (Em).",
+        "arp": "Arma Mi menor (Em) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea Mi menor (Em) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l212": {
+        "title": "La menor (Am)",
+        "objective": "Armar La menor (Am), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: La menor (Am).»",
+        "s2": "Dedo 1 en el traste 1 de la 2.ª, dedo 2 en el traste 2 de la 4.ª y dedo 3 en el traste 2 de la 3.ª. La 6.ª no suena.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma La menor (Am)",
+        "c1b": "Dedo 1 en el traste 1 de la 2.ª, dedo 2 en el traste 2 de la 4.ª y dedo 3 en el traste 2 de la 3.ª. La 6.ª no suena. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "El pulgar empieza en la 5.ª, La: es la nota que da nombre al acorde. Escúchalo en el patrón p-i-m-i.",
+        "tap": "Pisa en el diapasón las notas de La menor (Am).",
+        "arp": "Arma La menor (Am) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea La menor (Am) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l213": {
+        "title": "Mi mayor (E)",
+        "objective": "Armar Mi mayor (E), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: Mi mayor (E).»",
+        "s2": "Como Em, más el dedo 1 en el traste 1 de la 3.ª. Suenan las 6 cuerdas.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma Mi mayor (E)",
+        "c1b": "Como Em, más el dedo 1 en el traste 1 de la 3.ª. Suenan las 6 cuerdas. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "Un solo dedo cambia el acorde de triste a alegre: menor a mayor. Escúchalo en el patrón p-i-m-i.",
+        "tap": "Pisa en el diapasón las notas de Mi mayor (E).",
+        "arp": "Arma Mi mayor (E) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea Mi mayor (E) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l214": {
+        "title": "La mayor (A)",
+        "objective": "Armar La mayor (A), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: La mayor (A).»",
+        "s2": "Dedos 1, 2 y 3 en el traste 2 de la 4.ª, la 3.ª y la 2.ª. La 6.ª no suena.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma La mayor (A)",
+        "c1b": "Dedos 1, 2 y 3 en el traste 2 de la 4.ª, la 3.ª y la 2.ª. La 6.ª no suena. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "Tres dedos en el mismo traste: apriétalos un poco, porque el mástil de la criolla es ancho. Escúchalo en el patrón p-i-m-i.",
+        "tap": "Pisa en el diapasón las notas de La mayor (A).",
+        "arp": "Arma La mayor (A) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea La mayor (A) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l215": {
+        "title": "Re mayor (D)",
+        "objective": "Armar Re mayor (D), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: Re mayor (D).»",
+        "s2": "Dedo 1 en el traste 2 de la 3.ª, dedo 2 en el traste 2 de la 1.ª y dedo 3 en el traste 3 de la 2.ª. Suenan de la 4.ª a la 1.ª.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma Re mayor (D)",
+        "c1b": "Dedo 1 en el traste 2 de la 3.ª, dedo 2 en el traste 2 de la 1.ª y dedo 3 en el traste 3 de la 2.ª. Suenan de la 4.ª a la 1.ª. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "Un triángulo de dedos en las agudas. El pulgar empieza en la 4.ª, Re. Escúchalo en el patrón p-i-m-i.",
+        "tap": "Pisa en el diapasón las notas de Re mayor (D).",
+        "arp": "Arma Re mayor (D) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea Re mayor (D) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l221": {
+        "title": "Do mayor (C)",
+        "objective": "Armar Do mayor (C), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: Do mayor (C).»",
+        "s2": "Dedo 3 en el traste 3 de la 5.ª, dedo 2 en el traste 2 de la 4.ª y dedo 1 en el traste 1 de la 2.ª. La 6.ª no suena.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma Do mayor (C)",
+        "c1b": "Dedo 3 en el traste 3 de la 5.ª, dedo 2 en el traste 2 de la 4.ª y dedo 1 en el traste 1 de la 2.ª. La 6.ª no suena. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "Una escalera de dedos. Arquea los dedos para que la 3.ª y la 1.ª suenen al aire. Escúchalo en el patrón p-i-m-i.",
+        "tap": "Pisa en el diapasón las notas de Do mayor (C).",
+        "arp": "Arma Do mayor (C) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea Do mayor (C) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l222": {
+        "title": "Sol mayor (G)",
+        "objective": "Armar Sol mayor (G), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: Sol mayor (G).»",
+        "s2": "Dedo 2 en el traste 3 de la 6.ª, dedo 1 en el traste 2 de la 5.ª y dedo 3 en el traste 3 de la 1.ª. Suenan las 6.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma Sol mayor (G)",
+        "c1b": "Dedo 2 en el traste 3 de la 6.ª, dedo 1 en el traste 2 de la 5.ª y dedo 3 en el traste 3 de la 1.ª. Suenan las 6. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "Los dedos quedan lejos entre sí: abre bien la mano. Escúchalo en el patrón p-i-m-i.",
+        "tap": "Pisa en el diapasón las notas de Sol mayor (G).",
+        "arp": "Arma Sol mayor (G) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea Sol mayor (G) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l223": {
+        "title": "Re menor (Dm)",
+        "objective": "Armar Re menor (Dm), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: Re menor (Dm).»",
+        "s2": "Dedo 1 en el traste 1 de la 1.ª, dedo 2 en el traste 2 de la 3.ª y dedo 3 en el traste 3 de la 2.ª. Suenan de la 4.ª a la 1.ª.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma Re menor (Dm)",
+        "c1b": "Dedo 1 en el traste 1 de la 1.ª, dedo 2 en el traste 2 de la 3.ª y dedo 3 en el traste 3 de la 2.ª. Suenan de la 4.ª a la 1.ª. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "Compáralo con D: solo cambia la 1.ª cuerda, y suena triste. Escúchalo en el patrón p-i-m-i.",
+        "tap": "Pisa en el diapasón las notas de Re menor (Dm).",
+        "arp": "Arma Re menor (Dm) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea Re menor (Dm) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l224": {
+        "title": "Mi séptima (E7)",
+        "objective": "Armar Mi séptima (E7), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: Mi séptima (E7).»",
+        "s2": "Como E sin el dedo 3: dedo 2 en el traste 2 de la 5.ª y dedo 1 en el traste 1 de la 3.ª. Suenan las 6.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma Mi séptima (E7)",
+        "c1b": "Como E sin el dedo 3: dedo 2 en el traste 2 de la 5.ª y dedo 1 en el traste 1 de la 3.ª. Suenan las 6. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "La séptima le da tensión: el acorde «pide» resolver en Am o en A. Escúchalo en el patrón p-i-m-i.",
+        "tap": "Pisa en el diapasón las notas de Mi séptima (E7).",
+        "arp": "Arma Mi séptima (E7) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea Mi séptima (E7) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l225": {
+        "title": "La séptima (A7)",
+        "objective": "Armar La séptima (A7), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: La séptima (A7).»",
+        "s2": "Dedo 2 en el traste 2 de la 4.ª y dedo 3 en el traste 2 de la 2.ª; la 3.ª suena al aire. La 6.ª no suena.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma La séptima (A7)",
+        "c1b": "Dedo 2 en el traste 2 de la 4.ª y dedo 3 en el traste 2 de la 2.ª; la 3.ª suena al aire. La 6.ª no suena. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "Es el acorde del blues: lo vas a usar mucho en el nivel 3. Escúchalo en el patrón p-i-m-i.",
+        "tap": "Pisa en el diapasón las notas de La séptima (A7).",
+        "arp": "Arma La séptima (A7) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea La séptima (A7) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l231": {
+        "title": "El dedo guía",
+        "objective": "Cambiar entre Em y Em7, y entre Am y Am7, moviendo un solo dedo y sin cortar el pulso.",
+        "s1": "«Hay cambios que casi no cuestan: un dedo se queda y otro se mueve.»",
+        "s2": "Em7: dedo 2 en el traste 2 de la 5.ª y dedo 3 en el traste 3 de la 2.ª; la 4.ª suena al aire.",
+        "s3": "Am7 es Am levantando el dedo 3: la 3.ª suena al aire.",
+        "s4": "«El dedo que no se mueve es tu dedo guía.»",
+        "c1t": "Em, Em7, Am, Am7",
+        "c1b": "Dos acordes nuevos para el álbum: Em7 y Am7. Escucha los cuatro, dos pulsos cada uno.",
+        "c2t": "En p-i-m-i",
+        "c2b": "Lo mismo con los dedos. Fíjate qué dedo queda quieto en cada cambio.",
+        "tap": "Pisa en el diapasón las notas de Em7.",
+        "arp": "Arma Am7 y toca cuerda por cuerda.",
+        "strum": "Rasguea Em, Em7, Am y Am7 en blancas, a tempo.",
+        "pimi": "Toca Em, Em7, Am y Am7 en p-i-m-i, a tempo."
+      },
+      "l232": {
+        "title": "Dedos en bloque",
+        "objective": "Cambiar entre E y Am moviendo los tres dedos juntos, como un bloque.",
+        "s1": "«Mira E y Am: ¡es la misma forma!»",
+        "s2": "Los tres dedos de E bajan una cuerda y queda Am.",
+        "s3": "Mueve la mano entera, sin desarmar la forma.",
+        "s4": "«Primero en el aire, después sobre las cuerdas.»",
+        "c1t": "La misma forma",
+        "c1b": "E y Am tienen los dedos en la misma posición, una cuerda más abajo. Escucha el cambio en blancas.",
+        "c2t": "En p-i-m-i",
+        "c2b": "Cambia en el pulso 1 de cada compás. El pulgar pasa de la 6.ª a la 5.ª.",
+        "q1": "Armas E y bajas los tres dedos una cuerda (hacia el piso). ¿Qué acorde queda?",
+        "strum": "Rasguea E y Am en blancas, a tempo.",
+        "pimi": "Toca E y Am en p-i-m-i, a tempo."
+      },
+      "l233": {
+        "title": "Anticipar el cambio",
+        "objective": "Sumar D7 y G7, y cambiar de acorde soltando la mano en el último pulso del compás.",
+        "s1": "«El truco de los que cambian rápido: se adelantan un poquito.»",
+        "s2": "D7: dedo 1 en el traste 1 de la 2.ª, dedo 2 en el traste 2 de la 3.ª y dedo 3 en el traste 2 de la 1.ª.",
+        "s3": "G7: dedo 3 en el traste 3 de la 6.ª, dedo 2 en el traste 2 de la 5.ª y dedo 1 en el traste 1 de la 1.ª.",
+        "s4": "«En el pulso 4 ya puedes soltar: suena una cuerda al aire y nadie lo nota.»",
+        "c1t": "D, D7, G, G7",
+        "c1b": "Dos acordes nuevos para el álbum: D7 y G7. Escucha los cuatro, en negras.",
+        "c2t": "En p-i-m-i",
+        "c2b": "En el último pulso de cada compás, la mano ya va hacia el acorde siguiente.",
+        "tap": "Pisa en el diapasón las notas de G7.",
+        "arp": "Arma D7 y toca cuerda por cuerda.",
+        "strum": "Rasguea D, D7, G y G7 en negras, a tempo.",
+        "pimi": "Toca D, D7, G y G7 en p-i-m-i, a tempo."
+      },
+      "l234": {
+        "title": "Cambios de un minuto",
+        "objective": "Repetir cambios difíciles (C y G, Em y Am, D y A) sin perder el pulso.",
+        "s1": "«Los cambios que cuestan se practican solos, una y otra vez.»",
+        "s2": "C y G: el dedo 3 pasa de la 5.ª a la 1.ª.",
+        "s3": "Empieza lento. Cuando sale limpio, sube el tempo.",
+        "s4": "«Un minuto por par, todos los días. ¡Funciona!»",
+        "c1t": "C y G",
+        "c1b": "El cambio más difícil de esta parte. Escucha, en negras.",
+        "c2t": "En p-i-m-i",
+        "c2b": "El pulgar pasa de la 5.ª (C) a la 6.ª (G).",
+        "strum1": "Rasguea Em y Am en negras, a tempo.",
+        "strum2": "Rasguea D y A en negras, a tempo.",
+        "strum": "Rasguea C y G en negras, a tempo.",
+        "pimi": "Toca C y G en p-i-m-i, a tempo."
+      },
+      "l235": {
+        "title": "Progresiones de 4 acordes",
+        "objective": "Encadenar 4 acordes seguidos, rasgueados y en p-i-m-i, a tempo.",
+        "s1": "«Cuatro acordes seguidos: así suenan las canciones.»",
+        "s2": "G, Em7, Am7 y D7: suena a canción.",
+        "s3": "Y Am, Dm, E7 y Am: suena a zamba o a tango.",
+        "s4": "«Con esto ya puedes acompañar canciones del cancionero.»",
+        "c1t": "G, Em7, Am7, D7",
+        "c1b": "Un compás por acorde, rasgueado en negras. Escucha.",
+        "c2t": "En p-i-m-i",
+        "c2b": "La misma progresión con los dedos.",
+        "strum1": "Rasguea Am, Dm, E7 y Am en negras, a tempo.",
+        "strum": "Rasguea G, Em7, Am7 y D7 en negras, a tempo.",
+        "pimi": "Toca G, Em7, Am7 y D7 en p-i-m-i, a tempo."
       }
     }
   },

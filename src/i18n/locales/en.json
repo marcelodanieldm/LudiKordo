@@ -359,6 +359,24 @@
       "trialEnding": "Your free trial ends in 2 days. You can cancel it from Profile."
     },
     "gfig": {
+      "chord_e7": {
+        "a11y": "E7 chord diagram"
+      },
+      "chord_a7": {
+        "a11y": "A7 chord diagram"
+      },
+      "chord_d7": {
+        "a11y": "D7 chord diagram"
+      },
+      "chord_g7": {
+        "a11y": "G7 chord diagram"
+      },
+      "chord_em7": {
+        "a11y": "Em7 chord diagram"
+      },
+      "chord_am7": {
+        "a11y": "Am7 chord diagram"
+      },
       "nylon_parts": {
         "a11y": "Classical guitar seen from the front with its parts numbered",
         "l1": "Headstock (slotted).",
@@ -891,6 +909,14 @@
       "g_gospel_2": {
         "title": "Neighborhood Choir",
         "desc": "Gospel in C with call and response. The rests are part of the phrase: count them."
+      },
+      "n_pop_1": {
+        "title": "Courtyard Melody",
+        "desc": "Pop in C: a melody on the three treble strings with half and quarter notes. The band plays the chords; you play the melody with i-m."
+      },
+      "n_rock_1": {
+        "title": "Route 3",
+        "desc": "Rock in E minor with Em, D and A. You play the chords in p-i-m-i while the band drives in quarter notes."
       }
     },
     "l261": {
@@ -4276,6 +4302,234 @@
         "pulse": "Keep the pulse at 80 bpm. Halfway, the click stops.",
         "spider": "Chromatic 1-2-3-4 on all 6 strings, up and down, alternating i-m.",
         "melody": "Play the melody with eighth notes and rests at 80 bpm, alternating i-m."
+      },
+      "l211": {
+        "title": "E minor (Em)",
+        "objective": "Fret E minor (Em), make every note ring clean and strum it in time.",
+        "s1": "\"A new chord for the album: E minor (Em).\"",
+        "s2": "Finger 2 on fret 2 of the 5th string and finger 3 on fret 2 of the 4th. All 6 strings ring.",
+        "s3": "Play string by string: if one doesn't ring, adjust that finger.",
+        "s4": "\"And now with p-i-m-i, like in level 1.\"",
+        "c1t": "How to fret E minor (Em)",
+        "c1b": "Finger 2 on fret 2 of the 5th string and finger 3 on fret 2 of the 4th. All 6 strings ring. Listen to its notes one at a time.",
+        "c2t": "With p-i-m-i",
+        "c2b": "Just two fingers: the easiest chord to start with. Listen to it in the p-i-m-i pattern.",
+        "tap": "Press the notes of E minor (Em) on the fretboard.",
+        "arp": "Fret E minor (Em) and play string by string, from low to high.",
+        "strum": "Strum E minor (Em) downward with your thumb, in quarter notes, in time."
+      },
+      "l212": {
+        "title": "A minor (Am)",
+        "objective": "Fret A minor (Am), make every note ring clean and strum it in time.",
+        "s1": "\"A new chord for the album: A minor (Am).\"",
+        "s2": "Finger 1 on fret 1 of the 2nd string, finger 2 on fret 2 of the 4th and finger 3 on fret 2 of the 3rd. Don't play the 6th.",
+        "s3": "Play string by string: if one doesn't ring, adjust that finger.",
+        "s4": "\"And now with p-i-m-i, like in level 1.\"",
+        "c1t": "How to fret A minor (Am)",
+        "c1b": "Finger 1 on fret 1 of the 2nd string, finger 2 on fret 2 of the 4th and finger 3 on fret 2 of the 3rd. Don't play the 6th. Listen to its notes one at a time.",
+        "c2t": "With p-i-m-i",
+        "c2b": "Your thumb starts on the 5th string, A: the note that names the chord. Listen to it in the p-i-m-i pattern.",
+        "tap": "Press the notes of A minor (Am) on the fretboard.",
+        "arp": "Fret A minor (Am) and play string by string, from low to high.",
+        "strum": "Strum A minor (Am) downward with your thumb, in quarter notes, in time."
+      },
+      "l213": {
+        "title": "E major (E)",
+        "objective": "Fret E major (E), make every note ring clean and strum it in time.",
+        "s1": "\"A new chord for the album: E major (E).\"",
+        "s2": "Like Em, plus finger 1 on fret 1 of the 3rd string. All 6 strings ring.",
+        "s3": "Play string by string: if one doesn't ring, adjust that finger.",
+        "s4": "\"And now with p-i-m-i, like in level 1.\"",
+        "c1t": "How to fret E major (E)",
+        "c1b": "Like Em, plus finger 1 on fret 1 of the 3rd string. All 6 strings ring. Listen to its notes one at a time.",
+        "c2t": "With p-i-m-i",
+        "c2b": "One finger turns the chord from sad to bright: minor to major. Listen to it in the p-i-m-i pattern.",
+        "tap": "Press the notes of E major (E) on the fretboard.",
+        "arp": "Fret E major (E) and play string by string, from low to high.",
+        "strum": "Strum E major (E) downward with your thumb, in quarter notes, in time."
+      },
+      "l214": {
+        "title": "A major (A)",
+        "objective": "Fret A major (A), make every note ring clean and strum it in time.",
+        "s1": "\"A new chord for the album: A major (A).\"",
+        "s2": "Fingers 1, 2 and 3 on fret 2 of the 4th, 3rd and 2nd strings. Don't play the 6th.",
+        "s3": "Play string by string: if one doesn't ring, adjust that finger.",
+        "s4": "\"And now with p-i-m-i, like in level 1.\"",
+        "c1t": "How to fret A major (A)",
+        "c1b": "Fingers 1, 2 and 3 on fret 2 of the 4th, 3rd and 2nd strings. Don't play the 6th. Listen to its notes one at a time.",
+        "c2t": "With p-i-m-i",
+        "c2b": "Three fingers on the same fret: squeeze them together, the classical neck is wide. Listen to it in the p-i-m-i pattern.",
+        "tap": "Press the notes of A major (A) on the fretboard.",
+        "arp": "Fret A major (A) and play string by string, from low to high.",
+        "strum": "Strum A major (A) downward with your thumb, in quarter notes, in time."
+      },
+      "l215": {
+        "title": "D major (D)",
+        "objective": "Fret D major (D), make every note ring clean and strum it in time.",
+        "s1": "\"A new chord for the album: D major (D).\"",
+        "s2": "Finger 1 on fret 2 of the 3rd string, finger 2 on fret 2 of the 1st and finger 3 on fret 3 of the 2nd. Play the 4th to the 1st.",
+        "s3": "Play string by string: if one doesn't ring, adjust that finger.",
+        "s4": "\"And now with p-i-m-i, like in level 1.\"",
+        "c1t": "How to fret D major (D)",
+        "c1b": "Finger 1 on fret 2 of the 3rd string, finger 2 on fret 2 of the 1st and finger 3 on fret 3 of the 2nd. Play the 4th to the 1st. Listen to its notes one at a time.",
+        "c2t": "With p-i-m-i",
+        "c2b": "A triangle of fingers on the treble strings. The thumb starts on the 4th, D. Listen to it in the p-i-m-i pattern.",
+        "tap": "Press the notes of D major (D) on the fretboard.",
+        "arp": "Fret D major (D) and play string by string, from low to high.",
+        "strum": "Strum D major (D) downward with your thumb, in quarter notes, in time."
+      },
+      "l221": {
+        "title": "C major (C)",
+        "objective": "Fret C major (C), make every note ring clean and strum it in time.",
+        "s1": "\"A new chord for the album: C major (C).\"",
+        "s2": "Finger 3 on fret 3 of the 5th string, finger 2 on fret 2 of the 4th and finger 1 on fret 1 of the 2nd. Don't play the 6th.",
+        "s3": "Play string by string: if one doesn't ring, adjust that finger.",
+        "s4": "\"And now with p-i-m-i, like in level 1.\"",
+        "c1t": "How to fret C major (C)",
+        "c1b": "Finger 3 on fret 3 of the 5th string, finger 2 on fret 2 of the 4th and finger 1 on fret 1 of the 2nd. Don't play the 6th. Listen to its notes one at a time.",
+        "c2t": "With p-i-m-i",
+        "c2b": "A staircase of fingers. Arch them so the open 3rd and 1st strings ring. Listen to it in the p-i-m-i pattern.",
+        "tap": "Press the notes of C major (C) on the fretboard.",
+        "arp": "Fret C major (C) and play string by string, from low to high.",
+        "strum": "Strum C major (C) downward with your thumb, in quarter notes, in time."
+      },
+      "l222": {
+        "title": "G major (G)",
+        "objective": "Fret G major (G), make every note ring clean and strum it in time.",
+        "s1": "\"A new chord for the album: G major (G).\"",
+        "s2": "Finger 2 on fret 3 of the 6th string, finger 1 on fret 2 of the 5th and finger 3 on fret 3 of the 1st. All 6 ring.",
+        "s3": "Play string by string: if one doesn't ring, adjust that finger.",
+        "s4": "\"And now with p-i-m-i, like in level 1.\"",
+        "c1t": "How to fret G major (G)",
+        "c1b": "Finger 2 on fret 3 of the 6th string, finger 1 on fret 2 of the 5th and finger 3 on fret 3 of the 1st. All 6 ring. Listen to its notes one at a time.",
+        "c2t": "With p-i-m-i",
+        "c2b": "The fingers sit far apart: open your hand wide. Listen to it in the p-i-m-i pattern.",
+        "tap": "Press the notes of G major (G) on the fretboard.",
+        "arp": "Fret G major (G) and play string by string, from low to high.",
+        "strum": "Strum G major (G) downward with your thumb, in quarter notes, in time."
+      },
+      "l223": {
+        "title": "D minor (Dm)",
+        "objective": "Fret D minor (Dm), make every note ring clean and strum it in time.",
+        "s1": "\"A new chord for the album: D minor (Dm).\"",
+        "s2": "Finger 1 on fret 1 of the 1st string, finger 2 on fret 2 of the 3rd and finger 3 on fret 3 of the 2nd. Play the 4th to the 1st.",
+        "s3": "Play string by string: if one doesn't ring, adjust that finger.",
+        "s4": "\"And now with p-i-m-i, like in level 1.\"",
+        "c1t": "How to fret D minor (Dm)",
+        "c1b": "Finger 1 on fret 1 of the 1st string, finger 2 on fret 2 of the 3rd and finger 3 on fret 3 of the 2nd. Play the 4th to the 1st. Listen to its notes one at a time.",
+        "c2t": "With p-i-m-i",
+        "c2b": "Compare it with D: only the 1st string changes, and it sounds sad. Listen to it in the p-i-m-i pattern.",
+        "tap": "Press the notes of D minor (Dm) on the fretboard.",
+        "arp": "Fret D minor (Dm) and play string by string, from low to high.",
+        "strum": "Strum D minor (Dm) downward with your thumb, in quarter notes, in time."
+      },
+      "l224": {
+        "title": "E seventh (E7)",
+        "objective": "Fret E seventh (E7), make every note ring clean and strum it in time.",
+        "s1": "\"A new chord for the album: E seventh (E7).\"",
+        "s2": "Like E without finger 3: finger 2 on fret 2 of the 5th string and finger 1 on fret 1 of the 3rd. All 6 ring.",
+        "s3": "Play string by string: if one doesn't ring, adjust that finger.",
+        "s4": "\"And now with p-i-m-i, like in level 1.\"",
+        "c1t": "How to fret E seventh (E7)",
+        "c1b": "Like E without finger 3: finger 2 on fret 2 of the 5th string and finger 1 on fret 1 of the 3rd. All 6 ring. Listen to its notes one at a time.",
+        "c2t": "With p-i-m-i",
+        "c2b": "The seventh adds tension: the chord \"wants\" to resolve to Am or A. Listen to it in the p-i-m-i pattern.",
+        "tap": "Press the notes of E seventh (E7) on the fretboard.",
+        "arp": "Fret E seventh (E7) and play string by string, from low to high.",
+        "strum": "Strum E seventh (E7) downward with your thumb, in quarter notes, in time."
+      },
+      "l225": {
+        "title": "A seventh (A7)",
+        "objective": "Fret A seventh (A7), make every note ring clean and strum it in time.",
+        "s1": "\"A new chord for the album: A seventh (A7).\"",
+        "s2": "Finger 2 on fret 2 of the 4th string and finger 3 on fret 2 of the 2nd; the open 3rd rings. Don't play the 6th.",
+        "s3": "Play string by string: if one doesn't ring, adjust that finger.",
+        "s4": "\"And now with p-i-m-i, like in level 1.\"",
+        "c1t": "How to fret A seventh (A7)",
+        "c1b": "Finger 2 on fret 2 of the 4th string and finger 3 on fret 2 of the 2nd; the open 3rd rings. Don't play the 6th. Listen to its notes one at a time.",
+        "c2t": "With p-i-m-i",
+        "c2b": "It's the blues chord: you'll use it a lot in level 3. Listen to it in the p-i-m-i pattern.",
+        "tap": "Press the notes of A seventh (A7) on the fretboard.",
+        "arp": "Fret A seventh (A7) and play string by string, from low to high.",
+        "strum": "Strum A seventh (A7) downward with your thumb, in quarter notes, in time."
+      },
+      "l231": {
+        "title": "The guide finger",
+        "objective": "Change between Em and Em7, and between Am and Am7, moving only one finger and keeping the pulse.",
+        "s1": "\"Some changes are almost free: one finger stays and another moves.\"",
+        "s2": "Em7: finger 2 on fret 2 of the 5th string and finger 3 on fret 3 of the 2nd; the open 4th rings.",
+        "s3": "Am7 is Am lifting finger 3: the 3rd string rings open.",
+        "s4": "\"The finger that doesn't move is your guide finger.\"",
+        "c1t": "Em, Em7, Am, Am7",
+        "c1b": "Two new chords for the album: Em7 and Am7. Listen to all four, two beats each.",
+        "c2t": "In p-i-m-i",
+        "c2b": "The same with your fingers. Notice which finger stays still on each change.",
+        "tap": "Press the notes of Em7 on the fretboard.",
+        "arp": "Fret Am7 and play string by string.",
+        "strum": "Strum Em, Em7, Am and Am7 in half notes, in time.",
+        "pimi": "Play Em, Em7, Am and Am7 in p-i-m-i, in time."
+      },
+      "l232": {
+        "title": "Fingers as a block",
+        "objective": "Change between E and Am moving all three fingers together, as a block.",
+        "s1": "\"Look at E and Am: it's the same shape!\"",
+        "s2": "Move E's three fingers down one string and you get Am.",
+        "s3": "Move the whole hand without breaking the shape.",
+        "s4": "\"First in the air, then on the strings.\"",
+        "c1t": "The same shape",
+        "c1b": "E and Am use the same finger positions, one string apart. Listen to the change in half notes.",
+        "c2t": "In p-i-m-i",
+        "c2b": "Change on beat 1 of each bar. The thumb moves from the 6th string to the 5th.",
+        "q1": "You fret E and move all three fingers one string down (toward the floor). Which chord do you get?",
+        "strum": "Strum E and Am in half notes, in time.",
+        "pimi": "Play E and Am in p-i-m-i, in time."
+      },
+      "l233": {
+        "title": "Changing early",
+        "objective": "Add D7 and G7, and change chords by releasing your hand on the last beat of the bar.",
+        "s1": "\"The trick of fast changers: they get there a little early.\"",
+        "s2": "D7: finger 1 on fret 1 of the 2nd string, finger 2 on fret 2 of the 3rd and finger 3 on fret 2 of the 1st.",
+        "s3": "G7: finger 3 on fret 3 of the 6th string, finger 2 on fret 2 of the 5th and finger 1 on fret 1 of the 1st.",
+        "s4": "\"On beat 4 you can already let go: an open string rings and nobody notices.\"",
+        "c1t": "D, D7, G, G7",
+        "c1b": "Two new chords for the album: D7 and G7. Listen to all four, in quarter notes.",
+        "c2t": "In p-i-m-i",
+        "c2b": "On the last beat of each bar, your hand is already heading to the next chord.",
+        "tap": "Press the notes of G7 on the fretboard.",
+        "arp": "Fret D7 and play string by string.",
+        "strum": "Strum D, D7, G and G7 in quarter notes, in time.",
+        "pimi": "Play D, D7, G and G7 in p-i-m-i, in time."
+      },
+      "l234": {
+        "title": "One-minute changes",
+        "objective": "Repeat hard changes (C and G, Em and Am, D and A) without losing the pulse.",
+        "s1": "\"Hard changes are practiced on their own, over and over.\"",
+        "s2": "C and G: finger 3 moves from the 5th string to the 1st.",
+        "s3": "Start slow. Once it's clean, raise the tempo.",
+        "s4": "\"One minute per pair, every day. It works!\"",
+        "c1t": "C and G",
+        "c1b": "The hardest change in this part. Listen, in quarter notes.",
+        "c2t": "In p-i-m-i",
+        "c2b": "The thumb moves from the 5th string (C) to the 6th (G).",
+        "strum1": "Strum Em and Am in quarter notes, in time.",
+        "strum2": "Strum D and A in quarter notes, in time.",
+        "strum": "Strum C and G in quarter notes, in time.",
+        "pimi": "Play C and G in p-i-m-i, in time."
+      },
+      "l235": {
+        "title": "4-chord progressions",
+        "objective": "Link 4 chords in a row, strummed and in p-i-m-i, in time.",
+        "s1": "\"Four chords in a row: that's how songs sound.\"",
+        "s2": "G, Em7, Am7 and D7: it sounds like a song.",
+        "s3": "And Am, Dm, E7 and Am: it sounds like a zamba or a tango.",
+        "s4": "\"With this you can already accompany songs from the songbook.\"",
+        "c1t": "G, Em7, Am7, D7",
+        "c1b": "One bar per chord, strummed in quarter notes. Listen.",
+        "c2t": "In p-i-m-i",
+        "c2b": "The same progression with your fingers.",
+        "strum1": "Strum Am, Dm, E7 and Am in quarter notes, in time.",
+        "strum": "Strum G, Em7, Am7 and D7 in quarter notes, in time.",
+        "pimi": "Play G, Em7, Am7 and D7 in p-i-m-i, in time."
       }
     }
   },
