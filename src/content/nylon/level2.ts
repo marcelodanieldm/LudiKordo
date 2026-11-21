@@ -12,7 +12,7 @@ import type { Card, Exercise, Figure, Lesson, ListenExample } from '../types';
 import type { StringId } from '../../instruments/profiles';
 import type { OpenChordId } from '../../music/chords';
 import { HALVES, QUARTERS, type Stroke } from '../../music/strum';
-import { arpScore, chordArp, chordFretted, k, listen, pimiBar, scenes, strumListen } from './helpers';
+import { arpScore, chordArp, chordFretted, k, listen, pimiBar, scenes, scoreNotes, strumListen } from './helpers';
 
 export const STEPS = [60, 70, 80];
 
@@ -120,7 +120,7 @@ function changeLesson(id: string, minutes: number, chords: OpenChordId[], patter
     visuals: figs,
     sounds: [strumListen(chords, pattern, 70), null, listen(pimi(chords), 70), null],
     cards: [{ listen: strumListen(chords, pattern, 70, { click: true }) }, { listen: listen(pimi(chords), 70, { click: true }) }],
-    exercises: [...extra, strum(id, 'strum', chords, pattern), play(id, 'pimi', pimi(chords), 60)],
+    exercises: [...extra, strum(id, 'strum', chords, pattern), play(id, 'pimi', scoreNotes(pimi(chords)), 60)],
   });
 }
 
