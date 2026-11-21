@@ -19,7 +19,7 @@ import { CHORD_UNLOCKS, allChords, chordModule, missingChords, songRequires, unl
 import { CHORD_FIG, NYLON_CP2, NYLON_LEVEL2_LESSONS, PENTA_AM, PENTA_OPEN } from '../src/content/nylon/level2';
 import { NYLON_GENRES, NYLON_SONGS } from '../src/content/nylon/songs';
 import { albumDiagram, albumMidi, altBassBar, balladBar, chordFigure, pamiBar, pimaBar, pimiBar, steadyBassBar } from '../src/content/nylon/helpers';
-import { NYLON_LEVEL3_LESSONS } from '../src/content/nylon/level3';
+import { BLUES_AM, BLUES_SCALE, NYLON_CP3, NYLON_LEVEL3_LESSONS, SLUR_PHRASE } from '../src/content/nylon/level3';
 import { CHORD_FIGURES } from '../src/components/guitarFigureMeta';
 
 type Tree = { [k: string]: string | Tree };
@@ -101,7 +101,7 @@ test('cada clave de la ruta, las lecciones y las figuras de criolla existe en lo
       if ('options' in ex) ex.options.filter((o) => !o.startsWith('=')).forEach((o) => used.add(o));
     }
   }
-  for (const cp of [NYLON_CP1, NYLON_CP2]) {
+  for (const cp of [NYLON_CP1, NYLON_CP2, NYLON_CP3]) {
     used.add(cp.titleKey);
     used.add(cp.introKey);
     for (const ex of cp.parts) {
@@ -353,7 +353,7 @@ test('patrones de mano derecha: compases de 4 pulsos con notas del acorde', () =
 test('pentatónica menor de La en primera posición: solo La, Do, Re, Mi y Sol; improvisación con esa escala', () => {
   assert.equal(PENTA_OPEN.length, 12);
   for (const x of PENTA_OPEN) assert.ok(PENTA_AM.includes(midiOn(NYLON, x.string, x.fret) % 12), `${x.string}${x.fret}`);
-  const improv = Object.values(NYLON_LESSONS).flatMap((l) => l.exercises).filter((e) => e.kind === 'improvise');
+  const improv = NYLON_LEVEL2_LESSONS.flatMap((l) => l.exercises).filter((e) => e.kind === 'improvise');
   assert.ok(improv.length >= 2);
   for (const ex of improv) if (ex.kind === 'improvise') assert.deepEqual(ex.scale, PENTA_AM);
 });
@@ -366,4 +366,24 @@ test('nivel 3, primera parte: los módulos 3.1 a 3.4 están completos y cada cej
   assert.deepEqual(albumDiagram('F').barre, { fret: 1, from: 4, to: 5 });
   const l321 = NYLON_LESSONS['3.2.1'];
   assert.equal(l321.cards[0].figure, 'barre-f');
+});
+
+test('sin tempo, ningún ejercicio pide dos veces seguidas la misma nota (se daría por tocada sola)', () => {
+  const all = [...Object.values(NYLON_LESSONS).flatMap((l) => l.exercises), ...[NYLON_CP1, NYLON_CP2, NYLON_CP3].flatMap((c) => c.parts)];
+  for (const ex of all) {
+    if (ex.kind !== 'playAlong' || ex.bpm !== null) continue;
+    for (let i = 1; i < ex.notes.length; i++) {
+      const a = ex.notes[i - 1], b = ex.notes[i];
+      assert.ok(midiOn(NYLON, a.string, a.fret) !== midiOn(NYLON, b.string, b.fret), `${ex.id}: nota ${i} igual a la anterior`);
+    }
+  }
+});
+
+test('nivel 3: ligados, escala de blues y checkpoint 3', () => {
+  for (const id of ['3.5.1', '3.5.5', '3.6.1', '3.6.5']) assert.ok(NYLON_LESSONS[id], id);
+  for (const x of BLUES_SCALE) assert.ok(BLUES_AM.includes(midiOn(NYLON, x.string, x.fret) % 12), `${x.string}${x.fret}`);
+  assert.ok(BLUES_SCALE.some((x) => midiOn(NYLON, x.string, x.fret) % 12 === 3), 'la blue note (Mi♭)');
+  for (const x of SLUR_PHRASE.filter(isNote)) assert.ok(PENTA_AM.includes(midiOn(NYLON, x.string, x.fret) % 12));
+  assert.deepEqual(NYLON_CP3.parts.map((p) => p.kind), ['ear', 'strum', 'strum', 'playAlong']);
+  for (const p of NYLON_CP3.parts) if (p.kind === 'strum') for (const c of p.chords) assert.ok(chordModule(c), `${c} fuera del álbum`);
 });
