@@ -31,7 +31,7 @@ Checkpoint 1: pulso a 80 bpm, cromática alternando i-m, tablatura nueva y melod
 | 2.1 | 5 | Primeros acordes | Em · Am · E · A · D |
 | 2.2 | 5 | Más acordes abiertos | C · G · Dm · E7 · A7 |
 | 2.3 | 5 | Cambiar sin parar | Dedo guía · dedos en bloque · anticipar · cambios de un minuto · progresiones de 4 acordes |
-| 2.4 | 5 | Rasgueos | Negras · corcheas · pop · balada 6/8 · chasquido |
+| 2.4 | 5 | Rasgueos | Negras con el pulgar · corcheas con el índice · pop · balada · chasquido |
 | 2.5 | 5 | Arpegios con p-i-m-a | p-i-m · p-i-m-a y p-a-m-i · bajo alternado · balada · fingerpicking con bajo constante |
 | 2.6 | 5 | Teoría: intervalos y tríadas | Tono y semitono · escala mayor · tríadas · grados I, IV y V · capotraste |
 | 2.7 | 5 | Pentatónica menor | Forma · i-m · frases · improvisar sobre Am · blues de 12 compases |
@@ -108,4 +108,6 @@ Módulos 1.1 y 1.2, afinador y metrónomo.
 - El pentagrama de la app es en clave de fa: la lectura en clave de sol (8va baja) espera a que exista; mientras, el nivel 1 lee tablatura.
 - Hecho: módulos 2.1–2.3 (15 lecciones, 14 acordes en el álbum, con E7, A7, D7, G7, Em7 y Am7) y las primeras canciones: «Melodía del patio» (pop, 1.5) y «Ruta 3» (rock, 2.1).
 - El álbum de acordes está en `src/content/nylon/chordbook.ts`: cada canción en la que el alumno toca acordes arma su `requires` con `songRequires`, así se abre al tener sus acordes.
-- Siguiente: 2.4–2.7 (rasgueos, arpegios, teoría, pentatónica), checkpoint 2 y las canciones «Postal de domingo» y «Sombra en Am».
+- Hecho: nivel 2 completo (35 lecciones) y checkpoint 2; canciones «Postal de domingo» (pop, p-i-m-a) y «Sombra en Am» (blues, melodía pentatónica). Total: 60 lecciones, 2 checkpoints, 4 canciones.
+- Los patrones de rasgueo de la app son de 8 corcheas en 4/4: el 6/8 se enseña con la zamba y la chacarera en 3.7, junto con los estilos de banda nuevos.
+- Siguiente: nivel 3 (cejillas, séptimas y blues, ligados, ritmos de música popular).
