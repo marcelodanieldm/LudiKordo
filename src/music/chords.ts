@@ -27,9 +27,34 @@ export const CHORDS: Record<ChordId, ChordShape> = {
   Dm: { frets: [-1, -1, 0, 2, 3, 1], fingers: [0, 0, 0, 2, 3, 1], root: 2, minor: true },
 };
 
+/** Acordes de séptima abiertos (guitarra criolla, módulos 2.2 y 2.3). */
+export type SeventhId = 'E7' | 'A7' | 'D7' | 'G7' | 'Em7' | 'Am7';
+
+export const SEVENTHS: Record<SeventhId, ChordShape> = {
+  E7: { frets: [0, 2, 0, 1, 0, 0], fingers: [0, 2, 0, 1, 0, 0], root: 4, minor: false },
+  A7: { frets: [-1, 0, 2, 0, 2, 0], fingers: [0, 0, 2, 0, 3, 0], root: 9, minor: false },
+  D7: { frets: [-1, -1, 0, 2, 1, 2], fingers: [0, 0, 0, 2, 1, 3], root: 2, minor: false },
+  G7: { frets: [3, 2, 0, 0, 0, 1], fingers: [3, 2, 0, 0, 0, 1], root: 7, minor: false },
+  Em7: { frets: [0, 2, 0, 0, 3, 0], fingers: [0, 2, 0, 0, 3, 0], root: 4, minor: true },
+  Am7: { frets: [-1, 0, 2, 0, 1, 0], fingers: [0, 0, 2, 0, 1, 0], root: 9, minor: true },
+};
+
+/** Acorde abierto (tríada o séptima) por nombre. */
+export type OpenChordId = ChordId | SeventhId;
+
+export function shapeOf(id: OpenChordId): ChordShape {
+  return id in CHORDS ? CHORDS[id as ChordId] : SEVENTHS[id as SeventhId];
+}
+
+/** Clases de altura de un acorde de séptima: tónica, tercera, quinta y séptima menor. */
+export function seventhPitchClasses(id: SeventhId): number[] {
+  const { root, minor } = SEVENTHS[id];
+  return [root, (root + (minor ? 3 : 4)) % 12, (root + 7) % 12, (root + 10) % 12];
+}
+
 /** Las notas (MIDI) que suenan al rasguear el acorde, de grave a agudo. */
-export function chordMidi(id: ChordId): number[] {
-  const shape = CHORDS[id];
+export function chordMidi(id: OpenChordId): number[] {
+  const shape = shapeOf(id);
   return GUITAR.strings.flatMap((s, i) => (shape.frets[i] < 0 ? [] : [midiOn(GUITAR, s.id as StringId, shape.frets[i])]));
 }
 
@@ -42,7 +67,7 @@ export function triadPitchClasses(id: ChordId): number[] {
 // ───────────── Diagramas en grilla: acordes, power chords y cajas de escala ─────────────
 
 /** Formas que se dibujan como diagrama vertical (como un acorde). */
-export type DiagramId = ChordId | 'power-6' | 'power-5' | 'penta-a' | BarreId | 'octave' | ScaleGridId;
+export type DiagramId = ChordId | SeventhId | 'power-6' | 'power-5' | 'penta-a' | BarreId | 'octave' | ScaleGridId;
 
 export interface GridDot {
   /** 0 = 6.ª cuerda (Mi grave) … 5 = 1.ª (Mi aguda). */
@@ -68,8 +93,8 @@ export interface GridDiagram {
 
 const STRING_INDEX: Record<StringId, number> = { E: 0, A: 1, D: 2, G: 3, B: 4, e: 5 };
 
-export function chordDiagram(id: ChordId): GridDiagram {
-  const shape = CHORDS[id];
+export function chordDiagram(id: OpenChordId): GridDiagram {
+  const shape = shapeOf(id);
   return {
     name: id,
     startFret: 1,
@@ -218,7 +243,7 @@ export function diagramOf(id: DiagramId): GridDiagram {
   if (id === 'power-6') return POWER_6;
   if (id === 'power-5') return POWER_5;
   if (id === 'penta-a') return PENTA_A;
-  return chordDiagram(id as ChordId);
+  return chordDiagram(id as OpenChordId);
 }
 
 /** Notas MIDI de un diagrama (las que se pisan y las cuerdas al aire). */
