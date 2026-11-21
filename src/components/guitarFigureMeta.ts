@@ -45,6 +45,9 @@ export const CHORD_FIGURES: Partial<Record<Figure, DiagramId>> = {
 };
 
 export const GUITAR_FIGURES: Figure[] = [
+  'nylon-parts',
+  'nylon-posture',
+  'pima-hand',
   'guitar-parts',
   'guitar-strings',
   'pickup-selector',
@@ -78,6 +81,9 @@ export const GUITAR_FIGURES: Figure[] = [
 
 /** Cuántos ítems tiene la leyenda de cada figura (0 = sin leyenda). */
 export const LEGEND_COUNT: Partial<Record<Figure, number>> = {
+  'nylon-parts': 9,
+  'nylon-posture': 4,
+  'pima-hand': 4,
   'guitar-parts': 9,
   'pickup-selector': 5,
   'guitar-knobs': 3,
@@ -122,6 +128,9 @@ export const RATIO: Partial<Record<Figure, number>> = {
   // Versión compacta (escenario del cartoon); en las tarjetas se usa el diapasón.
   'guitar-strings': 150 / 360,
   'guitar-parts': 130 / 360,
+  'nylon-parts': 130 / 360,
+  'nylon-posture': 170 / 360,
+  'pima-hand': 150 / 360,
   'pickup-selector': 150 / 360,
   'guitar-knobs': 120 / 360,
   'amp-panel': 130 / 360,

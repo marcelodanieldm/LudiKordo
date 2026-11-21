@@ -13,8 +13,8 @@ import { chordDiagram, diagramOf, type GridDiagram } from '../music/chords';
 export { isGuitarFigure } from './guitarFigureMeta';
 
 /**
- * Ilustraciones de guitarra eléctrica dibujadas en código (sin imágenes con
- * derechos): partes de la guitarra, ampli, púa y postura. Cada una trae su
+ * Ilustraciones de guitarra eléctrica y criolla dibujadas en código (sin imágenes
+ * con derechos): partes de la guitarra, ampli, púa, postura y mano p-i-m-a. Cada una trae su
  * leyenda numerada, traducida (`ui.gfig.<figura>.*`), debajo del dibujo.
  * Para zurdos se espejan las que tienen dirección.
  */
@@ -25,6 +25,11 @@ const METAL = '#C9C4BA';
 const DARK = '#1D1B2E';
 const AMP = '#26222F';
 const TOLEX = '#3A3343';
+// Guitarra criolla: tapa de abeto, diapasón y puente de palisandro, roseta.
+const SPRUCE = '#D9A35F';
+const ROSEWOOD = '#4A2E17';
+const ROSETTE = '#8E5A33';
+const SKIN = '#C9874F';
 
 function Callout({ x, y, n }: { x: number; y: number; n: number }) {
   return (
@@ -223,6 +228,44 @@ function GridDiagramView({ d, callouts = false }: { d: GridDiagram; callouts?: b
 }
 
 /** Tramo de mástil horizontal (trastes 1–4) que usan las figuras de la mano que pisa. */
+/** Guitarra criolla vista de frente, horizontal (clavijero a la derecha): caja en forma de ocho, boca, puente con selleta y clavijero calado. */
+function NylonDrawing() {
+  return (
+    <G>
+      {/* Caja: dos óvalos unidos (forma de ocho) */}
+      <Ellipse cx={40} cy={70} rx={36} ry={52} fill={SPRUCE} />
+      <Ellipse cx={100} cy={70} rx={28} ry={42} fill={SPRUCE} />
+      <Rect x={40} y={30} width={62} height={80} fill={SPRUCE} />
+      {/* Boca con roseta */}
+      <Circle cx={96} cy={70} r={15} fill={DARK} />
+      <Circle cx={96} cy={70} r={19} fill="none" stroke={ROSETTE} strokeWidth={3} />
+      {/* Puente y selleta */}
+      <Rect x={30} y={50} width={12} height={40} rx={3} fill={ROSEWOOD} />
+      <Rect x={41} y={53} width={2.5} height={34} fill={GUARD} />
+      {/* Mástil: 12 trastes hasta la caja */}
+      <Rect x={126} y={58} width={164} height={24} fill={colors.wood} />
+      {[146, 165, 183, 200, 216, 231, 245, 258, 270, 281, 291].map((x) => (
+        <Line key={x} x1={x - 6} y1={58} x2={x - 6} y2={82} stroke={colors.fret} strokeWidth={1.4} />
+      ))}
+      {/* Cejuela y clavijero calado con clavijas a los costados */}
+      <Rect x={286} y={57} width={4} height={26} fill={colors.nut} />
+      <Rect x={290} y={55} width={52} height={30} rx={4} fill={ROSEWOOD} />
+      <Rect x={298} y={62} width={38} height={5} rx={2} fill={DARK} />
+      <Rect x={298} y={73} width={38} height={5} rx={2} fill={DARK} />
+      {[302, 316, 330].map((x) => (
+        <G key={x}>
+          <Rect x={x - 3} y={45} width={6} height={10} rx={2} fill={GUARD} />
+          <Rect x={x - 3} y={85} width={6} height={10} rx={2} fill={GUARD} />
+        </G>
+      ))}
+      {/* Cuerdas: 3 graves entorchadas (más gruesas) y 3 agudas de nylon */}
+      {[0, 1, 2, 3, 4, 5].map((i) => (
+        <Line key={i} x1={42} y1={60 + i * 4} x2={300 + i * 6} y2={60 + i * 4} stroke={i >= 3 ? METAL : GUARD} strokeWidth={i >= 3 ? 1.8 : 1.3} />
+      ))}
+    </G>
+  );
+}
+
 function NeckSection() {
   return (
     <G>
@@ -354,6 +397,97 @@ function Drawing({ id, left }: { id: Figure; left: boolean }) {
           <Callout x={318} y={18} n={3} />
         </Svg>
       );
+    case 'nylon-parts':
+      return (
+        <Svg viewBox="0 0 360 130" width="100%" height="100%">
+          <G transform={left ? 'translate(360,0) scale(-1,1)' : undefined}>
+            <NylonDrawing />
+          </G>
+          {[
+            [318, 28, 1],
+            [344, 108, 2],
+            [288, 98, 3],
+            [210, 98, 4],
+            [170, 46, 5],
+            [60, 18, 6],
+            [96, 104, 7],
+            [22, 108, 8],
+            [44, 34, 9],
+          ].map(([x, y, n]) => (
+            <Callout key={n} x={left ? 360 - x : x} y={y} n={n} />
+          ))}
+        </Svg>
+      );
+    case 'nylon-posture':
+      return (
+        <Svg viewBox="0 0 360 170" width="100%" height="100%">
+          <G transform={left ? 'translate(360,0) scale(-1,1)' : undefined}>
+            {/* Silla */}
+            <Rect x={130} y={112} width={86} height={8} rx={3} fill={colors.line} />
+            <Line x1={138} y1={120} x2={138} y2={164} stroke={colors.line} strokeWidth={5} />
+            <Line x1={208} y1={120} x2={208} y2={164} stroke={colors.line} strokeWidth={5} />
+            <Line x1={210} y1={112} x2={216} y2={40} stroke={colors.line} strokeWidth={5} />
+            {/* Persona: espalda recta, pie del lado del mástil sobre el apoyapié */}
+            <Circle cx={190} cy={26} r={15} fill="#B07444" />
+            <Path d="M180 42 L198 42 L204 110 L170 110 Z" fill="#7A6FA8" />
+            <Path d="M170 110 L120 104 L114 146" fill="none" stroke="#7A6FA8" strokeWidth={14} strokeLinecap="round" strokeLinejoin="round" />
+            <Rect x={96} y={148} width={40} height={14} rx={2} fill={colors.teal} />
+            {/* Guitarra criolla sobre la pierna, mástil inclinado unos 40° */}
+            <G rotation={-38} origin="150, 98">
+              <Ellipse cx={158} cy={98} rx={24} ry={20} fill={SPRUCE} />
+              <Ellipse cx={132} cy={98} rx={18} ry={15} fill={SPRUCE} />
+              <Circle cx={138} cy={98} r={6} fill={DARK} />
+              <Rect x={30} y={93} width={86} height={10} rx={3} fill={colors.wood} />
+              <Rect x={14} y={90} width={20} height={16} rx={3} fill={ROSEWOOD} />
+            </G>
+            {/* Brazos: la mano derecha cae sobre la boca; la izquierda va al mástil */}
+            <Path d="M192 50 L172 78 L156 92" fill="none" stroke="#B07444" strokeWidth={8} strokeLinecap="round" />
+            <Path d="M182 50 L130 50 L88 44" fill="none" stroke="#B07444" strokeWidth={8} strokeLinecap="round" />
+            <Line x1={218} y1={14} x2={218} y2={110} stroke={colors.teal} strokeWidth={2} strokeDasharray="5 5" />
+          </G>
+          <Callout x={left ? 360 - 230 : 230} y={30} n={1} />
+          <Callout x={left ? 360 - 154 : 154} y={132} n={2} />
+          <Callout x={left ? 360 - 64 : 64} y={36} n={3} />
+          <Callout x={left ? 360 - 84 : 84} y={156} n={4} />
+        </Svg>
+      );
+    case 'pima-hand': {
+      const mirror = (x: number) => (left ? 360 - x : x);
+      // De arriba abajo: 1.ª a 6.ª cuerda, como en la tablatura.
+      const stringY = (n: number) => 22 + (n - 1) * 20;
+      const fingers: [string, number, number][] = [
+        ['a', 300, 1],
+        ['m', 252, 2],
+        ['i', 204, 3],
+        ['p', 120, 5],
+      ];
+      return (
+        <Svg viewBox="0 0 360 150" width="100%" height="100%">
+          {[1, 2, 3, 4, 5, 6].map((n) => (
+            <G key={n}>
+              <Line x1={30} y1={stringY(n)} x2={350} y2={stringY(n)} stroke={n >= 4 ? METAL : GUARD} strokeWidth={1.2 + n * 0.35} />
+              <SvgText x={mirror(16)} y={stringY(n) + 4} fontSize={11} fontWeight="900" fill={colors.muted} textAnchor="middle">
+                {n}
+              </SvgText>
+            </G>
+          ))}
+          {/* Pulgar adelante de los dedos, sobre las graves */}
+          <Path d={`M${mirror(70)} 148 Q ${mirror(100)} 120 ${mirror(120)} ${stringY(5)}`} fill="none" stroke={SKIN} strokeWidth={16} strokeLinecap="round" opacity={0.85} />
+          {fingers.map(([f, x, s]) => (
+            <G key={f}>
+              <Circle cx={mirror(x)} cy={stringY(s)} r={13} fill={f === 'p' ? colors.teal : colors.gold} />
+              <SvgText x={mirror(x)} y={stringY(s) + 5} fontSize={14} fontWeight="900" fill={f === 'p' ? colors.onTeal : colors.onAccent} textAnchor="middle">
+                {f}
+              </SvgText>
+            </G>
+          ))}
+          <Callout x={mirror(150)} y={140} n={1} />
+          <Callout x={mirror(204)} y={stringY(3) - 20} n={2} />
+          <Callout x={mirror(252)} y={stringY(2) - 20} n={3} />
+          <Callout x={mirror(330)} y={stringY(1) + 22} n={4} />
+        </Svg>
+      );
+    }
     case 'guitar-tuner':
       return (
         <Svg viewBox="0 -20 360 170" width="100%" height="100%">

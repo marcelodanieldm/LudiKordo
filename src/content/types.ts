@@ -264,6 +264,10 @@ export type Figure =
   | 'fretboard-1234'
   | 'left-hand'
   | 'bass-clef'
+  // Guitarra criolla (también en GuitarFigures.tsx)
+  | 'nylon-parts'
+  | 'nylon-posture'
+  | 'pima-hand'
   // Guitarra eléctrica (src/components/GuitarFigures.tsx)
   | 'guitar-parts'
   | 'guitar-strings'
