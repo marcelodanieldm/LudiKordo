@@ -5,10 +5,10 @@
  */
 import { IS_GUITAR } from '../instruments/current';
 import { chordFromName } from './chords';
-import { drumSchedule, type DrumHit, type DrumStyle } from './drums';
+import { barBeatsOfStyle, drumSchedule, type DrumHit, type DrumStyle } from './drums';
 import type { ScheduledNote } from './listen';
 import { midiToFreq } from './notes';
-import { BALLAD, DOWN_EIGHTHS, EIGHTHS, HALVES, QUARTERS, strumSchedule, type Stroke } from './strum';
+import { BALLAD, CHACARERA, DOWN_EIGHTHS, EIGHTHS, HALVES, QUARTERS, VALS, ZAMBA, strumSchedule, type Stroke } from './strum';
 import type { Tone } from './timbre';
 
 export type JamPart = 'drums' | 'bass' | 'guitar' | 'keys';
@@ -34,6 +34,13 @@ const BASS: Record<DrumStyle, BassStep[]> = {
   // One drop: el bajo deja el 1 vacío.
   reggae: [[1, 0, 0.5], [1.5, 0, 0.5], [2, 7, 1], [3, 0, 1]],
   bossa: [[0, 0, 1.5], [1.5, 7, 0.5], [2, 7, 1.5], [3.5, 0, 0.5]],
+  // 6/8 en 3 pulsos de negra: tónica en el 1 y quinta en el 4 (pulso 1,5).
+  zamba: [[0, 0, 1.5], [1.5, 7, 1.5]],
+  chacarera: [[0, 0, 1], [1.5, 7, 1], [2.5, 0, 0.5]],
+  // Marcato: las cuatro negras, tónica y quinta.
+  tango: [[0, 0, 1], [1, 0, 1], [2, 7, 1], [3, 7, 1]],
+  // Vals: el bajo solo en el 1 (bajo, acorde, acorde).
+  vals: [[0, 0, 1]],
 };
 
 /** [pulso, duración] de los acordes del teclado. */
@@ -49,6 +56,12 @@ const KEYS: Record<DrumStyle, [number, number][]> = {
   // Skank: acordes cortos en el «y» de cada tiempo.
   reggae: [[0.5, 0.25], [1.5, 0.25], [2.5, 0.25], [3.5, 0.25]],
   bossa: [[0, 0.5], [1.5, 0.5], [2.5, 0.5], [3.5, 0.5]],
+  zamba: [[0, 1.5], [1.5, 1.5]],
+  chacarera: [[0.5, 0.5], [1, 0.5], [2, 0.5], [2.5, 0.5]],
+  // Bandoneón marcato: acordes cortos en cada negra.
+  tango: [[0, 0.5], [1, 0.5], [2, 0.5], [3, 0.5]],
+  // Vals: el acorde en el 2 y el 3.
+  vals: [[1, 0.75], [2, 0.75]],
 };
 
 const GUITAR: Record<DrumStyle, { pattern: Stroke[]; tone: Tone }> = {
@@ -61,6 +74,10 @@ const GUITAR: Record<DrumStyle, { pattern: Stroke[]; tone: Tone }> = {
   soul: { pattern: BALLAD, tone: 'clean' },
   reggae: { pattern: ['-', 'D', '-', 'D', '-', 'D', '-', 'D'], tone: 'muted' },
   bossa: { pattern: ['D', '-', '-', 'D', '-', 'D', '-', 'D'], tone: 'clean' },
+  zamba: { pattern: ZAMBA, tone: 'nylon' },
+  chacarera: { pattern: CHACARERA, tone: 'nylon' },
+  tango: { pattern: QUARTERS, tone: 'nylon' },
+  vals: { pattern: VALS, tone: 'nylon' },
 };
 
 export interface JamOptions {
@@ -88,11 +105,13 @@ const voicing = (name: string) => chordFromName(name) ?? [45, 52, 57];
 export function jamSchedule(o: JamOptions): JamSchedule {
   const bars = o.chords.length * o.loops;
   const beatSec = 60 / o.bpm;
-  const at = (bar: number, beat: number) => (o.countIn + bar * 4 + beat) * beatSec;
-  /** El acorde que suena en un pulso del compás (con dos, el segundo desde el tercer tiempo). */
+  // 4 pulsos por compás, o 3 en zamba, chacarera y vals.
+  const barBeats = barBeatsOfStyle(o.style);
+  const at = (bar: number, beat: number) => (o.countIn + bar * barBeats + beat) * beatSec;
+  /** El acorde que suena en un pulso del compás (con dos, el segundo desde el tercer tiempo; en 3 pulsos, uno solo). */
   const chordOf = (bar: number, beat = 0) => {
     const parts = o.chords[bar % o.chords.length].trim().split(/\s+/);
-    return parts[beat >= 2 && parts.length > 1 ? 1 : 0];
+    return parts[beat >= 2 && barBeats === 4 && parts.length > 1 ? 1 : 0];
   };
   const notes: ScheduledNote[] = [];
 
@@ -126,6 +145,6 @@ export function jamSchedule(o: JamOptions): JamSchedule {
     for (const n of [...first.filter((x) => halfOf(x.startSec) === 0), ...second.filter((x) => halfOf(x.startSec) === 1)]) notes.push({ ...n, tone: g.tone, level: PART_LEVEL.guitar });
   }
   const drums = o.parts.includes('drums') ? drumSchedule(o.style, bars, o.bpm, o.countIn) : [];
-  const bodyBeats = bars * 4;
+  const bodyBeats = bars * barBeats;
   return { notes, drums, bodyBeats, lengthSec: (o.countIn + bodyBeats) * beatSec };
 }

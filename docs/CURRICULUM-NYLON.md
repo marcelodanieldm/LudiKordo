@@ -109,7 +109,7 @@ Módulos 1.1 y 1.2, afinador y metrónomo.
 - Hecho: módulos 2.1–2.3 (15 lecciones, 14 acordes en el álbum, con E7, A7, D7, G7, Em7 y Am7) y las primeras canciones: «Melodía del patio» (pop, 1.5) y «Ruta 3» (rock, 2.1).
 - El álbum de acordes está en `src/content/nylon/chordbook.ts`: cada canción en la que el alumno toca acordes arma su `requires` con `songRequires`, así se abre al tener sus acordes.
 - Hecho: nivel 2 completo (35 lecciones) y checkpoint 2; canciones «Postal de domingo» (pop, p-i-m-a) y «Sombra en Am» (blues, melodía pentatónica). Total: 60 lecciones, 2 checkpoints, 4 canciones.
-- Los patrones de rasgueo de la app son de 8 corcheas en 4/4: el 6/8 se enseña con la zamba y la chacarera en 3.7, junto con los estilos de banda nuevos.
+- Los patrones de rasgueo pueden ser de 8 corcheas (4/4) o de 6 (3/4 y 6/8, contados en negras: un compás de 6/8 dura 3 pulsos).
 - Hecho: módulos 3.1–3.4 (19 lecciones): media cejilla (Fmaj7, F, Bm en 4 cuerdas), cejillas formas de E y de A movidas, C7, B7, boogie, blues en Mi y en La y turnaround. Álbum: 28 acordes. Canciones nuevas: «Terraza» (rock, F#m), «Ciudad de papel» (pop, Bm) y «Blues del andén» (blues en La).
 - Hecho: 3.5 (ligados ascendentes y descendentes, arrastre, trino, adornos en la pentatónica), 3.6 (blue note, escala de blues, pentatónica mayor de Do, cajas 1 y 2, improvisar en mayor y menor) y el checkpoint 3. Total: 89 lecciones, 3 checkpoints, 7 canciones.
-- Siguiente: 3.7 (6/8, zamba, chacarera, tango y vals). Necesita compases de 3/4 y 6/8 en el motor (rasgueo, batería, banda y tablatura), los estilos de banda nuevos y el género `popular`.
+- Siguiente: el contenido de 3.7 (6/8, zamba, chacarera, tango y vals). El motor ya tiene compases de 3/4 y 6/8, los estilos de banda y el género `popular`.

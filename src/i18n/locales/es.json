@@ -44,7 +44,11 @@
         "jazz": "Jazz",
         "soul": "Soul",
         "reggae": "Reggae",
-        "bossa": "Bossa nova"
+        "bossa": "Bossa nova",
+        "zamba": "Zamba",
+        "chacarera": "Chacarera",
+        "tango": "Tango",
+        "vals": "Vals criollo"
       },
       "loops": "Vueltas",
       "loopsN": "×{{n}}",
@@ -102,7 +106,7 @@
       "title": "Canciones para tu nivel",
       "intro": "Líneas de bajo originales para tocar por género. Se desbloquean con los módulos donde aprendes lo que usan.",
       "all": "Todas",
-      "genre": {"pop": "Pop", "rock": "Rock", "ballad": "Baladas", "blues": "Blues", "bossa": "Bossa nova", "soul": "Soul", "reggae": "Reggae", "funk": "Funk", "jazz": "Jazz", "gospel": "Gospel"},
+      "genre": {"pop": "Pop", "rock": "Rock", "ballad": "Baladas", "blues": "Blues", "bossa": "Bossa nova", "soul": "Soul", "reggae": "Reggae", "funk": "Funk", "jazz": "Jazz", "gospel": "Gospel", "popular": "Música popular"},
       "empty": "No hay canciones de este género todavía.",
       "lockedHint": "Bloqueada: muestra qué módulos te faltan",
       "meta": "{{genre}} · Nivel {{level}} · {{key}} · {{bpm}} bpm",

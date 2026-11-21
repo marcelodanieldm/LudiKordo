@@ -44,7 +44,11 @@
         "jazz": "Jazz",
         "soul": "Soul",
         "reggae": "Reggae",
-        "bossa": "Bossa nova"
+        "bossa": "Bossa nova",
+        "zamba": "Zamba",
+        "chacarera": "Chacarera",
+        "tango": "Tango",
+        "vals": "Creole waltz"
       },
       "loops": "Loops",
       "loopsN": "×{{n}}",
@@ -102,7 +106,7 @@
       "title": "Songs for your level",
       "intro": "Original bass lines to play by genre. They unlock with the modules where you learn what they use.",
       "all": "All",
-      "genre": {"pop": "Pop", "rock": "Rock", "ballad": "Ballads", "blues": "Blues", "bossa": "Bossa nova", "soul": "Soul", "reggae": "Reggae", "funk": "Funk", "jazz": "Jazz", "gospel": "Gospel"},
+      "genre": {"pop": "Pop", "rock": "Rock", "ballad": "Ballads", "blues": "Blues", "bossa": "Bossa nova", "soul": "Soul", "reggae": "Reggae", "funk": "Funk", "jazz": "Jazz", "gospel": "Gospel", "popular": "Latin American folk"},
       "empty": "No songs in this genre yet.",
       "lockedHint": "Locked: shows which modules you still need",
       "meta": "{{genre}} · Level {{level}} · {{key}} · {{bpm}} bpm",

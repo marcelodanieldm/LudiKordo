@@ -158,6 +158,8 @@ export const GENRE_STYLE: Record<Genre, DrumStyle> = {
   funk: 'funk',
   jazz: 'jazz',
   gospel: 'soul',
+  // Cada canción de música popular dice su estilo (zamba, chacarera, tango o vals); este es el de reserva.
+  popular: 'zamba',
 };
 
 /** Una canción del cancionero como ejercicio de práctica con banda (id `song-<id>`). */
@@ -172,7 +174,7 @@ export function songDrill(song: Song): Drill {
     titleKey: song.titleKey,
     descKey: song.descriptionKey,
     chords: song.chords,
-    style: GENRE_STYLE[song.genre],
+    style: song.style ?? GENRE_STYLE[song.genre],
     parts: IS_GUITAR ? ['drums', 'bass', 'keys'] : ['drums', 'guitar', 'keys'],
     tempoSteps: song.tempoSteps,
     line: song.line,

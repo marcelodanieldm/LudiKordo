@@ -11,6 +11,17 @@ import { NOTE_GATE, PLAYBACK_OCTAVE_UP, type ScheduledNote } from './listen';
 
 export type Stroke = 'D' | 'U' | '-';
 export const EIGHTHS_PER_BAR = 8;
+/**
+ * Compases de 3/4 y 6/8 (criolla, ADR 0010): 6 corcheas por compás. El tempo sigue
+ * en negras, así que un compás de 6 corcheas dura 3 pulsos; 3/4 y 6/8 se distinguen
+ * por los acentos (la batería y el patrón), no por la cuenta.
+ */
+export const SIX_PER_BAR = 6;
+
+/** Corcheas por compás de un patrón (8 en 4/4; 6 en 3/4 y 6/8). */
+export const slotsOf = (pattern: Stroke[]) => pattern.length;
+/** Pulsos (negras) por compás de un patrón: 4 o 3. */
+export const barBeatsOf = (pattern: Stroke[]) => pattern.length / 2;
 
 /** Negras hacia abajo: un golpe por pulso. */
 export const QUARTERS: Stroke[] = ['D', '-', 'D', '-', 'D', '-', 'D', '-'];
@@ -25,12 +36,23 @@ export const DOWN_EIGHTHS: Stroke[] = ['D', 'D', 'D', 'D', 'D', 'D', 'D', 'D'];
 /** Redondas: un golpe por compás. */
 export const WHOLES: Stroke[] = ['D', '-', '-', '-', '-', '-', '-', '-'];
 
+// ───────────── 3/4 y 6/8 (6 corcheas por compás) ─────────────
+
+/** 6/8: dos golpes por compás, en el 1 y en el 4 (dos pulsos de negra con punto). */
+export const SIX8_PULSE: Stroke[] = ['D', '-', '-', 'D', '-', '-'];
+/** Zamba: abajo en el 1, abajo-arriba en el 3, abajo en el 5 (el 4 queda en el aire). */
+export const ZAMBA: Stroke[] = ['D', '-', 'D', 'U', 'D', '-'];
+/** Chacarera: más empuje, con el arriba del final que lleva al compás siguiente. */
+export const CHACARERA: Stroke[] = ['D', '-', 'D', 'U', 'D', 'U'];
+/** Vals (3/4): un golpe por pulso, el primero más fuerte. */
+export const VALS: Stroke[] = ['D', '-', 'D', '-', 'D', '-'];
+
 /**
  * Un patrón es válido si tiene 8 casillas y la púa alterna (abajo en los pulsos,
  * arriba entre pulsos), o si todo va hacia abajo (sin ningún golpe hacia arriba).
  */
 export function isValidPattern(p: Stroke[]): boolean {
-  if (p.length !== EIGHTHS_PER_BAR) return false;
+  if (p.length !== EIGHTHS_PER_BAR && p.length !== SIX_PER_BAR) return false;
   if (!p.includes('U')) return p.some((s) => s === 'D');
   return p.every((s, i) => s === '-' || (i % 2 === 0 ? s === 'D' : s === 'U'));
 }
@@ -49,7 +71,7 @@ export function strokeTimes(pattern: Stroke[], bars: number, bpm: number, startM
   const out: StrokeTime[] = [];
   for (let bar = 0; bar < bars; bar++) {
     pattern.forEach((s, eighth) => {
-      if (s !== '-') out.push({ timeMs: startMs + (bar * EIGHTHS_PER_BAR + eighth) * eighthMs, dir: s, bar, eighth });
+      if (s !== '-') out.push({ timeMs: startMs + (bar * pattern.length + eighth) * eighthMs, dir: s, bar, eighth });
     });
   }
   return out;
@@ -76,7 +98,7 @@ export function strumSchedule(chords: number[][], pattern: Stroke[], bpm: number
   hits.forEach((h, i) => {
     const next = hits[i + 1];
     const start = offsetBeats * 2 * eighthSec + h.timeMs / 1000;
-    const end = next ? offsetBeats * 2 * eighthSec + next.timeMs / 1000 : (offsetBeats * 2 + chords.length * EIGHTHS_PER_BAR) * eighthSec;
+    const end = next ? offsetBeats * 2 * eighthSec + next.timeMs / 1000 : (offsetBeats * 2 + chords.length * pattern.length) * eighthSec;
     const notes = chords[h.bar];
     const ordered = h.dir === 'D' ? notes : notes.slice(-3).reverse();
     ordered.forEach((midi, k) => {
@@ -151,9 +173,9 @@ export function scoreStrum(pattern: Stroke[], bars: number, bpm: number, startMs
   times.forEach((t, j) => {
     if (used.has(j)) return;
     const slot = Math.round((t - startMs) / eighthMs);
-    if (slot < 0 || slot >= bars * EIGHTHS_PER_BAR) return;
+    if (slot < 0 || slot >= bars * pattern.length) return;
     if (Math.abs(t - (startMs + slot * eighthMs)) > toleranceMs) return;
-    if (pattern[slot % EIGHTHS_PER_BAR] === '-') extras += 1;
+    if (pattern[slot % pattern.length] === '-') extras += 1;
   });
   const total = expected.length;
   return { hits, total, extras, accuracy: total ? hits / (total + extras) : 0 };
