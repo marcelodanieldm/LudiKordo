@@ -2,12 +2,14 @@
  * Lecciones de guitarra criolla: módulos 1.1 (tu guitarra criolla) y 1.2
  * (postura y manos), los gratuitos. Mismo formato que el bajo y la eléctrica:
  * 4 pasos, una habilidad nueva por lección y criterio de dominio. Textos en
- * `content.n.*`. Los demás módulos llegan nivel por nivel (ADR 0010).
+ * `content.n.*`. El resto del nivel 1 está en level1.ts; los demás niveles llegan
+ * de a uno (ADR 0010).
  *
  * Mientras no hay .riv, cada escena del cartoon trae su ilustración animada
  * (`visuals`) y, donde ayuda, su sonido (`sounds`).
  */
 import type { Lesson, ListenExample, ScoreEvent } from '../types';
+import { NYLON_LEVEL1_LESSONS } from './level1';
 import { BASS_STRINGS, LOW_TO_HIGH, TREBLE_STRINGS, hear, hz, k, listen, n, notesOf, open, scenes, times } from './helpers';
 
 /** Las 6 cuerdas al aire en dos compases: 4 negras y 2 blancas (Si y Mi aguda). */
@@ -610,4 +612,5 @@ export const NYLON_LESSONS: Record<string, Lesson> = {
   [l123.id]: l123,
   [l124.id]: l124,
   [l125.id]: l125,
+  ...Object.fromEntries(NYLON_LEVEL1_LESSONS.map((l) => [l.id, l])),
 };

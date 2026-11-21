@@ -3,7 +3,7 @@
  * se calculan con el perfil de criolla (no con el instrumento activo) para que
  * las pruebas de Node, que corren como bajo, las validen igual.
  */
-import type { Beats, ListenExample, ScoreEvent } from '../types';
+import type { Beats, ListenExample, ScoreEvent, TabNote } from '../types';
 import type { StringId } from '../../instruments/profiles';
 import { NYLON, midiOn } from '../../instruments/profiles';
 import { midiToFreq } from '../../music/notes';
@@ -37,3 +37,22 @@ export const listen = (events: ScoreEvent[], bpm: number, extra: Partial<ListenE
 
 /** Ejemplo sonoro sin dibujo (solo el botón «Escuchar»), con timbre de nylon por defecto. */
 export const hear = (events: ScoreEvent[], bpm: number, extra: Partial<ListenExample> = {}): ListenExample => ({ events, bpm, tone: 'nylon', ...extra });
+
+export const rest = (beats: Beats = 1): ScoreEvent => ({ rest: true, beats });
+
+/** Partitura sin silencios ni corcheas → notas de tablatura (para `tabReading`). */
+export function tabOf(score: ScoreEvent[]): TabNote[] {
+  return score.map((e) => {
+    if ('rest' in e || e.beats === 0.5) throw new Error('tabReading solo admite negras, blancas y redondas');
+    return { string: e.string, fret: e.fret, beats: e.beats };
+  });
+}
+
+/** Notas de una partitura con corcheas o silencios, para `playAlong.notes` junto con `score`. */
+export function scoreNotes(score: ScoreEvent[]): { string: StringId; fret: number }[] {
+  return score.flatMap((e) => ('rest' in e ? [] : [{ string: e.string, fret: e.fret }]));
+}
+
+/** Cromático 1-2-3-4 en una cuerda (y de vuelta, 4-3-2-1). */
+export const spider = (s: StringId) => [1, 2, 3, 4].map((fret) => ({ string: s, fret }));
+export const spiderDown = (s: StringId) => [4, 3, 2, 1].map((fret) => ({ string: s, fret }));
