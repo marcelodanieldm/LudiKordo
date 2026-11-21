@@ -20,7 +20,7 @@ Programa aprobado por Marcelo el 21 nov 2026 (ADR 0010). Versión completa con c
 | 1.2 | 5 | Postura y manos | Postura sentado · p-i-m-a · mano izquierda · sonido con yema · primer arpegio |
 | 1.3 | 5 | Pulsar con los dedos | Tirando i-m · apoyando i-m · alternar i-m · pulgar en 6, 5 y 4 · pulgar + i-m |
 | 1.4 | 5 | Mano izquierda | Dedo detrás del traste · 1-2-3-4 · cromática · cambio de cuerda · apagar notas |
-| 1.5 | 5 | Ritmo y lectura | Pulso · redondas, blancas y negras · corcheas · tablatura · pentagrama en primera posición |
+| 1.5 | 5 | Ritmo y lectura | Pulso · redondas, blancas y negras · corcheas · tablatura · lectura a primera vista |
 
 Checkpoint 1: pulso a 80 bpm, cromática alternando i-m, tablatura nueva y melodía con corcheas y silencios.
 
@@ -104,5 +104,6 @@ Módulos 1.1 y 1.2, afinador y metrónomo.
 
 ## Estado
 
-- Hecho: perfil y variante `nylon`, ruta completa, lecciones 1.1 y 1.2.
-- Siguiente: nivel 1 (1.3–1.5) con el ejercicio `arpeggio` y el checkpoint 1.
+- Hecho: perfil y variante `nylon`, ruta completa, nivel 1 completo (25 lecciones) y checkpoint 1.
+- El pentagrama de la app es en clave de fa: la lectura en clave de sol (8va baja) espera a que exista; mientras, el nivel 1 lee tablatura.
+- Siguiente: nivel 2 con el álbum de acordes y las primeras canciones.

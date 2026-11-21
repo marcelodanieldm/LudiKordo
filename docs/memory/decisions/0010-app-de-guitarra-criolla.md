@@ -17,7 +17,7 @@ Marcelo pidió un programa de guitarra criolla de cero a intermedio, con teoría
 
 ## Plan por PR (uno por etapa, como la eléctrica)
 1. **Base** (este PR): perfil, variante, ruta completa (5 niveles, 31 módulos, 151 lecciones) y los módulos gratuitos 1.1 y 1.2.
-2. Nivel 1 (1.3–1.5) y checkpoint 1. Ejercicio nuevo `arpeggio` (secuencia p-i-m-a con tempo; la app mide nota y momento, no qué dedo).
+2. Nivel 1 (1.3–1.5) y checkpoint 1. Hecho sin tipo de ejercicio nuevo: los arpegios y la alternancia i-m son `playAlong` (la app mide nota y momento, no qué dedo) y la digitación se practica con `tapRhythm` (botones p-i-m-a). El 1.5.5 es lectura a primera vista en tablatura: el pentagrama de la app es en clave de fa.
 3. Nivel 2 con el **álbum de acordes** (desbloqueo por acordes) y las primeras canciones.
 4. Nivel 3 con los **estilos de banda nuevos**: zamba y chacarera (6/8, bombo legüero), tango (marcato) y vals (3/4), y el género `popular` en el cancionero.
 5. Niveles 4 y 5, cancionero completo (18 canciones) y Práctica (22 ejercicios).
