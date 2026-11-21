@@ -7,6 +7,7 @@
 import type { Beats, Genre, ListenExample, ScoreEvent, Song } from './types';
 import { chordFromName } from '../music/chords';
 import { GUITAR_SONGS } from './guitar/songs';
+import { NYLON_GENRES, NYLON_SONGS } from './nylon/songs';
 import { IS_GUITAR, IS_NYLON } from '../instruments/current';
 
 type S = 'E' | 'A' | 'D' | 'G';
@@ -301,8 +302,8 @@ export const BASS_SONGS: Song[] = [
   }),
 ];
 
-/** Canciones del instrumento de esta build. La criolla todavía no tiene cancionero (llega con su nivel 2, ADR 0010): la tarjeta se oculta. */
-export const SONGS: Song[] = IS_NYLON ? [] : IS_GUITAR ? GUITAR_SONGS : BASS_SONGS;
+/** Canciones del instrumento de esta build. La de criolla crece nivel por nivel (ADR 0010). */
+export const SONGS: Song[] = IS_NYLON ? NYLON_SONGS : IS_GUITAR ? GUITAR_SONGS : BASS_SONGS;
 
 /**
  * Ejemplo para escuchar una canción: la línea sola o, si la canción trae rasgueo
@@ -323,5 +324,5 @@ export function getSong(id: string): Song | undefined {
 const BASS_GENRES: readonly Genre[] = ['pop', 'rock', 'ballad', 'blues', 'bossa', 'soul', 'reggae'];
 /** Géneros del cancionero de guitarra, elegidos por Marcelo (18 nov 2026). */
 export const GUITAR_GENRES: readonly Genre[] = ['rock', 'pop', 'funk', 'jazz', 'gospel'];
-/** Los géneros de la criolla (rock, pop, blues, jazz, bossa y música popular) llegan con su cancionero. */
-export const GENRES: readonly Genre[] = IS_NYLON ? [] : IS_GUITAR ? GUITAR_GENRES : BASS_GENRES;
+/** En la criolla, solo los géneros que ya tienen canciones (rock, pop, blues, jazz, bossa y música popular al final). */
+export const GENRES: readonly Genre[] = IS_NYLON ? NYLON_GENRES : IS_GUITAR ? GUITAR_GENRES : BASS_GENRES;

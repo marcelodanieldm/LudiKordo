@@ -7,6 +7,8 @@ import type { Beats, ListenExample, ScoreEvent, TabNote } from '../types';
 import type { StringId } from '../../instruments/profiles';
 import { NYLON, midiOn } from '../../instruments/profiles';
 import { midiToFreq } from '../../music/notes';
+import { chordMidi, shapeOf, type OpenChordId } from '../../music/chords';
+import type { Stroke } from '../../music/strum';
 
 export const k = (lesson: string, key: string) => `content.n.l${lesson.replace(/\./g, '')}.${key}`;
 export const scenes = (lesson: string) => [1, 2, 3, 4].map((n) => k(lesson, `s${n}`));
@@ -56,3 +58,38 @@ export function scoreNotes(score: ScoreEvent[]): { string: StringId; fret: numbe
 /** Cromático 1-2-3-4 en una cuerda (y de vuelta, 4-3-2-1). */
 export const spider = (s: StringId) => [1, 2, 3, 4].map((fret) => ({ string: s, fret }));
 export const spiderDown = (s: StringId) => [4, 3, 2, 1].map((fret) => ({ string: s, fret }));
+
+// ───────────── Acordes (álbum de acordes de criolla) ─────────────
+
+/** Las notas de un acorde abierto de grave a agudo (cuerdas que suenan), para tocarlas de a una. */
+export function chordArp(id: OpenChordId): { string: StringId; fret: number }[] {
+  return shapeOf(id).frets.flatMap((f, i) => (f < 0 ? [] : [{ string: LOW_TO_HIGH[i], fret: f }]));
+}
+
+/** Las notas pisadas de un acorde (para el diapasón virtual). */
+export function chordFretted(id: OpenChordId): { string: StringId; fret: number }[] {
+  return chordArp(id).filter((x) => x.fret > 0);
+}
+
+/** Las notas de un acorde como tablatura en compases completos (4, 5 o 6 notas → 4 u 8 pulsos). */
+export function arpScore(id: OpenChordId): ScoreEvent[] {
+  const notes = chordArp(id);
+  const beats: (1 | 2 | 4)[] = notes.length === 4 ? [1, 1, 1, 1] : notes.length === 5 ? [1, 1, 1, 1, 4] : [1, 1, 1, 1, 2, 2];
+  return notes.map((x, i) => n(x.string, x.fret, beats[i]));
+}
+
+/**
+ * Un compás p-i-m-i sobre un acorde: el pulgar en la nota más grave y después
+ * 3.ª, 2.ª y 3.ª cuerda con lo que pisa el acorde (patrón de 1.3.5).
+ */
+export function pimiBar(id: OpenChordId): ScoreEvent[] {
+  const notes = chordArp(id);
+  const fretOn = (s: StringId) => notes.find((x) => x.string === s)?.fret ?? 0;
+  const bass = notes[0];
+  return [n(bass.string, bass.fret), n('G', fretOn('G')), n('B', fretOn('B')), n('G', fretOn('G'))];
+}
+
+/** Ejemplo sonoro rasgueado: un acorde por compás. */
+export function strumListen(chords: OpenChordId[], pattern: Stroke[], bpm: number, extra: Partial<ListenExample> = {}): ListenExample {
+  return { events: [], bpm, strum: { chords: chords.map(chordMidi), pattern }, ...extra };
+}
