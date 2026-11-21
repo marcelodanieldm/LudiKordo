@@ -359,6 +359,39 @@
       "trialEnding": "Seu teste grátis termina em 2 dias. Você pode cancelar pelo Perfil."
     },
     "gfig": {
+      "chord_fmaj7": {
+        "a11y": "Diagrama do acorde Fmaj7"
+      },
+      "chord_f_half": {
+        "a11y": "Diagrama do acorde F (meia pestana)"
+      },
+      "chord_bm_half": {
+        "a11y": "Diagrama do acorde Bm (4 cordas)"
+      },
+      "barre_f7": {
+        "a11y": "Diagrama do acorde F7"
+      },
+      "barre_fsm": {
+        "a11y": "Diagrama do acorde F#m"
+      },
+      "barre_gm": {
+        "a11y": "Diagrama do acorde Gm"
+      },
+      "barre_bbm": {
+        "a11y": "Diagrama do acorde B♭m"
+      },
+      "barre_bm7": {
+        "a11y": "Diagrama do acorde Bm7"
+      },
+      "barre_csm": {
+        "a11y": "Diagrama do acorde C#m"
+      },
+      "chord_b7": {
+        "a11y": "Diagrama do acorde B7"
+      },
+      "chord_c7": {
+        "a11y": "Diagrama do acorde C7"
+      },
       "chord_e7": {
         "a11y": "Diagrama do acorde E7"
       },
@@ -925,6 +958,18 @@
       "n_blues_1": {
         "title": "Sombra em Am",
         "desc": "Blues lento em Lá menor: uma melodia com a pentatônica sobre Am, Dm e E7, que a banda toca."
+      },
+      "n_rock_2": {
+        "title": "Terraço",
+        "desc": "Rock em Mi com E, G, A e F#m: sua primeira música com pestana. Você toca os acordes em p-i-m-a."
+      },
+      "n_pop_3": {
+        "title": "Cidade de papel",
+        "desc": "Balada pop em Sol com Bm: arpejo de balada em colcheias sobre G, D, Bm, Em e A."
+      },
+      "n_blues_2": {
+        "title": "Blues da plataforma",
+        "desc": "Blues de 12 compassos em Lá. Você toca A7, D7 e E7 com baixo alternado; a banda acompanha em shuffle."
       }
     },
     "l261": {
@@ -4859,6 +4904,299 @@
         "strum": "Toque a batida pop sobre G, Em7, Am7 e D7, duas voltas, no tempo.",
         "arp": "Toque p-i-m-a sobre G, Em7, Am7 e D7, no tempo.",
         "penta": "Toque a pergunta e a resposta com a pentatônica, no tempo."
+      },
+      "l311": {
+        "title": "Fá com sétima maior (Fmaj7)",
+        "objective": "Montar Fá com sétima maior (Fmaj7), fazer todas as notas soarem limpas e tocar a batida no tempo.",
+        "s1": "“Um acorde novo para o álbum: Fá com sétima maior (Fmaj7).”",
+        "s2": "Dedo 3 na casa 3 da 4ª, dedo 2 na casa 2 da 3ª e dedo 1 na casa 1 da 2ª; a 1ª soa solta. A 6ª e a 5ª não soam.",
+        "s3": "Toque corda por corda: se uma não soar, ajeite esse dedo.",
+        "s4": "“E agora com p-i-m-i, como no nível 1.”",
+        "c1t": "Como montar Fá com sétima maior (Fmaj7)",
+        "c1b": "Dedo 3 na casa 3 da 4ª, dedo 2 na casa 2 da 3ª e dedo 1 na casa 1 da 2ª; a 1ª soa solta. A 6ª e a 5ª não soam. Ouça as notas uma de cada vez.",
+        "c2t": "Com p-i-m-i",
+        "c2b": "É o passo antes do F: a mesma forma, ainda sem pestana. Ouça no padrão p-i-m-i.",
+        "tap": "Aperte no braço as notas de Fá com sétima maior (Fmaj7).",
+        "arp": "Monte Fá com sétima maior (Fmaj7) e toque corda por corda, da grave à aguda.",
+        "strum": "Faça a batida de Fá com sétima maior (Fmaj7) com o polegar para baixo, em semínimas, no tempo."
+      },
+      "l313": {
+        "title": "Fá maior com meia pestana (F)",
+        "objective": "Montar Fá maior com meia pestana (F), fazer todas as notas soarem limpas e tocar a batida no tempo.",
+        "s1": "“Um acorde novo para o álbum: Fá maior com meia pestana (F).”",
+        "s2": "Dedo 1 deitado na casa 1 sobre a 2ª e a 1ª, dedo 2 na casa 2 da 3ª e dedo 3 na casa 3 da 4ª. Soam da 4ª à 1ª.",
+        "s3": "Toque corda por corda: se uma não soar, ajeite esse dedo.",
+        "s4": "“E agora com p-i-m-i, como no nível 1.”",
+        "c1t": "Como montar Fá maior com meia pestana (F)",
+        "c1b": "Dedo 1 deitado na casa 1 sobre a 2ª e a 1ª, dedo 2 na casa 2 da 3ª e dedo 3 na casa 3 da 4ª. Soam da 4ª à 1ª. Ouça as notas uma de cada vez.",
+        "c2t": "Com p-i-m-i",
+        "c2b": "É Fmaj7 com o dedo 1 deitado: assim a 1ª também soa Fá. Ouça no padrão p-i-m-i.",
+        "tap": "Aperte no braço as notas de Fá maior com meia pestana (F).",
+        "arp": "Monte Fá maior com meia pestana (F) e toque corda por corda, da grave à aguda.",
+        "strum": "Faça a batida de Fá maior com meia pestana (F) com o polegar para baixo, em semínimas, no tempo."
+      },
+      "l314": {
+        "title": "Si menor em 4 cordas (Bm)",
+        "objective": "Montar Si menor em 4 cordas (Bm), fazer todas as notas soarem limpas e tocar a batida no tempo.",
+        "s1": "“Um acorde novo para o álbum: Si menor em 4 cordas (Bm).”",
+        "s2": "Dedo 1 na casa 2 da 1ª, dedo 2 na casa 3 da 2ª, dedo 3 na casa 4 da 4ª e dedo 4 na casa 4 da 3ª. Soam da 4ª à 1ª.",
+        "s3": "Toque corda por corda: se uma não soar, ajeite esse dedo.",
+        "s4": "“E agora com p-i-m-i, como no nível 1.”",
+        "c1t": "Como montar Si menor em 4 cordas (Bm)",
+        "c1b": "Dedo 1 na casa 2 da 1ª, dedo 2 na casa 3 da 2ª, dedo 3 na casa 4 da 4ª e dedo 4 na casa 4 da 3ª. Soam da 4ª à 1ª. Ouça as notas uma de cada vez.",
+        "c2t": "Com p-i-m-i",
+        "c2b": "Quatro dedos e quatro cordas: a versão fácil de Bm. A completa, com pestana, chega em 3.3. Ouça no padrão p-i-m-i.",
+        "tap": "Aperte no braço as notas de Si menor em 4 cordas (Bm).",
+        "arp": "Monte Si menor em 4 cordas (Bm) e toque corda por corda, da grave à aguda.",
+        "strum": "Faça a batida de Si menor em 4 cordas (Bm) com o polegar para baixo, em semínimas, no tempo."
+      },
+      "l321": {
+        "title": "Fá maior com pestana (F)",
+        "objective": "Montar Fá maior com pestana (F), fazer todas as notas soarem limpas e tocar a batida no tempo.",
+        "s1": "“Um acorde novo para o álbum: Fá maior com pestana (F).”",
+        "s2": "Pestana com o dedo 1 na casa 1 sobre as 6 cordas, dedo 3 na casa 3 da 5ª, dedo 4 na casa 3 da 4ª e dedo 2 na casa 2 da 3ª.",
+        "s3": "Toque corda por corda: se uma não soar, ajeite esse dedo.",
+        "s4": "“E agora com p-i-m-i, como no nível 1.”",
+        "c1t": "Como montar Fá maior com pestana (F)",
+        "c1b": "Pestana com o dedo 1 na casa 1 sobre as 6 cordas, dedo 3 na casa 3 da 5ª, dedo 4 na casa 3 da 4ª e dedo 2 na casa 2 da 3ª. Ouça as notas uma de cada vez.",
+        "c2t": "Com p-i-m-i",
+        "c2b": "É a forma de E um traste acima, com o dedo 1 fazendo o papel do nut. Ouça no padrão p-i-m-i.",
+        "tap": "Aperte no braço as notas de Fá maior com pestana (F).",
+        "arp": "Monte Fá maior com pestana (F) e toque corda por corda, da grave à aguda.",
+        "strum": "Faça a batida de Fá maior com pestana (F) com o polegar para baixo, em semínimas, no tempo."
+      },
+      "l322": {
+        "title": "Fá menor (Fm)",
+        "objective": "Montar Fá menor (Fm), fazer todas as notas soarem limpas e tocar a batida no tempo.",
+        "s1": "“Um acorde novo para o álbum: Fá menor (Fm).”",
+        "s2": "Como o F com pestana, sem o dedo 2: a 3ª soa com a pestana na casa 1.",
+        "s3": "Toque corda por corda: se uma não soar, ajeite esse dedo.",
+        "s4": "“E agora com p-i-m-i, como no nível 1.”",
+        "c1t": "Como montar Fá menor (Fm)",
+        "c1b": "Como o F com pestana, sem o dedo 2: a 3ª soa com a pestana na casa 1. Ouça as notas uma de cada vez.",
+        "c2t": "Com p-i-m-i",
+        "c2b": "A forma de Em, deslocada. Se a 3ª não soar, gire um pouco o dedo 1 para o lado. Ouça no padrão p-i-m-i.",
+        "tap": "Aperte no braço as notas de Fá menor (Fm).",
+        "arp": "Monte Fá menor (Fm) e toque corda por corda, da grave à aguda.",
+        "strum": "Faça a batida de Fá menor (Fm) com o polegar para baixo, em semínimas, no tempo."
+      },
+      "l323": {
+        "title": "Fá com sétima (F7)",
+        "objective": "Montar Fá com sétima (F7), fazer todas as notas soarem limpas e tocar a batida no tempo.",
+        "s1": "“Um acorde novo para o álbum: Fá com sétima (F7).”",
+        "s2": "Pestana na casa 1, dedo 3 na casa 3 da 5ª e dedo 2 na casa 2 da 3ª.",
+        "s3": "Toque corda por corda: se uma não soar, ajeite esse dedo.",
+        "s4": "“E agora com p-i-m-i, como no nível 1.”",
+        "c1t": "Como montar Fá com sétima (F7)",
+        "c1b": "Pestana na casa 1, dedo 3 na casa 3 da 5ª e dedo 2 na casa 2 da 3ª. Ouça as notas uma de cada vez.",
+        "c2t": "Com p-i-m-i",
+        "c2b": "A forma de E7, deslocada: serve para o blues em qualquer tom. Ouça no padrão p-i-m-i.",
+        "tap": "Aperte no braço as notas de Fá com sétima (F7).",
+        "arp": "Monte Fá com sétima (F7) e toque corda por corda, da grave à aguda.",
+        "strum": "Faça a batida de Fá com sétima (F7) com o polegar para baixo, em semínimas, no tempo."
+      },
+      "l331": {
+        "title": "Si bemol maior (B♭)",
+        "objective": "Montar Si bemol maior (B♭), fazer todas as notas soarem limpas e tocar a batida no tempo.",
+        "s1": "“Um acorde novo para o álbum: Si bemol maior (B♭).”",
+        "s2": "Pestana na casa 1 da 5ª à 1ª, e os dedos 2, 3 e 4 na casa 3 da 4ª, da 3ª e da 2ª. A 6ª não soa.",
+        "s3": "Toque corda por corda: se uma não soar, ajeite esse dedo.",
+        "s4": "“E agora com p-i-m-i, como no nível 1.”",
+        "c1t": "Como montar Si bemol maior (B♭)",
+        "c1b": "Pestana na casa 1 da 5ª à 1ª, e os dedos 2, 3 e 4 na casa 3 da 4ª, da 3ª e da 2ª. A 6ª não soa. Ouça as notas uma de cada vez.",
+        "c2t": "Com p-i-m-i",
+        "c2b": "É a forma de A um traste acima. A tônica está na 5ª: é ali que o polegar começa. Ouça no padrão p-i-m-i.",
+        "tap": "Aperte no braço as notas de Si bemol maior (B♭).",
+        "arp": "Monte Si bemol maior (B♭) e toque corda por corda, da grave à aguda.",
+        "strum": "Faça a batida de Si bemol maior (B♭) com o polegar para baixo, em semínimas, no tempo."
+      },
+      "l332": {
+        "title": "Si bemol menor (B♭m)",
+        "objective": "Montar Si bemol menor (B♭m), fazer todas as notas soarem limpas e tocar a batida no tempo.",
+        "s1": "“Um acorde novo para o álbum: Si bemol menor (B♭m).”",
+        "s2": "Pestana na casa 1 a partir da 5ª, dedo 3 na casa 3 da 4ª, dedo 4 na casa 3 da 3ª e dedo 2 na casa 2 da 2ª.",
+        "s3": "Toque corda por corda: se uma não soar, ajeite esse dedo.",
+        "s4": "“E agora com p-i-m-i, como no nível 1.”",
+        "c1t": "Como montar Si bemol menor (B♭m)",
+        "c1b": "Pestana na casa 1 a partir da 5ª, dedo 3 na casa 3 da 4ª, dedo 4 na casa 3 da 3ª e dedo 2 na casa 2 da 2ª. Ouça as notas uma de cada vez.",
+        "c2t": "Com p-i-m-i",
+        "c2b": "A forma de Am, deslocada. Na casa 2 é o Bm com pestana completa. Ouça no padrão p-i-m-i.",
+        "tap": "Aperte no braço as notas de Si bemol menor (B♭m).",
+        "arp": "Monte Si bemol menor (B♭m) e toque corda por corda, da grave à aguda.",
+        "strum": "Faça a batida de Si bemol menor (B♭m) com o polegar para baixo, em semínimas, no tempo."
+      },
+      "l333": {
+        "title": "Si menor com sétima (Bm7)",
+        "objective": "Montar Si menor com sétima (Bm7), fazer todas as notas soarem limpas e tocar a batida no tempo.",
+        "s1": "“Um acorde novo para o álbum: Si menor com sétima (Bm7).”",
+        "s2": "Pestana na casa 2 a partir da 5ª, dedo 3 na casa 4 da 4ª e dedo 2 na casa 3 da 2ª.",
+        "s3": "Toque corda por corda: se uma não soar, ajeite esse dedo.",
+        "s4": "“E agora com p-i-m-i, como no nível 1.”",
+        "c1t": "Como montar Si menor com sétima (Bm7)",
+        "c1b": "Pestana na casa 2 a partir da 5ª, dedo 3 na casa 4 da 4ª e dedo 2 na casa 3 da 2ª. Ouça as notas uma de cada vez.",
+        "c2t": "Com p-i-m-i",
+        "c2b": "A forma de Am7, deslocada. Soa suave: muito usada na bossa e no jazz. Ouça no padrão p-i-m-i.",
+        "tap": "Aperte no braço as notas de Si menor com sétima (Bm7).",
+        "arp": "Monte Si menor com sétima (Bm7) e toque corda por corda, da grave à aguda.",
+        "strum": "Faça a batida de Si menor com sétima (Bm7) com o polegar para baixo, em semínimas, no tempo."
+      },
+      "l342": {
+        "title": "Si com sétima (B7)",
+        "objective": "Montar Si com sétima (B7), fazer todas as notas soarem limpas e tocar a batida no tempo.",
+        "s1": "“Um acorde novo para o álbum: Si com sétima (B7).”",
+        "s2": "Dedo 2 na casa 2 da 5ª, dedo 1 na casa 1 da 4ª, dedo 3 na casa 2 da 3ª e dedo 4 na casa 2 da 1ª; a 2ª soa solta. A 6ª não soa.",
+        "s3": "Toque corda por corda: se uma não soar, ajeite esse dedo.",
+        "s4": "“E agora com p-i-m-i, como no nível 1.”",
+        "c1t": "Como montar Si com sétima (B7)",
+        "c1b": "Dedo 2 na casa 2 da 5ª, dedo 1 na casa 1 da 4ª, dedo 3 na casa 2 da 3ª e dedo 4 na casa 2 da 1ª; a 2ª soa solta. A 6ª não soa. Ouça as notas uma de cada vez.",
+        "c2t": "Com p-i-m-i",
+        "c2b": "É o V do blues em Mi: leva de volta ao E7. Ouça no padrão p-i-m-i.",
+        "tap": "Aperte no braço as notas de Si com sétima (B7).",
+        "arp": "Monte Si com sétima (B7) e toque corda por corda, da grave à aguda.",
+        "strum": "Faça a batida de Si com sétima (B7) com o polegar para baixo, em semínimas, no tempo."
+      },
+      "l312": {
+        "title": "A pressão do dedo 1",
+        "objective": "Deitar o dedo 1 sobre a 2ª e a 1ª na casa 1 e fazer as duas soarem limpas.",
+        "s1": "“Antes da pestana completa, uma pestana pequena: duas cordas.”",
+        "s2": "Deite o dedo 1 sobre a 2ª e a 1ª, logo antes do traste 1.",
+        "s3": "Use a lateral do dedo, a que olha para a cabeça do violão: é mais dura.",
+        "s4": "“Não aperte com o polegar: puxe o braço um pouquinho para trás.”",
+        "c1t": "A lateral do dedo",
+        "c1b": "Olhe o diagrama: o dedo 1 cobre duas cordas. Gire-o um pouco para o nut, assim o osso faz a força.",
+        "c2t": "Dó e Fá",
+        "c2b": "A 2ª soa Dó e a 1ª soa Fá. Toque alternadas: as duas precisam soar limpas.",
+        "q1": "Qual parte do dedo 1 é melhor para a pestana?",
+        "q1o1": "A polpa, de frente",
+        "q1o2": "A lateral que olha para a cabeça do violão",
+        "q1o3": "A unha",
+        "play": "Com o dedo 1 deitado na casa 1, toque a 2ª e a 1ª alternadas, no tempo."
+      },
+      "l324": {
+        "title": "Mover a pestana",
+        "objective": "Mover a forma de Em com pestana: Fm na casa 1, F#m na 2 e Gm na 3.",
+        "s1": "“O melhor da pestana: uma forma, muitos acordes.”",
+        "s2": "Fm, F#m e Gm são a mesma forma nas casas 1, 2 e 3.",
+        "s3": "A nota da 6ª diz o nome do acorde.",
+        "s4": "“Suba uma casa e o acorde sobe um semitom.”",
+        "c1t": "Fm, F#m, Gm",
+        "c1b": "A mesma forma, uma casa acima a cada vez. Ouça, em mínimas.",
+        "c2t": "Em p-i-m-i",
+        "c2b": "O polegar toca a 6ª: Fá, Fá# e Sol.",
+        "tap": "Aperte no braço as notas de F#m.",
+        "tap2": "Aperte no braço as notas de Gm.",
+        "strum": "Faça a batida de Fm, F#m, Gm e F#m em mínimas, no tempo.",
+        "pimi": "Toque Fm, F#m, Gm e F#m em p-i-m-i, no tempo."
+      },
+      "l325": {
+        "title": "Do aberto à pestana",
+        "objective": "Trocar entre acordes abertos e com pestana sem perder o pulso: C, F, G e C; Am, F#m, D e E.",
+        "s1": "“Agora misturar: abertos e pestanas na mesma música.”",
+        "s2": "De C para F: o dedo 3 desce para a 4ª e o 1 se deita.",
+        "s3": "Prepare a pestana no tempo 4 do compasso anterior.",
+        "s4": "“Se a pestana atrasar, toque o tempo 1 assim mesmo: o importante é não parar.”",
+        "c1t": "C, F, G, C",
+        "c1b": "O F com meia pestana entre dois abertos. Ouça.",
+        "c2t": "Em p-i-m-i",
+        "c2b": "O polegar vai na 5ª em C, na 4ª em F e na 6ª em G.",
+        "strum1": "Faça a batida de Am, F#m, D e E em semínimas, no tempo.",
+        "strum": "Faça a batida de C, F, G e C em semínimas, no tempo.",
+        "pimi": "Toque C, F, G e C em p-i-m-i, no tempo."
+      },
+      "l334": {
+        "title": "Mover a forma de A",
+        "objective": "Mover a forma de Am com pestana: Cm na casa 3 e C#m na 4.",
+        "s1": "“A forma de A também se move. A tônica dela está na 5ª.”",
+        "s2": "Cm: pestana na casa 3. C#m: a mesma forma, na 4.",
+        "s3": "A nota da 5ª diz o nome: Dó na casa 3, Dó# na 4.",
+        "s4": "“Com duas formas, E e A, você tem todos os acordes maiores e menores.”",
+        "c1t": "Cm e C#m",
+        "c1b": "A forma de Am nas casas 3 e 4. Ouça, em mínimas.",
+        "c2t": "Em p-i-m-i",
+        "c2b": "O polegar toca a 5ª: Dó e Dó#.",
+        "tap": "Aperte no braço as notas de C#m.",
+        "q1": "Em que casa vai a pestana de C#m?",
+        "strum": "Faça a batida de Cm e C#m em mínimas, no tempo.",
+        "pimi": "Toque Cm e C#m em p-i-m-i, no tempo."
+      },
+      "l335": {
+        "title": "Só pestanas",
+        "objective": "Tocar uma progressão feita só de pestanas: B♭, Gm, Cm e F7.",
+        "s1": "“Nenhuma corda solta: tudo com pestana.”",
+        "s2": "B♭ (forma de A, casa 1), Gm (forma de E, casa 3).",
+        "s3": "Cm (forma de A, casa 3) e F7 (forma de E7, casa 1).",
+        "s4": "“Se a mão cansar, afrouxe entre um acorde e outro.”",
+        "c1t": "B♭, Gm, Cm, F7",
+        "c1b": "Um compasso cada, em semínimas. Ouça.",
+        "c2t": "Em p-i-m-i",
+        "c2b": "O polegar pula entre a 5ª e a 6ª: olhe o diagrama de cada acorde.",
+        "strum": "Faça a batida de B♭, Gm, Cm e F7 em semínimas, no tempo.",
+        "pimi": "Toque B♭, Gm, Cm e F7 em p-i-m-i, no tempo."
+      },
+      "l341": {
+        "title": "A sétima dominante",
+        "objective": "Reconhecer de ouvido um acorde com sétima e tocar C7 resolvendo em F.",
+        "s1": "“Um acorde maior com uma nota a mais: a sétima. Soa como se algo fosse acontecer.”",
+        "s2": "C é Dó, Mi, Sol. C7 soma Si bemol.",
+        "s3": "Essa tensão pede resolução: C7 vai para F.",
+        "s4": "“Por isso o blues está cheio de sétimas.”",
+        "c1t": "C e C7",
+        "c1b": "Olhe o diagrama de C7: é C com o dedo 4 na casa 3 da 3ª. Ouça a diferença.",
+        "c2t": "Resolver",
+        "c2b": "C7 e depois F: a tensão se solta.",
+        "ear1": "Ouça o acorde. É uma tríade ou tem sétima?",
+        "ear2": "Ouça o acorde. É uma tríade ou tem sétima?",
+        "triad": "Tríade",
+        "seventh": "Com sétima",
+        "tap": "Aperte no braço as notas de C7.",
+        "strum": "Faça a batida de C7 e F em semínimas, no tempo."
+      },
+      "l343": {
+        "title": "O baixo de boogie",
+        "objective": "Tocar com o polegar um baixo de boogie (tônica, terça, quinta e sexta) sobre E7 e A7 a 70 bpm.",
+        "s1": "“O blues caminha: o baixo sobe e desce pelo acorde.”",
+        "s2": "Em E: Mi, Sol#, Si, Dó#. Em A: Lá, Dó#, Mi, Fá#.",
+        "s3": "O polegar faz todo o trabalho; i descansa.",
+        "s4": "“No blues as colcheias são tocadas desiguais, “longa-curta”: isso é o shuffle. Por enquanto, em semínimas.”",
+        "c1t": "O boogie",
+        "c1b": "Quatro compassos: E, A, E e volta. Ouça com o metrônomo.",
+        "c2t": "O shuffle",
+        "c2b": "Quando estiver firme, tente tocar “longa-curta”, como na base de blues da banda.",
+        "tap": "Alterne p e i, um toque por tempo.",
+        "play": "Toque o baixo de boogie com o polegar, no tempo."
+      },
+      "l344": {
+        "title": "Blues em Mi e em Lá",
+        "objective": "Fazer a batida do blues de 12 compassos em Mi (E7, A7, B7) e em Lá (A7, D7, E7).",
+        "s1": "“A mesma forma de 12 compassos, em duas tonalidades.”",
+        "s2": "Em Mi: E7 é o I, A7 o IV e B7 o V.",
+        "s3": "Em Lá: A7, D7 e E7.",
+        "s4": "“Se você sabe os graus, sabe o blues em qualquer tom.”",
+        "c1t": "Blues em Mi",
+        "c1b": "E7 E7 E7 E7 · A7 A7 E7 E7 · B7 A7 E7 B7. Ouça.",
+        "c2t": "Blues em Lá",
+        "c2b": "A7 A7 A7 A7 · D7 D7 A7 A7 · E7 D7 A7 E7. Ouça.",
+        "q1": "No blues em Mi, qual é o acorde V?",
+        "strum1": "Faça a batida do blues em Mi em semínimas, no tempo.",
+        "strum2": "Faça a batida do blues em Lá em semínimas, no tempo."
+      },
+      "l345": {
+        "title": "O turnaround",
+        "objective": "Tocar um turnaround em Mi que desce por semitons e termina em B7, para voltar ao começo do blues.",
+        "s1": "“No fim de cada volta do blues tem um enfeite: o turnaround.”",
+        "s2": "Mi, Ré, Dó#, Dó: desce de semitom em semitom.",
+        "s3": "Termina em Si, o baixo de B7, que leva de volta ao E7.",
+        "s4": "“É a assinatura do blues: soa como “mais uma volta”.”",
+        "c1t": "Descendo",
+        "c1b": "Quatro semínimas que descem por semitons e duas mínimas em Si. Ouça.",
+        "c2t": "E B7",
+        "c2b": "Depois do turnaround, monte B7: é o acorde que recomeça tudo.",
+        "q1": "Para que serve o turnaround?",
+        "q1o1": "Para voltar ao começo da forma",
+        "q1o2": "Para terminar a música de vez",
+        "q1o3": "Para afinar entre as voltas",
+        "play": "Toque o turnaround em Mi, no tempo.",
+        "b7": "Monte B7 e toque as notas presas, da grave à aguda."
       }
     }
   },

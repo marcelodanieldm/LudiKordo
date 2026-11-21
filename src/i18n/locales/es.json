@@ -359,6 +359,39 @@
       "trialEnding": "Tu prueba gratis termina en 2 días. Puedes cancelarla desde Perfil."
     },
     "gfig": {
+      "chord_fmaj7": {
+        "a11y": "Diagrama del acorde Fmaj7"
+      },
+      "chord_f_half": {
+        "a11y": "Diagrama del acorde F (media cejilla)"
+      },
+      "chord_bm_half": {
+        "a11y": "Diagrama del acorde Bm (4 cuerdas)"
+      },
+      "barre_f7": {
+        "a11y": "Diagrama del acorde F7"
+      },
+      "barre_fsm": {
+        "a11y": "Diagrama del acorde F#m"
+      },
+      "barre_gm": {
+        "a11y": "Diagrama del acorde Gm"
+      },
+      "barre_bbm": {
+        "a11y": "Diagrama del acorde B♭m"
+      },
+      "barre_bm7": {
+        "a11y": "Diagrama del acorde Bm7"
+      },
+      "barre_csm": {
+        "a11y": "Diagrama del acorde C#m"
+      },
+      "chord_b7": {
+        "a11y": "Diagrama del acorde B7"
+      },
+      "chord_c7": {
+        "a11y": "Diagrama del acorde C7"
+      },
       "chord_e7": {
         "a11y": "Diagrama del acorde E7"
       },
@@ -925,6 +958,18 @@
       "n_blues_1": {
         "title": "Sombra en Am",
         "desc": "Blues lento en La menor: una melodía con la pentatónica sobre Am, Dm y E7, que toca la banda."
+      },
+      "n_rock_2": {
+        "title": "Terraza",
+        "desc": "Rock en Mi con E, G, A y F#m: tu primera canción con cejilla. Tocas los acordes en p-i-m-a."
+      },
+      "n_pop_3": {
+        "title": "Ciudad de papel",
+        "desc": "Balada pop en Sol con Bm: arpegio de balada en corcheas sobre G, D, Bm, Em y A."
+      },
+      "n_blues_2": {
+        "title": "Blues del andén",
+        "desc": "Blues de 12 compases en La. Tocas A7, D7 y E7 con bajo alternado; la banda acompaña en shuffle."
       }
     },
     "l261": {
@@ -4859,6 +4904,299 @@
         "strum": "Toca el rasgueo pop sobre G, Em7, Am7 y D7, dos vueltas, a tempo.",
         "arp": "Toca p-i-m-a sobre G, Em7, Am7 y D7, a tempo.",
         "penta": "Toca la pregunta y la respuesta con la pentatónica, a tempo."
+      },
+      "l311": {
+        "title": "Fa con séptima mayor (Fmaj7)",
+        "objective": "Armar Fa con séptima mayor (Fmaj7), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: Fa con séptima mayor (Fmaj7).»",
+        "s2": "Dedo 3 en el traste 3 de la 4.ª, dedo 2 en el traste 2 de la 3.ª y dedo 1 en el traste 1 de la 2.ª; la 1.ª suena al aire. La 6.ª y la 5.ª no suenan.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma Fa con séptima mayor (Fmaj7)",
+        "c1b": "Dedo 3 en el traste 3 de la 4.ª, dedo 2 en el traste 2 de la 3.ª y dedo 1 en el traste 1 de la 2.ª; la 1.ª suena al aire. La 6.ª y la 5.ª no suenan. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "Es el paso previo a la F: la misma forma, sin cejilla todavía. Escúchalo en el patrón p-i-m-i.",
+        "tap": "Pisa en el diapasón las notas de Fa con séptima mayor (Fmaj7).",
+        "arp": "Arma Fa con séptima mayor (Fmaj7) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea Fa con séptima mayor (Fmaj7) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l313": {
+        "title": "Fa mayor con media cejilla (F)",
+        "objective": "Armar Fa mayor con media cejilla (F), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: Fa mayor con media cejilla (F).»",
+        "s2": "Dedo 1 acostado en el traste 1 sobre la 2.ª y la 1.ª, dedo 2 en el traste 2 de la 3.ª y dedo 3 en el traste 3 de la 4.ª. Suenan de la 4.ª a la 1.ª.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma Fa mayor con media cejilla (F)",
+        "c1b": "Dedo 1 acostado en el traste 1 sobre la 2.ª y la 1.ª, dedo 2 en el traste 2 de la 3.ª y dedo 3 en el traste 3 de la 4.ª. Suenan de la 4.ª a la 1.ª. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "Es Fmaj7 con el dedo 1 acostado: así la 1.ª también suena Fa. Escúchalo en el patrón p-i-m-i.",
+        "tap": "Pisa en el diapasón las notas de Fa mayor con media cejilla (F).",
+        "arp": "Arma Fa mayor con media cejilla (F) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea Fa mayor con media cejilla (F) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l314": {
+        "title": "Si menor en 4 cuerdas (Bm)",
+        "objective": "Armar Si menor en 4 cuerdas (Bm), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: Si menor en 4 cuerdas (Bm).»",
+        "s2": "Dedo 1 en el traste 2 de la 1.ª, dedo 2 en el traste 3 de la 2.ª, dedo 3 en el traste 4 de la 4.ª y dedo 4 en el traste 4 de la 3.ª. Suenan de la 4.ª a la 1.ª.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma Si menor en 4 cuerdas (Bm)",
+        "c1b": "Dedo 1 en el traste 2 de la 1.ª, dedo 2 en el traste 3 de la 2.ª, dedo 3 en el traste 4 de la 4.ª y dedo 4 en el traste 4 de la 3.ª. Suenan de la 4.ª a la 1.ª. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "Cuatro dedos y cuatro cuerdas: la versión fácil de Bm. La completa, con cejilla, llega en 3.3. Escúchalo en el patrón p-i-m-i.",
+        "tap": "Pisa en el diapasón las notas de Si menor en 4 cuerdas (Bm).",
+        "arp": "Arma Si menor en 4 cuerdas (Bm) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea Si menor en 4 cuerdas (Bm) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l321": {
+        "title": "Fa mayor con cejilla (F)",
+        "objective": "Armar Fa mayor con cejilla (F), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: Fa mayor con cejilla (F).»",
+        "s2": "Cejilla con el dedo 1 en el traste 1 sobre las 6 cuerdas, dedo 3 en el traste 3 de la 5.ª, dedo 4 en el traste 3 de la 4.ª y dedo 2 en el traste 2 de la 3.ª.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma Fa mayor con cejilla (F)",
+        "c1b": "Cejilla con el dedo 1 en el traste 1 sobre las 6 cuerdas, dedo 3 en el traste 3 de la 5.ª, dedo 4 en el traste 3 de la 4.ª y dedo 2 en el traste 2 de la 3.ª. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "Es la forma de E corrida un traste, con el dedo 1 haciendo de cejuela. Escúchalo en el patrón p-i-m-i.",
+        "tap": "Pisa en el diapasón las notas de Fa mayor con cejilla (F).",
+        "arp": "Arma Fa mayor con cejilla (F) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea Fa mayor con cejilla (F) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l322": {
+        "title": "Fa menor (Fm)",
+        "objective": "Armar Fa menor (Fm), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: Fa menor (Fm).»",
+        "s2": "Como F con cejilla, sin el dedo 2: la 3.ª suena con la cejilla en el traste 1.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma Fa menor (Fm)",
+        "c1b": "Como F con cejilla, sin el dedo 2: la 3.ª suena con la cejilla en el traste 1. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "La forma de Em, corrida. Si la 3.ª no suena, rota un poco el dedo 1 hacia el costado. Escúchalo en el patrón p-i-m-i.",
+        "tap": "Pisa en el diapasón las notas de Fa menor (Fm).",
+        "arp": "Arma Fa menor (Fm) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea Fa menor (Fm) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l323": {
+        "title": "Fa séptima (F7)",
+        "objective": "Armar Fa séptima (F7), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: Fa séptima (F7).»",
+        "s2": "Cejilla en el traste 1, dedo 3 en el traste 3 de la 5.ª y dedo 2 en el traste 2 de la 3.ª.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma Fa séptima (F7)",
+        "c1b": "Cejilla en el traste 1, dedo 3 en el traste 3 de la 5.ª y dedo 2 en el traste 2 de la 3.ª. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "La forma de E7, corrida: sirve para el blues en cualquier tono. Escúchalo en el patrón p-i-m-i.",
+        "tap": "Pisa en el diapasón las notas de Fa séptima (F7).",
+        "arp": "Arma Fa séptima (F7) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea Fa séptima (F7) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l331": {
+        "title": "Si bemol mayor (B♭)",
+        "objective": "Armar Si bemol mayor (B♭), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: Si bemol mayor (B♭).»",
+        "s2": "Cejilla en el traste 1 de la 5.ª a la 1.ª, y los dedos 2, 3 y 4 en el traste 3 de la 4.ª, la 3.ª y la 2.ª. La 6.ª no suena.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma Si bemol mayor (B♭)",
+        "c1b": "Cejilla en el traste 1 de la 5.ª a la 1.ª, y los dedos 2, 3 y 4 en el traste 3 de la 4.ª, la 3.ª y la 2.ª. La 6.ª no suena. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "Es la forma de A corrida un traste. La tónica está en la 5.ª: ahí empieza el pulgar. Escúchalo en el patrón p-i-m-i.",
+        "tap": "Pisa en el diapasón las notas de Si bemol mayor (B♭).",
+        "arp": "Arma Si bemol mayor (B♭) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea Si bemol mayor (B♭) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l332": {
+        "title": "Si bemol menor (B♭m)",
+        "objective": "Armar Si bemol menor (B♭m), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: Si bemol menor (B♭m).»",
+        "s2": "Cejilla en el traste 1 desde la 5.ª, dedo 3 en el traste 3 de la 4.ª, dedo 4 en el traste 3 de la 3.ª y dedo 2 en el traste 2 de la 2.ª.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma Si bemol menor (B♭m)",
+        "c1b": "Cejilla en el traste 1 desde la 5.ª, dedo 3 en el traste 3 de la 4.ª, dedo 4 en el traste 3 de la 3.ª y dedo 2 en el traste 2 de la 2.ª. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "La forma de Am, corrida. En el traste 2 es Bm con cejilla completa. Escúchalo en el patrón p-i-m-i.",
+        "tap": "Pisa en el diapasón las notas de Si bemol menor (B♭m).",
+        "arp": "Arma Si bemol menor (B♭m) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea Si bemol menor (B♭m) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l333": {
+        "title": "Si menor séptima (Bm7)",
+        "objective": "Armar Si menor séptima (Bm7), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: Si menor séptima (Bm7).»",
+        "s2": "Cejilla en el traste 2 desde la 5.ª, dedo 3 en el traste 4 de la 4.ª y dedo 2 en el traste 3 de la 2.ª.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma Si menor séptima (Bm7)",
+        "c1b": "Cejilla en el traste 2 desde la 5.ª, dedo 3 en el traste 4 de la 4.ª y dedo 2 en el traste 3 de la 2.ª. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "La forma de Am7, corrida. Suena suave: muy usada en la bossa y el jazz. Escúchalo en el patrón p-i-m-i.",
+        "tap": "Pisa en el diapasón las notas de Si menor séptima (Bm7).",
+        "arp": "Arma Si menor séptima (Bm7) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea Si menor séptima (Bm7) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l342": {
+        "title": "Si séptima (B7)",
+        "objective": "Armar Si séptima (B7), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: Si séptima (B7).»",
+        "s2": "Dedo 2 en el traste 2 de la 5.ª, dedo 1 en el traste 1 de la 4.ª, dedo 3 en el traste 2 de la 3.ª y dedo 4 en el traste 2 de la 1.ª; la 2.ª suena al aire. La 6.ª no suena.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma Si séptima (B7)",
+        "c1b": "Dedo 2 en el traste 2 de la 5.ª, dedo 1 en el traste 1 de la 4.ª, dedo 3 en el traste 2 de la 3.ª y dedo 4 en el traste 2 de la 1.ª; la 2.ª suena al aire. La 6.ª no suena. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "Es el V del blues en Mi: lleva de vuelta a E7. Escúchalo en el patrón p-i-m-i.",
+        "tap": "Pisa en el diapasón las notas de Si séptima (B7).",
+        "arp": "Arma Si séptima (B7) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea Si séptima (B7) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l312": {
+        "title": "La presión del dedo 1",
+        "objective": "Acostar el dedo 1 sobre la 2.ª y la 1.ª en el traste 1 y hacer que las dos suenen limpias.",
+        "s1": "«Antes de la cejilla completa, una cejilla chiquita: dos cuerdas.»",
+        "s2": "Acuesta el dedo 1 sobre la 2.ª y la 1.ª, justo detrás del traste 1.",
+        "s3": "Usa el costado del dedo, el que mira a la cabeza de la guitarra: es más duro.",
+        "s4": "«No aprietes con el pulgar: tira el brazo un poquito hacia atrás.»",
+        "c1t": "El costado del dedo",
+        "c1b": "Mira el diagrama: el dedo 1 cubre dos cuerdas. Gíralo un poco hacia la cejuela, así el hueso hace la fuerza.",
+        "c2t": "Do y Fa",
+        "c2b": "La 2.ª suena Do y la 1.ª suena Fa. Tócalas alternadas: las dos tienen que sonar limpias.",
+        "q1": "¿Qué parte del dedo 1 conviene usar para la cejilla?",
+        "q1o1": "La yema, bien de frente",
+        "q1o2": "El costado que mira a la cabeza de la guitarra",
+        "q1o3": "La uña",
+        "play": "Con el dedo 1 acostado en el traste 1, toca la 2.ª y la 1.ª alternadas, a tempo."
+      },
+      "l324": {
+        "title": "Mover la cejilla",
+        "objective": "Mover la forma de Em con cejilla: Fm en el 1, F#m en el 2 y Gm en el 3.",
+        "s1": "«Lo mejor de la cejilla: una forma, muchos acordes.»",
+        "s2": "Fm, F#m y Gm son la misma forma en los trastes 1, 2 y 3.",
+        "s3": "La nota de la 6.ª dice cómo se llama el acorde.",
+        "s4": "«Sube un traste y el acorde sube un semitono.»",
+        "c1t": "Fm, F#m, Gm",
+        "c1b": "La misma forma, un traste más arriba cada vez. Escucha, en blancas.",
+        "c2t": "En p-i-m-i",
+        "c2b": "El pulgar toca la 6.ª: Fa, Fa# y Sol.",
+        "tap": "Pisa en el diapasón las notas de F#m.",
+        "tap2": "Pisa en el diapasón las notas de Gm.",
+        "strum": "Rasguea Fm, F#m, Gm y F#m en blancas, a tempo.",
+        "pimi": "Toca Fm, F#m, Gm y F#m en p-i-m-i, a tempo."
+      },
+      "l325": {
+        "title": "De abierto a cejilla",
+        "objective": "Cambiar entre acordes abiertos y con cejilla sin cortar el pulso: C, F, G y C; Am, F#m, D y E.",
+        "s1": "«Ahora a mezclar: abiertos y cejillas en la misma canción.»",
+        "s2": "De C a F: el dedo 3 baja a la 4.ª y el 1 se acuesta.",
+        "s3": "Prepara la cejilla en el pulso 4 del compás anterior.",
+        "s4": "«Si la cejilla tarda, toca el pulso 1 igual: lo importante es no parar.»",
+        "c1t": "C, F, G, C",
+        "c1b": "La F con media cejilla en medio de dos abiertos. Escucha.",
+        "c2t": "En p-i-m-i",
+        "c2b": "El pulgar va a la 5.ª en C, a la 4.ª en F y a la 6.ª en G.",
+        "strum1": "Rasguea Am, F#m, D y E en negras, a tempo.",
+        "strum": "Rasguea C, F, G y C en negras, a tempo.",
+        "pimi": "Toca C, F, G y C en p-i-m-i, a tempo."
+      },
+      "l334": {
+        "title": "Mover la forma de A",
+        "objective": "Mover la forma de Am con cejilla: Cm en el traste 3 y C#m en el 4.",
+        "s1": "«La forma de A también se mueve. Su tónica está en la 5.ª.»",
+        "s2": "Cm: cejilla en el 3. C#m: la misma forma, en el 4.",
+        "s3": "La nota de la 5.ª dice el nombre: Do en el 3, Do# en el 4.",
+        "s4": "«Con dos formas, E y A, tienes todos los acordes mayores y menores.»",
+        "c1t": "Cm y C#m",
+        "c1b": "La forma de Am, en los trastes 3 y 4. Escucha, en blancas.",
+        "c2t": "En p-i-m-i",
+        "c2b": "El pulgar toca la 5.ª: Do y Do#.",
+        "tap": "Pisa en el diapasón las notas de C#m.",
+        "q1": "¿En qué traste va la cejilla de C#m?",
+        "strum": "Rasguea Cm y C#m en blancas, a tempo.",
+        "pimi": "Toca Cm y C#m en p-i-m-i, a tempo."
+      },
+      "l335": {
+        "title": "Solo cejillas",
+        "objective": "Tocar una progresión hecha solo de cejillas: B♭, Gm, Cm y F7.",
+        "s1": "«Ninguna cuerda al aire: todo con cejilla.»",
+        "s2": "B♭ (forma de A, traste 1), Gm (forma de E, traste 3).",
+        "s3": "Cm (forma de A, traste 3) y F7 (forma de E7, traste 1).",
+        "s4": "«Si la mano se cansa, aflójala entre acorde y acorde.»",
+        "c1t": "B♭, Gm, Cm, F7",
+        "c1b": "Un compás cada uno, en negras. Escucha.",
+        "c2t": "En p-i-m-i",
+        "c2b": "El pulgar salta entre la 5.ª y la 6.ª: mira el diagrama de cada acorde.",
+        "strum": "Rasguea B♭, Gm, Cm y F7 en negras, a tempo.",
+        "pimi": "Toca B♭, Gm, Cm y F7 en p-i-m-i, a tempo."
+      },
+      "l341": {
+        "title": "La séptima dominante",
+        "objective": "Reconocer de oído un acorde de séptima y tocar C7 resolviendo en F.",
+        "s1": "«Un acorde mayor con una nota más: la séptima. Suena a que algo va a pasar.»",
+        "s2": "C es Do, Mi, Sol. C7 suma Si bemol.",
+        "s3": "Esa tensión pide resolver: C7 va a F.",
+        "s4": "«Por eso el blues está lleno de séptimas.»",
+        "c1t": "C y C7",
+        "c1b": "Mira el diagrama de C7: es C con el dedo 4 en el traste 3 de la 3.ª. Escucha la diferencia.",
+        "c2t": "Resolver",
+        "c2b": "C7 y después F: la tensión se suelta.",
+        "ear1": "Escucha el acorde. ¿Es una tríada o tiene séptima?",
+        "ear2": "Escucha el acorde. ¿Es una tríada o tiene séptima?",
+        "triad": "Tríada",
+        "seventh": "Con séptima",
+        "tap": "Pisa en el diapasón las notas de C7.",
+        "strum": "Rasguea C7 y F en negras, a tempo."
+      },
+      "l343": {
+        "title": "El bajo de boogie",
+        "objective": "Tocar con el pulgar un bajo de boogie (tónica, tercera, quinta y sexta) sobre E7 y A7 a 70 bpm.",
+        "s1": "«El blues camina: el bajo sube y baja por el acorde.»",
+        "s2": "En E: Mi, Sol#, Si, Do#. En A: La, Do#, Mi, Fa#.",
+        "s3": "El pulgar hace todo el trabajo; i descansa.",
+        "s4": "«En el blues las corcheas se tocan desparejas, «largo-corto»: eso es el shuffle. Por ahora, en negras.»",
+        "c1t": "El boogie",
+        "c1b": "Cuatro compases: E, A, E y vuelta. Escucha con el metrónomo.",
+        "c2t": "El shuffle",
+        "c2b": "Cuando lo tengas firme, prueba a tocarlo «largo-corto», como en la pista de blues de la banda.",
+        "tap": "Alterna p e i, un toque por pulso.",
+        "play": "Toca el bajo de boogie con el pulgar, a tempo."
+      },
+      "l344": {
+        "title": "Blues en Mi y en La",
+        "objective": "Rasguear el blues de 12 compases en Mi (E7, A7, B7) y en La (A7, D7, E7).",
+        "s1": "«La misma forma de 12 compases, en dos tonalidades.»",
+        "s2": "En Mi: E7 es el I, A7 el IV y B7 el V.",
+        "s3": "En La: A7, D7 y E7.",
+        "s4": "«Si sabes los grados, sabes el blues en cualquier tono.»",
+        "c1t": "Blues en Mi",
+        "c1b": "E7 E7 E7 E7 · A7 A7 E7 E7 · B7 A7 E7 B7. Escucha.",
+        "c2t": "Blues en La",
+        "c2b": "A7 A7 A7 A7 · D7 D7 A7 A7 · E7 D7 A7 E7. Escucha.",
+        "q1": "En el blues en Mi, ¿cuál es el acorde V?",
+        "strum1": "Rasguea el blues en Mi en negras, a tempo.",
+        "strum2": "Rasguea el blues en La en negras, a tempo."
+      },
+      "l345": {
+        "title": "El turnaround",
+        "objective": "Tocar un turnaround en Mi que baja por semitonos y termina en B7, para volver al principio del blues.",
+        "s1": "«Al final de cada vuelta del blues hay un pequeño adorno: el turnaround.»",
+        "s2": "Mi, Re, Do#, Do: baja de a semitono.",
+        "s3": "Termina en Si, el bajo de B7, que te devuelve a E7.",
+        "s4": "«Es la firma del blues: suena a «otra vuelta más».»",
+        "c1t": "Bajando",
+        "c1b": "Cuatro negras que bajan por semitonos y dos blancas en Si. Escucha.",
+        "c2t": "Y B7",
+        "c2b": "Después del turnaround, arma B7: es el acorde que vuelve a empezar.",
+        "q1": "¿Para qué sirve el turnaround?",
+        "q1o1": "Para volver al principio de la forma",
+        "q1o2": "Para terminar la canción para siempre",
+        "q1o3": "Para afinar entre vueltas",
+        "play": "Toca el turnaround en Mi, a tempo.",
+        "b7": "Arma B7 y toca las notas pisadas, de grave a agudo."
       }
     }
   },

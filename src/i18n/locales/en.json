@@ -359,6 +359,39 @@
       "trialEnding": "Your free trial ends in 2 days. You can cancel it from Profile."
     },
     "gfig": {
+      "chord_fmaj7": {
+        "a11y": "Fmaj7 chord diagram"
+      },
+      "chord_f_half": {
+        "a11y": "F (half barre) chord diagram"
+      },
+      "chord_bm_half": {
+        "a11y": "Bm (4 strings) chord diagram"
+      },
+      "barre_f7": {
+        "a11y": "F7 chord diagram"
+      },
+      "barre_fsm": {
+        "a11y": "F#m chord diagram"
+      },
+      "barre_gm": {
+        "a11y": "Gm chord diagram"
+      },
+      "barre_bbm": {
+        "a11y": "B♭m chord diagram"
+      },
+      "barre_bm7": {
+        "a11y": "Bm7 chord diagram"
+      },
+      "barre_csm": {
+        "a11y": "C#m chord diagram"
+      },
+      "chord_b7": {
+        "a11y": "B7 chord diagram"
+      },
+      "chord_c7": {
+        "a11y": "C7 chord diagram"
+      },
       "chord_e7": {
         "a11y": "E7 chord diagram"
       },
@@ -925,6 +958,18 @@
       "n_blues_1": {
         "title": "Shadow in Am",
         "desc": "A slow blues in A minor: a pentatonic melody over Am, Dm and E7, played by the band."
+      },
+      "n_rock_2": {
+        "title": "Rooftop",
+        "desc": "Rock in E with E, G, A and F#m: your first song with a barre chord. You play the chords in p-i-m-a."
+      },
+      "n_pop_3": {
+        "title": "Paper City",
+        "desc": "A pop ballad in G with Bm: the ballad arpeggio in eighth notes over G, D, Bm, Em and A."
+      },
+      "n_blues_2": {
+        "title": "Platform Blues",
+        "desc": "A 12-bar blues in A. You play A7, D7 and E7 with an alternating bass; the band backs you with a shuffle."
       }
     },
     "l261": {
@@ -4859,6 +4904,299 @@
         "strum": "Play the pop strum over G, Em7, Am7 and D7, twice, in time.",
         "arp": "Play p-i-m-a over G, Em7, Am7 and D7, in time.",
         "penta": "Play the call and the answer with the pentatonic, in time."
+      },
+      "l311": {
+        "title": "F major seventh (Fmaj7)",
+        "objective": "Fret F major seventh (Fmaj7), make every note ring clean and strum it in time.",
+        "s1": "\"A new chord for the album: F major seventh (Fmaj7).\"",
+        "s2": "Finger 3 on fret 3 of the 4th string, finger 2 on fret 2 of the 3rd and finger 1 on fret 1 of the 2nd; the open 1st rings. Don't play the 6th or 5th.",
+        "s3": "Play string by string: if one doesn't ring, adjust that finger.",
+        "s4": "\"And now with p-i-m-i, like in level 1.\"",
+        "c1t": "How to fret F major seventh (Fmaj7)",
+        "c1b": "Finger 3 on fret 3 of the 4th string, finger 2 on fret 2 of the 3rd and finger 1 on fret 1 of the 2nd; the open 1st rings. Don't play the 6th or 5th. Listen to its notes one at a time.",
+        "c2t": "With p-i-m-i",
+        "c2b": "It's the step before F: the same shape, still without a barre. Listen to it in the p-i-m-i pattern.",
+        "tap": "Press the notes of F major seventh (Fmaj7) on the fretboard.",
+        "arp": "Fret F major seventh (Fmaj7) and play string by string, from low to high.",
+        "strum": "Strum F major seventh (Fmaj7) downward with your thumb, in quarter notes, in time."
+      },
+      "l313": {
+        "title": "F major with a half barre (F)",
+        "objective": "Fret F major with a half barre (F), make every note ring clean and strum it in time.",
+        "s1": "\"A new chord for the album: F major with a half barre (F).\"",
+        "s2": "Finger 1 lying across fret 1 on the 2nd and 1st strings, finger 2 on fret 2 of the 3rd and finger 3 on fret 3 of the 4th. Play the 4th to the 1st.",
+        "s3": "Play string by string: if one doesn't ring, adjust that finger.",
+        "s4": "\"And now with p-i-m-i, like in level 1.\"",
+        "c1t": "How to fret F major with a half barre (F)",
+        "c1b": "Finger 1 lying across fret 1 on the 2nd and 1st strings, finger 2 on fret 2 of the 3rd and finger 3 on fret 3 of the 4th. Play the 4th to the 1st. Listen to its notes one at a time.",
+        "c2t": "With p-i-m-i",
+        "c2b": "It's Fmaj7 with finger 1 laid flat: now the 1st string sounds F too. Listen to it in the p-i-m-i pattern.",
+        "tap": "Press the notes of F major with a half barre (F) on the fretboard.",
+        "arp": "Fret F major with a half barre (F) and play string by string, from low to high.",
+        "strum": "Strum F major with a half barre (F) downward with your thumb, in quarter notes, in time."
+      },
+      "l314": {
+        "title": "B minor on 4 strings (Bm)",
+        "objective": "Fret B minor on 4 strings (Bm), make every note ring clean and strum it in time.",
+        "s1": "\"A new chord for the album: B minor on 4 strings (Bm).\"",
+        "s2": "Finger 1 on fret 2 of the 1st string, finger 2 on fret 3 of the 2nd, finger 3 on fret 4 of the 4th and finger 4 on fret 4 of the 3rd. Play the 4th to the 1st.",
+        "s3": "Play string by string: if one doesn't ring, adjust that finger.",
+        "s4": "\"And now with p-i-m-i, like in level 1.\"",
+        "c1t": "How to fret B minor on 4 strings (Bm)",
+        "c1b": "Finger 1 on fret 2 of the 1st string, finger 2 on fret 3 of the 2nd, finger 3 on fret 4 of the 4th and finger 4 on fret 4 of the 3rd. Play the 4th to the 1st. Listen to its notes one at a time.",
+        "c2t": "With p-i-m-i",
+        "c2b": "Four fingers, four strings: the easy Bm. The full barre version comes in 3.3. Listen to it in the p-i-m-i pattern.",
+        "tap": "Press the notes of B minor on 4 strings (Bm) on the fretboard.",
+        "arp": "Fret B minor on 4 strings (Bm) and play string by string, from low to high.",
+        "strum": "Strum B minor on 4 strings (Bm) downward with your thumb, in quarter notes, in time."
+      },
+      "l321": {
+        "title": "F major barre chord (F)",
+        "objective": "Fret F major barre chord (F), make every note ring clean and strum it in time.",
+        "s1": "\"A new chord for the album: F major barre chord (F).\"",
+        "s2": "Barre with finger 1 across fret 1 on all 6 strings, finger 3 on fret 3 of the 5th, finger 4 on fret 3 of the 4th and finger 2 on fret 2 of the 3rd.",
+        "s3": "Play string by string: if one doesn't ring, adjust that finger.",
+        "s4": "\"And now with p-i-m-i, like in level 1.\"",
+        "c1t": "How to fret F major barre chord (F)",
+        "c1b": "Barre with finger 1 across fret 1 on all 6 strings, finger 3 on fret 3 of the 5th, finger 4 on fret 3 of the 4th and finger 2 on fret 2 of the 3rd. Listen to its notes one at a time.",
+        "c2t": "With p-i-m-i",
+        "c2b": "It's the E shape moved up one fret, with finger 1 acting as the nut. Listen to it in the p-i-m-i pattern.",
+        "tap": "Press the notes of F major barre chord (F) on the fretboard.",
+        "arp": "Fret F major barre chord (F) and play string by string, from low to high.",
+        "strum": "Strum F major barre chord (F) downward with your thumb, in quarter notes, in time."
+      },
+      "l322": {
+        "title": "F minor (Fm)",
+        "objective": "Fret F minor (Fm), make every note ring clean and strum it in time.",
+        "s1": "\"A new chord for the album: F minor (Fm).\"",
+        "s2": "Like the barre F without finger 2: the 3rd string sounds under the barre on fret 1.",
+        "s3": "Play string by string: if one doesn't ring, adjust that finger.",
+        "s4": "\"And now with p-i-m-i, like in level 1.\"",
+        "c1t": "How to fret F minor (Fm)",
+        "c1b": "Like the barre F without finger 2: the 3rd string sounds under the barre on fret 1. Listen to its notes one at a time.",
+        "c2t": "With p-i-m-i",
+        "c2b": "The Em shape, moved up. If the 3rd string doesn't ring, roll finger 1 slightly onto its side. Listen to it in the p-i-m-i pattern.",
+        "tap": "Press the notes of F minor (Fm) on the fretboard.",
+        "arp": "Fret F minor (Fm) and play string by string, from low to high.",
+        "strum": "Strum F minor (Fm) downward with your thumb, in quarter notes, in time."
+      },
+      "l323": {
+        "title": "F seventh (F7)",
+        "objective": "Fret F seventh (F7), make every note ring clean and strum it in time.",
+        "s1": "\"A new chord for the album: F seventh (F7).\"",
+        "s2": "Barre on fret 1, finger 3 on fret 3 of the 5th string and finger 2 on fret 2 of the 3rd.",
+        "s3": "Play string by string: if one doesn't ring, adjust that finger.",
+        "s4": "\"And now with p-i-m-i, like in level 1.\"",
+        "c1t": "How to fret F seventh (F7)",
+        "c1b": "Barre on fret 1, finger 3 on fret 3 of the 5th string and finger 2 on fret 2 of the 3rd. Listen to its notes one at a time.",
+        "c2t": "With p-i-m-i",
+        "c2b": "The E7 shape, moved up: it works for blues in any key. Listen to it in the p-i-m-i pattern.",
+        "tap": "Press the notes of F seventh (F7) on the fretboard.",
+        "arp": "Fret F seventh (F7) and play string by string, from low to high.",
+        "strum": "Strum F seventh (F7) downward with your thumb, in quarter notes, in time."
+      },
+      "l331": {
+        "title": "B flat major (B♭)",
+        "objective": "Fret B flat major (B♭), make every note ring clean and strum it in time.",
+        "s1": "\"A new chord for the album: B flat major (B♭).\"",
+        "s2": "Barre on fret 1 from the 5th string to the 1st, and fingers 2, 3 and 4 on fret 3 of the 4th, 3rd and 2nd. Don't play the 6th.",
+        "s3": "Play string by string: if one doesn't ring, adjust that finger.",
+        "s4": "\"And now with p-i-m-i, like in level 1.\"",
+        "c1t": "How to fret B flat major (B♭)",
+        "c1b": "Barre on fret 1 from the 5th string to the 1st, and fingers 2, 3 and 4 on fret 3 of the 4th, 3rd and 2nd. Don't play the 6th. Listen to its notes one at a time.",
+        "c2t": "With p-i-m-i",
+        "c2b": "It's the A shape moved up one fret. The root is on the 5th string: that's where the thumb starts. Listen to it in the p-i-m-i pattern.",
+        "tap": "Press the notes of B flat major (B♭) on the fretboard.",
+        "arp": "Fret B flat major (B♭) and play string by string, from low to high.",
+        "strum": "Strum B flat major (B♭) downward with your thumb, in quarter notes, in time."
+      },
+      "l332": {
+        "title": "B flat minor (B♭m)",
+        "objective": "Fret B flat minor (B♭m), make every note ring clean and strum it in time.",
+        "s1": "\"A new chord for the album: B flat minor (B♭m).\"",
+        "s2": "Barre on fret 1 from the 5th string, finger 3 on fret 3 of the 4th, finger 4 on fret 3 of the 3rd and finger 2 on fret 2 of the 2nd.",
+        "s3": "Play string by string: if one doesn't ring, adjust that finger.",
+        "s4": "\"And now with p-i-m-i, like in level 1.\"",
+        "c1t": "How to fret B flat minor (B♭m)",
+        "c1b": "Barre on fret 1 from the 5th string, finger 3 on fret 3 of the 4th, finger 4 on fret 3 of the 3rd and finger 2 on fret 2 of the 2nd. Listen to its notes one at a time.",
+        "c2t": "With p-i-m-i",
+        "c2b": "The Am shape, moved up. On fret 2 it's the full barre Bm. Listen to it in the p-i-m-i pattern.",
+        "tap": "Press the notes of B flat minor (B♭m) on the fretboard.",
+        "arp": "Fret B flat minor (B♭m) and play string by string, from low to high.",
+        "strum": "Strum B flat minor (B♭m) downward with your thumb, in quarter notes, in time."
+      },
+      "l333": {
+        "title": "B minor seventh (Bm7)",
+        "objective": "Fret B minor seventh (Bm7), make every note ring clean and strum it in time.",
+        "s1": "\"A new chord for the album: B minor seventh (Bm7).\"",
+        "s2": "Barre on fret 2 from the 5th string, finger 3 on fret 4 of the 4th and finger 2 on fret 3 of the 2nd.",
+        "s3": "Play string by string: if one doesn't ring, adjust that finger.",
+        "s4": "\"And now with p-i-m-i, like in level 1.\"",
+        "c1t": "How to fret B minor seventh (Bm7)",
+        "c1b": "Barre on fret 2 from the 5th string, finger 3 on fret 4 of the 4th and finger 2 on fret 3 of the 2nd. Listen to its notes one at a time.",
+        "c2t": "With p-i-m-i",
+        "c2b": "The Am7 shape, moved up. It sounds soft: common in bossa and jazz. Listen to it in the p-i-m-i pattern.",
+        "tap": "Press the notes of B minor seventh (Bm7) on the fretboard.",
+        "arp": "Fret B minor seventh (Bm7) and play string by string, from low to high.",
+        "strum": "Strum B minor seventh (Bm7) downward with your thumb, in quarter notes, in time."
+      },
+      "l342": {
+        "title": "B seventh (B7)",
+        "objective": "Fret B seventh (B7), make every note ring clean and strum it in time.",
+        "s1": "\"A new chord for the album: B seventh (B7).\"",
+        "s2": "Finger 2 on fret 2 of the 5th string, finger 1 on fret 1 of the 4th, finger 3 on fret 2 of the 3rd and finger 4 on fret 2 of the 1st; the open 2nd rings. Don't play the 6th.",
+        "s3": "Play string by string: if one doesn't ring, adjust that finger.",
+        "s4": "\"And now with p-i-m-i, like in level 1.\"",
+        "c1t": "How to fret B seventh (B7)",
+        "c1b": "Finger 2 on fret 2 of the 5th string, finger 1 on fret 1 of the 4th, finger 3 on fret 2 of the 3rd and finger 4 on fret 2 of the 1st; the open 2nd rings. Don't play the 6th. Listen to its notes one at a time.",
+        "c2t": "With p-i-m-i",
+        "c2b": "It's the V chord of the blues in E: it leads back to E7. Listen to it in the p-i-m-i pattern.",
+        "tap": "Press the notes of B seventh (B7) on the fretboard.",
+        "arp": "Fret B seventh (B7) and play string by string, from low to high.",
+        "strum": "Strum B seventh (B7) downward with your thumb, in quarter notes, in time."
+      },
+      "l312": {
+        "title": "Finger 1 pressure",
+        "objective": "Lay finger 1 across the 2nd and 1st strings at fret 1 and make both ring clean.",
+        "s1": "\"Before the full barre, a tiny barre: two strings.\"",
+        "s2": "Lay finger 1 across the 2nd and 1st strings, just behind fret 1.",
+        "s3": "Use the side of the finger that faces the headstock: it's harder.",
+        "s4": "\"Don't squeeze with your thumb: pull your arm back a little.\"",
+        "c1t": "The side of the finger",
+        "c1b": "Look at the diagram: finger 1 covers two strings. Roll it slightly toward the nut so the bone does the work.",
+        "c2t": "C and F",
+        "c2b": "The 2nd string sounds C and the 1st sounds F. Play them alternately: both have to ring clean.",
+        "q1": "Which part of finger 1 should you use for a barre?",
+        "q1o1": "The pad, flat on",
+        "q1o2": "The side that faces the headstock",
+        "q1o3": "The nail",
+        "play": "With finger 1 laid across fret 1, play the 2nd and 1st strings alternately, in time."
+      },
+      "l324": {
+        "title": "Moving the barre",
+        "objective": "Move the Em barre shape: Fm on fret 1, F#m on fret 2 and Gm on fret 3.",
+        "s1": "\"The best thing about barres: one shape, many chords.\"",
+        "s2": "Fm, F#m and Gm are the same shape on frets 1, 2 and 3.",
+        "s3": "The note on the 6th string tells you the chord's name.",
+        "s4": "\"Move up one fret and the chord goes up a half step.\"",
+        "c1t": "Fm, F#m, Gm",
+        "c1b": "The same shape, one fret higher each time. Listen, in half notes.",
+        "c2t": "In p-i-m-i",
+        "c2b": "The thumb plays the 6th string: F, F# and G.",
+        "tap": "Press the notes of F#m on the fretboard.",
+        "tap2": "Press the notes of Gm on the fretboard.",
+        "strum": "Strum Fm, F#m, Gm and F#m in half notes, in time.",
+        "pimi": "Play Fm, F#m, Gm and F#m in p-i-m-i, in time."
+      },
+      "l325": {
+        "title": "Open to barre",
+        "objective": "Change between open and barre chords without breaking the pulse: C, F, G and C; Am, F#m, D and E.",
+        "s1": "\"Now let's mix: open chords and barres in the same song.\"",
+        "s2": "From C to F: finger 3 drops to the 4th string and finger 1 lies flat.",
+        "s3": "Get the barre ready on beat 4 of the previous bar.",
+        "s4": "\"If the barre is late, play beat 1 anyway: what matters is not stopping.\"",
+        "c1t": "C, F, G, C",
+        "c1b": "The half-barre F between two open chords. Listen.",
+        "c2t": "In p-i-m-i",
+        "c2b": "The thumb goes to the 5th string on C, the 4th on F and the 6th on G.",
+        "strum1": "Strum Am, F#m, D and E in quarter notes, in time.",
+        "strum": "Strum C, F, G and C in quarter notes, in time.",
+        "pimi": "Play C, F, G and C in p-i-m-i, in time."
+      },
+      "l334": {
+        "title": "Moving the A shape",
+        "objective": "Move the Am barre shape: Cm on fret 3 and C#m on fret 4.",
+        "s1": "\"The A shape moves too. Its root is on the 5th string.\"",
+        "s2": "Cm: barre on fret 3. C#m: the same shape on fret 4.",
+        "s3": "The note on the 5th string gives the name: C on fret 3, C# on fret 4.",
+        "s4": "\"With two shapes, E and A, you have every major and minor chord.\"",
+        "c1t": "Cm and C#m",
+        "c1b": "The Am shape on frets 3 and 4. Listen, in half notes.",
+        "c2t": "In p-i-m-i",
+        "c2b": "The thumb plays the 5th string: C and C#.",
+        "tap": "Press the notes of C#m on the fretboard.",
+        "q1": "Which fret does the C#m barre go on?",
+        "strum": "Strum Cm and C#m in half notes, in time.",
+        "pimi": "Play Cm and C#m in p-i-m-i, in time."
+      },
+      "l335": {
+        "title": "Barres only",
+        "objective": "Play a progression made only of barre chords: B♭, Gm, Cm and F7.",
+        "s1": "\"No open strings: everything with a barre.\"",
+        "s2": "B♭ (A shape, fret 1), Gm (E shape, fret 3).",
+        "s3": "Cm (A shape, fret 3) and F7 (E7 shape, fret 1).",
+        "s4": "\"If your hand gets tired, relax it between chords.\"",
+        "c1t": "B♭, Gm, Cm, F7",
+        "c1b": "One bar each, in quarter notes. Listen.",
+        "c2t": "In p-i-m-i",
+        "c2b": "The thumb jumps between the 5th and 6th strings: check each chord's diagram.",
+        "strum": "Strum B♭, Gm, Cm and F7 in quarter notes, in time.",
+        "pimi": "Play B♭, Gm, Cm and F7 in p-i-m-i, in time."
+      },
+      "l341": {
+        "title": "The dominant seventh",
+        "objective": "Recognize a seventh chord by ear and play C7 resolving to F.",
+        "s1": "\"A major chord with one more note: the seventh. It sounds like something is about to happen.\"",
+        "s2": "C is C, E, G. C7 adds B flat.",
+        "s3": "That tension wants to resolve: C7 goes to F.",
+        "s4": "\"That's why the blues is full of sevenths.\"",
+        "c1t": "C and C7",
+        "c1b": "Look at the C7 diagram: it's C with finger 4 on fret 3 of the 3rd string. Listen to the difference.",
+        "c2t": "Resolving",
+        "c2b": "C7 and then F: the tension lets go.",
+        "ear1": "Listen to the chord. Is it a triad or does it have a seventh?",
+        "ear2": "Listen to the chord. Is it a triad or does it have a seventh?",
+        "triad": "Triad",
+        "seventh": "With a seventh",
+        "tap": "Press the notes of C7 on the fretboard.",
+        "strum": "Strum C7 and F in quarter notes, in time."
+      },
+      "l343": {
+        "title": "The boogie bass",
+        "objective": "Play a boogie bass (root, third, fifth and sixth) with your thumb over E7 and A7 at 70 bpm.",
+        "s1": "\"The blues walks: the bass goes up and down the chord.\"",
+        "s2": "On E: E, G#, B, C#. On A: A, C#, E, F#.",
+        "s3": "The thumb does all the work; i rests.",
+        "s4": "\"In the blues, eighth notes are played uneven, \"long-short\": that's the shuffle. For now, in quarter notes.\"",
+        "c1t": "The boogie",
+        "c1b": "Four bars: E, A, E and back. Listen with the metronome.",
+        "c2t": "The shuffle",
+        "c2b": "Once it's steady, try it \"long-short\", like the band's blues track.",
+        "tap": "Alternate p and i, one tap per beat.",
+        "play": "Play the boogie bass with your thumb, in time."
+      },
+      "l344": {
+        "title": "Blues in E and A",
+        "objective": "Strum the 12-bar blues in E (E7, A7, B7) and in A (A7, D7, E7).",
+        "s1": "\"The same 12-bar form, in two keys.\"",
+        "s2": "In E: E7 is I, A7 is IV and B7 is V.",
+        "s3": "In A: A7, D7 and E7.",
+        "s4": "\"If you know the degrees, you know the blues in any key.\"",
+        "c1t": "Blues in E",
+        "c1b": "E7 E7 E7 E7 · A7 A7 E7 E7 · B7 A7 E7 B7. Listen.",
+        "c2t": "Blues in A",
+        "c2b": "A7 A7 A7 A7 · D7 D7 A7 A7 · E7 D7 A7 E7. Listen.",
+        "q1": "In the blues in E, which chord is V?",
+        "strum1": "Strum the blues in E in quarter notes, in time.",
+        "strum2": "Strum the blues in A in quarter notes, in time."
+      },
+      "l345": {
+        "title": "The turnaround",
+        "objective": "Play a turnaround in E that walks down by half steps and ends on B7, to go back to the start of the blues.",
+        "s1": "\"At the end of every blues chorus there's a little lick: the turnaround.\"",
+        "s2": "E, D, C#, C: it walks down by half steps.",
+        "s3": "It ends on B, the bass of B7, which takes you back to E7.",
+        "s4": "\"It's the blues signature: it sounds like \"one more time\".\"",
+        "c1t": "Walking down",
+        "c1b": "Four quarter notes going down by half steps and two half notes on B. Listen.",
+        "c2t": "And B7",
+        "c2b": "After the turnaround, fret B7: it's the chord that starts it all again.",
+        "q1": "What is the turnaround for?",
+        "q1o1": "Going back to the start of the form",
+        "q1o2": "Ending the song for good",
+        "q1o3": "Tuning between choruses",
+        "play": "Play the turnaround in E, in time.",
+        "b7": "Fret B7 and play its fretted notes, from low to high."
       }
     }
   },
