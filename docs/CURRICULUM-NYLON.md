@@ -90,8 +90,8 @@ Checkpoint 5: el proyecto final, completo con acompañamiento.
 | 3.3 | B♭, B♭m, Bm7, C#m, Cm | 26 |
 | 3.4 | B7, C7 | 28 |
 | 4.1 | Cmaj7, Dm7, Gmaj7, Bm7♭5 | 32 |
-| 4.2 | Gm7, B♭maj7, Em7♭5, A7♭9 (shells) | 36 |
-| 4.3 | C6/9, Dm6, G13, dim7 | 40 |
+| 4.2 | Gm7, B♭maj7, Em7♭5, A7♭9 | 36 |
+| 4.3 | C6/9, Dm6, G13, G#dim7 | 40 |
 | 5.2 | C/E, G/B, D/F# | 43 |
 
 ## Cancionero (18 canciones originales)
@@ -113,4 +113,5 @@ Módulos 1.1 y 1.2, afinador y metrónomo.
 - Hecho: módulos 3.1–3.4 (19 lecciones): media cejilla (Fmaj7, F, Bm en 4 cuerdas), cejillas formas de E y de A movidas, C7, B7, boogie, blues en Mi y en La y turnaround. Álbum: 28 acordes. Canciones nuevas: «Terraza» (rock, F#m), «Ciudad de papel» (pop, Bm) y «Blues del andén» (blues en La).
 - Hecho: 3.5 (ligados ascendentes y descendentes, arrastre, trino, adornos en la pentatónica), 3.6 (blue note, escala de blues, pentatónica mayor de Do, cajas 1 y 2, improvisar en mayor y menor) y el checkpoint 3. Total: 89 lecciones, 3 checkpoints, 7 canciones.
 - Hecho: 3.7 (6/8, zamba, chacarera, tango y milonga, vals criollo); nivel 3 completo. En la zamba y la chacarera el alumno toca negras de 3/4 (bajo y dos notas, `waltzBar`) sobre la banda en 6/8: es la sesquiáltera de estos ritmos. Canciones de música popular: «Zamba del patio», «Chacarera del camino», «Tango de la esquina» y «Vals de la plaza». Total: 94 lecciones, 3 checkpoints, 11 canciones.
-- Siguiente: nivel 4 (armonía, jazz y bossa).
+- Hecho: 4.1–4.3 (campo armónico, II-V-I mayor y menor, comping charleston, pulgar y dedos sincopados de la bossa, batida, 6/9 y disminuido de paso). Álbum: 40 acordes, todos con la 1.ª sonando para servir con p-i-m-a (por eso Gm7 es la cejilla completa en el traste 3 y no una shell de 3 notas). Canciones: «Luces de la avenida» (jazz) y «Arena de enero» (bossa). Total: 109 lecciones, 3 checkpoints, 13 canciones.
+- Siguiente: 4.4–4.6 (cajas pentatónicas, escalas mayor y menor natural, fraseo e improvisación) y el checkpoint 4.

@@ -393,6 +393,42 @@
       "chord_b7": {
         "a11y": "Diagrama del acorde B7"
       },
+      "chord_cmaj7": {
+        "a11y": "Diagrama del acorde Cmaj7"
+      },
+      "chord_dm7": {
+        "a11y": "Diagrama del acorde Dm7"
+      },
+      "chord_gmaj7": {
+        "a11y": "Diagrama del acorde Gmaj7"
+      },
+      "chord_bm7b5": {
+        "a11y": "Diagrama del acorde Bm7♭5"
+      },
+      "barre_gm7": {
+        "a11y": "Diagrama del acorde Gm7"
+      },
+      "barre_bbmaj7": {
+        "a11y": "Diagrama del acorde B♭maj7"
+      },
+      "chord_em7b5": {
+        "a11y": "Diagrama del acorde Em7♭5"
+      },
+      "chord_a7b9": {
+        "a11y": "Diagrama del acorde A7♭9"
+      },
+      "chord_c69": {
+        "a11y": "Diagrama del acorde C6/9"
+      },
+      "chord_dm6": {
+        "a11y": "Diagrama del acorde Dm6"
+      },
+      "chord_g13": {
+        "a11y": "Diagrama del acorde G13"
+      },
+      "chord_gsdim7": {
+        "a11y": "Diagrama del acorde G#dim7"
+      },
       "chord_c7": {
         "a11y": "Diagrama del acorde C7"
       },
@@ -986,6 +1022,14 @@
       "n_popular_4": {
         "title": "Vals de la plaza",
         "desc": "Un vals criollo en Do con C, G7 y F: bajo en el 1 y acorde en el 2 y el 3."
+      },
+      "n_jazz_1": {
+        "title": "Luces de la avenida",
+        "desc": "Jazz en Fa con dos II-V-I, uno mayor y uno menor. Tocas p-i-m-a sobre Gm7, C7, Fmaj7, Em7♭5, A7♭9 y Dm7; la banda va en swing."
+      },
+      "n_bossa_1": {
+        "title": "Arena de enero",
+        "desc": "Una bossa nova en Do con C6/9, G#dim7, Am7, D7, Dm6 y G13. Tocas el bajo alternado; la banda marca la bossa."
       },
       "n_blues_2": {
         "title": "Blues del andén",
@@ -5465,6 +5509,265 @@
         "q1o3": "Seis",
         "strum": "Rasguea el vals: C, G7, G7 y C, un golpe por pulso.",
         "play": "Toca el vals con el pulgar: bajo y dos notas por compás, a tempo."
+      },
+      "l411": {
+        "title": "Los acordes de la escala",
+        "objective": "Armar un acorde sobre cada nota de Do mayor y saber su grado: I, II, III, IV, V y VI.",
+        "s1": "«Cada nota de la escala tiene su acorde.»",
+        "s2": "Do, Rem, Mim, Fa, Sol, Lam: mayores en I, IV y V; menores en II, III y VI.",
+        "s3": "El VII (Si disminuido) lo dejamos para más adelante.",
+        "s4": "«Con estos seis acordes se acompaña media música popular.»",
+        "c1t": "El campo armónico de Do",
+        "c1b": "C, Dm, Em, F, G, Am, G y C: un compás cada uno. Escucha.",
+        "c2t": "En p-i-m-i",
+        "c2b": "Los mismos acordes con el pulgar en el bajo. Escucha cómo sube la escala.",
+        "q1": "¿Qué grado es G en Do mayor?",
+        "q1o1": "I",
+        "q1o2": "IV",
+        "q1o3": "V",
+        "strum": "Rasguea C, Dm, Em, F, G, Am, G y C en negras, a tempo.",
+        "pimi": "Toca C, Dm, Em, F, G, Am, G y C en p-i-m-i, a tempo."
+      },
+      "l412": {
+        "title": "Do con séptima mayor (Cmaj7)",
+        "objective": "Armar Do con séptima mayor (Cmaj7), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: Do con séptima mayor (Cmaj7).»",
+        "s2": "Dedo 3 en el traste 3 de la 5.ª y dedo 2 en el traste 2 de la 4.ª; la 3.ª, la 2.ª y la 1.ª al aire. La 6.ª no suena.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma Do con séptima mayor (Cmaj7)",
+        "c1b": "Dedo 3 en el traste 3 de la 5.ª y dedo 2 en el traste 2 de la 4.ª; la 3.ª, la 2.ª y la 1.ª al aire. La 6.ª no suena. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "Es C sin el dedo 1: la 2.ª al aire suma la séptima, Si. Cuatro notas distintas: una cuatríada.",
+        "tap": "Pisa en el diapasón las notas de Do con séptima mayor (Cmaj7).",
+        "arp": "Arma Do con séptima mayor (Cmaj7) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea Do con séptima mayor (Cmaj7) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l413": {
+        "title": "Funciones: reposo, tensión y vuelta",
+        "objective": "Reconocer la tónica, la subdominante y la dominante en Cmaj7, Dm7, G7 y Cmaj7, y armar Dm7.",
+        "s1": "«Cada acorde cumple un papel.»",
+        "s2": "Cmaj7 es la casa (tónica). Dm7 sale de casa (subdominante).",
+        "s3": "G7 pide volver (dominante) y Cmaj7 te deja otra vez en casa.",
+        "s4": "«Reposo, movimiento, tensión, reposo.»",
+        "c1t": "Cmaj7, Dm7, G7, Cmaj7",
+        "c1b": "Un compás cada uno, en negras. Escucha la tensión de G7.",
+        "c2t": "Dm7",
+        "c2b": "Media cejilla con el dedo 1 en el traste 1 de la 2.ª y la 1.ª, dedo 2 en el traste 2 de la 3.ª; la 4.ª al aire.",
+        "q1": "¿Qué función cumple G7 en Do mayor?",
+        "q1o1": "Tónica",
+        "q1o2": "Dominante",
+        "q1o3": "Subdominante",
+        "strum": "Rasguea Cmaj7, Dm7, G7 y Cmaj7 en negras, a tempo.",
+        "pimi": "Toca Cmaj7, Dm7, G7 y Cmaj7 en p-i-m-i, a tempo.",
+        "tap": "Pisa en el diapasón las notas de Dm7."
+      },
+      "l414": {
+        "title": "El II-V-I",
+        "objective": "Tocar el II-V-I de Sol mayor (Am7, D7, Gmaj7) y armar Gmaj7.",
+        "s1": "«La vuelta más famosa del jazz: dos, cinco, uno.»",
+        "s2": "En Sol: Am7 es el II, D7 el V y Gmaj7 el I.",
+        "s3": "Gmaj7: dedo 3 en el traste 3 de la 6.ª, dedo 2 en el 2 de la 5.ª y dedo 1 en el 2 de la 1.ª.",
+        "s4": "«Si reconoces un II-V-I, reconoces media canción de jazz.»",
+        "c1t": "Am7, D7, Gmaj7",
+        "c1b": "Dos compases de Gmaj7 al final para descansar. Escucha.",
+        "c2t": "En p-i-m-i",
+        "c2b": "Los mismos acordes con el pulgar en el bajo. Escucha.",
+        "q1": "En Sol mayor, ¿qué grados son Am7, D7 y Gmaj7?",
+        "q1o1": "II, V y I",
+        "q1o2": "I, IV y V",
+        "q1o3": "VI, II y V",
+        "strum": "Rasguea Am7, D7, Gmaj7 y Gmaj7 en negras, a tempo.",
+        "pimi": "Toca Am7, D7, Gmaj7 y Gmaj7 en p-i-m-i, a tempo.",
+        "tap": "Pisa en el diapasón las notas de Gmaj7."
+      },
+      "l415": {
+        "title": "El II-V-I menor",
+        "objective": "Tocar el II-V-I de La menor (Bm7♭5, E7, Am7) y armar Bm7♭5.",
+        "s1": "«En menor, el II-V-I suena más oscuro.»",
+        "s2": "El II es semidisminuido: Bm7♭5. El V es E7 y el I, Am7.",
+        "s3": "Bm7♭5: dedo 2 en el traste 2 de la 5.ª, dedo 3 en el 2 de la 3.ª y dedo 1 en el 1 de la 1.ª; la 4.ª y la 2.ª al aire.",
+        "s4": "«El ♭5 es la nota que le da ese color de tango y de bolero.»",
+        "c1t": "Bm7♭5, E7, Am7",
+        "c1b": "Dos compases de Am7 al final. Escucha.",
+        "c2t": "En p-i-m-i",
+        "c2b": "Los mismos acordes con el pulgar en el bajo. Escucha.",
+        "q1": "¿Qué tipo de acorde es el II en tonalidad menor?",
+        "q1o1": "Semidisminuido (m7♭5)",
+        "q1o2": "Mayor con séptima mayor",
+        "q1o3": "Menor con séptima",
+        "strum": "Rasguea Bm7♭5, E7, Am7 y Am7 en negras, a tempo.",
+        "pimi": "Toca Bm7♭5, E7, Am7 y Am7 en p-i-m-i, a tempo.",
+        "tap": "Pisa en el diapasón las notas de Bm7♭5."
+      },
+      "l421": {
+        "title": "Sol menor séptima (Gm7)",
+        "objective": "Armar Sol menor séptima (Gm7), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: Sol menor séptima (Gm7).»",
+        "s2": "Cejilla en el traste 3 y dedo 3 en el traste 5 de la 5.ª. La raíz está en la 6.ª.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma Sol menor séptima (Gm7)",
+        "c1b": "Cejilla en el traste 3 y dedo 3 en el traste 5 de la 5.ª. La raíz está en la 6.ª. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "Es la forma de Em7 corrida al traste 3. Muévela y tienes cualquier m7 con raíz en la 6.ª.",
+        "tap": "Pisa en el diapasón las notas de Sol menor séptima (Gm7).",
+        "arp": "Arma Sol menor séptima (Gm7) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea Sol menor séptima (Gm7) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l422": {
+        "title": "Si bemol con séptima mayor (B♭maj7)",
+        "objective": "Armar Si bemol con séptima mayor (B♭maj7), que suenen limpias todas sus notas y rasguearlo a tempo.",
+        "s1": "«Un acorde nuevo para el álbum: Si bemol con séptima mayor (B♭maj7).»",
+        "s2": "Cejilla en el traste 1 desde la 5.ª, dedo 3 en el traste 3 de la 4.ª, dedo 2 en el 2 de la 3.ª y dedo 4 en el 3 de la 2.ª.",
+        "s3": "Toca cuerda por cuerda: si una no suena, acomoda ese dedo.",
+        "s4": "«Y ahora con p-i-m-i, como en el nivel 1.»",
+        "c1t": "Cómo se arma Si bemol con séptima mayor (B♭maj7)",
+        "c1b": "Cejilla en el traste 1 desde la 5.ª, dedo 3 en el traste 3 de la 4.ª, dedo 2 en el 2 de la 3.ª y dedo 4 en el 3 de la 2.ª. Escucha sus notas de a una.",
+        "c2t": "Con p-i-m-i",
+        "c2b": "La raíz está en la 5.ª: con esta forma armas cualquier maj7 con raíz en la 5.ª.",
+        "tap": "Pisa en el diapasón las notas de Si bemol con séptima mayor (B♭maj7).",
+        "arp": "Arma Si bemol con séptima mayor (B♭maj7) y toca cuerda por cuerda, de la grave a la aguda.",
+        "strum": "Rasguea Si bemol con séptima mayor (B♭maj7) con el pulgar hacia abajo, en negras, a tempo."
+      },
+      "l423": {
+        "title": "II-V-I mayor en Fa",
+        "objective": "Tocar el II-V-I de Fa mayor (Gm7, C7, Fmaj7) con raíces en la 6.ª y la 5.ª.",
+        "s1": "«El mismo II-V-I, ahora en Fa.»",
+        "s2": "Gm7 con raíz en la 6.ª, C7 con raíz en la 5.ª.",
+        "s3": "Y Fmaj7, que ya tienes del nivel 3.",
+        "s4": "«La mano casi no se mueve: eso es tocar jazz cómodo.»",
+        "c1t": "Gm7, C7, Fmaj7",
+        "c1b": "Dos compases de Fmaj7 al final. Escucha.",
+        "c2t": "En p-i-m-i",
+        "c2b": "El pulgar salta de la 6.ª a la 5.ª y a la 4.ª. Escucha.",
+        "q1": "En Fa mayor, ¿cuál es el V7?",
+        "q1o1": "C7",
+        "q1o2": "Gm7",
+        "q1o3": "B♭maj7",
+        "strum": "Rasguea Gm7, C7, Fmaj7 y Fmaj7 en negras, a tempo.",
+        "pimi": "Toca Gm7, C7, Fmaj7 y Fmaj7 en p-i-m-i, a tempo."
+      },
+      "l424": {
+        "title": "II-V-I menor en Re",
+        "objective": "Armar Em7♭5 y A7♭9 y tocar el II-V-I de Re menor (Em7♭5, A7♭9, Dm7).",
+        "s1": "«Dos acordes nuevos con mucho color.»",
+        "s2": "Em7♭5: dedo 1 en el traste 1 de la 5.ª y dedo 3 en el 3 de la 2.ª; el resto al aire.",
+        "s3": "A7♭9: dedos 1 y 2 en el traste 2 de la 4.ª y la 2.ª, dedos 3 y 4 en el traste 3 de la 3.ª y la 1.ª.",
+        "s4": "«La novena bemol tensa la dominante: Dm7 la resuelve.»",
+        "c1t": "Em7♭5, A7♭9, Dm7",
+        "c1b": "Dos compases de Dm7 al final. Escucha.",
+        "c2t": "En p-i-m-i",
+        "c2b": "Los mismos acordes con el pulgar en el bajo. Escucha.",
+        "strum": "Rasguea Em7♭5, A7♭9, Dm7 y Dm7 en negras, a tempo.",
+        "pimi": "Toca Em7♭5, A7♭9, Dm7 y Dm7 en p-i-m-i, a tempo.",
+        "tap1": "Pisa en el diapasón las notas de Em7♭5.",
+        "tap2": "Pisa en el diapasón las notas de A7♭9."
+      },
+      "l425": {
+        "title": "Comping",
+        "objective": "Acompañar dos II-V-I con el ritmo charleston: el 1 y el «y» del 2.",
+        "s1": "«En el jazz, la guitarra no rasguea todo el tiempo: comenta.»",
+        "s2": "El charleston: un golpe en el 1 y otro en el «y» del 2.",
+        "s3": "El resto del compás, silencio: deja lugar a la melodía.",
+        "s4": "«Menos golpes, más swing.»",
+        "c1t": "Charleston",
+        "c1b": "Gm7, C7 y Fmaj7 con el ritmo charleston. Escucha.",
+        "c2t": "Y en negras",
+        "c2b": "Los mismos acordes en cuatro negras. Compara.",
+        "q1": "¿Dónde caen los golpes del charleston?",
+        "q1o1": "En el 1 y en el «y» del 2",
+        "q1o2": "En los cuatro pulsos",
+        "q1o3": "Solo en el 3",
+        "ear": "Escucha: ¿son negras o charleston?",
+        "quarters": "Negras",
+        "charleston": "Charleston",
+        "strum": "Acompaña Gm7, C7, Fmaj7, Dm7, G7 y Cmaj7 con el ritmo charleston."
+      },
+      "l431": {
+        "title": "El pulgar de la bossa",
+        "objective": "Tocar el bajo de la bossa nova con el pulgar: tónica en el 1 y otra nota grave del acorde en el 3.",
+        "s1": "«La bossa nova nació en Brasil, con una guitarra criolla.»",
+        "s2": "El pulgar va firme, como un reloj: en el 1 y en el 3.",
+        "s3": "Primero la tónica, después otra nota grave del mismo acorde.",
+        "s4": "«Si el pulgar no se apura, los dedos pueden bailar.»",
+        "c1t": "El bajo solo",
+        "c1b": "Cmaj7, Dm7, G7 y Cmaj7: dos blancas por compás. Escucha el clic.",
+        "c2t": "Cmaj7",
+        "c2b": "El pulgar toca la 5.ª en el traste 3 y después la 4.ª.",
+        "q1": "En la bossa, ¿dónde toca el pulgar?",
+        "q1o1": "En el 1 y en el 3",
+        "q1o2": "En los contratiempos",
+        "q1o3": "Solo en el 4",
+        "play": "Toca el bajo de la bossa con el pulgar, a tempo."
+      },
+      "l432": {
+        "title": "Los dedos sincopados",
+        "objective": "Tocar los acordes de la bossa con i-m-a pellizcando entre los pulsos: el 1, el «y» del 2 y el «y» del 3.",
+        "s1": "«Ahora los dedos: i, m y a juntos, como un pellizco.»",
+        "s2": "Uno en el 1, otro en el «y» del 2 y otro en el «y» del 3.",
+        "s3": "Caen entre los pulsos: eso es la síncopa.",
+        "s4": "«Esa síncopa es el balanceo de la bossa.»",
+        "c1t": "Lento",
+        "c1b": "Cmaj7, Dm7, G7 y Cmaj7 con los dedos sincopados, a 60. Escucha el clic.",
+        "c2t": "A tempo",
+        "c2b": "Lo mismo a 70. Escucha.",
+        "q1": "¿Qué hacen los dedos en la bossa?",
+        "q1o1": "Van siempre junto con el pulgar",
+        "q1o2": "Tocan síncopas, entre los pulsos",
+        "q1o3": "Rasguean hacia arriba en cada pulso",
+        "ear": "Escucha: ¿es un rasgueo parejo o bossa?",
+        "straight": "Parejo, en los pulsos",
+        "bossa": "Bossa, sincopado",
+        "strum": "Toca Cmaj7, Dm7, G7 y Cmaj7 con los dedos sincopados."
+      },
+      "l433": {
+        "title": "La batida",
+        "objective": "Juntar pulgar y dedos en la batida de la bossa sobre Dm6, G13 y Cmaj7.",
+        "s1": "«El pulgar en el 1 y el 3, los dedos sincopados: todo junto es la batida.»",
+        "s2": "Dm6: dedo 2 en el traste 2 de la 3.ª y dedo 1 en el 1 de la 1.ª; la 4.ª y la 2.ª al aire.",
+        "s3": "G13: dedo 1 en el traste 3 de la 6.ª, dedo 2 en el 3 de la 4.ª, dedo 3 en el 4 de la 3.ª y dedo 4 en el 5 de la 2.ª; la 1.ª al aire y la 5.ª apagada.",
+        "s4": "«Dos acordes con el sonido de Río.»",
+        "c1t": "Dm6",
+        "c1b": "Dedo 2 en el traste 2 de la 3.ª y dedo 1 en el 1 de la 1.ª. Escucha la batida.",
+        "c2t": "G13",
+        "c2b": "Apaga la 5.ª tocándola apenas con el dedo 1. Escucha la batida.",
+        "strum": "Toca la batida en Dm6, G13 y Cmaj7.",
+        "tap1": "Pisa en el diapasón las notas de Dm6.",
+        "tap2": "Pisa en el diapasón las notas de G13."
+      },
+      "l434": {
+        "title": "El 6/9 y el disminuido",
+        "objective": "Armar C6/9 y G#dim7 y usar el disminuido de paso hacia Am7.",
+        "s1": "«Dos colores más de la bossa.»",
+        "s2": "C6/9: dedo 2 en el traste 3 de la 5.ª, dedo 1 acostado en el 2 de la 4.ª y la 3.ª, dedos 3 y 4 en el 3 de la 2.ª y la 1.ª.",
+        "s3": "G#dim7: dedo 1 acostado en el traste 3 de la 4.ª a la 2.ª, dedo 2 en el 4 de la 6.ª, dedos 3 y 4 en el 4 de la 3.ª y la 1.ª.",
+        "s4": "«El disminuido está medio tono debajo de Am7 y lo prepara.»",
+        "c1t": "C6/9",
+        "c1b": "Sexta y novena: un Do mayor que flota. Escucha.",
+        "c2t": "G#dim7 → Am7",
+        "c2b": "El bajo sube de Sol# a La. Escucha.",
+        "q1": "¿A qué acorde lleva G#dim7 en esta vuelta?",
+        "q1o1": "A Am7, medio tono arriba",
+        "q1o2": "A G7",
+        "q1o3": "A Dm6",
+        "strum": "Rasguea C6/9, G#dim7, Am7 y D7 en negras, a tempo.",
+        "tap1": "Pisa en el diapasón las notas de C6/9.",
+        "tap2": "Pisa en el diapasón las notas de G#dim7."
+      },
+      "l435": {
+        "title": "Una vuelta de bossa",
+        "objective": "Tocar ocho compases de bossa con todos los acordes del módulo y los dedos sincopados.",
+        "s1": "«Ya tienes todo: armemos una vuelta completa.»",
+        "s2": "C6/9, G#dim7, Am7, D7: baja y sube por el disminuido.",
+        "s3": "Dm6, G13 y C6/9: el II-V-I con los colores de la bossa.",
+        "s4": "«Toca suave: la bossa se canta casi en voz baja.»",
+        "c1t": "La vuelta",
+        "c1b": "Ocho compases con los dedos sincopados. Escucha.",
+        "c2t": "En p-i-m-i",
+        "c2b": "La misma vuelta con el pulgar en el bajo, para aprender los cambios. Escucha.",
+        "strum": "Toca la vuelta de bossa con los dedos sincopados: C6/9, G#dim7, Am7, D7, Dm6, G13, C6/9 y C6/9.",
+        "pimi": "Toca la vuelta en p-i-m-i, a tempo."
       },
       "cp3": {
         "intro": "Muestra lo que aprendiste en el nivel 3: cejillas de forma de E y de A, el blues de 12 compases y un solo con ligados.",

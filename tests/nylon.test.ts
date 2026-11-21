@@ -19,6 +19,8 @@ import { CHORD_UNLOCKS, allChords, chordModule, missingChords, songRequires, unl
 import { CHORD_FIG, NYLON_CP2, NYLON_LEVEL2_LESSONS, PENTA_AM, PENTA_OPEN } from '../src/content/nylon/level2';
 import { NYLON_GENRES, NYLON_SONGS } from '../src/content/nylon/songs';
 import { albumDiagram, albumMidi, altBassBar, balladBar, chordFigure, pamiBar, pimaBar, pimiBar, steadyBassBar, waltzBar } from '../src/content/nylon/helpers';
+import { BOSSA_THUMB, NYLON_LEVEL4_LESSONS, bossaThumbBar } from '../src/content/nylon/level4';
+import { BOSSA_FINGERS, CHARLESTON } from '../src/music/strum';
 import { BLUES_AM, BLUES_SCALE, NYLON_CP3, NYLON_LEVEL3_LESSONS, SLUR_PHRASE, VALS_LINE, ZAMBA_LINE } from '../src/content/nylon/level3';
 import { MILONGA, barBeatsOf, isValidPattern } from '../src/music/strum';
 import { barBeatsOfStyle } from '../src/music/drums';
@@ -246,11 +248,11 @@ test('séptimas abiertas: cada forma suena a tónica, tercera, quinta y séptima
   }
 });
 
-test('álbum de acordes: 28 acordes hasta 3.4, sin repetir, cada uno con su diagrama y su figura', () => {
+test('álbum de acordes: 40 acordes hasta 4.3, sin repetir, cada uno con su diagrama y su figura', () => {
   const all = allChords();
-  assert.equal(all.length, 28);
+  assert.equal(all.length, 40);
   assert.equal(new Set(all).size, all.length);
-  assert.deepEqual(Object.keys(CHORD_UNLOCKS), ['2.1', '2.2', '2.3', '3.1', '3.2', '3.3', '3.4']);
+  assert.deepEqual(Object.keys(CHORD_UNLOCKS), ['2.1', '2.2', '2.3', '3.1', '3.2', '3.3', '3.4', '4.1', '4.2', '4.3']);
   for (const c of all) {
     if (c in CHORDS || c in SEVENTHS) {
       const fig = CHORD_FIG[c as keyof typeof CHORD_FIG];
@@ -281,11 +283,11 @@ test('álbum de acordes: 28 acordes hasta 3.4, sin repetir, cada uno con su diag
 });
 
 test('cada acorde nuevo del álbum tiene su lección y sale en el orden del álbum', () => {
-  const taught = [...NYLON_LEVEL2_LESSONS, ...NYLON_LEVEL3_LESSONS].flatMap((l) => l.exercises)
+  const taught = [...NYLON_LEVEL2_LESSONS, ...NYLON_LEVEL3_LESSONS, ...NYLON_LEVEL4_LESSONS].flatMap((l) => l.exercises)
     .filter((e) => e.kind === 'strum')
     .flatMap((e) => (e.kind === 'strum' ? e.chords : []));
   for (const c of allChords()) assert.ok(taught.includes(c), `${c} no se rasguea en ninguna lección`);
-  for (const ex of [...NYLON_LEVEL2_LESSONS, ...NYLON_LEVEL3_LESSONS].flatMap((l) => l.exercises)) {
+  for (const ex of [...NYLON_LEVEL2_LESSONS, ...NYLON_LEVEL3_LESSONS, ...NYLON_LEVEL4_LESSONS].flatMap((l) => l.exercises)) {
     if (ex.kind !== 'strum') continue;
     // Una lección solo rasguea acordes de su módulo o anteriores.
     const lessonModule = ex.id.split('.').slice(0, 2).join('.');
@@ -430,4 +432,31 @@ test('música popular en el cancionero: compás, estilo de banda y rasgueo coinc
     assert.equal(barBeatsOf(s.strum!), bar, `${s.id}: el rasgueo va en ${bar}`);
     assert.ok(s.requires.includes('3.7'), s.id);
   }
+});
+
+test('nivel 4, primera parte: campo armónico, acordes de jazz y bossa (4.1 a 4.3)', () => {
+  const mods = NYLON_LEVELS[3].modules.filter((m) => ['4.1', '4.2', '4.3'].includes(m.id));
+  for (const mod of mods) for (const id of lessonIdsOf(mod)) {
+    const lesson = NYLON_LESSONS[id];
+    assert.ok(lesson, `falta la lección ${id}`);
+    assert.ok(lesson.exercises.some((e) => e.needsBass), `${id}: sin ejercicio con guitarra`);
+  }
+  assert.equal(NYLON_LEVEL4_LESSONS.length, 15);
+  // Los patrones nuevos: el charleston y la bossa con los dedos tienen contratiempos.
+  for (const p of [CHARLESTON, BOSSA_FINGERS]) assert.ok(isValidPattern(p) && barBeatsOf(p) === 4 && p.includes('U'));
+  // El pulgar de la bossa: tónica en el 1 y otra nota grave del acorde en el 3.
+  for (const c of ['Cmaj7', 'Dm7', 'G7', 'Dm6', 'G13', 'C6/9']) {
+    const [root, other] = bossaThumbBar(c);
+    assert.ok(isNote(root) && isNote(other) && root.beats === 2 && other.beats === 2, c);
+    assert.equal(midiOn(NYLON, root.string, root.fret), albumMidi(c)[0], c);
+  }
+  assert.ok(barsAreComplete(BOSSA_THUMB));
+  // Los diagramas que llegan al traste 5 tienen un diapasón que los muestra.
+  for (const l of NYLON_LEVEL4_LESSONS) for (const ex of l.exercises) {
+    if (ex.kind === 'fretboardTap') for (const x of ex.sequence) assert.ok(x.fret <= ex.frets, ex.id);
+  }
+  const jazz = NYLON_SONGS.find((s) => s.id === 'n-jazz-1')!;
+  const bossa = NYLON_SONGS.find((s) => s.id === 'n-bossa-1')!;
+  assert.ok(jazz.requires.includes('4.2') && bossa.requires.includes('4.3'));
+  assert.deepEqual(missingChords(bossa.chords, new Set(['2.2', '2.3', '4.1', '4.2'])), ['C6/9', 'G#dim7', 'Dm6', 'G13']);
 });

@@ -348,7 +348,9 @@ export function aShapeM7(name: string, fret: number): GridDiagram {
 }
 
 /** Diagramas de la guitarra criolla, nivel 3: media cejilla, cejillas movidas y B7, C7. */
-export type NylonGridId = 'fmaj7' | 'f-half' | 'bm-half' | 'bar-f7' | 'bar-fsm' | 'bar-gm' | 'bar-bbm' | 'bar-bm7' | 'bar-csm' | 'b7' | 'c7';
+export type NylonGridId =
+  | 'fmaj7' | 'f-half' | 'bm-half' | 'bar-f7' | 'bar-fsm' | 'bar-gm' | 'bar-bbm' | 'bar-bm7' | 'bar-csm' | 'b7' | 'c7'
+  | 'cmaj7' | 'dm7' | 'gmaj7' | 'bm7b5' | 'gm7' | 'bbmaj7' | 'em7b5' | 'a7b9' | 'c69' | 'dm6' | 'g13' | 'gsdim7';
 
 export const NYLON_GRIDS: Record<NylonGridId, GridDiagram> = {
   fmaj7: {
@@ -412,6 +414,128 @@ export const NYLON_GRIDS: Record<NylonGridId, GridDiagram> = {
     ],
     marks: ['x', null, null, null, null, 'o'],
   },
+  // ── Nivel 4: cuatríadas (4.1), acordes de jazz (4.2) y de bossa (4.3) ──
+  // Todos con la 1.ª sonando, para que sirvan con p-i-m-a.
+  cmaj7: {
+    name: 'Cmaj7',
+    startFret: 1,
+    dots: [
+      { string: 1, fret: 3, finger: 3, root: true },
+      { string: 2, fret: 2, finger: 2 },
+    ],
+    marks: ['x', null, null, 'o', 'o', 'o'],
+  },
+  dm7: {
+    name: 'Dm7',
+    startFret: 1,
+    barre: { fret: 1, from: 4, to: 5 },
+    dots: [{ string: 3, fret: 2, finger: 2 }],
+    marks: ['x', 'x', 'o', null, null, null],
+  },
+  gmaj7: {
+    name: 'Gmaj7',
+    startFret: 1,
+    dots: [
+      { string: 0, fret: 3, finger: 3, root: true },
+      { string: 1, fret: 2, finger: 2 },
+      { string: 5, fret: 2, finger: 1 },
+    ],
+    marks: [null, null, 'o', 'o', 'o', null],
+  },
+  bm7b5: {
+    name: 'Bm7b5',
+    startFret: 1,
+    dots: [
+      { string: 1, fret: 2, finger: 2, root: true },
+      { string: 3, fret: 2, finger: 3 },
+      { string: 5, fret: 1, finger: 1 },
+    ],
+    marks: ['x', null, 'o', null, 'o', null],
+  },
+  gm7: {
+    name: 'Gm7',
+    startFret: 3,
+    barre: { fret: 3, from: 0, to: 5 },
+    dots: [
+      { string: 0, fret: 3, finger: 1, root: true },
+      { string: 1, fret: 5, finger: 3 },
+    ],
+    marks: [null, null, null, null, null, null],
+  },
+  bbmaj7: {
+    name: 'Bbmaj7',
+    startFret: 1,
+    barre: { fret: 1, from: 1, to: 5 },
+    dots: [
+      { string: 1, fret: 1, finger: 1, root: true },
+      { string: 2, fret: 3, finger: 3 },
+      { string: 3, fret: 2, finger: 2 },
+      { string: 4, fret: 3, finger: 4 },
+    ],
+    marks: ['x', null, null, null, null, null],
+  },
+  em7b5: {
+    name: 'Em7b5',
+    startFret: 1,
+    dots: [
+      { string: 1, fret: 1, finger: 1 },
+      { string: 4, fret: 3, finger: 3 },
+    ],
+    marks: ['o', null, 'o', 'o', null, 'o'],
+  },
+  a7b9: {
+    name: 'A7b9',
+    startFret: 1,
+    dots: [
+      { string: 2, fret: 2, finger: 1 },
+      { string: 3, fret: 3, finger: 3 },
+      { string: 4, fret: 2, finger: 2 },
+      { string: 5, fret: 3, finger: 4 },
+    ],
+    marks: ['x', 'o', null, null, null, null],
+  },
+  c69: {
+    name: 'C6/9',
+    startFret: 1,
+    barre: { fret: 2, from: 2, to: 3 },
+    dots: [
+      { string: 1, fret: 3, finger: 2, root: true },
+      { string: 4, fret: 3, finger: 3 },
+      { string: 5, fret: 3, finger: 4 },
+    ],
+    marks: ['x', null, null, null, null, null],
+  },
+  dm6: {
+    name: 'Dm6',
+    startFret: 1,
+    dots: [
+      { string: 3, fret: 2, finger: 2 },
+      { string: 5, fret: 1, finger: 1 },
+    ],
+    marks: ['x', 'x', 'o', null, 'o', null],
+  },
+  g13: {
+    name: 'G13',
+    startFret: 3,
+    dots: [
+      { string: 0, fret: 3, finger: 1, root: true },
+      { string: 2, fret: 3, finger: 2 },
+      { string: 3, fret: 4, finger: 3 },
+      { string: 4, fret: 5, finger: 4 },
+    ],
+    marks: [null, 'x', null, null, null, 'o'],
+  },
+  gsdim7: {
+    name: 'G#dim7',
+    startFret: 3,
+    barre: { fret: 3, from: 2, to: 4 },
+    dots: [
+      { string: 0, fret: 4, finger: 2, root: true },
+      { string: 3, fret: 4, finger: 3 },
+      { string: 5, fret: 4, finger: 4 },
+    ],
+    marks: [null, 'x', null, null, null, null],
+  },
 };
 
 /** Octavas: la nota de la 6.ª cuerda se repite dos cuerdas más arriba, dos trastes más adelante. */
@@ -435,6 +559,12 @@ const QUALITY: Record<string, number[]> = {
   '7': [0, 7, 10, 16],
   m7: [0, 7, 10, 15],
   maj7: [0, 7, 11, 16],
+  m7b5: [0, 6, 10, 15],
+  '7b9': [0, 7, 10, 16, 25],
+  '6/9': [0, 4, 9, 14, 19],
+  m6: [0, 7, 9, 15],
+  '13': [0, 7, 10, 16, 21],
+  dim7: [0, 6, 9, 15],
   '5': [0, 7, 12],
 };
 

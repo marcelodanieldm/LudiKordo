@@ -48,6 +48,10 @@ export const CHACARERA: Stroke[] = ['D', '-', 'D', 'U', 'D', 'U'];
 export const VALS: Stroke[] = ['D', '-', 'D', '-', 'D', '-'];
 /** Milonga (4/4): las 8 corcheas agrupadas 3 + 3 + 2. */
 export const MILONGA: Stroke[] = ['D', '-', '-', 'D', '-', '-', 'D', '-'];
+/** Comping de jazz (charleston): el 1 y el «y» del 2. */
+export const CHARLESTON: Stroke[] = ['D', '-', '-', 'U', '-', '-', '-', '-'];
+/** Bossa nova con los dedos: el 1, el «y» del 2 y el «y» del 3 (sincopado). */
+export const BOSSA_FINGERS: Stroke[] = ['D', '-', '-', 'U', '-', 'U', '-', '-'];
 
 /**
  * Un patrón es válido si tiene 8 casillas y la púa alterna (abajo en los pulsos,
