@@ -16,7 +16,8 @@ import type { ScoreEvent, Song } from '../types';
 import type { OpenChordId } from '../../music/chords';
 import { QUARTERS, BALLAD } from '../../music/strum';
 import { songRequires } from './chordbook';
-import { pimaBar, pimiBar } from './helpers';
+import { altBassBar, balladBar, pimaBar, pimiBar } from './helpers';
+import { BLUES_A } from './level3';
 
 type B = 0.5 | 1 | 2 | 4;
 const n = (string: StringId, fret: number, beats: B = 1): ScoreEvent => ({ string, fret, beats });
@@ -30,6 +31,10 @@ const RUTA_3 = pimiSong(['Em', 'Em', 'D', 'D', 'A', 'A', 'Em', 'Em']);
 
 /** Postal de domingo: p-i-m-a sobre G, C, D y Em (2.5). */
 const POSTAL: OpenChordId[] = ['G', 'C', 'D', 'Em', 'G', 'C', 'D', 'G'];
+
+/** Nivel 3: canciones con cejillas y blues. */
+const TERRAZA = ['E', 'G', 'A', 'F#m', 'E', 'G', 'A', 'E'];
+const CIUDAD = ['G', 'D', 'Bm', 'Em', 'G', 'D', 'A', 'G'];
 
 export const NYLON_SONGS: Song[] = [
   // ── Nivel 1: melodía en las agudas; la banda toca los acordes ──
@@ -110,6 +115,52 @@ export const NYLON_SONGS: Song[] = [
     ],
     notation: 'tab',
     skills: ['technique', 'ear'],
+    strum: QUARTERS,
+    tone: 'nylon',
+  }),
+  // ── Nivel 3 ──
+  song({
+    id: 'n-rock-2',
+    genre: 'rock',
+    level: 3,
+    requires: songRequires(TERRAZA, ['2.5']),
+    key: 'E',
+    bpm: 80,
+    tempoSteps: [80, 90, 100],
+    chords: [...TERRAZA],
+    line: TERRAZA.flatMap(pimaBar),
+    notation: 'tab',
+    skills: ['technique', 'rhythm'],
+    strum: QUARTERS,
+    tone: 'nylon',
+  }),
+  song({
+    id: 'n-pop-3',
+    genre: 'pop',
+    level: 3,
+    requires: songRequires(CIUDAD, ['2.5']),
+    key: 'G',
+    bpm: 66,
+    tempoSteps: [66, 72, 80],
+    chords: [...CIUDAD],
+    line: CIUDAD.flatMap(balladBar),
+    notation: 'tab',
+    skills: ['technique', 'rhythm'],
+    strum: BALLAD,
+    tone: 'nylon',
+  }),
+  song({
+    id: 'n-blues-2',
+    genre: 'blues',
+    level: 3,
+    requires: songRequires(BLUES_A, ['3.4']),
+    key: 'A',
+    bpm: 72,
+    tempoSteps: [72, 80, 90],
+    chords: [...BLUES_A],
+    line: BLUES_A.flatMap(altBassBar),
+    notation: 'tab',
+    skills: ['technique', 'rhythm'],
     strum: QUARTERS,
     tone: 'nylon',
   }),
