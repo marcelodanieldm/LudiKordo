@@ -6,7 +6,7 @@
  * clara la diferencia que enseña la lección: limpio vs crunch, pastilla del
  * mástil (oscura) vs del puente (brillante), nota apagada (palm mute).
  */
-export type Tone = 'clean' | 'crunch' | 'lead' | 'neck' | 'bridge' | 'muted' | 'keys' | 'ebass';
+export type Tone = 'clean' | 'crunch' | 'lead' | 'neck' | 'bridge' | 'muted' | 'keys' | 'ebass' | 'nylon';
 export type OscType = 'sine' | 'triangle' | 'square' | 'sawtooth';
 
 export interface VoicePartial {
@@ -127,6 +127,20 @@ export const VOICES: Record<Tone, Voice> = {
     maxRing: 1.6,
     sustain: 0,
   },
+  // Guitarra criolla: cuerda de nylon pulsada con el dedo, redonda y cálida,
+  // con poco brillo y una caída más corta que la eléctrica limpia.
+  nylon: {
+    partials: [
+      { type: 'triangle', detune: 0, gain: 0.34 },
+      { type: 'sine', detune: 0, gain: 0.14 },
+      { type: 'sine', detune: 1200, gain: 0.06 },
+      { type: 'sine', detune: 1902, gain: 0.02 },
+    ],
+    attack: 0.005,
+    envelope: 'pluck',
+    maxRing: 1.6,
+    sustain: 0,
+  },
   muted: {
     partials: [
       { type: 'triangle', detune: 0, gain: 0.4 },
@@ -139,10 +153,11 @@ export const VOICES: Record<Tone, Voice> = {
   },
 };
 
-/** Voz de un ejemplo: la pedida, o la del instrumento (guitarra → limpio; bajo → tono suave). */
-export function voiceFor(tone: Tone | undefined, guitar: boolean): Voice {
+/** Voz de un ejemplo: la pedida, o la del instrumento (eléctrica → limpio; criolla → nylon; bajo → tono suave). */
+export function voiceFor(tone: Tone | undefined, guitar: boolean, nylon = false): Voice {
   if (tone) return VOICES[tone];
-  return guitar ? VOICES.clean : LEGACY_VOICE;
+  if (!guitar) return LEGACY_VOICE;
+  return nylon ? VOICES.nylon : VOICES.clean;
 }
 
 /** Cuánto suena de verdad una nota: su duración, salvo que la cuerda se apague antes. */

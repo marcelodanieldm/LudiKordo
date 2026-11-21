@@ -7,7 +7,7 @@
  * - `improv`: improvisar sobre el cifrado; se juzga si cada nota está en la escala.
  * Textos en `content.practice.<id con _>.title|desc`.
  */
-import { IS_GUITAR } from '../instruments/current';
+import { IS_GUITAR, IS_NYLON } from '../instruments/current';
 import type { Beats, Genre, ScoreEvent, ScoreNotation, Skill, Song } from './types';
 import { getSong } from './songs';
 import type { DrumStyle } from '../music/drums';
@@ -144,7 +144,7 @@ export const BASS_DRILLS: Drill[] = [
 ];
 
 /** Ejercicios del instrumento de esta build. */
-export const DRILLS: Drill[] = IS_GUITAR ? GUITAR_DRILLS : BASS_DRILLS;
+export const DRILLS: Drill[] = IS_NYLON ? [] : IS_GUITAR ? GUITAR_DRILLS : BASS_DRILLS;
 
 /** Estilo de batería para cada género del cancionero. */
 export const GENRE_STYLE: Record<Genre, DrumStyle> = {

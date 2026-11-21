@@ -50,6 +50,8 @@ export default function Practice() {
 function DrillsCard() {
   const { t } = useTranslation();
   const list = useDrills();
+  // Sin ejercicios para este instrumento (guitarra criolla, por ahora), no se muestra.
+  if (list.length === 0) return null;
   const open = list.filter((d) => d.state === 'open');
   const next = open.find((d) => d.stars < 3) ?? open[0];
   return (

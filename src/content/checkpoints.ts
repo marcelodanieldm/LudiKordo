@@ -5,7 +5,7 @@
  */
 import { KORDI_GROOVE_1 } from './lessons';
 import { midiToFreq } from '../music/notes';
-import { IS_GUITAR } from '../instruments/current';
+import { IS_GUITAR, IS_NYLON } from '../instruments/current';
 import { GUITAR_CP1 } from './guitar/level1';
 import { GUITAR_CP2 } from './guitar/level2';
 import { GUITAR_CP3 } from './guitar/level3';
@@ -94,7 +94,10 @@ const cp1: Checkpoint = {
 };
 
 /** Checkpoints del instrumento de esta build (los de guitarra están en guitar/level*.ts). */
-export const CHECKPOINTS: Record<number, Checkpoint> = IS_GUITAR ? { [GUITAR_CP1.level]: GUITAR_CP1, [GUITAR_CP2.level]: GUITAR_CP2, [GUITAR_CP3.level]: GUITAR_CP3, [GUITAR_CP4.level]: GUITAR_CP4 } : { [cp1.level]: cp1 };
+/** La criolla suma sus checkpoints nivel por nivel (ADR 0010); sin checkpoint, el nivel se completa con sus lecciones. */
+export const CHECKPOINTS: Record<number, Checkpoint> = IS_NYLON
+  ? {}
+  : IS_GUITAR ? { [GUITAR_CP1.level]: GUITAR_CP1, [GUITAR_CP2.level]: GUITAR_CP2, [GUITAR_CP3.level]: GUITAR_CP3, [GUITAR_CP4.level]: GUITAR_CP4 } : { [cp1.level]: cp1 };
 
 export function getCheckpoint(level: number): Checkpoint | undefined {
   return CHECKPOINTS[level];

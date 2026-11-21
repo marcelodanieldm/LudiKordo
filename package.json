@@ -6,8 +6,10 @@
   "scripts": {
     "start": "expo start --dev-client",
     "start:guitar": "EXPO_PUBLIC_INSTRUMENT=guitar expo start --dev-client",
+    "start:nylon": "EXPO_PUBLIC_INSTRUMENT=nylon expo start --dev-client",
     "android": "expo run:android",
     "android:guitar": "EXPO_PUBLIC_INSTRUMENT=guitar expo run:android",
+    "android:nylon": "EXPO_PUBLIC_INSTRUMENT=nylon expo run:android",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
     "check:i18n": "node scripts/check-i18n.mjs",

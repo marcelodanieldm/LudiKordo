@@ -1,18 +1,27 @@
 /**
- * Dos apps desde el mismo código (ADR 0009). `app.json` sigue siendo la base
- * (LudiKordo, bajo); con EXPO_PUBLIC_INSTRUMENT=guitar se arma la app de guitarra
- * eléctrica con otro nombre, otro paquete y su propio esquema de enlaces.
+ * Tres apps desde el mismo código (ADR 0009 y 0010). `app.json` sigue siendo la
+ * base (LudiKordo, bajo); con EXPO_PUBLIC_INSTRUMENT=guitar se arma la app de
+ * guitarra eléctrica y con EXPO_PUBLIC_INSTRUMENT=nylon la de guitarra criolla,
+ * cada una con otro nombre, otro paquete y su propio esquema de enlaces.
  *
  *   npm run android            → LudiKordo (bajo)
- *   npm run android:guitar     → app de guitarra
+ *   npm run android:guitar     → app de guitarra eléctrica
+ *   npm run android:nylon      → app de guitarra criolla
  *
- * El nombre de la app de guitarra es PROVISIONAL hasta que Marcelo lo elija.
- * El paquete Android (`app.ludikordo.guitar`) no cambia con el nombre: una vez
- * publicado en Google Play ya no se puede cambiar, así que no lleva la marca.
+ * Los nombres de las apps de guitarra son PROVISIONALES hasta que Marcelo los elija.
+ * Los paquetes Android (`app.ludikordo.guitar`, `app.ludikordo.nylon`) no cambian con
+ * el nombre: una vez publicados en Google Play ya no se pueden cambiar.
  */
 import type { ConfigContext, ExpoConfig } from 'expo/config';
 
 const GUITAR_NAME = process.env.APP_GUITAR_NAME ?? 'Kordi Guitar';
+const NYLON_NAME = process.env.APP_NYLON_NAME ?? 'Kordi Criolla';
+
+type Instrument = 'bass' | 'guitar' | 'nylon';
+
+function instrumentOf(value: string | undefined): Instrument {
+  return value === 'guitar' || value === 'nylon' ? value : 'bass';
+}
 
 /**
  * APK de versión (workflow apk-release): el versionCode sale de la versión
@@ -37,7 +46,7 @@ function apkVersionName(): string | undefined {
 
 export default ({ config }: ConfigContext): ExpoConfig => {
   // La misma variable elige el contenido dentro del bundle (src/instruments/current.ts).
-  const instrument = process.env.EXPO_PUBLIC_INSTRUMENT === 'guitar' ? 'guitar' : 'bass';
+  const instrument = instrumentOf(process.env.EXPO_PUBLIC_INSTRUMENT);
   const versionCode = apkVersionCode();
   const versionName = apkVersionName();
   const raw = config as ExpoConfig;
@@ -46,6 +55,17 @@ export default ({ config }: ConfigContext): ExpoConfig => {
   const extra = { ...base.extra, instrument };
 
   if (instrument === 'bass') return { ...base, extra };
+
+  if (instrument === 'nylon') {
+    return {
+      ...base,
+      name: NYLON_NAME,
+      slug: 'ludikordo-nylon',
+      scheme: 'ludikordonylon',
+      android: { ...base.android, package: 'app.ludikordo.nylon' },
+      extra,
+    };
+  }
 
   return {
     ...base,

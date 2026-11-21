@@ -1,14 +1,15 @@
 /**
- * Perfiles de instrumento: lo único que cambia entre la app de bajo (LudiKordo)
- * y la de guitarra eléctrica. El resto del motor (lecciones, cancionero, audio,
- * progreso, suscripción) es común. Ver ADR 0009.
+ * Perfiles de instrumento: lo único que cambia entre la app de bajo (LudiKordo),
+ * la de guitarra eléctrica y la de guitarra criolla. El resto del motor (lecciones, cancionero, audio,
+ * progreso, suscripción) es común. Ver ADR 0009 y 0010.
  *
  * Lógica pura: sin React Native, con pruebas en tests/instruments.test.ts.
  */
 
-export type InstrumentId = 'bass' | 'guitar';
+/** `nylon` = guitarra criolla (cuerdas de nylon, sin ampli). */
+export type InstrumentId = 'bass' | 'guitar' | 'nylon';
 
-/** Cuerdas de los dos instrumentos. En guitarra, «E» es la 6.ª (grave) y «e» la 1.ª (aguda). */
+/** Cuerdas de los instrumentos. En guitarra, «E» es la 6.ª (grave) y «e» la 1.ª (aguda). */
 export type StringId = 'E' | 'A' | 'D' | 'G' | 'B' | 'e';
 
 export interface InstrumentString {
@@ -92,11 +93,35 @@ export const GUITAR: InstrumentProfile = {
   techniques: ['pick', 'tapping', 'palmMute', 'chords', 'strumming', 'bending', 'vibrato', 'barreChords'],
 };
 
-export const PROFILES: Record<InstrumentId, InstrumentProfile> = { bass: BASS, guitar: GUITAR };
+/**
+ * Guitarra criolla (ADR 0010): misma afinación que la eléctrica, pero acústica y
+ * con cuerdas de nylon. El micrófono la capta sin ampli; se toca con los dedos
+ * (p-i-m-a) y rasgueada, sin púa. 19 trastes: el 12 es donde el mástil se une a la caja.
+ */
+export const NYLON: InstrumentProfile = {
+  id: 'nylon',
+  strings: GUITAR.strings,
+  frets: 19,
+  // Traste 19 de la 1.ª cuerda = B5 ≈ 988 Hz; el armónico del traste 12 en la 1.ª, E5 ≈ 659 Hz.
+  pitchRangeHz: { min: 70, max: 1400 },
+  listenTransposeSemitones: 0,
+  amplified: false,
+  scoredTones: ['clean'],
+  techniques: ['fingerstyle', 'chords', 'strumming', 'barreChords', 'vibrato'],
+};
+
+export const PROFILES: Record<InstrumentId, InstrumentProfile> = { bass: BASS, guitar: GUITAR, nylon: NYLON };
 
 /** Lee el instrumento de la configuración de build (`extra.instrument`); por defecto, bajo. */
 export function resolveInstrument(value: unknown): InstrumentProfile {
-  return value === 'guitar' ? GUITAR : BASS;
+  if (value === 'guitar') return GUITAR;
+  if (value === 'nylon') return NYLON;
+  return BASS;
+}
+
+/** Instrumentos de 6 cuerdas (eléctrica y criolla): comparten diapasón, tablatura, acordes y rasgueo. */
+export function isSixString(profile: InstrumentProfile): boolean {
+  return profile.strings.length === 6;
 }
 
 export function openMidiOf(profile: InstrumentProfile, stringId: StringId): number {
