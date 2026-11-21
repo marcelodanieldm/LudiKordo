@@ -1,5 +1,6 @@
-# Versiones en APK para instalar a mano en teléfonos y tablets Android: LudiKordo (bajo)
-# y la app de guitarra eléctrica (ADR 0009), las dos en la misma versión.
+# Versiones en APK para instalar a mano en teléfonos y tablets Android: LudiKordo (bajo),
+# la app de guitarra eléctrica (ADR 0009) y LudiKordo guitar, de criolla (ADR 0010), las
+# tres en la misma versión.
 #
 # Se lanza a mano desde Actions sobre main con la versión X.Y.Z (= `expo.version` de
 # app.json): el workflow crea el tag `apk-vX.Y.Z` al publicar. También corre si alguien
@@ -79,6 +80,8 @@ jobs:
             file: LudiKordo-bajo
           - instrument: guitar
             file: LudiKordo-guitarra
+          - instrument: nylon
+            file: LudiKordo-criolla
     env:
       EXPO_PUBLIC_TEST_BUILD: "1"
       EXPO_PUBLIC_DEV_PREMIUM: "1"
@@ -125,10 +128,11 @@ jobs:
           VERSION: ${{ needs.verify.outputs.version }}
         run: |
           {
-            echo "Dos apps para Android, en teléfonos y tablets:"
+            echo "Tres apps para Android, en teléfonos y tablets:"
             echo
             echo "- **LudiKordo-bajo-$VERSION.apk**: bajo de 4 cuerdas."
             echo "- **LudiKordo-guitarra-$VERSION.apk**: guitarra eléctrica."
+            echo "- **LudiKordo-criolla-$VERSION.apk**: guitarra criolla (LudiKordo guitar)."
             echo
             echo "### Novedades"
             echo
@@ -137,7 +141,7 @@ jobs:
             echo
             echo "### Cómo instalarla"
             echo
-            echo "Abre esta página desde el teléfono o la tablet, descarga el .apk y permite instalar apps de este origen. Se instala encima de la versión anterior de estos APK, sin perder el progreso. Se pueden tener las dos apps a la vez."
+            echo "Abre esta página desde el teléfono o la tablet, descarga el .apk y permite instalar apps de este origen. Se instala encima de la versión anterior de estos APK, sin perder el progreso. Se pueden tener las tres apps a la vez."
             echo
             echo "No es la versión de Google Play: está firmada con una clave de prueba y tiene todo el contenido abierto (sin compras)."
           } > notes.md

@@ -3,11 +3,11 @@
 # - Firmado con la clave de depuración de Expo: sirve para probar, no para Google Play.
 # - Todo el contenido abierto (Premium de prueba): no hay compras en este APK.
 # Respeta la versión de app.json: pre-release «apk-test-v<versión>-<n>», archivo
-# «LudiKordo-bajo-<versión>-prueba-<n>.apk», versionName «<versión>-test.<n>» y el mismo
+# «LudiKordo-<bajo|guitarra|criolla>-<versión>-prueba-<n>.apk», versionName «<versión>-test.<n>» y el mismo
 # versionCode que el APK de versión (apk-release.yml: 0.2.0 → 200). Así se instala encima
 # del APK de versión de esa misma versión, y el de la versión siguiente se instala encima.
-# Instrumento (ADR 0009): bajo por defecto; guitarra eléctrica eligiendo «guitar» al
-# lanzarlo a mano, o con un push a la rama cc/apk-guitar.
+# Instrumento (ADR 0009 y 0010): bajo por defecto; guitarra eléctrica eligiendo «guitar»
+# o criolla eligiendo «nylon» al lanzarlo a mano, o con un push a cc/apk-guitar o cc/apk-nylon.
 name: apk-test
 
 on:
@@ -16,10 +16,10 @@ on:
       instrument:
         description: Qué app compilar
         type: choice
-        options: [bass, guitar]
+        options: [bass, guitar, nylon]
         default: bass
   push:
-    branches: [cc/apk-build, cc/apk-guitar]
+    branches: [cc/apk-build, cc/apk-guitar, cc/apk-nylon]
 
 concurrency:
   group: apk-test-${{ github.ref }}
@@ -36,9 +36,7 @@ jobs:
     env:
       EXPO_PUBLIC_TEST_BUILD: "1"
       EXPO_PUBLIC_DEV_PREMIUM: "1"
-      EXPO_PUBLIC_INSTRUMENT: ${{ inputs.instrument || (github.ref_name == 'cc/apk-guitar' && 'guitar') || 'bass' }}
-      # Misma expresión que EXPO_PUBLIC_INSTRUMENT, para que el nombre siempre coincida con lo compilado.
-      APK_NAME: ${{ (inputs.instrument || (github.ref_name == 'cc/apk-guitar' && 'guitar') || 'bass') == 'guitar' && 'LudiKordo-guitarra' || 'LudiKordo-bajo' }}
+      EXPO_PUBLIC_INSTRUMENT: ${{ inputs.instrument || (github.ref_name == 'cc/apk-guitar' && 'guitar') || (github.ref_name == 'cc/apk-nylon' && 'nylon') || 'bass' }}
       BUILD: ${{ github.run_number }}
     steps:
       - uses: actions/checkout@v6
@@ -52,6 +50,13 @@ jobs:
           java-version: 17
           cache: gradle
       - run: npm ci
+      - name: Nombre del archivo según el instrumento compilado
+        run: |
+          case "$EXPO_PUBLIC_INSTRUMENT" in
+            guitar) echo "APK_NAME=LudiKordo-guitarra" >> "$GITHUB_ENV"; echo "APK_LABEL=guitarra eléctrica" >> "$GITHUB_ENV" ;;
+            nylon) echo "APK_NAME=LudiKordo-criolla" >> "$GITHUB_ENV"; echo "APK_LABEL=guitarra criolla" >> "$GITHUB_ENV" ;;
+            *) echo "APK_NAME=LudiKordo-bajo" >> "$GITHUB_ENV"; echo "APK_LABEL=bajo" >> "$GITHUB_ENV" ;;
+          esac
       - name: Versión (app.json)
         run: |
           v=$(node -p "require('./app.json').expo.version")
@@ -96,5 +101,5 @@ jobs:
           gh release create "$TAG" "$APK_FILE" \
             --prerelease \
             --target "${{ github.sha }}" \
-            --title "APK de prueba $APP_VERSION · build $BUILD (${{ env.EXPO_PUBLIC_INSTRUMENT == 'guitar' && 'guitarra eléctrica' || 'bajo' }})" \
+            --title "APK de prueba $APP_VERSION · build $BUILD ($APK_LABEL)" \
             --notes "Versión $APK_VERSION_NAME (versionCode $APK_VERSION_CODE). APK para probar en un teléfono Android (arm64). No es la versión de Google Play: está firmado con una clave de prueba y tiene todo el contenido abierto. Para instalarlo, abre este enlace desde el teléfono, descarga el .apk y permite instalar apps de este origen. Commit: ${{ github.sha }}"

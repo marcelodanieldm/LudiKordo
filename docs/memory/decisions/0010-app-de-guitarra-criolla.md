@@ -24,6 +24,6 @@ Marcelo pidió un programa de guitarra criolla de cero a intermedio, con teoría
 
 ## Consecuencias
 - Mientras la criolla no tiene cancionero ni Práctica, sus tarjetas se ocultan en la pestaña Practicar; sin checkpoint, el nivel se completa con sus lecciones.
-- `eas.json` y los workflows (CODEOWNERS) necesitan el perfil y el job de la variante `nylon`: van en un PR aparte con aprobación de Marcelo.
+- APK (aprobado por Marcelo el 21 nov): `apk-test` acepta `instrument: nylon` (o un push a `cc/apk-nylon`) y publica «LudiKordo-criolla-<versión>-prueba-N.apk»; `apk-release` suma «LudiKordo-criolla-<versión>.apk» a las otras dos. `eas.json` no cambia: no tiene perfiles por instrumento (la variante sale de `EXPO_PUBLIC_INSTRUMENT`); el perfil de Google Play queda para cuando se publique.
 - La detección de arpegios con cuerdas de nylon que siguen sonando (YIN es monofónico) hay que medirla en teléfono antes del nivel 2.
 - Decidido por Marcelo: nombre «LudiKordo guitar», tercera app, técnica con yemas.
