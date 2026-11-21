@@ -5,7 +5,8 @@ Programa aprobado por Marcelo el 21 nov 2026 (ADR 0010). Versión completa con c
 ## Resumen
 
 - 5 niveles, 31 módulos, 151 lecciones, unas 60 semanas a 15–20 minutos por día.
-- Guitarra de cuerdas de nylon, tocada con los dedos (p-i-m-a) y rasgueada. Sin púa, ampli ni efectos.
+- Guitarra de cuerdas de nylon, tocada con los dedos (p-i-m-a), **con yemas**, y rasgueada. Sin púa, ampli ni efectos.
+- Tercera app en Google Play: «LudiKordo guitar».
 - Afinación estándar: E2 A2 D3 G3 B3 E4 (MIDI 40, 45, 50, 55, 59, 64).
 - Lecciones de 4 pasos (Mira, Entiende, Practica sin guitarra, Practica con guitarra), una habilidad por lección, criterio de dominio y checkpoint al final de cada nivel.
 - Canciones que se habilitan al tener todos sus acordes y la técnica que piden.
@@ -16,7 +17,7 @@ Programa aprobado por Marcelo el 21 nov 2026 (ADR 0010). Versión completa con c
 | Módulo | Lecc. | Título | Lecciones |
 | --- | --- | --- | --- |
 | 1.1 | 5 | Tu guitarra criolla | Partes · cuerdas de nylon · nombres de las cuerdas · afinar con la app · cuerdas nuevas |
-| 1.2 | 5 | Postura y manos | Postura sentado · p-i-m-a · mano izquierda · uña o yema · primer arpegio |
+| 1.2 | 5 | Postura y manos | Postura sentado · p-i-m-a · mano izquierda · sonido con yema · primer arpegio |
 | 1.3 | 5 | Pulsar con los dedos | Tirando i-m · apoyando i-m · alternar i-m · pulgar en 6, 5 y 4 · pulgar + i-m |
 | 1.4 | 5 | Mano izquierda | Dedo detrás del traste · 1-2-3-4 · cromática · cambio de cuerda · apagar notas |
 | 1.5 | 5 | Ritmo y lectura | Pulso · redondas, blancas y negras · corcheas · tablatura · pentagrama en primera posición |
