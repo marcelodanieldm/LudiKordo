@@ -14,6 +14,13 @@ import { midiToFreq } from '../src/music/notes';
 import type { ListenExample, ScoreEvent } from '../src/content/types';
 import { CP1_MELODY, CP1_TAB, EIGHTHS, FULL_SPIDER, NYLON_CP1, SIGHT_TAB, STOP_NOTES } from '../src/content/nylon/level1';
 
+import { CHORDS, SEVENTHS, chordDiagram, chordMidi as openChordMidi, chordFromName, diagramMidi, seventhPitchClasses, shapeOf, type SeventhId } from '../src/music/chords';
+import { CHORD_UNLOCKS, allChords, chordModule, missingChords, songRequires, unlockedChords } from '../src/content/nylon/chordbook';
+import { CHORD_FIG, NYLON_LEVEL2_LESSONS } from '../src/content/nylon/level2';
+import { NYLON_GENRES, NYLON_SONGS } from '../src/content/nylon/songs';
+import { pimiBar } from '../src/content/nylon/helpers';
+import { CHORD_FIGURES } from '../src/components/guitarFigureMeta';
+
 type Tree = { [k: string]: string | Tree };
 const locales = { en, es, pt } as unknown as Record<string, Tree>;
 
@@ -211,4 +218,94 @@ test('partituras del nivel 1: compases de 4/4 completos', () => {
     }
     assert.equal(bar, 0, `${name}: último compás incompleto`);
   }
+});
+
+// ───────────── Nivel 2 (2.1–2.3), álbum de acordes y cancionero ─────────────
+
+
+test('séptimas abiertas: cada forma suena a tónica, tercera, quinta y séptima menor', () => {
+  for (const id of Object.keys(SEVENTHS) as SeventhId[]) {
+    const pcs = new Set(openChordMidi(id).map((m) => m % 12));
+    const want = seventhPitchClasses(id);
+    for (const pc of [want[0], want[1], want[3]]) assert.ok(pcs.has(pc), `${id}: falta la clase ${pc}`);
+    for (const pc of pcs) assert.ok(want.includes(pc), `${id}: nota ajena ${pc}`);
+    assert.equal(openChordMidi(id)[0] % 12, SEVENTHS[id].root, `${id}: la nota más grave es la tónica`);
+    // El diagrama suena igual que la forma.
+    assert.deepEqual(diagramMidi(chordDiagram(id)), [...openChordMidi(id)].sort((a, b) => a - b), id);
+  }
+  // Y coinciden con el cifrado que usa la banda.
+  for (const id of ['E7', 'A7', 'Em7', 'Am7'] as SeventhId[]) {
+    const band = new Set((chordFromName(id) ?? []).map((m) => m % 12));
+    assert.ok(seventhPitchClasses(id).every((pc) => band.has(pc)), id);
+  }
+});
+
+test('álbum de acordes: 14 acordes en 2.1–2.3, sin repetir, cada uno con su diagrama', () => {
+  const all = allChords();
+  assert.equal(all.length, 14);
+  assert.equal(new Set(all).size, all.length);
+  assert.deepEqual(Object.keys(CHORD_UNLOCKS), ['2.1', '2.2', '2.3']);
+  for (const c of all) {
+    assert.ok(c in CHORDS || c in SEVENTHS, `${c} no tiene forma`);
+    const fig = CHORD_FIG[c as keyof typeof CHORD_FIG];
+    assert.ok(fig && CHORD_FIGURES[fig] === c, `${c}: figura`);
+    assert.ok(shapeOf(c as keyof typeof CHORD_FIG));
+  }
+  assert.equal(chordModule('G7'), '2.3');
+  assert.equal(chordModule('F'), undefined);
+  assert.deepEqual(unlockedChords(new Set(['2.1'])), ['Em', 'Am', 'E', 'A', 'D']);
+  assert.deepEqual(missingChords(['Em', 'D', 'C', 'C'], new Set(['2.1'])), ['C']);
+  assert.deepEqual(missingChords(['Em', 'F'], new Set(['2.1', '2.2', '2.3'])), ['F']);
+  assert.deepEqual(songRequires(['C', 'Em'], ['1.3']), ['1.3', '2.1', '2.2']);
+  assert.throws(() => songRequires(['F']));
+});
+
+test('cada acorde nuevo de 2.1–2.3 tiene su lección y sale en el orden del álbum', () => {
+  const taught = NYLON_LEVEL2_LESSONS.flatMap((l) => l.exercises)
+    .filter((e) => e.kind === 'strum')
+    .flatMap((e) => (e.kind === 'strum' ? e.chords : []));
+  for (const c of allChords()) assert.ok(taught.includes(c), `${c} no se rasguea en ninguna lección`);
+  for (const ex of NYLON_LEVEL2_LESSONS.flatMap((l) => l.exercises)) {
+    if (ex.kind !== 'strum') continue;
+    // Una lección solo rasguea acordes de su módulo o anteriores.
+    const lessonModule = ex.id.split('.').slice(0, 2).join('.');
+    for (const c of ex.chords) {
+      const m = chordModule(c);
+      assert.ok(m && m <= lessonModule, `${ex.id}: ${c} se enseña en ${m}`);
+    }
+    assert.ok(ex.bpm <= 80, ex.id);
+  }
+});
+
+test('p-i-m-i: el pulgar toca la nota más grave del acorde y los dedos, notas del acorde', () => {
+  for (const c of allChords() as (keyof typeof CHORD_FIG)[]) {
+    const bar = pimiBar(c).filter(isNote);
+    const pcs = new Set(openChordMidi(c).map((m) => m % 12));
+    assert.equal(bar.length, 4);
+    for (const x of bar) assert.ok(pcs.has(midiOn(NYLON, x.string, x.fret) % 12), `${c}: ${x.string}${x.fret}`);
+  }
+});
+
+test('cancionero de criolla: reglas de las canciones y desbloqueo por acordes', () => {
+  const chordPcs = (name: string) => new Set((chordFromName(name) ?? []).map((m) => m % 12));
+  for (const s of NYLON_SONGS) {
+    assert.ok((NYLON_GENRES as readonly string[]).includes(s.genre), `${s.id}: género`);
+    const beats = s.line.reduce((a, e) => a + e.beats, 0);
+    assert.equal(beats, s.chords.length * 4, `${s.id}: un acorde por compás`);
+    if (s.line.some((e) => e.beats === 0.5)) assert.ok(s.bpm <= 80, `${s.id}: corcheas a 80 o menos`);
+    let t = 0;
+    for (const e of s.line) {
+      if (t % 4 === 0 && isNote(e)) {
+        const pc = midiOn(NYLON, e.string, e.fret) % 12;
+        assert.ok(chordPcs(s.chords[t / 4]).has(pc), `${s.id}: compás ${t / 4 + 1}, la nota del tiempo 1 no está en ${s.chords[t / 4]}`);
+      }
+      t += e.beats;
+    }
+    for (const m of s.requires) assert.ok(NYLON_LEVELS.some((l) => l.modules.some((x) => x.id === m)), `${s.id}: ${m}`);
+    for (const k of [s.titleKey, s.descriptionKey]) for (const [code, tree] of Object.entries(locales)) assert.ok(lookup(tree, k), `${code}: falta ${k}`);
+  }
+  // Ruta 3 se toca con los acordes: se abre con 2.1 (Em, D, A) y la técnica de 1.3.
+  const ruta = NYLON_SONGS.find((s) => s.id === 'n-rock-1')!;
+  assert.deepEqual(ruta.requires, songRequires(['Em', 'D', 'A'], ['1.3']));
+  assert.deepEqual(missingChords(ruta.chords, new Set(['1.3'])), ['Em', 'D', 'A']);
 });
