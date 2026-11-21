@@ -363,7 +363,8 @@ const l121: Lesson = {
       needsBass: true,
       skills: ['technique'],
       promptKey: k('1.2.1', 'play'),
-      notes: [...times('E', 2), ...times('A', 2), ...times('D', 2)],
+      // Sin notas iguales seguidas: sin tempo, una nota que sigue sonando se daría por tocada otra vez.
+      notes: [...times('E', 1), ...times('A', 1), ...times('D', 1), ...times('A', 1), ...times('E', 1)],
       bpm: null,
     },
   ],

@@ -1,15 +1,21 @@
 /**
- * Guitarra criolla, nivel 3 (primera parte): 3.1 preparar la cejilla, 3.2
- * cejilla forma de E, 3.3 cejilla forma de A y 3.4 séptimas y blues. Cada
+ * Guitarra criolla, nivel 3: 3.1 preparar la cejilla, 3.2 cejilla forma de E,
+ * 3.3 cejilla forma de A, 3.4 séptimas y blues, 3.5 ligados y arrastres, 3.6
+ * escala de blues y pentatónica mayor, y el checkpoint 3. Los ritmos de música
+ * popular (3.7) llegan con los compases de 3/4 y 6/8 del motor. Cada
  * acorde nuevo entra al álbum de acordes (chordbook.ts). En la criolla la
  * cejilla cuesta más que en la eléctrica (cuerdas más tensas y mástil más ancho):
  * por eso el módulo 3.1 arranca con media cejilla.
- * Textos en `content.n.l31x…l34x`.
+ * Textos en `content.n.l31x…l36x` y `content.n.cp3`.
  */
+import type { Checkpoint } from '../checkpoints';
 import type { Lesson, ScoreEvent } from '../types';
+import type { StringId } from '../../instruments/profiles';
+import { PENTA_BOXES } from '../../music/chords';
 import { QUARTERS, HALVES, WHOLES } from '../../music/strum';
 import { chordFretted, k, listen, n, strumListen } from './helpers';
 import { changeLesson, chordLesson, ear, lesson, play, playScore, quiz, strum, tap } from './level2';
+import { tabOf } from './helpers';
 
 // ───────────── 3.1 · Preparar la cejilla ─────────────
 
@@ -136,4 +142,150 @@ const l345 = lesson('3.4.5', 12, {
   ],
 });
 
-export const NYLON_LEVEL3_LESSONS: Lesson[] = [l311, l312, l313, l314, l321, l322, l323, l324, l325, l331, l332, l333, l334, l335, l341, l342, l343, l344, l345];
+
+// ───────────── 3.5 · Ligados y arrastres ─────────────
+
+const seq = (...xs: [StringId, number][]) => xs.map(([s, fret]) => ({ string: s, fret }));
+const rep = <T,>(xs: T[], times: number) => Array.from({ length: times }, () => xs).flat();
+const quarters = (xs: { string: StringId; fret: number }[]) => xs.map((x) => n(x.string, x.fret));
+
+/** 3.5.5: frase con ligados en la pentatónica de La (primera posición). Sin notas iguales seguidas. */
+export const SLUR_PHRASE: ScoreEvent[] = [
+  n('G', 0), n('G', 2), n('B', 1), n('B', 3),
+  n('e', 0), n('e', 3), n('e', 0), n('B', 3),
+  n('B', 1), n('G', 2), n('G', 0), n('D', 2),
+  n('G', 2, 4),
+];
+const SLUR_NOTES = tabOf(SLUR_PHRASE).map(({ string, fret }) => ({ string, fret }));
+
+const l351 = lesson('3.5.1', 10, {
+  visuals: ['hammer-on', 'hammer-on', null, null],
+  sounds: [listen(quarters(rep(seq(['G', 0], ['G', 2]), 2)), 80), null, listen(quarters(seq(['B', 1], ['B', 3])), 60), null],
+  cards: [{ figure: 'hammer-on' }, { listen: listen(quarters([...seq(['G', 0], ['G', 2]), ...seq(['B', 1], ['B', 3])]), 70) }],
+  exercises: [
+    quiz('3.5.1', 'q1', [k('3.5.1', 'q1o1'), k('3.5.1', 'q1o2'), k('3.5.1', 'q1o3')], 0),
+    play('3.5.1', 'play', rep(seq(['G', 0], ['G', 2]), 4), null),
+    play('3.5.1', 'play2', rep(seq(['B', 1], ['B', 3]), 4), null),
+  ],
+});
+
+const l352 = lesson('3.5.2', 10, {
+  visuals: ['pull-off', 'pull-off', null, null],
+  sounds: [listen(quarters(rep(seq(['B', 3], ['B', 1]), 2)), 80), null, listen(quarters(seq(['e', 3], ['e', 0])), 60), null],
+  cards: [{ figure: 'pull-off' }, { listen: listen(quarters([...seq(['B', 3], ['B', 1]), ...seq(['e', 3], ['e', 0])]), 70) }],
+  exercises: [
+    quiz('3.5.2', 'q1', [k('3.5.2', 'q1o1'), k('3.5.2', 'q1o2'), k('3.5.2', 'q1o3')], 1),
+    play('3.5.2', 'play', rep(seq(['B', 3], ['B', 1]), 4), null),
+    play('3.5.2', 'play2', rep(seq(['e', 3], ['e', 0]), 4), null),
+  ],
+});
+
+const l353 = lesson('3.5.3', 10, {
+  visuals: ['slide', 'slide', null, null],
+  sounds: [listen(quarters(rep(seq(['e', 3], ['e', 5]), 2)), 80), null, listen([n('e', 3), n('e', 5, 2), n('e', 3)], 60), null],
+  cards: [{ figure: 'slide' }, { listen: listen(quarters(rep(seq(['e', 3], ['e', 5]), 2)), 70) }],
+  exercises: [play('3.5.3', 'play', rep(seq(['e', 3], ['e', 5]), 3), null), play('3.5.3', 'play2', rep(seq(['B', 3], ['B', 5]), 3), null)],
+});
+
+const TRILL = rep(seq(['e', 0], ['e', 1]), 4).map((x) => n(x.string, x.fret, 0.5));
+
+const l354 = lesson('3.5.4', 10, {
+  visuals: ['hammer-on', 'pull-off', null, null],
+  sounds: [listen([...TRILL, ...TRILL], 80), null, null, null],
+  cards: [{ listen: listen([...TRILL, ...TRILL], 70) }, {}],
+  // Sin notas iguales seguidas: en el modo sin tempo, una nota repetida se daría por tocada sola.
+  exercises: [play('3.5.4', 'play', [...rep(seq(['e', 0], ['e', 1]), 6), ...seq(['e', 0])], null)],
+});
+
+const l355 = lesson('3.5.5', 12, {
+  visuals: [null, 'hammer-on', 'pull-off', null],
+  sounds: [listen(SLUR_PHRASE, 80), null, null, listen(SLUR_PHRASE, 70)],
+  cards: [{ listen: listen(SLUR_PHRASE, 70) }, {}],
+  exercises: [
+    { id: '3.5.5-tab', kind: 'tabReading', needsBass: false, skills: ['theory', 'fretboard'], promptKey: k('3.5.5', 'tab'), notes: tabOf(SLUR_PHRASE), frets: 4 },
+    play('3.5.5', 'play', SLUR_NOTES, null),
+  ],
+});
+
+// ───────────── 3.6 · Escala de blues y pentatónica mayor ─────────────
+
+/** Escala de blues de La en primera posición: la pentatónica más la blue note (Mi♭). */
+export const BLUES_SCALE: { string: StringId; fret: number }[] = seq(
+  ['E', 0], ['E', 3], ['A', 0], ['A', 3], ['D', 0], ['D', 1], ['D', 2], ['G', 0], ['G', 2], ['B', 1], ['B', 3], ['B', 4], ['e', 0], ['e', 3],
+);
+/** Clases de altura de la escala de blues de La (La, Do, Re, Mi♭, Mi, Sol). */
+export const BLUES_AM = [9, 0, 2, 3, 4, 7];
+/** Pentatónica mayor de Do: las mismas notas que la menor de La, centradas en Do. */
+export const PENTA_C_MAJOR = seq(['A', 3], ['D', 0], ['D', 2], ['G', 0], ['G', 2], ['B', 1], ['B', 3], ['e', 0], ['e', 3], ['e', 5]);
+export const PENTA_C = [0, 2, 4, 7, 9];
+const BOX1 = PENTA_BOXES[1].map(([s, fret]) => ({ string: s, fret }));
+const BOX2 = PENTA_BOXES[2].map(([s, fret]) => ({ string: s, fret }));
+
+const BLUE_LICK: ScoreEvent[] = [n('D', 0), n('D', 1), n('D', 2), n('G', 0), n('G', 2, 2), n('A', 3, 2)];
+const C_BACK = strumListen(['C', 'Am', 'F', 'G'], QUARTERS, 70);
+
+const l361 = lesson('3.6.1', 10, {
+  visuals: [null, 'fret-hand', null, null],
+  sounds: [listen(BLUE_LICK, 70), null, listen([n('D', 0), n('D', 2), n('G', 0), n('G', 2)], 70), null],
+  cards: [{ listen: listen(BLUE_LICK, 60) }, {}],
+  exercises: [
+    quiz('3.6.1', 'q1', [k('3.6.1', 'q1o1'), k('3.6.1', 'q1o2'), k('3.6.1', 'q1o3')], 0),
+    playScore('3.6.1', 'play', BLUE_LICK),
+  ],
+});
+
+const l362 = lesson('3.6.2', 10, {
+  visuals: [null, 'fret-hand', null, null],
+  sounds: [null, listen(quarters([...BLUES_SCALE, ...seq(['e', 0], ['B', 4])]), 80), null, null],
+  cards: [{ listen: listen(quarters([...BLUES_SCALE, ...seq(['e', 0], ['B', 4])]), 70) }, {}],
+  exercises: [tap('3.6.2', 'tap', BLUES_SCALE.slice(4, 7)), play('3.6.2', 'play', BLUES_SCALE, null)],
+});
+
+const l363 = lesson('3.6.3', 10, {
+  visuals: [null, 'chord-c', null, null],
+  sounds: [C_BACK, listen(quarters([...PENTA_C_MAJOR, ...seq(['e', 3], ['e', 0])]), 80), null, null],
+  cards: [{ listen: listen(quarters([...PENTA_C_MAJOR, ...seq(['e', 3], ['e', 0])]), 70) }, {}],
+  exercises: [
+    quiz('3.6.3', 'q1', [k('3.6.3', 'q1o1'), k('3.6.3', 'q1o2'), k('3.6.3', 'q1o3')], 0),
+    play('3.6.3', 'play', PENTA_C_MAJOR, null),
+  ],
+});
+
+const l364 = lesson('3.6.4', 12, {
+  visuals: ['penta-box', 'penta-box', 'penta-box-2', null],
+  sounds: [null, listen(quarters(BOX1), 80), listen(quarters(BOX2), 80), null],
+  cards: [{ figure: 'penta-box', listen: listen(quarters(BOX1), 70) }, { figure: 'penta-box-2', listen: listen(quarters(BOX2), 70) }],
+  exercises: [tap('3.6.4', 'tap', BOX2.slice(0, 6)), play('3.6.4', 'play', BOX1, null), play('3.6.4', 'play2', BOX2, null)],
+});
+
+const l365 = lesson('3.6.5', 14, {
+  visuals: [null, 'chord-a7', 'chord-c', null],
+  sounds: [strumListen(BLUES_A.slice(0, 4), QUARTERS, 70), null, C_BACK, null],
+  cards: [{ listen: strumListen(BLUES_A, QUARTERS, 70) }, { listen: C_BACK }],
+  exercises: [
+    { id: '3.6.5-blues', kind: 'improvise', needsBass: true, skills: ['ear', 'technique'], promptKey: k('3.6.5', 'blues'), backing: strumListen(BLUES_A, QUARTERS, 70), loops: 1, scale: BLUES_AM, minNotes: 16 },
+    { id: '3.6.5-major', kind: 'improvise', needsBass: true, skills: ['ear', 'technique'], promptKey: k('3.6.5', 'major'), backing: C_BACK, loops: 2, scale: PENTA_C, minNotes: 12 },
+  ],
+});
+
+export const NYLON_LEVEL3_LESSONS: Lesson[] = [
+  l311, l312, l313, l314, l321, l322, l323, l324, l325, l331, l332, l333, l334, l335, l341, l342, l343, l344, l345,
+  l351, l352, l353, l354, l355, l361, l362, l363, l364, l365,
+];
+
+// ───────────── Checkpoint 3 ─────────────
+
+const ck = (key: string) => `content.n.cp3.${key}`;
+
+export const NYLON_CP3: Checkpoint = {
+  level: 3,
+  titleKey: 'content.n.checkpoint.3',
+  introKey: ck('intro'),
+  mastery: 0.8,
+  parts: [
+    { id: 'ncp3-ear', kind: 'ear', needsBass: false, skills: ['ear'], promptKey: ck('ear'), options: [k('3.4.1', 'triad'), k('3.4.1', 'seventh')], correctIndex: 1, example: strumListen(['B7'], WHOLES, 60) },
+    { id: 'ncp3-barres', kind: 'strum', needsBass: true, skills: ['rhythm', 'technique'], promptKey: ck('barres'), bpm: 70, pattern: QUARTERS, chords: ['Bb', 'Gm', 'Cm', 'F7', 'F', 'F#m', 'Bm7', 'E7'] },
+    { id: 'ncp3-blues', kind: 'strum', needsBass: true, skills: ['rhythm'], promptKey: ck('blues'), bpm: 72, pattern: QUARTERS, chords: BLUES_E },
+    { id: 'ncp3-solo', kind: 'playAlong', needsBass: true, skills: ['technique', 'fretboard'], promptKey: ck('solo'), notes: SLUR_NOTES, bpm: null },
+  ],
+};

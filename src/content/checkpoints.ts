@@ -12,6 +12,7 @@ import { GUITAR_CP3 } from './guitar/level3';
 import { GUITAR_CP4 } from './guitar/level4';
 import { NYLON_CP1 } from './nylon/level1';
 import { NYLON_CP2 } from './nylon/level2';
+import { NYLON_CP3 } from './nylon/level3';
 import type { Exercise } from './types';
 
 export interface Checkpoint {
@@ -98,7 +99,7 @@ const cp1: Checkpoint = {
 /** Checkpoints del instrumento de esta build (los de guitarra están en guitar/level*.ts). */
 /** La criolla suma sus checkpoints nivel por nivel (ADR 0010); sin checkpoint, el nivel se completa con sus lecciones. */
 export const CHECKPOINTS: Record<number, Checkpoint> = IS_NYLON
-  ? { [NYLON_CP1.level]: NYLON_CP1, [NYLON_CP2.level]: NYLON_CP2 }
+  ? { [NYLON_CP1.level]: NYLON_CP1, [NYLON_CP2.level]: NYLON_CP2, [NYLON_CP3.level]: NYLON_CP3 }
   : IS_GUITAR ? { [GUITAR_CP1.level]: GUITAR_CP1, [GUITAR_CP2.level]: GUITAR_CP2, [GUITAR_CP3.level]: GUITAR_CP3, [GUITAR_CP4.level]: GUITAR_CP4 } : { [cp1.level]: cp1 };
 
 export function getCheckpoint(level: number): Checkpoint | undefined {
