@@ -14,9 +14,9 @@
 import type { StringId } from '../../instruments/profiles';
 import type { ScoreEvent, Song } from '../types';
 import type { OpenChordId } from '../../music/chords';
-import { QUARTERS, BALLAD } from '../../music/strum';
+import { BALLAD, BOSSA_FINGERS, CHACARERA, CHARLESTON, QUARTERS, VALS, ZAMBA } from '../../music/strum';
 import { songRequires } from './chordbook';
-import { altBassBar, balladBar, pimaBar, pimiBar } from './helpers';
+import { altBassBar, balladBar, pimaBar, pimiBar, steadyBassBar, waltzBar } from './helpers';
 import { BLUES_A } from './level3';
 
 type B = 0.5 | 1 | 2 | 4;
@@ -35,6 +35,26 @@ const POSTAL: OpenChordId[] = ['G', 'C', 'D', 'Em', 'G', 'C', 'D', 'G'];
 /** Nivel 3: canciones con cejillas y blues. */
 const TERRAZA = ['E', 'G', 'A', 'F#m', 'E', 'G', 'A', 'E'];
 const CIUDAD = ['G', 'D', 'Bm', 'Em', 'G', 'D', 'A', 'G'];
+
+/**
+ * 3.7, música popular. En la zamba y la chacarera (6/8) el alumno toca negras de
+ * 3/4 (bajo y dos notas) sobre la banda en 6/8: es la sesquiáltera de estos ritmos.
+ */
+const ZAMBA_SONG = ['Am', 'Am', 'Dm', 'Dm', 'E7', 'E7', 'Am', 'Am', 'Dm', 'Am', 'E7', 'Am'];
+const CHACARERA_SONG = ['Am', 'E7', 'Am', 'E7', 'Dm', 'Am', 'E7', 'Am'];
+const TANGO_SONG = ['Am', 'Am', 'Dm', 'Am', 'E7', 'E7', 'Am', 'Am'];
+/** 4.2: dos II-V-I, en Fa mayor y en Re menor. */
+const AVENIDA = ['Gm7', 'C7', 'Fmaj7', 'Fmaj7', 'Em7b5', 'A7b9', 'Dm7', 'Dm7'];
+/** 4.3: la vuelta de bossa con 6/9, disminuido de paso, m6 y 13. */
+const ARENA = ['C6/9', 'G#dim7', 'Am7', 'D7', 'Dm6', 'G13', 'C6/9', 'C6/9'];
+/** 5.2 y 5.3: bajos por grados con acordes de bajo indicado. */
+const ESCALERA = ['C', 'G/B', 'Am', 'G', 'F', 'C/E', 'Dm', 'G'];
+const RUTA_SUR = ['Em', 'C', 'G', 'D/F#', 'Em', 'C', 'G', 'D'];
+const NOCHE = ['Dm7', 'G7', 'Cmaj7', 'A7b9', 'Dm7', 'G7', 'C6/9', 'C6/9'];
+/** 5.4 y 5.5: blues menor de 12 compases y bossa en Re menor. */
+const MADRUGADA = ['Am7', 'Am7', 'Am7', 'Am7', 'Dm7', 'Dm7', 'Am7', 'Am7', 'E7', 'Dm7', 'Am7', 'E7'];
+const LLUVIA = ['Dm6', 'Em7b5', 'A7b9', 'Dm6', 'Gm7', 'C7', 'Fmaj7', 'A7b9'];
+const VALS_SONG = ['C', 'C', 'G7', 'G7', 'G7', 'G7', 'C', 'C', 'F', 'F', 'C', 'C', 'G7', 'G7', 'C', 'C'];
 
 export const NYLON_SONGS: Song[] = [
   // ── Nivel 1: melodía en las agudas; la banda toca los acordes ──
@@ -164,7 +184,182 @@ export const NYLON_SONGS: Song[] = [
     strum: QUARTERS,
     tone: 'nylon',
   }),
+  // ── Nivel 3 · música popular (3.7) ──
+  song({
+    id: 'n-popular-1',
+    genre: 'popular',
+    level: 3,
+    requires: songRequires(ZAMBA_SONG, ['3.7']),
+    key: 'Am',
+    bpm: 60,
+    tempoSteps: [60, 66, 72],
+    chords: [...ZAMBA_SONG],
+    line: ZAMBA_SONG.flatMap(waltzBar),
+    notation: 'tab',
+    skills: ['technique', 'rhythm'],
+    strum: ZAMBA,
+    tone: 'nylon',
+    beatsPerBar: 3,
+    style: 'zamba',
+  }),
+  song({
+    id: 'n-popular-2',
+    genre: 'popular',
+    level: 3,
+    requires: songRequires(CHACARERA_SONG, ['3.7']),
+    key: 'Am',
+    bpm: 66,
+    tempoSteps: [66, 72, 80],
+    chords: [...CHACARERA_SONG],
+    line: CHACARERA_SONG.flatMap(waltzBar),
+    notation: 'tab',
+    skills: ['technique', 'rhythm'],
+    strum: CHACARERA,
+    tone: 'nylon',
+    beatsPerBar: 3,
+    style: 'chacarera',
+  }),
+  song({
+    id: 'n-popular-3',
+    genre: 'popular',
+    level: 3,
+    requires: songRequires(TANGO_SONG, ['3.7']),
+    key: 'Am',
+    bpm: 66,
+    tempoSteps: [66, 72, 80],
+    chords: [...TANGO_SONG],
+    line: TANGO_SONG.flatMap(steadyBassBar),
+    notation: 'tab',
+    skills: ['technique', 'rhythm'],
+    strum: QUARTERS,
+    tone: 'nylon',
+    style: 'tango',
+  }),
+  song({
+    id: 'n-popular-4',
+    genre: 'popular',
+    level: 3,
+    requires: songRequires(VALS_SONG, ['3.7']),
+    key: 'C',
+    bpm: 80,
+    tempoSteps: [80, 90, 100],
+    chords: [...VALS_SONG],
+    line: VALS_SONG.flatMap(waltzBar),
+    notation: 'tab',
+    skills: ['technique', 'rhythm'],
+    strum: VALS,
+    tone: 'nylon',
+    beatsPerBar: 3,
+    style: 'vals',
+  }),
+  // ── Nivel 4 · jazz y bossa nova ──
+  song({
+    id: 'n-jazz-1',
+    genre: 'jazz',
+    level: 4,
+    requires: songRequires(AVENIDA, ['4.2']),
+    key: 'F',
+    bpm: 80,
+    tempoSteps: [80, 90, 100],
+    chords: [...AVENIDA],
+    line: AVENIDA.flatMap(pimaBar),
+    notation: 'tab',
+    skills: ['technique', 'rhythm'],
+    strum: CHARLESTON,
+    tone: 'nylon',
+  }),
+  song({
+    id: 'n-bossa-1',
+    genre: 'bossa',
+    level: 4,
+    requires: songRequires(ARENA, ['4.3']),
+    key: 'C',
+    bpm: 72,
+    tempoSteps: [72, 80, 90],
+    chords: [...ARENA],
+    line: ARENA.flatMap(altBassBar),
+    notation: 'tab',
+    skills: ['technique', 'rhythm'],
+    strum: BOSSA_FINGERS,
+    tone: 'nylon',
+  }),
+  // ── Nivel 5 ──
+  song({
+    id: 'n-pop-4',
+    genre: 'pop',
+    level: 5,
+    requires: songRequires(ESCALERA, ['5.2']),
+    key: 'C',
+    bpm: 70,
+    tempoSteps: [70, 80, 90],
+    chords: [...ESCALERA],
+    line: ESCALERA.flatMap(balladBar),
+    notation: 'tab',
+    skills: ['technique', 'theory'],
+    strum: BALLAD,
+    tone: 'nylon',
+  }),
+  song({
+    id: 'n-rock-3',
+    genre: 'rock',
+    level: 5,
+    requires: songRequires(RUTA_SUR, ['5.2']),
+    key: 'Em',
+    bpm: 76,
+    tempoSteps: [76, 84, 92],
+    chords: [...RUTA_SUR],
+    line: RUTA_SUR.flatMap(steadyBassBar),
+    notation: 'tab',
+    skills: ['technique', 'rhythm'],
+    strum: QUARTERS,
+    tone: 'nylon',
+  }),
+  song({
+    id: 'n-jazz-2',
+    genre: 'jazz',
+    level: 5,
+    requires: songRequires(NOCHE, ['5.3']),
+    key: 'C',
+    bpm: 80,
+    tempoSteps: [80, 90, 100],
+    chords: [...NOCHE],
+    line: NOCHE.flatMap(pimaBar),
+    notation: 'tab',
+    skills: ['technique', 'theory'],
+    strum: CHARLESTON,
+    tone: 'nylon',
+  }),
+  song({
+    id: 'n-blues-3',
+    genre: 'blues',
+    level: 5,
+    requires: songRequires(MADRUGADA, ['5.4']),
+    key: 'Am',
+    bpm: 72,
+    tempoSteps: [72, 80, 90],
+    chords: [...MADRUGADA],
+    line: MADRUGADA.flatMap(pimiBar),
+    notation: 'tab',
+    skills: ['technique', 'ear'],
+    strum: QUARTERS,
+    tone: 'nylon',
+  }),
+  song({
+    id: 'n-bossa-2',
+    genre: 'bossa',
+    level: 5,
+    requires: songRequires(LLUVIA, ['5.5']),
+    key: 'Dm',
+    bpm: 72,
+    tempoSteps: [72, 80, 90],
+    chords: [...LLUVIA],
+    line: LLUVIA.flatMap(altBassBar),
+    notation: 'tab',
+    skills: ['technique', 'theory'],
+    strum: BOSSA_FINGERS,
+    tone: 'nylon',
+  }),
 ];
 
-/** Géneros con canciones en la criolla (se suman jazz, bossa y música popular con sus niveles). */
-export const NYLON_GENRES = ['pop', 'rock', 'blues'] as const;
+/** Géneros con canciones en la criolla. */
+export const NYLON_GENRES = ['pop', 'rock', 'blues', 'popular', 'jazz', 'bossa'] as const;
