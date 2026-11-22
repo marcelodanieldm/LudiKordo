@@ -1,5 +1,5 @@
 import type { Locale } from '../music/notes';
-import { IS_GUITAR } from '../instruments/current';
+import { IS_GUITAR, IS_NYLON } from '../instruments/current';
 
 /**
  * Voces de los cartoons, por lección e idioma: un archivo por escena, en orden.
@@ -19,6 +19,9 @@ export const VOICES: Record<string, Partial<Record<Locale, number[]>>> = {};
 /** Voces de la app de guitarra: mismas claves de lección, otro contenido. Vacío hasta grabarlas. */
 export const GUITAR_VOICES: Record<string, Partial<Record<Locale, number[]>>> = {};
 
+/** Voces de la app de guitarra criolla. Vacío hasta grabarlas. */
+export const NYLON_VOICES: Record<string, Partial<Record<Locale, number[]>>> = {};
+
 export function voiceFor(lessonId: string, locale: Locale, scene: number): number | undefined {
-  return (IS_GUITAR ? GUITAR_VOICES : VOICES)[lessonId]?.[locale]?.[scene];
+  return (IS_NYLON ? NYLON_VOICES : IS_GUITAR ? GUITAR_VOICES : VOICES)[lessonId]?.[locale]?.[scene];
 }

@@ -17,6 +17,7 @@ Memoria compartida por todos los agentes (Antigravity, Claude Code local y en Gi
 | [0007](decisions/0007-objetivos-y-lectura-temprana.md) | 6 módulos nuevos (151 lecciones), clave de fa en el nivel 2, ejemplos sonoros | Aceptada |
 | [0008](decisions/0008-cancionero-original.md) | Cancionero propio con líneas originales por género y nivel | Aceptada |
 | [0009](decisions/0009-app-de-guitarra.md) | App de guitarra eléctrica: mismo repo, dos apps por variante de build | Aceptada |
+| [0010](decisions/0010-app-de-guitarra-criolla.md) | App de guitarra criolla: tercera variante de build (`nylon`), contenido propio | Aceptada |
 
 ## Aprendizajes y trampas
 
@@ -28,5 +29,6 @@ Ver [learnings.md](learnings.md): errores que ya cometimos y cómo no repetirlos
 - [Kordi: guía del personaje](../design/kordi.md)
 - [Currículo y mapa de objetivos](../CURRICULUM.md)
 - [Currículo de guitarra eléctrica](../CURRICULUM-GUITAR.md)
+- [Currículo de guitarra criolla](../CURRICULUM-NYLON.md)
 - [Pipeline de cartoons](../CARTOON_PIPELINE.md)
 - [Herramientas, MCPs y skills](../TOOLING.md)

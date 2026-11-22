@@ -4,6 +4,22 @@ Formato: [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versiones:
 
 ## [Sin publicar]
 
+### Nuevo
+- La app de guitarra criolla se llama «LudiKordo Guitar».
+- Guitarra criolla: módulos 5.4–5.6 (armónicos, pizzicato, tambora, rasgueo continuo, vibrato, modos dórico, mixolidio y frigio, proyecto final) y checkpoint 5; curso completo de 151 lecciones y cancionero de 18 canciones.
+- Guitarra criolla: módulos 5.1–5.3 (mapa del mástil, tríadas e inversiones, chord-melody), acordes C/E, G/B y D/F# y tres canciones de nivel 5.
+- Guitarra criolla: Práctica con banda, un ejercicio por cada lección (se abre al terminarla y se enlaza desde su final) y repasos de los niveles 1 a 4; filtro por nivel en la lista de ejercicios.
+- Guitarra criolla: módulos 4.4–4.6 (las cinco cajas, escalas mayor y menor natural, fraseo e improvisación sobre los cambios) y checkpoint 4; nivel 4 completo.
+- Guitarra criolla: módulos 4.1–4.3 (campo armónico, acordes de jazz con II-V-I mayor y menor y comping, bossa nova con pulgar, dedos sincopados y batida), 12 acordes nuevos en el álbum y canciones de jazz y bossa nova.
+- Guitarra criolla: módulo 3.7 (6/8, zamba, chacarera, tango y milonga, vals criollo), nivel 3 completo y cuatro canciones de música popular.
+- Compases de 3/4 y 6/8 en el motor (rasgueo, batería, banda, ejemplos y tablatura) y cuatro estilos de banda nuevos: zamba, chacarera, tango y vals criollo; género «Música popular» en el cancionero.
+- App de guitarra criolla desde el mismo código (ADR 0010, `npm run android:nylon`): ruta de 5 niveles y 151 lecciones, y los módulos gratuitos 1.1 y 1.2 en es, en y pt, con timbre de nylon, figuras de la criolla y Kordi con guitarra criolla.
+- Guitarra criolla: módulos 3.5–3.6 (ligados, arrastre, trino, escala de blues, pentatónica mayor, cajas 1 y 2) y checkpoint 3.
+- Guitarra criolla: módulos 3.1–3.4 (media cejilla, cejillas formas de E y de A, séptimas, boogie, blues en Mi y La, turnaround), 14 acordes nuevos en el álbum y tres canciones (rock, pop y blues).
+- Guitarra criolla: nivel 2 completo (rasgueos con pulgar e índice, chasquido, arpegios p-i-m-a, bajo alternado y constante, teoría de intervalos y tríadas, capotraste, pentatónica, improvisación y blues de 12 compases), checkpoint 2 y dos canciones más (pop y blues).
+- Guitarra criolla: álbum de acordes (los acordes desbloquean canciones), módulos 2.1–2.3 con 14 acordes abiertos (incluidas E7, A7, D7, G7, Em7 y Am7) y las dos primeras canciones del cancionero.
+- Guitarra criolla: nivel 1 completo (25 lecciones: pulsar tirando y apoyando, pulgar en los bajos, mano izquierda, cromático, pulso, figuras, corcheas y tablatura) y checkpoint 1.
+
 ## [0.3.0] — 2026-11-19
 
 ### Nuevo

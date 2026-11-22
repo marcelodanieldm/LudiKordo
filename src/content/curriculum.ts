@@ -1,12 +1,13 @@
 /**
  * Roadmap del bajo: 5 niveles, 31 módulos, 151 lecciones (~60 semanas).
  * Mapa de objetivos y plan de cada módulo: docs/CURRICULUM.md.
- * La guitarra tiene su propia ruta (guitar/curriculum.ts); `LEVELS` es la del
- * instrumento de esta build.
+ * La guitarra eléctrica y la criolla tienen su propia ruta (guitar/ y nylon/
+ * curriculum.ts); `LEVELS` es la del instrumento de esta build.
  */
 import type { Level, Module } from './types';
-import { IS_GUITAR } from '../instruments/current';
+import { IS_GUITAR, IS_NYLON } from '../instruments/current';
 import { GUITAR_LEVELS } from './guitar/curriculum';
+import { NYLON_LEVELS } from './nylon/curriculum';
 
 const m = (id: string, lessonCount: number): Module => ({
   id,
@@ -54,7 +55,7 @@ export const BASS_LEVELS: Level[] = [
   },
 ];
 
-export const LEVELS: Level[] = IS_GUITAR ? GUITAR_LEVELS : BASS_LEVELS;
+export const LEVELS: Level[] = IS_NYLON ? NYLON_LEVELS : IS_GUITAR ? GUITAR_LEVELS : BASS_LEVELS;
 
 export function moduleOf(lessonId: string): string {
   return lessonId.split('.').slice(0, 2).join('.');

@@ -5,7 +5,8 @@
 import type { FigureMotion, Lesson, MotionStep } from './types';
 import { LESSONS_2_6 } from './lessons26';
 import { midiToFreq } from '../music/notes';
-import { IS_GUITAR } from '../instruments/current';
+import { IS_GUITAR, IS_NYLON } from '../instruments/current';
+import { NYLON_LESSONS } from './nylon/lessons';
 import { GUITAR_LESSONS } from './guitar/lessons';
 
 const k = (lesson: string, key: string) => `content.l${lesson.replace(/\./g, '')}.${key}`;
@@ -1275,8 +1276,8 @@ export const BASS_LESSONS: Record<string, Lesson> = {
   [l155.id]: l155,
 };
 
-/** Lecciones del instrumento de esta build (la guitarra tiene las suyas en guitar/lessons.ts). */
-export const LESSONS: Record<string, Lesson> = IS_GUITAR ? GUITAR_LESSONS : BASS_LESSONS;
+/** Lecciones del instrumento de esta build (las guitarras tienen las suyas en guitar/ y nylon/lessons.ts). */
+export const LESSONS: Record<string, Lesson> = IS_NYLON ? NYLON_LESSONS : IS_GUITAR ? GUITAR_LESSONS : BASS_LESSONS;
 
 export function getLesson(id: string): Lesson | undefined {
   return LESSONS[id];

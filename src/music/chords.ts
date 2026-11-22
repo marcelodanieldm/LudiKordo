@@ -27,9 +27,34 @@ export const CHORDS: Record<ChordId, ChordShape> = {
   Dm: { frets: [-1, -1, 0, 2, 3, 1], fingers: [0, 0, 0, 2, 3, 1], root: 2, minor: true },
 };
 
+/** Acordes de séptima abiertos (guitarra criolla, módulos 2.2 y 2.3). */
+export type SeventhId = 'E7' | 'A7' | 'D7' | 'G7' | 'Em7' | 'Am7';
+
+export const SEVENTHS: Record<SeventhId, ChordShape> = {
+  E7: { frets: [0, 2, 0, 1, 0, 0], fingers: [0, 2, 0, 1, 0, 0], root: 4, minor: false },
+  A7: { frets: [-1, 0, 2, 0, 2, 0], fingers: [0, 0, 2, 0, 3, 0], root: 9, minor: false },
+  D7: { frets: [-1, -1, 0, 2, 1, 2], fingers: [0, 0, 0, 2, 1, 3], root: 2, minor: false },
+  G7: { frets: [3, 2, 0, 0, 0, 1], fingers: [3, 2, 0, 0, 0, 1], root: 7, minor: false },
+  Em7: { frets: [0, 2, 0, 0, 3, 0], fingers: [0, 2, 0, 0, 3, 0], root: 4, minor: true },
+  Am7: { frets: [-1, 0, 2, 0, 1, 0], fingers: [0, 0, 2, 0, 1, 0], root: 9, minor: true },
+};
+
+/** Acorde abierto (tríada o séptima) por nombre. */
+export type OpenChordId = ChordId | SeventhId;
+
+export function shapeOf(id: OpenChordId): ChordShape {
+  return id in CHORDS ? CHORDS[id as ChordId] : SEVENTHS[id as SeventhId];
+}
+
+/** Clases de altura de un acorde de séptima: tónica, tercera, quinta y séptima menor. */
+export function seventhPitchClasses(id: SeventhId): number[] {
+  const { root, minor } = SEVENTHS[id];
+  return [root, (root + (minor ? 3 : 4)) % 12, (root + 7) % 12, (root + 10) % 12];
+}
+
 /** Las notas (MIDI) que suenan al rasguear el acorde, de grave a agudo. */
-export function chordMidi(id: ChordId): number[] {
-  const shape = CHORDS[id];
+export function chordMidi(id: OpenChordId): number[] {
+  const shape = shapeOf(id);
   return GUITAR.strings.flatMap((s, i) => (shape.frets[i] < 0 ? [] : [midiOn(GUITAR, s.id as StringId, shape.frets[i])]));
 }
 
@@ -42,7 +67,7 @@ export function triadPitchClasses(id: ChordId): number[] {
 // ───────────── Diagramas en grilla: acordes, power chords y cajas de escala ─────────────
 
 /** Formas que se dibujan como diagrama vertical (como un acorde). */
-export type DiagramId = ChordId | 'power-6' | 'power-5' | 'penta-a' | BarreId | 'octave' | ScaleGridId;
+export type DiagramId = ChordId | SeventhId | NylonGridId | 'power-6' | 'power-5' | 'penta-a' | BarreId | 'octave' | ScaleGridId;
 
 export interface GridDot {
   /** 0 = 6.ª cuerda (Mi grave) … 5 = 1.ª (Mi aguda). */
@@ -68,8 +93,8 @@ export interface GridDiagram {
 
 const STRING_INDEX: Record<StringId, number> = { E: 0, A: 1, D: 2, G: 3, B: 4, e: 5 };
 
-export function chordDiagram(id: ChordId): GridDiagram {
-  const shape = CHORDS[id];
+export function chordDiagram(id: OpenChordId): GridDiagram {
+  const shape = shapeOf(id);
   return {
     name: id,
     startFret: 1,
@@ -214,11 +239,12 @@ export const SCALE_GRIDS: Record<ScaleGridId, GridDiagram> = {
 export function diagramOf(id: DiagramId): GridDiagram {
   if (id in SCALE_GRIDS) return SCALE_GRIDS[id as ScaleGridId];
   if (id in BARRES) return BARRES[id as BarreId];
+  if (id in NYLON_GRIDS) return NYLON_GRIDS[id as NylonGridId];
   if (id === 'octave') return OCTAVE;
   if (id === 'power-6') return POWER_6;
   if (id === 'power-5') return POWER_5;
   if (id === 'penta-a') return PENTA_A;
-  return chordDiagram(id as ChordId);
+  return chordDiagram(id as OpenChordId);
 }
 
 /** Notas MIDI de un diagrama (las que se pisan y las cuerdas al aire). */
@@ -291,6 +317,260 @@ export const BARRES: Record<BarreId, GridDiagram> = {
   'bar-only': { name: '', startFret: 5, barre: { fret: 5, from: 0, to: 5 }, dots: [], marks: [null, null, null, null, null, null] },
 };
 
+/** Cejilla forma de E7 (1 3 1 2 1 1), móvil por la 6.ª. */
+export function eShape7(name: string, fret: number): GridDiagram {
+  return {
+    name,
+    startFret: fret,
+    barre: { fret, from: 0, to: 5 },
+    dots: [
+      { string: 0, fret, finger: 1, root: true },
+      { string: 1, fret: fret + 2, finger: 3 },
+      { string: 3, fret: fret + 1, finger: 2 },
+    ],
+    marks: [null, null, null, null, null, null],
+  };
+}
+
+/** Cejilla forma de Am7 (x 1 3 1 2 1), móvil por la 5.ª. */
+export function aShapeM7(name: string, fret: number): GridDiagram {
+  return {
+    name,
+    startFret: fret,
+    barre: { fret, from: 1, to: 5 },
+    dots: [
+      { string: 1, fret, finger: 1, root: true },
+      { string: 2, fret: fret + 2, finger: 3 },
+      { string: 4, fret: fret + 1, finger: 2 },
+    ],
+    marks: ['x', null, null, null, null, null],
+  };
+}
+
+/** Diagramas de la guitarra criolla, nivel 3: media cejilla, cejillas movidas y B7, C7. */
+export type NylonGridId =
+  | 'fmaj7' | 'f-half' | 'bm-half' | 'bar-f7' | 'bar-fsm' | 'bar-gm' | 'bar-bbm' | 'bar-bm7' | 'bar-csm' | 'b7' | 'c7'
+  | 'cmaj7' | 'dm7' | 'gmaj7' | 'bm7b5' | 'gm7' | 'bbmaj7' | 'em7b5' | 'a7b9' | 'c69' | 'dm6' | 'g13' | 'gsdim7'
+  | 'c-e' | 'g-b' | 'd-fs';
+
+export const NYLON_GRIDS: Record<NylonGridId, GridDiagram> = {
+  fmaj7: {
+    name: 'Fmaj7',
+    startFret: 1,
+    dots: [
+      { string: 2, fret: 3, finger: 3 },
+      { string: 3, fret: 2, finger: 2 },
+      { string: 4, fret: 1, finger: 1 },
+    ],
+    marks: ['x', 'x', null, null, null, 'o'],
+  },
+  // Media cejilla: el dedo 1 acostado sobre la 2.ª y la 1.ª.
+  'f-half': {
+    name: 'F',
+    startFret: 1,
+    barre: { fret: 1, from: 4, to: 5 },
+    dots: [
+      { string: 2, fret: 3, finger: 3, root: true },
+      { string: 3, fret: 2, finger: 2 },
+    ],
+    marks: ['x', 'x', null, null, null, null],
+  },
+  // Bm en las 4 cuerdas agudas, con el dedo 1 en la 1.ª (paso previo a la cejilla).
+  'bm-half': {
+    name: 'Bm',
+    startFret: 2,
+    dots: [
+      { string: 2, fret: 4, finger: 3 },
+      { string: 3, fret: 4, finger: 4, root: true },
+      { string: 4, fret: 3, finger: 2 },
+      { string: 5, fret: 2, finger: 1 },
+    ],
+    marks: ['x', 'x', null, null, null, null],
+  },
+  'bar-f7': eShape7('F7', 1),
+  'bar-fsm': eShape('F#m', 2, true),
+  'bar-gm': eShape('Gm', 3, true),
+  'bar-bbm': aShape('Bbm', 1, true),
+  'bar-bm7': aShapeM7('Bm7', 2),
+  'bar-csm': aShape('C#m', 4, true),
+  b7: {
+    name: 'B7',
+    startFret: 1,
+    dots: [
+      { string: 1, fret: 2, finger: 2, root: true },
+      { string: 2, fret: 1, finger: 1 },
+      { string: 3, fret: 2, finger: 3 },
+      { string: 5, fret: 2, finger: 4 },
+    ],
+    marks: ['x', null, null, null, 'o', null],
+  },
+  c7: {
+    name: 'C7',
+    startFret: 1,
+    dots: [
+      { string: 1, fret: 3, finger: 3, root: true },
+      { string: 2, fret: 2, finger: 2 },
+      { string: 3, fret: 3, finger: 4 },
+      { string: 4, fret: 1, finger: 1 },
+    ],
+    marks: ['x', null, null, null, null, 'o'],
+  },
+  // ── Nivel 4: cuatríadas (4.1), acordes de jazz (4.2) y de bossa (4.3) ──
+  // Todos con la 1.ª sonando, para que sirvan con p-i-m-a.
+  cmaj7: {
+    name: 'Cmaj7',
+    startFret: 1,
+    dots: [
+      { string: 1, fret: 3, finger: 3, root: true },
+      { string: 2, fret: 2, finger: 2 },
+    ],
+    marks: ['x', null, null, 'o', 'o', 'o'],
+  },
+  dm7: {
+    name: 'Dm7',
+    startFret: 1,
+    barre: { fret: 1, from: 4, to: 5 },
+    dots: [{ string: 3, fret: 2, finger: 2 }],
+    marks: ['x', 'x', 'o', null, null, null],
+  },
+  gmaj7: {
+    name: 'Gmaj7',
+    startFret: 1,
+    dots: [
+      { string: 0, fret: 3, finger: 3, root: true },
+      { string: 1, fret: 2, finger: 2 },
+      { string: 5, fret: 2, finger: 1 },
+    ],
+    marks: [null, null, 'o', 'o', 'o', null],
+  },
+  bm7b5: {
+    name: 'Bm7b5',
+    startFret: 1,
+    dots: [
+      { string: 1, fret: 2, finger: 2, root: true },
+      { string: 3, fret: 2, finger: 3 },
+      { string: 5, fret: 1, finger: 1 },
+    ],
+    marks: ['x', null, 'o', null, 'o', null],
+  },
+  gm7: {
+    name: 'Gm7',
+    startFret: 3,
+    barre: { fret: 3, from: 0, to: 5 },
+    dots: [
+      { string: 0, fret: 3, finger: 1, root: true },
+      { string: 1, fret: 5, finger: 3 },
+    ],
+    marks: [null, null, null, null, null, null],
+  },
+  bbmaj7: {
+    name: 'Bbmaj7',
+    startFret: 1,
+    barre: { fret: 1, from: 1, to: 5 },
+    dots: [
+      { string: 1, fret: 1, finger: 1, root: true },
+      { string: 2, fret: 3, finger: 3 },
+      { string: 3, fret: 2, finger: 2 },
+      { string: 4, fret: 3, finger: 4 },
+    ],
+    marks: ['x', null, null, null, null, null],
+  },
+  em7b5: {
+    name: 'Em7b5',
+    startFret: 1,
+    dots: [
+      { string: 1, fret: 1, finger: 1 },
+      { string: 4, fret: 3, finger: 3 },
+    ],
+    marks: ['o', null, 'o', 'o', null, 'o'],
+  },
+  a7b9: {
+    name: 'A7b9',
+    startFret: 1,
+    dots: [
+      { string: 2, fret: 2, finger: 1 },
+      { string: 3, fret: 3, finger: 3 },
+      { string: 4, fret: 2, finger: 2 },
+      { string: 5, fret: 3, finger: 4 },
+    ],
+    marks: ['x', 'o', null, null, null, null],
+  },
+  c69: {
+    name: 'C6/9',
+    startFret: 1,
+    barre: { fret: 2, from: 2, to: 3 },
+    dots: [
+      { string: 1, fret: 3, finger: 2, root: true },
+      { string: 4, fret: 3, finger: 3 },
+      { string: 5, fret: 3, finger: 4 },
+    ],
+    marks: ['x', null, null, null, null, null],
+  },
+  dm6: {
+    name: 'Dm6',
+    startFret: 1,
+    dots: [
+      { string: 3, fret: 2, finger: 2 },
+      { string: 5, fret: 1, finger: 1 },
+    ],
+    marks: ['x', 'x', 'o', null, 'o', null],
+  },
+  g13: {
+    name: 'G13',
+    startFret: 3,
+    dots: [
+      { string: 0, fret: 3, finger: 1, root: true },
+      { string: 2, fret: 3, finger: 2 },
+      { string: 3, fret: 4, finger: 3 },
+      { string: 4, fret: 5, finger: 4 },
+    ],
+    marks: [null, 'x', null, null, null, 'o'],
+  },
+  gsdim7: {
+    name: 'G#dim7',
+    startFret: 3,
+    barre: { fret: 3, from: 2, to: 4 },
+    dots: [
+      { string: 0, fret: 4, finger: 2, root: true },
+      { string: 3, fret: 4, finger: 3 },
+      { string: 5, fret: 4, finger: 4 },
+    ],
+    marks: [null, 'x', null, null, null, null],
+  },
+  // ── Nivel 5: acordes con bajo indicado (5.2), para la conducción de voces y los bajos caminantes ──
+  'c-e': {
+    name: 'C/E',
+    startFret: 1,
+    dots: [
+      { string: 1, fret: 3, finger: 3 },
+      { string: 2, fret: 2, finger: 2 },
+      { string: 4, fret: 1, finger: 1 },
+    ],
+    marks: ['o', null, null, 'o', null, 'o'],
+  },
+  'g-b': {
+    name: 'G/B',
+    startFret: 1,
+    dots: [
+      { string: 1, fret: 2, finger: 1 },
+      { string: 4, fret: 3, finger: 3 },
+      { string: 5, fret: 3, finger: 4 },
+    ],
+    marks: ['x', null, 'o', 'o', null, null],
+  },
+  'd-fs': {
+    name: 'D/F#',
+    startFret: 1,
+    dots: [
+      { string: 0, fret: 2, finger: 1 },
+      { string: 3, fret: 2, finger: 2 },
+      { string: 4, fret: 3, finger: 4 },
+      { string: 5, fret: 2, finger: 3 },
+    ],
+    marks: [null, 'x', 'o', null, null, null],
+  },
+};
+
 /** Octavas: la nota de la 6.ª cuerda se repite dos cuerdas más arriba, dos trastes más adelante. */
 export const OCTAVE: GridDiagram = {
   name: '8va',
@@ -312,6 +592,12 @@ const QUALITY: Record<string, number[]> = {
   '7': [0, 7, 10, 16],
   m7: [0, 7, 10, 15],
   maj7: [0, 7, 11, 16],
+  m7b5: [0, 6, 10, 15],
+  '7b9': [0, 7, 10, 16, 25],
+  '6/9': [0, 4, 9, 14, 19],
+  m6: [0, 7, 9, 15],
+  '13': [0, 7, 10, 16, 21],
+  dim7: [0, 6, 9, 15],
   '5': [0, 7, 12],
 };
 

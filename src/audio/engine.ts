@@ -3,7 +3,7 @@
  * metrónomo con tiempos programados y tonos de referencia para el oído.
  */
 import { AudioContext } from 'react-native-audio-api';
-import { IS_GUITAR } from '../instruments/current';
+import { IS_GUITAR, IS_NYLON } from '../instruments/current';
 import { peakGain, ringSec, voiceFor, type Tone, type Voice } from '../music/timbre';
 import type { DrumHit } from '../music/drums';
 
@@ -135,11 +135,11 @@ function scheduleVoice(c: AudioContext, freq: number, at: number, durSec: number
   return ring;
 }
 
-/** Toca un tono de referencia (oído, afinación). En guitarra, con timbre de eléctrica limpia. */
+/** Toca un tono de referencia (oído, afinación). En guitarra, con su timbre (eléctrica limpia o nylon). */
 export function playTone(freq: number, durationSec = 1.2, delaySec = 0, tone?: Tone): Promise<void> {
   const c = context();
   const at = c.currentTime + 0.05 + delaySec;
-  scheduleVoice(c, IS_GUITAR ? freq : freq * BASS_TONE_UP, at, durationSec, tone || IS_GUITAR ? voiceFor(tone, IS_GUITAR) : voiceFor(undefined, false));
+  scheduleVoice(c, IS_GUITAR ? freq : freq * BASS_TONE_UP, at, durationSec, tone || IS_GUITAR ? voiceFor(tone, IS_GUITAR, IS_NYLON) : voiceFor(undefined, false));
   return new Promise((resolve) => setTimeout(resolve, (0.05 + delaySec + durationSec) * 1000));
 }
 
@@ -186,10 +186,10 @@ export function playSequence(
     const step = 60 / clickBeats.bpm;
     for (let i = 0; i < clickBeats.beats; i++) click(t0 + i * step, i % 4 === 0);
   }
-  const voice = voiceFor(tone, IS_GUITAR);
+  const voice = voiceFor(tone, IS_GUITAR, IS_NYLON);
   // Una nota puede traer su propio timbre (corcheas apagadas dentro de un riff con crunch).
   // Ecos, reverb y pista de acompañamiento traen su propio volumen (`level`).
-  for (const n of notes) scheduleVoice(c, n.freq, t0 + n.startSec, n.durSec, n.tone ? voiceFor(n.tone, IS_GUITAR) : voice, n.level ?? 1, n);
+  for (const n of notes) scheduleVoice(c, n.freq, t0 + n.startSec, n.durSec, n.tone ? voiceFor(n.tone, IS_GUITAR, IS_NYLON) : voice, n.level ?? 1, n);
   let stopped = false;
   const handle = {
     onInterrupt,
@@ -281,17 +281,17 @@ const JAM_REFILL_MS = 400;
  * segundos (un timer rellena), así una toma larga no crea miles de nodos al empezar
  * ni desfasa el arranque.
  */
-export function startJam(jam: { notes: { freq: number; startSec: number; durSec: number; tone?: Tone; level?: number }[]; drums: DrumHit[]; bpm: number; countIn: number; bodyBeats: number }): JamHandle {
+export function startJam(jam: { notes: { freq: number; startSec: number; durSec: number; tone?: Tone; level?: number }[]; drums: DrumHit[]; bpm: number; countIn: number; bodyBeats: number; beatsPerBar?: number }): JamHandle {
   stopActiveSequence();
   const c = context();
   const t0 = c.currentTime + 0.25;
   const step = 60 / jam.bpm;
-  const voice = voiceFor(undefined, IS_GUITAR);
+  const voice = voiceFor(undefined, IS_GUITAR, IS_NYLON);
   const clicks = jam.countIn + (jam.drums.length ? 0 : jam.bodyBeats);
   type Ev = { at: number; play: () => void };
   const events: Ev[] = [
-    ...Array.from({ length: clicks }, (_, i) => ({ at: i * step, play: () => click(t0 + i * step, i % 4 === 0) })),
-    ...jam.notes.map((n) => ({ at: n.startSec, play: () => void scheduleVoice(c, n.freq, t0 + n.startSec, n.durSec, n.tone ? voiceFor(n.tone, IS_GUITAR) : voice, n.level ?? 1) })),
+    ...Array.from({ length: clicks }, (_, i) => ({ at: i * step, play: () => click(t0 + i * step, i % (jam.beatsPerBar ?? 4) === 0) })),
+    ...jam.notes.map((n) => ({ at: n.startSec, play: () => void scheduleVoice(c, n.freq, t0 + n.startSec, n.durSec, n.tone ? voiceFor(n.tone, IS_GUITAR, IS_NYLON) : voice, n.level ?? 1) })),
     ...jam.drums.map((d) => ({ at: d.startSec, play: () => scheduleDrum(c, d.kind, t0 + d.startSec, d.level) })),
   ].sort((a, b) => a.at - b.at);
   let next = 0;

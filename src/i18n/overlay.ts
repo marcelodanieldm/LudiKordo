@@ -1,7 +1,9 @@
 /**
  * Textos por instrumento (lógica pura). Los idiomas guardan en `guitar.ui` las
  * versiones de guitarra de los textos de `ui` que nombran el bajo («Sin bajo»,
- * «¿Tienes un bajo?»…). En la app de guitarra se superponen; en la de bajo, no.
+ * «¿Tienes un bajo?»…). En las apps de guitarra se superponen; en la de bajo, no.
+ * En la criolla se superpone además `nylon.ui` («guitarra criolla» en vez de
+ * «guitarra eléctrica», sin ampli).
  */
 type Tree = { [k: string]: string | Tree };
 
@@ -14,9 +16,13 @@ function merge(base: Tree, over: Tree): Tree {
   return out;
 }
 
-export function withInstrumentTexts<T extends object>(translation: T, guitar: boolean): T {
+function overlay(ui: Tree, over: string | Tree | undefined): Tree {
+  return typeof over === 'object' && typeof over.ui === 'object' ? merge(ui, over.ui) : ui;
+}
+
+export function withInstrumentTexts<T extends object>(translation: T, guitar: boolean, nylon = false): T {
   const tree = translation as unknown as Tree;
-  const over = tree.guitar;
-  if (!guitar || typeof over !== 'object' || typeof over.ui !== 'object' || typeof tree.ui !== 'object') return translation;
-  return { ...tree, ui: merge(tree.ui, over.ui) } as unknown as T;
+  if (!guitar || typeof tree.ui !== 'object') return translation;
+  const ui = overlay(tree.ui, tree.guitar);
+  return { ...tree, ui: nylon ? overlay(ui, tree.nylon) : ui } as unknown as T;
 }

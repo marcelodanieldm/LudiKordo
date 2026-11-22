@@ -3,16 +3,18 @@ import { View } from 'react-native';
 import Svg, { Circle, Defs, Ellipse, G, LinearGradient, Path, RadialGradient, Rect, Stop } from 'react-native-svg';
 import { colors } from '../theme';
 import { INSTRUMENT } from '../instruments/current';
+import type { InstrumentId } from '../instruments/profiles';
 
 type Mood = 'normal' | 'happy';
 type Light = 'none' | 'beam' | 'glow';
 
 /**
  * Kordi, el carpincho músico. Personaje original de LudiKordo (docs/design/kordi.md).
- * En la app de bajo toca un bajo; en la de guitarra, una guitarra eléctrica.
+ * En la app de bajo toca un bajo; en la de guitarra, una guitarra eléctrica; en la
+ * de criolla, una guitarra criolla (caja en forma de ocho y boca redonda).
  * `light` lo pone bajo un foco de escenario (beam) o con un halo dorado (glow).
  */
-export function Kordi({ size = 160, label = 'Kordi', mood = 'normal', light = 'none', instrument = INSTRUMENT.id }: { size?: number; label?: string; mood?: Mood; light?: Light; instrument?: 'bass' | 'guitar' }) {
+export function Kordi({ size = 160, label = 'Kordi', mood = 'normal', light = 'none', instrument = INSTRUMENT.id }: { size?: number; label?: string; mood?: Mood; light?: Light; instrument?: InstrumentId }) {
   const figure = (
     <Svg width={size} height={size} viewBox="0 0 160 160" accessibilityLabel={label} accessibilityRole="image">
       <Ellipse cx={80} cy={148} rx={54} ry={8} fill={light === 'none' ? '#000000' : colors.accent} opacity={light === 'none' ? 0.3 : 0.22} />
@@ -29,7 +31,25 @@ export function Kordi({ size = 160, label = 'Kordi', mood = 'normal', light = 'n
           <Circle cx={85.5} cy={42.5} r={1.3} fill="#FFFFFF" />
         </>
       )}
-      {instrument === 'guitar' ? (
+      {instrument === 'nylon' ? (
+        <>
+          {/* Guitarra criolla: mástil ancho, clavijero calado, caja en forma de ocho, boca y puente */}
+          <G rotation={-24} origin="75, 101">
+            <Rect x={32} y={97} width={96} height={8} rx={2} fill="#4A2E17" />
+            <Rect x={124} y={94} width={20} height={14} rx={3} fill="#4A2E17" />
+            <Rect x={128} y={97} width={12} height={2.5} rx={1} fill="#1D1B2E" opacity={0.6} />
+            <Rect x={128} y={102} width={12} height={2.5} rx={1} fill="#1D1B2E" opacity={0.6} />
+          </G>
+          <G rotation={-24} origin="56, 118">
+            <Ellipse cx={42} cy={118} rx={20} ry={19} fill="#D9A35F" />
+            <Ellipse cx={68} cy={118} rx={16} ry={15} fill="#D9A35F" />
+            <Rect x={40} y={106} width={30} height={24} fill="#D9A35F" />
+            <Circle cx={62} cy={118} r={6} fill="#1D1B2E" />
+            <Circle cx={62} cy={118} r={8} fill="none" stroke="#8E5A33" strokeWidth={1.5} />
+            <Rect x={34} y={113} width={5} height={10} rx={1.5} fill="#4A2E17" />
+          </G>
+        </>
+      ) : instrument === 'guitar' ? (
         <>
           {/* Guitarra eléctrica: mástil más corto, clavijero 6 en línea, doble corte y golpeador */}
           <G rotation={-24} origin="75, 101">

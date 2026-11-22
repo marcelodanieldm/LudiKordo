@@ -7,7 +7,8 @@
 import type { Beats, Genre, ListenExample, ScoreEvent, Song } from './types';
 import { chordFromName } from '../music/chords';
 import { GUITAR_SONGS } from './guitar/songs';
-import { IS_GUITAR } from '../instruments/current';
+import { NYLON_GENRES, NYLON_SONGS } from './nylon/songs';
+import { IS_GUITAR, IS_NYLON } from '../instruments/current';
 
 type S = 'E' | 'A' | 'D' | 'G';
 const k = (id: string, key: string) => `content.song.${id.replace(/-/g, '_')}.${key}`;
@@ -301,15 +302,22 @@ export const BASS_SONGS: Song[] = [
   }),
 ];
 
-/** Canciones del instrumento de esta build. */
-export const SONGS: Song[] = IS_GUITAR ? GUITAR_SONGS : BASS_SONGS;
+/** Canciones del instrumento de esta build. La de criolla crece nivel por nivel (ADR 0010). */
+export const SONGS: Song[] = IS_NYLON ? NYLON_SONGS : IS_GUITAR ? GUITAR_SONGS : BASS_SONGS;
 
 /**
  * Ejemplo para escuchar una canción: la línea sola o, si la canción trae rasgueo
  * (guitarra), la línea sobre una pista con los acordes del cifrado.
  */
 export function songExample(song: Song): ListenExample {
-  const base: ListenExample = { events: song.line, bpm: song.bpm, show: song.notation, click: true, ...(song.tone ? { tone: song.tone } : {}) };
+  const base: ListenExample = {
+    events: song.line,
+    bpm: song.bpm,
+    show: song.notation,
+    click: true,
+    ...(song.tone ? { tone: song.tone } : {}),
+    ...(song.beatsPerBar ? { beatsPerBar: song.beatsPerBar } : {}),
+  };
   if (!song.strum) return base;
   const chords = song.chords.map((c) => chordFromName(c) ?? []);
   // En rock la pista suena con crunch, como una segunda guitarra; en el resto, limpia.
@@ -323,4 +331,5 @@ export function getSong(id: string): Song | undefined {
 const BASS_GENRES: readonly Genre[] = ['pop', 'rock', 'ballad', 'blues', 'bossa', 'soul', 'reggae'];
 /** Géneros del cancionero de guitarra, elegidos por Marcelo (18 nov 2026). */
 export const GUITAR_GENRES: readonly Genre[] = ['rock', 'pop', 'funk', 'jazz', 'gospel'];
-export const GENRES: readonly Genre[] = IS_GUITAR ? GUITAR_GENRES : BASS_GENRES;
+/** En la criolla, solo los géneros que ya tienen canciones (rock, pop, blues, jazz, bossa y música popular al final). */
+export const GENRES: readonly Genre[] = IS_NYLON ? NYLON_GENRES : IS_GUITAR ? GUITAR_GENRES : BASS_GENRES;

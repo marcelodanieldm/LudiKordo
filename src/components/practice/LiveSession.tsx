@@ -8,7 +8,7 @@ import { colors, fonts, radius } from '../../theme';
 import { listenNotes, requestMic, type Listener } from '../../audio/mic';
 import { nowMs, startJam, stopActiveSequence, type JamHandle } from '../../audio/engine';
 import { JAM_PARTS, jamSchedule, type JamPart } from '../../music/jam';
-import { DRUM_STYLES, type DrumStyle } from '../../music/drums';
+import { DRUM_STYLES, barBeatsOfStyle, type DrumStyle } from '../../music/drums';
 import { cleanDetections, isHit, judgeLive, type LiveState, type LiveTarget } from '../../music/live';
 import { scoreImprov } from '../../music/improv';
 import { eventAt, isRest, noteStartBeats } from '../../music/staff';
@@ -19,7 +19,8 @@ import type { ScoreEvent } from '../../content/types';
 import { useProgress } from '../../state/progress';
 import { useSettings } from '../../state/settings';
 
-const COUNT_IN = 4;
+/** Cuenta previa: un compás de 4, o dos de 3 en zamba, chacarera y vals. */
+const countInFor = (barBeats: number) => (barBeats === 3 ? 6 : 4);
 const TICK_MS = 80;
 const MASTERY = 0.8;
 const STYLES = Object.keys(DRUM_STYLES) as DrumStyle[];
@@ -97,7 +98,10 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
   );
 
   const line = drill.line ?? NO_LINE;
-  const lineBeats = drill.chords.length * 4;
+  // Los estilos del selector tienen el mismo compás que el ejercicio (4/4, o 3/4 y 6/8).
+  const barBeats = barBeatsOfStyle(drill.style);
+  const COUNT_IN = countInFor(barBeats);
+  const lineBeats = drill.chords.length * barBeats;
   const eventStarts = useMemo(() => line.map((_, i) => line.slice(0, i).reduce((a, e) => a + e.beats, 0)), [line]);
   const noteBeats = useMemo(() => noteStartBeats(line), [line]);
   const noteMidis = useMemo(() => line.flatMap((e) => (isRest(e) ? [] : [midiAt(e.string, e.fret)])), [line]);
@@ -131,7 +135,7 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
         listener.current = heard;
       }
       const sched = jamSchedule({ chords: drill.chords, bpm, style, loops, parts, countIn: COUNT_IN });
-      jam.current = startJam({ ...sched, bpm, countIn: COUNT_IN });
+      jam.current = startJam({ ...sched, bpm, countIn: COUNT_IN, beatsPerBar: barBeats });
       setPhase('running');
       const step = 60000 / bpm;
       const startMs = jam.current.startMs;
@@ -282,7 +286,7 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
             t('ui.drills.with'),
             JAM_PARTS.map((p) => chip(p, t(`ui.drills.part.${p}`), parts.includes(p), () => togglePart(p))),
           )}
-          {parts.includes('drums') ? row(t('ui.drills.styleTitle'), STYLES.map((s) => chip(s, t(`ui.drills.style.${s}`), style === s, () => setStyle(s)))) : null}
+          {parts.includes('drums') ? row(t('ui.drills.styleTitle'), STYLES.filter((s) => barBeatsOfStyle(s) === barBeats).map((s) => chip(s, t(`ui.drills.style.${s}`), style === s, () => setStyle(s)))) : null}
           {row(
             t('ui.drills.loops'),
             LOOPS.map((n) => chip(`l${n}`, t('ui.drills.loopsN', { n }), loops === n, () => setLoops(n))),
@@ -294,7 +298,7 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
 
       {drill.kind === 'line' ? (
         <Card style={{ gap: 10, alignItems: 'center' }}>
-          <MemoScore events={line} notation={drill.notation ?? 'tab'} width={width - 34} current={phase === 'running' ? eventPos : -1} />
+          <MemoScore events={line} notation={drill.notation ?? 'tab'} width={width - 34} current={phase === 'running' ? eventPos : -1} beatsPerBar={barBeats} />
           {phase === 'running' && loops > 1 ? <Muted>{t('ui.drills.loopOf', { n: Math.min(loops, loopNow + 1), total: loops })}</Muted> : null}
         </Card>
       ) : (
