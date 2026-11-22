@@ -83,18 +83,61 @@
       "inScalePct": "Na escala",
       "timing": "Onde caiu a última nota",
       "dotsLabel": "{{hits}} acertos de {{decided}} notas",
-      "unscored": "Você tocou com a banda sem microfone, então desta vez não há pontuação.",
       "resultLine": "{{percent}}% de acertos",
       "resultImprov": "{{percent}}% na escala · {{notes}} notas",
       "breakdown": "No tempo: {{hit}} · Antes: {{early}} · Atrasadas: {{late}} · Outra nota: {{wrong}} · Perdidas: {{miss}}",
       "bestStreak": "Melhor sequência: {{n}} notas seguidas",
-      "rushing": "Você tende a correr: escute o bumbo e espere o pulso.",
-      "dragging": "Você tende a atrasar: antecipe um pouco cada nota.",
       "unlocked": "Novo andamento liberado: {{bpm}} bpm!",
       "percent": "{{n}}%",
       "statA11y": "{{label}}: {{value}}",
       "ms": "{{n}} ms",
-      "withBand": "Praticar com a banda"
+      "withBand": "Praticar com a banda",
+      "howTo": {
+        "title": "Como se faz",
+        "listen": "Escute o exemplo e acompanhe a partitura com os olhos: é assim que tem que soar.",
+        "listenImprov": "Escute o exemplo: é a escala do exercício, subindo e descendo. Você vai improvisar com essas notas.",
+        "scoring": "Depois da contagem de {{beats}} tempos, toque junto com a banda. O app avalia cada nota ao vivo: no tempo, antes, depois ou outra nota.",
+        "scoringImprov": "Depois da contagem de {{beats}} tempos, invente frases com as notas da escala. Toque pelo menos {{n}} notas por volta; o app mostra se cada uma está na escala.",
+        "cat": {
+          "technique": "O que importa é a limpeza: cada nota tem que soar clara e com o mesmo volume. Mantenha a mão relaxada.",
+          "riffs": "Sinta o groove: cada nota cai junto com o bumbo e a caixa. Repita o padrão sem perder o pulso.",
+          "scales": "Toque a escala nota por nota, por igual. Diga o nome de cada nota baixinho para aprendê-la.",
+          "arpeggios": "Um arpejo é o acorde nota por nota. Deixe cada nota soar até chegar a próxima.",
+          "phrases": "Uma frase tem começo e fim, como uma oração. Mire na última nota: é a que mais se ouve.",
+          "reading": "Leia um pouco à frente do que você toca. Se se perder, não pare: volte no compasso seguinte.",
+          "improv": "Dentro da escala não existem notas erradas. Toque frases curtas e deixe espaços: o silêncio também é música."
+        }
+      },
+      "coach": {
+        "tipsTitle": "Para melhorar",
+        "unscored": "Você tocou com a banda sem microfone, então desta vez não há pontuação nem retorno nota por nota.",
+        "headline": {
+          "0": "É um começo: exercícios novos custam. Tente de novo mais devagar.",
+          "1": "Você está no caminho certo. Com mais umas voltas, sai.",
+          "2": "Muito bem! Falta pouco para as 3 estrelas.",
+          "3": "Excelente! Você tocou com precisão."
+        },
+        "misses": "Faltaram notas ({{n}}). Não pare para corrigir: se se perder, volte no compasso seguinte.",
+        "wrong": "Em alguns lugares você tocou outra nota ({{n}}). Antes de tocar com a banda, percorra a linha devagar e sem a base, olhando onde vai cada dedo. Confira também a afinação.",
+        "rushing": "Você tende a correr: escute o bumbo e espere o pulso.",
+        "dragging": "Você tende a atrasar: antecipe um pouco cada nota.",
+        "unsteady": "Algumas notas caem antes e outras depois. Marque o pulso com o pé e toque junto com ele.",
+        "slower": "Desça para {{bpm}} bpm até sair sem erros; depois suba aos poucos.",
+        "faster": "Ao subir para {{bpm}} bpm, mantenha a mão relaxada: a velocidade vem da soltura, não da força.",
+        "mastered": "Você domina no tempo mais rápido. Para se desafiar, mude o estilo ou tire um instrumento da banda.",
+        "improvFew": "Você tocou {{n}} de {{required}} notas. Experimente frases curtas de 2 a 4 notas, uma por compasso, e vá somando.",
+        "improvOutside": "{{percent}}% das notas estavam na escala. Comece com só 3 notas da escala e acrescente mais uma a cada volta.",
+        "improvTarget": "Boas frases. Agora termine cada uma na tônica do acorde que está soando: assim elas ficam resolvidas.",
+        "cat": {
+          "technique": "Pratique uns minutos com o metrônomo antes de tocar com a banda: a técnica melhora com repetições lentas e limpas.",
+          "riffs": "Cantarole o riff antes de tocá-lo. Se você consegue cantar, consegue tocar no tempo.",
+          "scales": "Toque a escala também de cima para baixo, e começando por notas diferentes.",
+          "arpeggios": "Antes de arpejar, toque o acorde inteiro para ouvir como tem que soar.",
+          "phrases": "Grave-se com o celular e escute: você vai perceber onde a frase perde força.",
+          "reading": "Antes de começar, percorra a partitura com os olhos e procure os compassos difíceis.",
+          "improv": "Repita uma ideia de que você gostou e mude uma nota: é assim que se constrói um solo."
+        }
+      }
     },
     "motion": {
       "play": "Ver e ouvir",

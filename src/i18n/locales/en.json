@@ -83,18 +83,61 @@
       "inScalePct": "In the scale",
       "timing": "Where your last note landed",
       "dotsLabel": "{{hits}} hits out of {{decided}} notes",
-      "unscored": "You played with the band without a microphone, so there's no score this time.",
       "resultLine": "{{percent}}% hits",
       "resultImprov": "{{percent}}% in the scale · {{notes}} notes",
       "breakdown": "On time: {{hit}} · Early: {{early}} · Late: {{late}} · Wrong note: {{wrong}} · Missed: {{miss}}",
       "bestStreak": "Best streak: {{n}} notes in a row",
-      "rushing": "You tend to rush: listen to the kick and wait for the beat.",
-      "dragging": "You tend to drag: anticipate each note a little.",
       "unlocked": "New tempo unlocked: {{bpm}} bpm!",
       "percent": "{{n}}%",
       "statA11y": "{{label}}: {{value}}",
       "ms": "{{n}} ms",
-      "withBand": "Practice with the band"
+      "withBand": "Practice with the band",
+      "howTo": {
+        "title": "How it works",
+        "listen": "Listen to the example and follow the score with your eyes: this is how it should sound.",
+        "listenImprov": "Listen to the example: it is the exercise scale, going up and down. You will improvise with those notes.",
+        "scoring": "After a {{beats}}-beat count-in, play along with the band. The app judges each note live: on time, early, late or another note.",
+        "scoringImprov": "After a {{beats}}-beat count-in, make up phrases with the scale notes. Play at least {{n}} notes per loop; the app shows whether each one is in the scale.",
+        "cat": {
+          "technique": "What matters is clean playing: every note should sound clear and at the same volume. Keep your hand relaxed.",
+          "riffs": "Feel the groove: each note lands right with the kick and the snare. Repeat the pattern without losing the beat.",
+          "scales": "Play the scale note by note, evenly. Say each note name quietly to learn it.",
+          "arpeggios": "An arpeggio is the chord one note at a time. Let each note ring until the next one arrives.",
+          "phrases": "A phrase has a beginning and an end, like a sentence. Aim for the last note: it is the one people hear most.",
+          "reading": "Read a little ahead of what you play. If you get lost, do not stop: come back in at the next bar.",
+          "improv": "There are no wrong notes inside the scale. Play short phrases and leave space: silence is music too."
+        }
+      },
+      "coach": {
+        "tipsTitle": "How to improve",
+        "unscored": "You played with the band without a microphone, so there is no score or note-by-note feedback this time.",
+        "headline": {
+          "0": "It is a start: new exercises are hard. Try again more slowly.",
+          "1": "You are on the right track. A couple more loops and you will have it.",
+          "2": "Very good! You are close to 3 stars.",
+          "3": "Excellent! You played it precisely."
+        },
+        "misses": "Some notes were missing ({{n}}). Do not stop to fix things: if you get lost, come back in at the next bar.",
+        "wrong": "In a few places you played another note ({{n}}). Before playing with the band, go through the line slowly without the track, watching where each finger goes. Check your tuning too.",
+        "rushing": "You tend to rush: listen to the kick and wait for the beat.",
+        "dragging": "You tend to drag: anticipate each note a little.",
+        "unsteady": "Some notes land early and others late. Tap the beat with your foot and play right with it.",
+        "slower": "Go down to {{bpm}} bpm until you can play it without mistakes; then speed up little by little.",
+        "faster": "When you move up to {{bpm}} bpm, keep your hand relaxed: speed comes from ease, not force.",
+        "mastered": "You have it at the fastest tempo. To challenge yourself, change the style or take an instrument out of the band.",
+        "improvFew": "You played {{n}} of {{required}} notes. Try short phrases of 2 to 4 notes, one per bar, and build up.",
+        "improvOutside": "{{percent}}% of your notes were in the scale. Start with only 3 scale notes and add one more each loop.",
+        "improvTarget": "Nice phrases. Now end each one on the root of the chord that is playing: that makes them sound resolved.",
+        "cat": {
+          "technique": "Practice a few minutes with the metronome before playing with the band: technique improves with slow, clean repetitions.",
+          "riffs": "Hum the riff before playing it. If you can sing it, you can play it in time.",
+          "scales": "Also play the scale from top to bottom, and starting from different notes.",
+          "arpeggios": "Before arpeggiating, play the full chord to hear how it should sound.",
+          "phrases": "Record yourself with your phone and listen back: you will notice where the phrase loses strength.",
+          "reading": "Before you start, scan the score and look for the hard bars.",
+          "improv": "Repeat an idea you liked and change one note: that is how a solo is built."
+        }
+      }
     },
     "motion": {
       "play": "Watch and listen",
