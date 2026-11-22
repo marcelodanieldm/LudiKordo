@@ -3,7 +3,7 @@ import { Pressable, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Text } from '../Text';
 import { Button, Card, H2, Muted, Stars } from '../ui';
-import { Score } from '../Listen';
+import { Listen, Score } from '../Listen';
 import { colors, fonts, radius } from '../../theme';
 import { listenNotes, requestMic, type Listener } from '../../audio/mic';
 import { nowMs, startJam, stopActiveSequence, type JamHandle } from '../../audio/engine';
@@ -15,7 +15,9 @@ import { eventAt, isRest, noteStartBeats } from '../../music/staff';
 import { freqToMidi, midiAt, noteName, type Locale } from '../../music/notes';
 import { starsFor, TIMING_TOLERANCE_MS, type DetectedNote } from '../../music/scoring';
 import { drillExerciseId, type Drill } from '../../content/practice';
-import type { ScoreEvent } from '../../content/types';
+import { coach, improvExample } from '../../music/coach';
+import { INSTRUMENT } from '../../instruments/current';
+import type { ListenExample, ScoreEvent } from '../../content/types';
 import { useProgress } from '../../state/progress';
 import { useSettings } from '../../state/settings';
 
@@ -106,6 +108,14 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
   const noteBeats = useMemo(() => noteStartBeats(line), [line]);
   const noteMidis = useMemo(() => line.flatMap((e) => (isRest(e) ? [] : [midiAt(e.string, e.fret)])), [line]);
   const label = (midi: number) => noteName(midi, i18n.language as Locale, notation);
+  // Ejemplo sonoro al tempo elegido: la línea del ejercicio, o la escala en una frase para improvisar.
+  const example = useMemo<ListenExample>(
+    () =>
+      drill.kind === 'improv'
+        ? { events: improvExample(drill.scale ?? [], INSTRUMENT.strings), bpm, click: true, show: 'tab', beatsPerBar: 4 }
+        : { events: line, bpm, click: true, beatsPerBar: barBeats === 3 ? 3 : 4 },
+    [drill, line, bpm, barBeats],
+  );
   const togglePart = (p: JamPart) => setParts((ps) => (ps.includes(p) ? ps.filter((x) => x !== p) : [...ps, p]));
 
   const start = async () => {
@@ -273,8 +283,42 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
   const notesPerLoop = noteMidis.length;
   const loopNow = lastIndex >= 0 ? Math.floor(lastIndex / Math.max(1, notesPerLoop)) : 0;
 
+  const steps = [
+    t(drill.kind === 'improv' ? 'ui.drills.howTo.listenImprov' : 'ui.drills.howTo.listen'),
+    t(`ui.drills.howTo.cat.${drill.category}`),
+    drill.kind === 'improv' ? t('ui.drills.howTo.scoringImprov', { beats: COUNT_IN, n: drill.minNotes ?? 0 }) : t('ui.drills.howTo.scoring', { beats: COUNT_IN }),
+  ];
+
+  const coaching = result
+    ? coach({
+        category: drill.category,
+        stars: result.stars,
+        accuracy: result.accuracy,
+        counts: result.counts,
+        meanOffset: result.meanOffset,
+        bpm,
+        tempos,
+        unlocked: result.unlocked,
+        improv: result.improv ? { ...result.improv, required: (drill.minNotes ?? 0) * loops } : undefined,
+        unscored: result.unscored,
+      })
+    : null;
+
   return (
     <View style={{ gap: 14 }}>
+      {phase === 'setup' || phase === 'starting' ? (
+        <Card style={{ gap: 10 }}>
+          <H2 style={{ fontSize: 18 }}>{t('ui.drills.howTo.title')}</H2>
+          {steps.map((step, i) => (
+            <View key={i} style={{ flexDirection: 'row', gap: 8 }}>
+              <Text style={{ fontWeight: '900', color: colors.teal, minWidth: 18 }}>{i + 1}.</Text>
+              <Text style={{ flex: 1, fontSize: 15, lineHeight: 22, color: colors.ink }}>{step}</Text>
+            </View>
+          ))}
+          <Listen example={example} width={width - 34} testID="drill-example" />
+        </Card>
+      ) : null}
+
       {phase === 'setup' || phase === 'starting' ? (
         <Card style={{ gap: 14 }}>
           {row(
@@ -363,7 +407,7 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
       {phase === 'result' && result ? (
         <Card style={{ gap: 12, alignItems: 'center' }}>
           {result.unscored ? (
-            <Muted style={{ textAlign: 'center' }}>{t('ui.drills.unscored')}</Muted>
+            <Muted style={{ textAlign: 'center' }}>{t('ui.drills.coach.unscored')}</Muted>
           ) : (
             <>
               <Stars count={result.stars} size={36} />
@@ -374,14 +418,23 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
                 <>
                   <Muted style={{ textAlign: 'center' }}>{t('ui.drills.breakdown', result.counts)}</Muted>
                   <Muted>{t('ui.drills.bestStreak', { n: result.bestStreak })}</Muted>
-                  {result.meanOffset !== null && Math.abs(result.meanOffset) > 25 ? (
-                    <Text style={{ fontWeight: '700', color: colors.gold, textAlign: 'center' }}>{t(result.meanOffset < 0 ? 'ui.drills.rushing' : 'ui.drills.dragging')}</Text>
-                  ) : null}
                 </>
               ) : null}
               {result.unlocked ? <Text style={{ fontWeight: '800', color: colors.teal }}>{t('ui.drills.unlocked', { bpm: result.unlocked })}</Text> : null}
+              {coaching ? <Text style={{ fontSize: 16, fontWeight: '800', lineHeight: 23, color: colors.ink, textAlign: 'center' }}>{t(coaching.headline)}</Text> : null}
             </>
           )}
+          {coaching ? (
+            <View style={{ alignSelf: 'stretch', gap: 8, padding: 12, borderRadius: radius.lg, backgroundColor: colors.raised }}>
+              <Text style={{ fontSize: 14, fontWeight: '900', color: colors.muted }}>{t('ui.drills.coach.tipsTitle')}</Text>
+              {coaching.tips.map((tip) => (
+                <View key={tip.key} style={{ flexDirection: 'row', gap: 8 }}>
+                  <Text style={{ fontWeight: '900', color: colors.teal }}>•</Text>
+                  <Text style={{ flex: 1, fontSize: 15, lineHeight: 22, color: colors.ink }}>{t(tip.key, tip.params)}</Text>
+                </View>
+              ))}
+            </View>
+          ) : null}
           <View style={{ flexDirection: 'row', gap: 10, alignSelf: 'stretch' }}>
             <Button style={{ flex: 1 }} label={t('ui.drills.again')} onPress={() => void start()} />
             <Button style={{ flex: 1 }} variant="secondary" label={t('ui.drills.settings')} onPress={() => setPhase('setup')} />
