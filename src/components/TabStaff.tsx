@@ -21,10 +21,10 @@ type NoteState = 'done' | 'current' | 'next';
  * figura rítmica de cada nota debajo: redonda, blanca, negra o corchea, y los
  * silencios. Corta en renglones de compases enteros según el ancho.
  */
-export function TabStaff({ notes, width, current = -1 }: { notes: TabEvent[]; width: number; current?: number }) {
+export function TabStaff({ notes, width, current = -1, beatsPerBar = BEATS_PER_BAR }: { notes: TabEvent[]; width: number; current?: number; beatsPerBar?: number }) {
   const { t } = useTranslation();
-  const placed = placeNotes(notes);
-  const layout = layoutTab(notes, width);
+  const placed = placeNotes(notes, beatsPerBar);
+  const layout = layoutTab(notes, width, beatsPerBar);
   const { rows, beatW } = layout;
   // En la tablatura la cuerda 1 (la más aguda) va arriba.
   const lineY = (string: StringId) => STAFF_TOP + (STRINGS.length - 1 - STRINGS.findIndex((s) => s.id === string)) * LINE_GAP;
@@ -36,7 +36,7 @@ export function TabStaff({ notes, width, current = -1 }: { notes: TabEvent[]; wi
         {Array.from({ length: rows }, (_, r) => {
           const y0 = r * ROW_H;
           const rowBars = layout.barsInRow[r];
-          const x1 = LABEL_W + rowBars * BEATS_PER_BAR * beatW;
+          const x1 = LABEL_W + rowBars * beatsPerBar * beatW;
           return (
             <React.Fragment key={`r${r}`}>
               {STRINGS.map((s) => (
@@ -48,7 +48,7 @@ export function TabStaff({ notes, width, current = -1 }: { notes: TabEvent[]; wi
                 </SvgText>
               ))}
               {Array.from({ length: rowBars + 1 }, (_, b) => (
-                <Line key={`b${b}`} x1={LABEL_W + b * BEATS_PER_BAR * beatW} x2={LABEL_W + b * BEATS_PER_BAR * beatW} y1={y0 + STAFF_TOP} y2={y0 + STAFF_TOP + STAFF_H} stroke={colors.muted} strokeWidth={b === 0 ? 2.5 : 1.5} />
+                <Line key={`b${b}`} x1={LABEL_W + b * beatsPerBar * beatW} x2={LABEL_W + b * beatsPerBar * beatW} y1={y0 + STAFF_TOP} y2={y0 + STAFF_TOP + STAFF_H} stroke={colors.muted} strokeWidth={b === 0 ? 2.5 : 1.5} />
               ))}
             </React.Fragment>
           );

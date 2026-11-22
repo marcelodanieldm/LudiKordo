@@ -281,7 +281,7 @@ const JAM_REFILL_MS = 400;
  * segundos (un timer rellena), así una toma larga no crea miles de nodos al empezar
  * ni desfasa el arranque.
  */
-export function startJam(jam: { notes: { freq: number; startSec: number; durSec: number; tone?: Tone; level?: number }[]; drums: DrumHit[]; bpm: number; countIn: number; bodyBeats: number }): JamHandle {
+export function startJam(jam: { notes: { freq: number; startSec: number; durSec: number; tone?: Tone; level?: number }[]; drums: DrumHit[]; bpm: number; countIn: number; bodyBeats: number; beatsPerBar?: number }): JamHandle {
   stopActiveSequence();
   const c = context();
   const t0 = c.currentTime + 0.25;
@@ -290,7 +290,7 @@ export function startJam(jam: { notes: { freq: number; startSec: number; durSec:
   const clicks = jam.countIn + (jam.drums.length ? 0 : jam.bodyBeats);
   type Ev = { at: number; play: () => void };
   const events: Ev[] = [
-    ...Array.from({ length: clicks }, (_, i) => ({ at: i * step, play: () => click(t0 + i * step, i % 4 === 0) })),
+    ...Array.from({ length: clicks }, (_, i) => ({ at: i * step, play: () => click(t0 + i * step, i % (jam.beatsPerBar ?? 4) === 0) })),
     ...jam.notes.map((n) => ({ at: n.startSec, play: () => void scheduleVoice(c, n.freq, t0 + n.startSec, n.durSec, n.tone ? voiceFor(n.tone, IS_GUITAR, IS_NYLON) : voice, n.level ?? 1) })),
     ...jam.drums.map((d) => ({ at: d.startSec, play: () => scheduleDrum(c, d.kind, t0 + d.startSec, d.level) })),
   ].sort((a, b) => a.at - b.at);

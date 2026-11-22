@@ -6,6 +6,7 @@ import type { StringId } from '../music/notes';
 import type { Tone } from '../music/timbre';
 import type { Stroke } from '../music/strum';
 import type { Fx } from '../music/fx';
+import type { DrumStyle } from '../music/drums';
 
 export type Skill = 'technique' | 'rhythm' | 'fretboard' | 'theory' | 'ear';
 
@@ -89,6 +90,8 @@ export interface PlayAlongExercise extends BaseExercise {
    * `notes` para el tiempo y el dibujo; `notes` tiene que ser sus notas sin silencios.
    */
   score?: ScoreEvent[];
+  /** Pulsos por compás para el dibujo: 3 en 3/4 y 6/8 (criolla). Por defecto, 4. */
+  beatsPerBar?: 3 | 4;
 }
 
 /** Nota de tablatura: cuerda, traste (0 = al aire) y duración en pulsos (4 redonda, 2 blanca, 1 negra). */
@@ -128,6 +131,8 @@ export interface ListenExample {
   noteNames?: boolean;
   /** Clic de metrónomo durante el ejemplo. */
   click?: boolean;
+  /** Pulsos por compás para el dibujo: 3 en 3/4 y 6/8 (criolla). Por defecto, 4. */
+  beatsPerBar?: 3 | 4;
   /** Timbre del ejemplo (guitarra: limpio, crunch, pastilla…). Por defecto, el del instrumento. */
   tone?: Tone;
   /**
@@ -301,6 +306,32 @@ export type Figure =
   | 'chord-g7'
   | 'chord-em7'
   | 'chord-am7'
+  | 'chord-fmaj7'
+  | 'chord-f-half'
+  | 'chord-bm-half'
+  | 'barre-f7'
+  | 'barre-fsm'
+  | 'barre-gm'
+  | 'barre-bbm'
+  | 'barre-bm7'
+  | 'barre-csm'
+  | 'chord-b7'
+  | 'chord-c7'
+  | 'chord-cmaj7'
+  | 'chord-dm7'
+  | 'chord-gmaj7'
+  | 'chord-bm7b5'
+  | 'barre-gm7'
+  | 'barre-bbmaj7'
+  | 'chord-em7b5'
+  | 'chord-a7b9'
+  | 'chord-c69'
+  | 'chord-dm6'
+  | 'chord-g13'
+  | 'chord-gsdim7'
+  | 'chord-c-e'
+  | 'chord-g-b'
+  | 'chord-d-fs'
   | 'power-6'
   | 'power-5'
   | 'penta-box'
@@ -416,7 +447,8 @@ export interface Level {
   modules: Module[];
 }
 
-export type Genre = 'reggae' | 'bossa' | 'soul' | 'blues' | 'rock' | 'pop' | 'ballad' | 'funk' | 'jazz' | 'gospel';
+/** `popular`: música popular latinoamericana (zamba, chacarera, tango, vals), en la criolla. */
+export type Genre = 'reggae' | 'bossa' | 'soul' | 'blues' | 'rock' | 'pop' | 'ballad' | 'funk' | 'jazz' | 'gospel' | 'popular';
 
 /** Canción del cancionero: una línea de bajo original para tocar sobre su cifrado. */
 export interface Song {
@@ -445,4 +477,8 @@ export interface Song {
   strum?: Stroke[];
   /** Timbre de la línea en el ejemplo (guitarra). */
   tone?: Tone;
+  /** Pulsos por compás: 3 en zamba, chacarera y vals (criolla). Por defecto, 4. */
+  beatsPerBar?: 3 | 4;
+  /** Estilo de la banda si no es el de su género (por ejemplo, zamba o chacarera dentro de «popular»). */
+  style?: DrumStyle;
 }
