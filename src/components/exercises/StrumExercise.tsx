@@ -9,7 +9,10 @@ import { nowMs, startMetronome, stopActiveSequence, type MetronomeHandle } from 
 import { barBeatsOf, eighthAt, filterClicks, scoreStrum, type Attack } from '../../music/strum';
 import { TIMING_TOLERANCE_MS, starsFor } from '../../music/scoring';
 import { useProgress } from '../../state/progress';
-import type { StrumExercise as StrumEx } from '../../content/types';
+import type { ListenExample, StrumExercise as StrumEx } from '../../content/types';
+import { chordFromName } from '../../music/chords';
+import { howToStrum, strumFeedback, type Tip } from '../../music/feedback';
+import { FeedbackCard, HowToCard } from './Coaching';
 
 type Phase = 'intro' | 'running' | 'result' | 'self';
 
@@ -40,12 +43,21 @@ export function StrumExercise({
   const unlockTempo = useProgress((s) => s.unlockTempo);
   const bpm = Math.max(exercise.bpm, unlocked ?? 0);
   const bars = exercise.chords.length;
+  // El ejemplo de la explicación: los mismos acordes con el mismo patrón, con clic.
+  const example: ListenExample = {
+    events: [],
+    bpm,
+    click: true,
+    beatsPerBar: barBeatsOf(exercise.pattern) === 3 ? 3 : 4,
+    strum: { chords: exercise.chords.map((c) => chordFromName(c) ?? [45, 52, 57]), pattern: exercise.pattern },
+  };
 
   const [phase, setPhase] = useState<Phase>('intro');
   const [mic, setMic] = useState<MicStatus>('ok');
   const [pos, setPos] = useState(-1);
   const [result, setResult] = useState<{ hits: number; total: number; stars: number; next?: number } | null>(null);
   const [failures, setFailures] = useState(0);
+  const [tips, setTips] = useState<Tip[] | null>(null);
   const listener = useRef<Listener | null>(null);
   const metro = useRef<MetronomeHandle | null>(null);
   const timers = useRef<{ tick?: ReturnType<typeof setInterval>; end?: ReturnType<typeof setTimeout> }>({});
@@ -106,6 +118,7 @@ export function StrumExercise({
       return;
     }
     setResult(null);
+    setTips(null);
     setPos(-1);
     setPhase('running');
     const attacks: Attack[] = [];
@@ -133,6 +146,7 @@ export function StrumExercise({
       // Lo que entró durante la cuenta (el clic por el parlante) no cuenta como golpe.
       const strokes = filterClicks(attacks, startMs, countIn * beatMs).map((a) => a.timeMs);
       const r = scoreStrum(exercise.pattern, bars, bpm, startMs, strokes, TIMING_TOLERANCE_MS);
+      setTips(strumFeedback({ ...r, stars: starsFor(r.total + r.extras ? r.hits / (r.total + r.extras) : 0, mastery) }).tips);
       finishWith(r.hits, r.total + r.extras);
     }, startMs - nowMs() + bars * barBeats * beatMs + 800);
   };
@@ -148,6 +162,7 @@ export function StrumExercise({
       <Text style={{ color: colors.muted }}>
         {t('ui.exercise.tempo', { bpm })} · {t('ui.exercise.headphones')}
       </Text>
+      {phase === 'intro' ? <HowToCard tips={howToStrum({ bpm, chords: exercise.chords, pattern: exercise.pattern }, t('ui.exercise.and'))} example={example} width={width} /> : null}
 
       <View style={{ backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1, borderRadius: radius.xl, padding: 16, gap: 10 }}>
         <View
@@ -186,6 +201,7 @@ export function StrumExercise({
             <Stars count={result.stars} size={36} />
             <Text style={{ fontWeight: '700', color: colors.ink }}>{t('ui.exercise.strumDetected', { hits: result.hits, total: result.total })}</Text>
             {result.next ? <Text style={{ color: colors.tealInk, fontWeight: '700' }}>{t('ui.exercise.nextTempo', { bpm: result.next })}</Text> : null}
+            {tips ? <FeedbackCard tips={tips} note={String} /> : null}
           </View>
         ) : null}
         {phase === 'self' ? (

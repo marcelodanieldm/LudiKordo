@@ -11,6 +11,9 @@ import { centsOff, midiAt, noteName, type Locale } from '../../music/notes';
 import { starsFor } from '../../music/scoring';
 import { useSettings } from '../../state/settings';
 import type { VibratoExercise as VibEx } from '../../content/types';
+import { howToVibrato, vibratoFeedback } from '../../music/feedback';
+import { IS_NYLON } from '../../instruments/current';
+import { FeedbackCard, HowToCard } from './Coaching';
 
 type Phase = 'intro' | 'waiting' | 'recording' | 'result' | 'self';
 
@@ -28,11 +31,13 @@ export function VibratoExercise({
   exercise,
   onDone,
   mastery,
+  width,
   allowSelfCheck = true,
 }: {
   exercise: VibEx;
   onDone: (stars: number) => void;
   mastery: number;
+  width: number;
   allowSelfCheck?: boolean;
 }) {
   const { t, i18n } = useTranslation();
@@ -130,20 +135,12 @@ export function VibratoExercise({
   };
 
   const o = result?.overall ?? null;
-  const advice = !o
-    ? null
-    : o.depthCents < exercise.minDepthCents
-      ? 'ui.exercise.vibratoNarrow'
-      : o.rateHz < VIBRATO_RATE.min || o.rateHz > VIBRATO_RATE.max
-        ? 'ui.exercise.vibratoSpeed'
-        : o.irregularity > VIBRATO_MAX_IRREGULARITY
-          ? 'ui.exercise.vibratoIrregular'
-          : null;
 
   return (
     <View style={{ gap: 14 }}>
       <Text style={{ fontFamily: fonts.display, fontSize: 24, lineHeight: 30, color: colors.ink }}>{t(exercise.promptKey)}</Text>
       <Text style={{ color: colors.muted }}>{t('ui.exercise.vibratoInfo', { note, seconds: exercise.seconds })}</Text>
+      {phase === 'intro' ? <HowToCard tips={howToVibrato(exercise, IS_NYLON)} width={width} /> : null}
 
       <View style={{ backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1, borderRadius: radius.xl, padding: 16, gap: 10, alignItems: 'center' }} accessibilityLiveRegion="polite">
         {phase === 'waiting' ? <Text style={{ fontSize: 16, fontWeight: '800', color: colors.teal }}>{t('ui.exercise.vibratoWaiting', { note })}</Text> : null}
@@ -152,7 +149,7 @@ export function VibratoExercise({
           <>
             <Stars count={result.stars} size={36} />
             {o ? <Text style={{ fontWeight: '700', color: colors.ink }}>{t('ui.exercise.vibratoResult', { depth: Math.round(o.depthCents), rate: o.rateHz.toFixed(1) })}</Text> : null}
-            {advice ? <Text style={{ color: colors.accentInk, textAlign: 'center' }}>{t(advice)}</Text> : null}
+            <FeedbackCard tips={vibratoFeedback(o, exercise.minDepthCents, VIBRATO_RATE, VIBRATO_MAX_IRREGULARITY, result.stars)} note={String} />
           </>
         ) : null}
         {phase === 'self' ? (

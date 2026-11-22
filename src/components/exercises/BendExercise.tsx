@@ -10,7 +10,9 @@ import { BEND_TOLERANCE_CENTS, bendAdvice, initialBend, stepBend, type BendState
 import { midiAt, noteName, type Locale } from '../../music/notes';
 import { starsFor } from '../../music/scoring';
 import { useSettings } from '../../state/settings';
-import type { BendExercise as BendEx } from '../../content/types';
+import type { BendExercise as BendEx, ListenExample } from '../../content/types';
+import { bendFeedback, howToBend } from '../../music/feedback';
+import { FeedbackCard, HowToCard } from './Coaching';
 
 type Phase = 'intro' | 'running' | 'result' | 'self';
 
@@ -30,11 +32,13 @@ export function BendExercise({
   exercise,
   onDone,
   mastery,
+  width,
   allowSelfCheck = true,
 }: {
   exercise: BendEx;
   onDone: (stars: number) => void;
   mastery: number;
+  width: number;
   allowSelfCheck?: boolean;
 }) {
   const { t, i18n } = useTranslation();
@@ -42,6 +46,14 @@ export function BendExercise({
   const startMidi = midiAt(exercise.string, exercise.fret);
   const spec = { startMidi, semitones: exercise.semitones, release: exercise.release };
   const label = (midi: number) => noteName(midi, i18n.language as Locale, notation);
+  // El ejemplo: la nota de partida y la de llegada, para tener el sonido en el oído.
+  const example: ListenExample = {
+    events: [
+      { string: exercise.string, fret: exercise.fret, beats: 2 },
+      { string: exercise.string, fret: exercise.fret + exercise.semitones, beats: 2 },
+    ],
+    bpm: 70,
+  };
 
   const [phase, setPhase] = useState<Phase>('intro');
   const [mic, setMic] = useState<MicStatus>('ok');
@@ -135,6 +147,7 @@ export function BendExercise({
       <Text style={{ color: colors.muted }}>
         {t('ui.exercise.bendInfo', { from: label(startMidi), to: label(startMidi + exercise.semitones) })}
       </Text>
+      {phase === 'intro' ? <HowToCard tips={howToBend(exercise)} example={example} width={width} /> : null}
 
       <View style={{ backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1, borderRadius: radius.xl, padding: 16, gap: 12 }}>
         {/* Medidor: de la nota de partida (izquierda) a la de llegada (zona turquesa). */}
@@ -169,8 +182,9 @@ export function BendExercise({
           <Text style={{ color: colors.accentInk, textAlign: 'center' }}>{t(advice === 'short' ? 'ui.exercise.bendShort' : 'ui.exercise.bendOver')}</Text>
         ) : null}
         {phase === 'result' ? (
-          <View style={{ alignItems: 'center' }}>
+          <View style={{ alignItems: 'center', gap: 6 }}>
             <Stars count={stars} size={36} />
+            <FeedbackCard tips={bendFeedback(Math.min(state.reps, exercise.reps), exercise.reps, stars)} note={label} />
           </View>
         ) : null}
         {phase === 'self' ? (

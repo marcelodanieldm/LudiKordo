@@ -25,6 +25,8 @@ export interface ImprovResult {
   targetHits: number;
   targetTotal: number;
   accuracy: number;
+  /** Clases de altura distintas que se tocaron. */
+  distinct: number;
 }
 
 /** Ventana alrededor del cambio de acorde en la que cuenta la nota de llegada. */
@@ -53,7 +55,7 @@ export function scoreImprov(detected: ImprovNote[], scale: number[], minNotes: n
   const amount = Math.min(1, notes / Math.max(1, minNotes)) * Math.min(1, distinct / MIN_DISTINCT_PCS);
   const base = inScale * amount;
   const accuracy = targets.length ? base * (1 - TARGET_WEIGHT) + (targetHits / targets.length) * TARGET_WEIGHT * amount : base;
-  return { notes, inScale, targetHits, targetTotal: targets.length, accuracy };
+  return { notes, inScale, targetHits, targetTotal: targets.length, accuracy, distinct };
 }
 
 /** Comienzo de cada compás de la pista repetida (para las notas de llegada). */

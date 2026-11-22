@@ -8,6 +8,8 @@ import { listenNotes, requestMic, type Listener, type MicStatus } from '../../au
 import { playSequence, stopActiveSequence, type SequenceHandle } from '../../audio/engine';
 import { exampleSchedule } from '../../music/examples';
 import { LISTEN_COUNT_IN } from '../../music/listen';
+import { howToImprovise, improvFeedback } from '../../music/feedback';
+import { FeedbackCard, HowToCard } from './Coaching';
 import { filterBacking, scoreImprov, targetTimes, type ImprovNote, type ImprovResult } from '../../music/improv';
 import { freqToMidi, noteName, type Locale } from '../../music/notes';
 import { starsFor } from '../../music/scoring';
@@ -26,11 +28,13 @@ export function ImproviseExercise({
   exercise,
   onDone,
   mastery,
+  width,
   allowSelfCheck = true,
 }: {
   exercise: ImprovEx;
   onDone: (stars: number) => void;
   mastery: number;
+  width: number;
   allowSelfCheck?: boolean;
 }) {
   const { t, i18n } = useTranslation();
@@ -141,6 +145,7 @@ export function ImproviseExercise({
       <Text style={{ fontFamily: fonts.display, fontSize: 24, lineHeight: 30, color: colors.ink }}>{t(exercise.promptKey)}</Text>
       <Text style={{ color: colors.muted }}>{t('ui.exercise.improvInfo', { notes: scaleNames, count: exercise.minNotes })}</Text>
       <Text style={{ color: colors.muted }}>{t('ui.exercise.improvHeadphones')}</Text>
+      {phase === 'intro' ? <HowToCard tips={howToImprovise(exercise, scaleNames)} example={exercise.backing} width={width} /> : null}
 
       <View style={{ backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1, borderRadius: radius.xl, padding: 16, gap: 10, alignItems: 'center' }} accessibilityLiveRegion="polite">
         {phase === 'playing' ? <Text style={{ fontSize: 18, fontWeight: '800', color: colors.teal, textAlign: 'center' }}>{t('ui.exercise.improvPlaying')}</Text> : null}
@@ -149,11 +154,7 @@ export function ImproviseExercise({
             <Stars count={result.stars} size={36} />
             <Text style={{ fontWeight: '700', color: colors.ink, textAlign: 'center' }}>{t('ui.exercise.improvResult', { notes: r.notes, percent: Math.round(r.inScale * 100) })}</Text>
             {r.targetTotal > 0 ? <Text style={{ color: colors.ink, textAlign: 'center' }}>{t('ui.exercise.improvTargets', { hits: r.targetHits, total: r.targetTotal })}</Text> : null}
-            {r.notes < exercise.minNotes ? (
-              <Text style={{ color: colors.accentInk, textAlign: 'center' }}>{t('ui.exercise.improvFew', { count: exercise.minNotes })}</Text>
-            ) : r.inScale < 0.8 ? (
-              <Text style={{ color: colors.accentInk, textAlign: 'center' }}>{t('ui.exercise.improvOut')}</Text>
-            ) : null}
+            <FeedbackCard tips={improvFeedback(r, exercise.minNotes, result.stars)} note={String} />
           </>
         ) : null}
         {phase === 'self' ? (
