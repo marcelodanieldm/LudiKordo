@@ -350,7 +350,8 @@ export function aShapeM7(name: string, fret: number): GridDiagram {
 /** Diagramas de la guitarra criolla, nivel 3: media cejilla, cejillas movidas y B7, C7. */
 export type NylonGridId =
   | 'fmaj7' | 'f-half' | 'bm-half' | 'bar-f7' | 'bar-fsm' | 'bar-gm' | 'bar-bbm' | 'bar-bm7' | 'bar-csm' | 'b7' | 'c7'
-  | 'cmaj7' | 'dm7' | 'gmaj7' | 'bm7b5' | 'gm7' | 'bbmaj7' | 'em7b5' | 'a7b9' | 'c69' | 'dm6' | 'g13' | 'gsdim7';
+  | 'cmaj7' | 'dm7' | 'gmaj7' | 'bm7b5' | 'gm7' | 'bbmaj7' | 'em7b5' | 'a7b9' | 'c69' | 'dm6' | 'g13' | 'gsdim7'
+  | 'c-e' | 'g-b' | 'd-fs';
 
 export const NYLON_GRIDS: Record<NylonGridId, GridDiagram> = {
   fmaj7: {
@@ -535,6 +536,38 @@ export const NYLON_GRIDS: Record<NylonGridId, GridDiagram> = {
       { string: 5, fret: 4, finger: 4 },
     ],
     marks: [null, 'x', null, null, null, null],
+  },
+  // ── Nivel 5: acordes con bajo indicado (5.2), para la conducción de voces y los bajos caminantes ──
+  'c-e': {
+    name: 'C/E',
+    startFret: 1,
+    dots: [
+      { string: 1, fret: 3, finger: 3 },
+      { string: 2, fret: 2, finger: 2 },
+      { string: 4, fret: 1, finger: 1 },
+    ],
+    marks: ['o', null, null, 'o', null, 'o'],
+  },
+  'g-b': {
+    name: 'G/B',
+    startFret: 1,
+    dots: [
+      { string: 1, fret: 2, finger: 1 },
+      { string: 4, fret: 3, finger: 3 },
+      { string: 5, fret: 3, finger: 4 },
+    ],
+    marks: ['x', null, 'o', 'o', null, null],
+  },
+  'd-fs': {
+    name: 'D/F#',
+    startFret: 1,
+    dots: [
+      { string: 0, fret: 2, finger: 1 },
+      { string: 3, fret: 2, finger: 2 },
+      { string: 4, fret: 3, finger: 4 },
+      { string: 5, fret: 2, finger: 3 },
+    ],
+    marks: [null, 'x', 'o', null, null, null],
   },
 };
 

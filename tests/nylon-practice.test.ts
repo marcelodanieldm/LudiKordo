@@ -18,12 +18,12 @@ import type { ScoreEvent } from '../src/content/types';
 const n = (string: StringId, fret: number, beats: 0.5 | 1 | 2 | 4 = 1): ScoreEvent => ({ string, fret, beats });
 const pc = (e: ScoreEvent) => ('rest' in e ? -1 : midiOn(NYLON, e.string as StringId, e.fret) % 12);
 
-test('práctica de criolla: un ejercicio por lección, más repasos de los niveles 1 a 4', () => {
+test('práctica de criolla: un ejercicio por lección, más repasos de los niveles 1 a 5', () => {
   const lessons = Object.keys(NYLON_LESSONS);
   assert.equal(NYLON_LESSON_DRILLS.length, lessons.length);
   for (const id of lessons) assert.ok(NYLON_LESSON_DRILLS.some((d) => d.lessonId === id), `sin ejercicio: ${id}`);
   assert.equal(new Set(NYLON_DRILLS.map((d) => d.id)).size, NYLON_DRILLS.length, 'ids únicos');
-  assert.deepEqual([...new Set(NYLON_REVIEW_DRILLS.map((d) => d.level))], [1, 2, 3, 4]);
+  assert.deepEqual([...new Set(NYLON_REVIEW_DRILLS.map((d) => d.level))], [1, 2, 3, 4, 5]);
   // Todas las categorías, salvo los riffs (que en la criolla son las canciones), tienen ejercicios.
   for (const c of DRILL_CATEGORIES.filter((x) => x !== 'riffs')) assert.ok(NYLON_DRILLS.some((d) => d.category === c), c);
 });
