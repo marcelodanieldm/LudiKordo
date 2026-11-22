@@ -4,6 +4,10 @@
       "eyebrow": "Práctica",
       "title": "Práctica de habilidades",
       "intro": "Ejercicios para repetir con una banda que te acompaña. La app te escucha y te dice nota por nota cómo vas, mientras tocas.",
+      "allLevels": "Todos los niveles",
+      "level": "Nivel {{n}}",
+      "lessonMeta": "Lección {{lesson}} · {{category}} · desde {{bpm}} bpm",
+      "needsLesson": "Se abre al terminar la lección {{lesson}}.",
       "all": "Todos",
       "category": {
         "technique": "Técnica",
@@ -195,6 +199,7 @@
       "resultRetry": "Casi. Vuelve a intentarlo cuando quieras.",
       "xp": "+{{xp}} XP",
       "mastered": "Lograste el criterio de dominio.",
+      "practiceDrill": "Practica esta lección con la banda",
       "backToToday": "Volver a Hoy",
       "notFound": "Esta lección todavía no está escrita.",
       "premiumLocked": "Esta lección es parte de Premium."
@@ -791,6 +796,33 @@
   },
   "content": {
     "practice": {
+      "n": {
+        "desc": {
+          "chords": "Los acordes de la lección en p-i-m-i (o bajo y dos notas, en 3/4), con la banda. La app te escucha nota por nota.",
+          "line": "La frase de la lección, a tempo y con la banda. La app te escucha nota por nota.",
+          "notes": "Las notas de la lección en negras, a tempo y con la banda. La app te escucha nota por nota.",
+          "improv": "Improvisa con la escala de la lección sobre la banda. Cuenta cuántas notas caen en la escala.",
+          "review": "Un repaso de lo que pide el checkpoint del nivel, con la banda y a tu tempo."
+        }
+      },
+      "n_review_1": {
+        "title": "Repaso del nivel 1: la melodía"
+      },
+      "n_review_2": {
+        "title": "Repaso del nivel 2: la progresión en p-i-m-a"
+      },
+      "n_review_3": {
+        "title": "Repaso del nivel 3: las cejillas"
+      },
+      "n_review_3_blues": {
+        "title": "Repaso del nivel 3: improvisar en el blues en Mi"
+      },
+      "n_review_4": {
+        "title": "Repaso del nivel 4: la vuelta de bossa"
+      },
+      "n_review_4_jazz": {
+        "title": "Repaso del nivel 4: improvisar sobre los II-V-I"
+      },
       "g_rest_groove": {
         "title": "Groove con silencios",
         "desc": "Notas y silencios en las cuerdas graves sobre E5, A5 y D5. Apaga cada nota a tiempo para que el silencio se oiga."

@@ -4,6 +4,10 @@
       "eyebrow": "Practice",
       "title": "Skills practice",
       "intro": "Drills to repeat with a band backing you. The app listens and tells you note by note how you are doing, while you play.",
+      "allLevels": "All levels",
+      "level": "Level {{n}}",
+      "lessonMeta": "Lesson {{lesson}} · {{category}} · from {{bpm}} bpm",
+      "needsLesson": "Opens when you finish lesson {{lesson}}.",
       "all": "All",
       "category": {
         "technique": "Technique",
@@ -195,6 +199,7 @@
       "resultRetry": "Almost. Try again whenever you like.",
       "xp": "+{{xp}} XP",
       "mastered": "You reached the mastery goal.",
+      "practiceDrill": "Practise this lesson with the band",
       "backToToday": "Back to Today",
       "notFound": "This lesson hasn't been written yet.",
       "premiumLocked": "This lesson is part of Premium."
@@ -791,6 +796,33 @@
   },
   "content": {
     "practice": {
+      "n": {
+        "desc": {
+          "chords": "The lesson chords in p-i-m-i (or bass and two notes, in 3/4), with the band. The app listens note by note.",
+          "line": "The lesson phrase, in time and with the band. The app listens note by note.",
+          "notes": "The lesson notes in quarter notes, in time and with the band. The app listens note by note.",
+          "improv": "Improvise with the lesson scale over the band. It counts how many notes fall in the scale.",
+          "review": "A review of what the level checkpoint asks for, with the band and at your tempo."
+        }
+      },
+      "n_review_1": {
+        "title": "Level 1 review: the melody"
+      },
+      "n_review_2": {
+        "title": "Level 2 review: the progression in p-i-m-a"
+      },
+      "n_review_3": {
+        "title": "Level 3 review: barre chords"
+      },
+      "n_review_3_blues": {
+        "title": "Level 3 review: improvise on the E blues"
+      },
+      "n_review_4": {
+        "title": "Level 4 review: the bossa turn"
+      },
+      "n_review_4_jazz": {
+        "title": "Level 4 review: improvise over the II-V-Is"
+      },
       "g_rest_groove": {
         "title": "Groove with rests",
         "desc": "Notes and rests on the low strings over E5, A5 and D5. Mute each note on time so the rest is heard."

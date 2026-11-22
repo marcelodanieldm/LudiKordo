@@ -4,6 +4,10 @@
       "eyebrow": "Prática",
       "title": "Prática de habilidades",
       "intro": "Exercícios para repetir com uma banda acompanhando você. O app escuta e diz nota por nota como você está indo, enquanto você toca.",
+      "allLevels": "Todos os níveis",
+      "level": "Nível {{n}}",
+      "lessonMeta": "Lição {{lesson}} · {{category}} · a partir de {{bpm}} bpm",
+      "needsLesson": "Abre quando você terminar a lição {{lesson}}.",
       "all": "Todos",
       "category": {
         "technique": "Técnica",
@@ -195,6 +199,7 @@
       "resultRetry": "Quase. Tente de novo quando quiser.",
       "xp": "+{{xp}} XP",
       "mastered": "Você atingiu o critério de domínio.",
+      "practiceDrill": "Pratique esta lição com a banda",
       "backToToday": "Voltar para Hoje",
       "notFound": "Esta aula ainda não foi escrita.",
       "premiumLocked": "Esta aula faz parte do Premium."
@@ -791,6 +796,33 @@
   },
   "content": {
     "practice": {
+      "n": {
+        "desc": {
+          "chords": "Os acordes da lição em p-i-m-i (ou baixo e duas notas, em 3/4), com a banda. O app escuta nota por nota.",
+          "line": "A frase da lição, no tempo e com a banda. O app escuta nota por nota.",
+          "notes": "As notas da lição em semínimas, no tempo e com a banda. O app escuta nota por nota.",
+          "improv": "Improvise com a escala da lição sobre a banda. Conta quantas notas caem na escala.",
+          "review": "Uma revisão do que o checkpoint do nível pede, com a banda e no seu tempo."
+        }
+      },
+      "n_review_1": {
+        "title": "Revisão do nível 1: a melodia"
+      },
+      "n_review_2": {
+        "title": "Revisão do nível 2: a sequência em p-i-m-a"
+      },
+      "n_review_3": {
+        "title": "Revisão do nível 3: as pestanas"
+      },
+      "n_review_3_blues": {
+        "title": "Revisão do nível 3: improvisar no blues em Mi"
+      },
+      "n_review_4": {
+        "title": "Revisão do nível 4: a volta de bossa"
+      },
+      "n_review_4_jazz": {
+        "title": "Revisão do nível 4: improvisar sobre os II-V-I"
+      },
       "g_rest_groove": {
         "title": "Groove com pausas",
         "desc": "Notas e pausas nas cordas graves sobre E5, A5 e D5. Abafe cada nota no tempo para a pausa aparecer."
