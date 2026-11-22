@@ -19,7 +19,7 @@ import { CHORD_UNLOCKS, allChords, chordModule, missingChords, songRequires, unl
 import { CHORD_FIG, NYLON_CP2, NYLON_LEVEL2_LESSONS, PENTA_AM, PENTA_OPEN } from '../src/content/nylon/level2';
 import { NYLON_GENRES, NYLON_SONGS } from '../src/content/nylon/songs';
 import { albumDiagram, albumMidi, altBassBar, balladBar, chordFigure, pamiBar, pimaBar, pimiBar, steadyBassBar, waltzBar } from '../src/content/nylon/helpers';
-import { BOSSA_THUMB, NYLON_LEVEL4_LESSONS, bossaThumbBar } from '../src/content/nylon/level4';
+import { ACROSS_BOXES, AM_DM, BOSSA_I, BOSSA_MELODY, BOSSA_THUMB, CHORD_TONES, G_ARPEGGIOS, II_V_I_G, II_V_I_LINE, NYLON_CP4, NYLON_LEVEL4_LESSONS, QUESTION_ANSWER, bossaThumbBar, targetsOf } from '../src/content/nylon/level4';
 import { BOSSA_FINGERS, CHARLESTON } from '../src/music/strum';
 import { BLUES_AM, BLUES_SCALE, NYLON_CP3, NYLON_LEVEL3_LESSONS, SLUR_PHRASE, VALS_LINE, ZAMBA_LINE } from '../src/content/nylon/level3';
 import { MILONGA, barBeatsOf, isValidPattern } from '../src/music/strum';
@@ -441,7 +441,7 @@ test('nivel 4, primera parte: campo armónico, acordes de jazz y bossa (4.1 a 4.
     assert.ok(lesson, `falta la lección ${id}`);
     assert.ok(lesson.exercises.some((e) => e.needsBass), `${id}: sin ejercicio con guitarra`);
   }
-  assert.equal(NYLON_LEVEL4_LESSONS.length, 15);
+  assert.equal(NYLON_LEVEL4_LESSONS.length, 30);
   // Los patrones nuevos: el charleston y la bossa con los dedos tienen contratiempos.
   for (const p of [CHARLESTON, BOSSA_FINGERS]) assert.ok(isValidPattern(p) && barBeatsOf(p) === 4 && p.includes('U'));
   // El pulgar de la bossa: tónica en el 1 y otra nota grave del acorde en el 3.
@@ -459,4 +459,50 @@ test('nivel 4, primera parte: campo armónico, acordes de jazz y bossa (4.1 a 4.
   const bossa = NYLON_SONGS.find((s) => s.id === 'n-bossa-1')!;
   assert.ok(jazz.requires.includes('4.2') && bossa.requires.includes('4.3'));
   assert.deepEqual(missingChords(bossa.chords, new Set(['2.2', '2.3', '4.1', '4.2'])), ['C6/9', 'G#dim7', 'Dm6', 'G13']);
+});
+
+test('nivel 4 completo: cajas, escalas, fraseo y checkpoint 4', () => {
+  const level4 = NYLON_LEVELS[3];
+  for (const mod of level4.modules) for (const id of lessonIdsOf(mod)) {
+    assert.ok(NYLON_LESSONS[id], `falta la lección ${id}`);
+    assert.ok(NYLON_LESSONS[id].exercises.some((e) => e.needsBass), `${id}: sin ejercicio con guitarra`);
+  }
+  const pc = (e: ScoreEvent) => (isNote(e) ? midiOn(NYLON, e.string, e.fret) % 12 : -1);
+  // Las frases de la pentatónica usan solo La, Do, Re, Mi y Sol.
+  for (const phrase of [ACROSS_BOXES, QUESTION_ANSWER]) for (const e of phrase.filter(isNote)) assert.ok(PENTA_AM.includes(pc(e)), `${e.string}${e.fret}`);
+  // En las frases sobre acordes, el tiempo 1 de cada compás es una nota del acorde.
+  const lines: [ScoreEvent[], string[]][] = [
+    [CHORD_TONES, [...AM_DM, 'Dm7']],
+    [II_V_I_LINE, II_V_I_G],
+    [BOSSA_MELODY, BOSSA_I],
+    [G_ARPEGGIOS, ['Gmaj7', 'Am7', 'Bm7', 'Cmaj7', 'G']],
+  ];
+  for (const [line, chords] of lines) {
+    assert.ok(barsAreComplete(line));
+    let t = 0;
+    for (const e of line) {
+      if (t % 4 === 0 && isNote(e)) {
+        const pcs = new Set((chordFromName(chords[t / 4]) ?? []).map((m) => m % 12));
+        assert.ok(pcs.has(pc(e)), `compás ${t / 4 + 1}: ${e.string}${e.fret} fuera de ${chords[t / 4]}`);
+      }
+      t += e.beats;
+    }
+  }
+  // Improvisar: una meta por compás de la pista y la escala contiene las metas que alcanza.
+  for (const l of NYLON_LEVEL4_LESSONS) for (const ex of l.exercises) {
+    if (ex.kind !== 'improvise' || !ex.targets) continue;
+    const bars = ex.backing.strum!.chords.length;
+    assert.equal(ex.targets.length, bars, ex.id);
+    for (const t of ex.targets) assert.ok(t.some((x) => ex.scale.includes(x)), `${ex.id}: ninguna meta en la escala`);
+  }
+  assert.deepEqual(targetsOf(['Am7'])[0].sort((a, b) => a - b), [0, 4, 7, 9]);
+  // Checkpoint 4: oído, comping, bossa e improvisación sobre los cambios.
+  assert.deepEqual(NYLON_CP4.parts.map((p) => p.kind), ['ear', 'strum', 'strum', 'improvise']);
+  for (const p of NYLON_CP4.parts) {
+    if (p.kind === 'strum') {
+      assert.ok(p.bpm <= 80, p.id);
+      for (const c of p.chords) assert.ok(chordModule(c), `${c} fuera del álbum`);
+    }
+    if (p.kind === 'improvise') assert.equal(p.targets?.length, p.backing.strum!.chords.length);
+  }
 });

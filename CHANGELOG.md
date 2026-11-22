@@ -5,6 +5,7 @@ Formato: [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versiones:
 ## [Sin publicar]
 
 ### Nuevo
+- Guitarra criolla: módulos 4.4–4.6 (las cinco cajas, escalas mayor y menor natural, fraseo e improvisación sobre los cambios) y checkpoint 4; nivel 4 completo.
 - Guitarra criolla: módulos 4.1–4.3 (campo armónico, acordes de jazz con II-V-I mayor y menor y comping, bossa nova con pulgar, dedos sincopados y batida), 12 acordes nuevos en el álbum y canciones de jazz y bossa nova.
 - Guitarra criolla: módulo 3.7 (6/8, zamba, chacarera, tango y milonga, vals criollo), nivel 3 completo y cuatro canciones de música popular.
 - Compases de 3/4 y 6/8 en el motor (rasgueo, batería, banda, ejemplos y tablatura) y cuatro estilos de banda nuevos: zamba, chacarera, tango y vals criollo; género «Música popular» en el cancionero.
