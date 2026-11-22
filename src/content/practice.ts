@@ -18,6 +18,7 @@ import { LEG_PHRASE, SLIDE_PHRASE, VIB_PHRASE } from './guitar/level3';
 import { FINAL_SOLO, FOURS, G_MAJOR, MOTIF_PHRASE, TARGET_PHRASE, TRIAD_ARPS } from './guitar/level4';
 import { findModule } from './theory';
 import { moduleLearned } from './songbook';
+import { NYLON_DRILLS } from './nylon/practice';
 
 export type DrillCategory = 'scales' | 'technique' | 'riffs' | 'arpeggios' | 'phrases' | 'reading' | 'improv';
 export const DRILL_CATEGORIES: readonly DrillCategory[] = ['technique', 'riffs', 'scales', 'arpeggios', 'phrases', 'reading', 'improv'];
@@ -45,6 +46,8 @@ export interface Drill {
   /** Solo `improv`: clases de altura de la escala y notas mínimas por vuelta. */
   scale?: number[];
   minNotes?: number;
+  /** Ejercicio de una lección (criolla): se abre al terminar esa lección, sin esperar al módulo. */
+  lessonId?: string;
 }
 
 const key = (id: string, k: 'title' | 'desc') => `content.practice.${id.replace(/-/g, '_')}.${k}`;
@@ -144,7 +147,7 @@ export const BASS_DRILLS: Drill[] = [
 ];
 
 /** Ejercicios del instrumento de esta build. */
-export const DRILLS: Drill[] = IS_NYLON ? [] : IS_GUITAR ? GUITAR_DRILLS : BASS_DRILLS;
+export const DRILLS: Drill[] = IS_NYLON ? NYLON_DRILLS : IS_GUITAR ? GUITAR_DRILLS : BASS_DRILLS;
 
 /** Estilo de batería para cada género del cancionero. */
 export const GENRE_STYLE: Record<Genre, DrumStyle> = {
@@ -158,6 +161,8 @@ export const GENRE_STYLE: Record<Genre, DrumStyle> = {
   funk: 'funk',
   jazz: 'jazz',
   gospel: 'soul',
+  // Cada canción de música popular dice su estilo (zamba, chacarera, tango o vals); este es el de reserva.
+  popular: 'zamba',
 };
 
 /** Una canción del cancionero como ejercicio de práctica con banda (id `song-<id>`). */
@@ -172,13 +177,16 @@ export function songDrill(song: Song): Drill {
     titleKey: song.titleKey,
     descKey: song.descriptionKey,
     chords: song.chords,
-    style: GENRE_STYLE[song.genre],
+    style: song.style ?? GENRE_STYLE[song.genre],
     parts: IS_GUITAR ? ['drums', 'bass', 'keys'] : ['drums', 'guitar', 'keys'],
     tempoSteps: song.tempoSteps,
     line: song.line,
     notation: song.notation,
   };
 }
+
+/** El ejercicio de práctica de una lección, si tiene. */
+export const lessonDrill = (lessonId: string): Drill | undefined => DRILLS.find((d) => d.lessonId === lessonId);
 
 export function getDrill(id: string): Drill | undefined {
   if (id.startsWith('song-')) {
@@ -193,9 +201,10 @@ export const drillExerciseId = (id: string) => `drill-${id}`;
 
 export type DrillState = 'open' | 'locked' | 'premium';
 
-/** Abierto si se terminaron sus módulos; Premium si alguno de ellos lo es. */
+/** Abierto si se terminaron sus módulos (o su lección); Premium si alguno de ellos lo es. */
 export function drillState(d: Drill, completed: ReadonlySet<string>, skippedLevels: ReadonlySet<number>, canOpenModule: (moduleId: string) => boolean): DrillState {
   if (!d.requires.every((m) => canOpenModule(m))) return 'premium';
+  if (d.lessonId && completed.has(d.lessonId)) return 'open';
   return d.requires.every((m) => moduleLearned(m, completed, skippedLevels)) ? 'open' : 'locked';
 }
 

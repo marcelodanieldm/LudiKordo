@@ -1,7 +1,8 @@
 /**
  * Tablatura (lógica pura): compases, posición de cada nota y figura rítmica.
- * 4/4 con redondas, blancas, negras y corcheas, y silencios (la guitarra usa
- * tablatura también para las partituras con corcheas y silencios).
+ * 4/4 (o 3 pulsos por compás: 3/4 y 6/8 de la criolla) con redondas, blancas,
+ * negras y corcheas, y silencios (la guitarra usa tablatura también para las
+ * partituras con corcheas y silencios).
  */
 import type { ScoreEvent, TabNote } from '../content/types';
 
@@ -30,12 +31,12 @@ export interface PlacedNote extends TabNote {
 }
 
 /** Ubica cada nota en el tiempo. */
-export function placeNotes(notes: TabNote[]): PlacedNote[];
-export function placeNotes<T extends { beats: number }>(notes: T[]): (T & { startBeat: number; bar: number; beatInBar: number })[];
-export function placeNotes<T extends { beats: number }>(notes: T[]) {
+export function placeNotes(notes: TabNote[], beatsPerBar?: number): PlacedNote[];
+export function placeNotes<T extends { beats: number }>(notes: T[], beatsPerBar?: number): (T & { startBeat: number; bar: number; beatInBar: number })[];
+export function placeNotes<T extends { beats: number }>(notes: T[], beatsPerBar = BEATS_PER_BAR) {
   let beat = 0;
   return notes.map((n) => {
-    const placed = { ...n, startBeat: beat, bar: Math.floor(beat / BEATS_PER_BAR), beatInBar: beat % BEATS_PER_BAR };
+    const placed = { ...n, startBeat: beat, bar: Math.floor(beat / beatsPerBar), beatInBar: beat % beatsPerBar };
     beat += n.beats;
     return placed;
   });
@@ -49,9 +50,9 @@ export function totalBeats(notes: TabEvent[]): number {
  * Comprueba que la tablatura esté bien escrita: compases completos y ninguna
  * nota que cruce la barra de compás.
  */
-export function barsAreComplete(notes: TabEvent[]): boolean {
-  if (notes.length === 0 || totalBeats(notes) % BEATS_PER_BAR !== 0) return false;
-  return placeNotes(notes).every((n) => n.beatInBar + n.beats <= BEATS_PER_BAR);
+export function barsAreComplete(notes: TabEvent[], beatsPerBar = BEATS_PER_BAR): boolean {
+  if (notes.length === 0 || totalBeats(notes) % beatsPerBar !== 0) return false;
+  return placeNotes(notes, beatsPerBar).every((n) => n.beatInBar + n.beats <= beatsPerBar);
 }
 
 /** Cómo se cuenta en voz alta cada nota: «1», «1 2», «1 2 3 4»… según dónde cae. */
@@ -82,13 +83,13 @@ export interface TabLayout {
  * con pulsos de MIN_BEAT_W, se usa un compás por renglón con el ancho mínimo y
  * `width` indica cuánto hace falta (el componente desplaza en horizontal).
  */
-export function layoutTab(notes: TabEvent[], width: number): TabLayout {
-  const placed = placeNotes(notes);
+export function layoutTab(notes: TabEvent[], width: number, beatsPerBar = BEATS_PER_BAR): TabLayout {
+  const placed = placeNotes(notes, beatsPerBar);
   const bars = placed.length ? placed[placed.length - 1].bar + 1 : 0;
   const usable = width - TAB_LABEL_W - 8;
   const minBeat = notes.some((n) => n.beats < 1) ? MIN_BEAT_W_EIGHTHS : MIN_BEAT_W;
-  const barsPerRow = Math.max(1, Math.floor(usable / (BEATS_PER_BAR * minBeat)));
-  const beatW = Math.max(minBeat, usable / (barsPerRow * BEATS_PER_BAR));
+  const barsPerRow = Math.max(1, Math.floor(usable / (beatsPerBar * minBeat)));
+  const beatW = Math.max(minBeat, usable / (barsPerRow * beatsPerBar));
   const rows = Math.ceil(bars / barsPerRow);
   return {
     barsPerRow,
@@ -96,10 +97,10 @@ export function layoutTab(notes: TabEvent[], width: number): TabLayout {
     beatW,
     barsInRow: Array.from({ length: rows }, (_, r) => Math.min(barsPerRow, bars - r * barsPerRow)),
     notes: placed.map((n) => {
-      const beatInRow = (n.bar % barsPerRow) * BEATS_PER_BAR + n.beatInBar;
+      const beatInRow = (n.bar % barsPerRow) * beatsPerBar + n.beatInBar;
       // Una corchea ocupa medio pulso: se centra en su mitad.
       return { row: Math.floor(n.bar / barsPerRow), x: TAB_LABEL_W + beatInRow * beatW + (Math.min(1, n.beats) * beatW) / 2 };
     }),
-    width: Math.max(width, TAB_LABEL_W + 8 + barsPerRow * BEATS_PER_BAR * beatW),
+    width: Math.max(width, TAB_LABEL_W + 8 + barsPerRow * beatsPerBar * beatW),
   };
 }

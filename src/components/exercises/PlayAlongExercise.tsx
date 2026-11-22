@@ -195,6 +195,7 @@ export function PlayAlongExercise({
             events={exercise.score}
             notation={exercise.notation ?? 'tab'}
             width={width - 34}
+            beatsPerBar={exercise.beatsPerBar}
             current={phase === 'running' ? eventPos : -1}
           />
         ) : exercise.notation === 'staff' ? (
@@ -207,6 +208,7 @@ export function PlayAlongExercise({
           <TabStaff
             notes={exercise.notes.map((n) => ({ string: n.string, fret: n.fret, beats: n.beats ?? 1 }))}
             width={width - 34}
+            beatsPerBar={exercise.beatsPerBar}
             current={phase === 'running' ? index : -1}
           />
         ) : (

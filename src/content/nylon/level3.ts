@@ -1,21 +1,21 @@
 /**
  * Guitarra criolla, nivel 3: 3.1 preparar la cejilla, 3.2 cejilla forma de E,
  * 3.3 cejilla forma de A, 3.4 séptimas y blues, 3.5 ligados y arrastres, 3.6
- * escala de blues y pentatónica mayor, y el checkpoint 3. Los ritmos de música
- * popular (3.7) llegan con los compases de 3/4 y 6/8 del motor. Cada
+ * escala de blues y pentatónica mayor, 3.7 ritmos de música popular (6/8,
+ * zamba, chacarera, tango y milonga, vals criollo) y el checkpoint 3. Cada
  * acorde nuevo entra al álbum de acordes (chordbook.ts). En la criolla la
  * cejilla cuesta más que en la eléctrica (cuerdas más tensas y mástil más ancho):
  * por eso el módulo 3.1 arranca con media cejilla.
  * Textos en `content.n.l31x…l36x` y `content.n.cp3`.
  */
 import type { Checkpoint } from '../checkpoints';
-import type { Lesson, ScoreEvent } from '../types';
+import type { Exercise, Lesson, PlayAlongExercise, ScoreEvent } from '../types';
 import type { StringId } from '../../instruments/profiles';
 import { PENTA_BOXES } from '../../music/chords';
-import { QUARTERS, HALVES, WHOLES } from '../../music/strum';
+import { CHACARERA, MILONGA, QUARTERS, HALVES, SIX8_PULSE, VALS, WHOLES, ZAMBA } from '../../music/strum';
 import { chordFretted, k, listen, n, strumListen } from './helpers';
 import { changeLesson, chordLesson, ear, lesson, play, playScore, quiz, strum, tap } from './level2';
-import { tabOf } from './helpers';
+import { tabOf, waltzBar } from './helpers';
 
 // ───────────── 3.1 · Preparar la cejilla ─────────────
 
@@ -268,9 +268,84 @@ const l365 = lesson('3.6.5', 14, {
   ],
 });
 
+// ───────────── 3.7 · Ritmos de música popular ─────────────
+// Compases de 6 corcheas (3 pulsos de negra): el 6/8 de la zamba y la chacarera y
+// el 3/4 del vals. El tango y la milonga son de 4/4.
+
+/** Ejercicio de tocar con la banda en compases de 3 pulsos. */
+const play3 = (lessonId: string, key: string, score: ScoreEvent[], bpm = 60): Exercise => {
+  const ex = playScore(lessonId, key, score, bpm) as PlayAlongExercise;
+  return { ...ex, beatsPerBar: 3 };
+};
+const three = { beatsPerBar: 3 as const };
+
+export const SIX8_CHORDS = ['Am', 'E7', 'Am', 'E7'];
+export const ZAMBA_CHORDS = ['Am', 'Dm', 'E7', 'Am'];
+export const CHACARERA_CHORDS = ['Am', 'E7', 'Dm', 'E7'];
+export const TANGO_CHORDS = ['Am', 'Dm', 'E7', 'Am'];
+export const VALS_CHORDS = ['C', 'G7', 'G7', 'C'];
+export const ZAMBA_LINE = ZAMBA_CHORDS.flatMap(waltzBar);
+export const VALS_LINE = VALS_CHORDS.flatMap(waltzBar);
+
+const l371 = lesson('3.7.1', 10, {
+  visuals: [null, 'chord-am', 'chord-e7', null],
+  sounds: [strumListen(SIX8_CHORDS, SIX8_PULSE, 60, three), null, strumListen(SIX8_CHORDS, QUARTERS, 60), null],
+  cards: [{ listen: strumListen(SIX8_CHORDS, SIX8_PULSE, 60, { ...three, click: true }) }, { listen: strumListen(SIX8_CHORDS, QUARTERS, 60, { click: true }) }],
+  exercises: [
+    quiz('3.7.1', 'q1', [k('3.7.1', 'q1o1'), k('3.7.1', 'q1o2'), k('3.7.1', 'q1o3')], 0),
+    ear('3.7.1', 'ear', [k('3.7.1', 'four'), k('3.7.1', 'six')], 1, { example: strumListen(SIX8_CHORDS, SIX8_PULSE, 60, three) }),
+    strum('3.7.1', 'strum', SIX8_CHORDS, SIX8_PULSE, 60),
+  ],
+});
+
+const l372 = lesson('3.7.2', 12, {
+  visuals: ['chord-am', 'chord-dm', 'chord-e7', null],
+  sounds: [strumListen(ZAMBA_CHORDS, ZAMBA, 60, three), null, listen(ZAMBA_LINE, 60, three), null],
+  cards: [{ listen: strumListen(ZAMBA_CHORDS, ZAMBA, 60, { ...three, click: true }) }, { listen: listen(ZAMBA_LINE, 60, { ...three, click: true }) }],
+  exercises: [
+    quiz('3.7.2', 'q1', [k('3.7.2', 'q1o1'), k('3.7.2', 'q1o2'), k('3.7.2', 'q1o3')], 0),
+    strum('3.7.2', 'strum', ZAMBA_CHORDS, ZAMBA, 60),
+    play3('3.7.2', 'play', ZAMBA_LINE, 60),
+  ],
+});
+
+const l373 = lesson('3.7.3', 12, {
+  visuals: ['chord-am', 'chord-e7', 'chord-dm', null],
+  sounds: [strumListen(CHACARERA_CHORDS, CHACARERA, 66, three), null, strumListen(CHACARERA_CHORDS, ZAMBA, 60, three), null],
+  cards: [{ listen: strumListen(CHACARERA_CHORDS, CHACARERA, 60, { ...three, click: true }) }, { listen: strumListen(CHACARERA_CHORDS, ZAMBA, 60, { ...three, click: true }) }],
+  exercises: [
+    quiz('3.7.3', 'q1', [k('3.7.3', 'q1o1'), k('3.7.3', 'q1o2'), k('3.7.3', 'q1o3')], 0),
+    ear('3.7.3', 'ear', [k('3.7.3', 'zamba'), k('3.7.3', 'chacarera')], 1, { example: strumListen(CHACARERA_CHORDS, CHACARERA, 66, three) }),
+    strum('3.7.3', 'strum', CHACARERA_CHORDS, CHACARERA, 60),
+  ],
+});
+
+const l374 = lesson('3.7.4', 12, {
+  visuals: ['chord-am', 'chord-dm', 'chord-e7', null],
+  sounds: [strumListen(TANGO_CHORDS, QUARTERS, 66), null, strumListen(TANGO_CHORDS, MILONGA, 66), null],
+  cards: [{ listen: strumListen(TANGO_CHORDS, QUARTERS, 60, { click: true }) }, { listen: strumListen(TANGO_CHORDS, MILONGA, 60, { click: true }) }],
+  exercises: [
+    quiz('3.7.4', 'q1', [k('3.7.4', 'q1o1'), k('3.7.4', 'q1o2'), k('3.7.4', 'q1o3')], 0),
+    strum('3.7.4', 'tango', TANGO_CHORDS, QUARTERS, 66),
+    strum('3.7.4', 'milonga', TANGO_CHORDS, MILONGA, 60),
+  ],
+});
+
+const l375 = lesson('3.7.5', 12, {
+  visuals: ['chord-c', 'chord-g7', null, null],
+  sounds: [strumListen(VALS_CHORDS, VALS, 72, three), null, listen(VALS_LINE, 72, three), null],
+  cards: [{ listen: strumListen(VALS_CHORDS, VALS, 70, { ...three, click: true }) }, { listen: listen(VALS_LINE, 70, { ...three, click: true }) }],
+  exercises: [
+    quiz('3.7.5', 'q1', [k('3.7.5', 'q1o1'), k('3.7.5', 'q1o2'), k('3.7.5', 'q1o3')], 0),
+    strum('3.7.5', 'strum', VALS_CHORDS, VALS, 70),
+    play3('3.7.5', 'play', VALS_LINE, 70),
+  ],
+});
+
 export const NYLON_LEVEL3_LESSONS: Lesson[] = [
   l311, l312, l313, l314, l321, l322, l323, l324, l325, l331, l332, l333, l334, l335, l341, l342, l343, l344, l345,
   l351, l352, l353, l354, l355, l361, l362, l363, l364, l365,
+  l371, l372, l373, l374, l375,
 ];
 
 // ───────────── Checkpoint 3 ─────────────
