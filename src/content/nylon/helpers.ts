@@ -68,7 +68,7 @@ export const spiderDown = (s: StringId) => [4, 3, 2, 1].map((fret) => ({ string:
  */
 export type AlbumChord = string;
 
-/** Diagrama de cada acorde con cejilla del álbum (nivel 3). */
+/** Diagrama de cada acorde del álbum que no es abierto de primera posición (niveles 3 y 4). */
 export const BARRE_DIAGRAMS: Readonly<Record<string, DiagramId>> = {
   Fmaj7: 'fmaj7',
   F: 'f-half',
@@ -84,6 +84,23 @@ export const BARRE_DIAGRAMS: Readonly<Record<string, DiagramId>> = {
   Cm: 'bar-cm',
   B7: 'b7',
   C7: 'c7',
+  // Nivel 4
+  'Cmaj7': 'cmaj7',
+  'Dm7': 'dm7',
+  'Gmaj7': 'gmaj7',
+  'Bm7b5': 'bm7b5',
+  'Gm7': 'gm7',
+  'Bbmaj7': 'bbmaj7',
+  'Em7b5': 'em7b5',
+  'A7b9': 'a7b9',
+  'C6/9': 'c69',
+  'Dm6': 'dm6',
+  'G13': 'g13',
+  'G#dim7': 'gsdim7',
+  // Nivel 5
+  'C/E': 'c-e',
+  'G/B': 'g-b',
+  'D/F#': 'd-fs',
 };
 
 /** Id del diagrama que dibuja un acorde del álbum. */

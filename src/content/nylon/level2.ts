@@ -89,7 +89,8 @@ export const tap = (lessonId: string, key: string, sequence: { string: StringId;
   skills: ['fretboard'],
   promptKey: k(lessonId, key),
   sequence,
-  frets: 4,
+  // Diapasón de 4 trastes, o más si el acorde llega más arriba (G13, Gm7).
+  frets: Math.max(4, ...sequence.map((x) => x.fret)),
 });
 
 export const quiz = (lessonId: string, key: string, options: string[], correctIndex: number): Exercise => ({
