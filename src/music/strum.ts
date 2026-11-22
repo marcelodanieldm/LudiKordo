@@ -149,6 +149,10 @@ export interface StrumScore {
   /** Golpes donde el patrón pedía mano al aire. */
   extras: number;
   accuracy: number;
+  /** Desvío medio de los golpes acertados (ms, + = tarde); null si no hubo aciertos. */
+  meanOffsetMs: number | null;
+  /** Golpes que faltaron en cada compás. */
+  missedByBar: number[];
 }
 
 /**
@@ -160,6 +164,8 @@ export function scoreStrum(pattern: Stroke[], bars: number, bpm: number, startMs
   const expected = strokeTimes(pattern, bars, bpm, startMs);
   const used = new Set<number>();
   let hits = 0;
+  const offs: number[] = [];
+  const missedByBar = Array.from({ length: bars }, () => 0);
   for (const e of expected) {
     let best = -1;
     let bestDist = Infinity;
@@ -174,7 +180,8 @@ export function scoreStrum(pattern: Stroke[], bars: number, bpm: number, startMs
     if (best >= 0 && bestDist <= toleranceMs) {
       used.add(best);
       hits += 1;
-    }
+      offs.push(times[best] - e.timeMs);
+    } else missedByBar[e.bar] += 1;
   }
   const eighthMs = 60000 / bpm / 2;
   let extras = 0;
@@ -186,5 +193,6 @@ export function scoreStrum(pattern: Stroke[], bars: number, bpm: number, startMs
     if (pattern[slot % pattern.length] === '-') extras += 1;
   });
   const total = expected.length;
-  return { hits, total, extras, accuracy: total ? hits / (total + extras) : 0 };
+  const meanOffsetMs = offs.length ? offs.reduce((a, b) => a + b, 0) / offs.length : null;
+  return { hits, total, extras, accuracy: total ? hits / (total + extras) : 0, meanOffsetMs, missedByBar };
 }

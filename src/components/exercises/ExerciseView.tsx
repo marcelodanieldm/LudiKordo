@@ -51,11 +51,11 @@ export function ExerciseView({
     case 'strum':
       return <StrumExercise key={exercise.id} exercise={exercise} onDone={onDone} mastery={mastery} width={width} allowSelfCheck={allowSelfCheck} />;
     case 'bend':
-      return <BendExercise key={exercise.id} exercise={exercise} onDone={onDone} mastery={mastery} allowSelfCheck={allowSelfCheck} />;
+      return <BendExercise key={exercise.id} exercise={exercise} onDone={onDone} mastery={mastery} width={width} allowSelfCheck={allowSelfCheck} />;
     case 'vibrato':
-      return <VibratoExercise key={exercise.id} exercise={exercise} onDone={onDone} mastery={mastery} allowSelfCheck={allowSelfCheck} />;
+      return <VibratoExercise key={exercise.id} exercise={exercise} onDone={onDone} mastery={mastery} width={width} allowSelfCheck={allowSelfCheck} />;
     case 'improvise':
-      return <ImproviseExercise key={exercise.id} exercise={exercise} onDone={onDone} mastery={mastery} allowSelfCheck={allowSelfCheck} />;
+      return <ImproviseExercise key={exercise.id} exercise={exercise} onDone={onDone} mastery={mastery} width={width} allowSelfCheck={allowSelfCheck} />;
     default:
       return (
         <View style={{ gap: 12 }}>

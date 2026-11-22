@@ -12,7 +12,10 @@ import { TabStaff } from '../TabStaff';
 import { Staff } from '../Staff';
 import { Score } from '../Listen';
 import { eventAt, isRest, noteStartBeats } from '../../music/staff';
-import type { ScoreEvent } from '../../content/types';
+import type { ListenExample, ScoreEvent } from '../../content/types';
+import { judgeLive } from '../../music/live';
+import { howToPlayAlong, timedFeedback, untimedFeedback, type Counts, type NoteProblem, type Tip, type UntimedNoteStat } from '../../music/feedback';
+import { FeedbackCard, HowToCard, stringNumber } from './Coaching';
 import { useSettings } from '../../state/settings';
 import { useProgress } from '../../state/progress';
 import type { PlayAlongExercise as PlayEx } from '../../content/types';
@@ -58,6 +61,8 @@ export function PlayAlongExercise({
   const [cents, setCents] = useState<number | null>(null);
   const [result, setResult] = useState<{ hits: number; total: number; stars: number; next?: number } | null>(null);
   const [failures, setFailures] = useState(0);
+  /** Devolución de la última toma: conteo por veredicto, notas con problemas y consejos. */
+  const [feedback, setFeedback] = useState<{ tips: Tip[]; counts?: Counts; problems?: NoteProblem[] } | null>(null);
   const listener = useRef<Listener | null>(null);
   const metro = useRef<MetronomeHandle | null>(null);
   const timers = useRef<{ tick?: ReturnType<typeof setInterval>; end?: ReturnType<typeof setTimeout> }>({});
@@ -91,6 +96,15 @@ export function PlayAlongExercise({
   // Con figuras de distinta duración, las notas se muestran como tablatura.
   const asTab = exercise.notes.some((n) => (n.beats ?? 1) !== 1);
   const label = (midi: number) => noteName(midi, i18n.language as Locale, notation);
+  // El ejemplo de la explicación: el mismo ejercicio, sintetizado (con clic si tiene tempo).
+  const example: ListenExample = { events, bpm: exercise.bpm ?? 60, click: exercise.bpm !== null, beatsPerBar: exercise.beatsPerBar };
+  /** Pone nombre, cuerda y traste a la nota de la que habla un consejo. */
+  const withNote = (tips: Tip[]): Tip[] =>
+    tips.map((tip) => {
+      if (tip.key !== 'tip.hardestNote') return tip;
+      const k = Number(tip.params?.index ?? 0);
+      return { key: tip.key, params: { note: label(targets[k]), string: stringNumber(noteEvents[k].string), fret: noteEvents[k].fret } };
+    });
 
   const finishWith = (hits: number, total: number) => {
     stopAll();
@@ -123,6 +137,7 @@ export function PlayAlongExercise({
       return;
     }
     setResult(null);
+    setFeedback(null);
     setIndex(0);
     setEventPos(-1);
     setPhase('running');
@@ -132,16 +147,28 @@ export function PlayAlongExercise({
       const tol = exercise.toleranceCents ?? PITCH_TOLERANCE_CENTS;
       let i = 0;
       let stable = 0;
+      // Para la devolución: cuánto tardó cada nota y hacia dónde se desafinaba.
+      const stats: UntimedNoteStat[] = [];
+      let noteStart = nowMs();
+      let off: number[] = [];
       listener.current = await listenPitch((freq) => {
         if (i >= targets.length) return;
         const c = centsOff(freq, targets[i]);
         setCents(c);
+        if (Math.abs(c) > tol && Math.abs(c) <= 100) off.push(c);
         stable = Math.abs(c) <= tol ? stable + 1 : 0;
         if (stable >= 3) {
+          const sorted = [...off].sort((a, b) => a - b);
+          stats.push({ ms: nowMs() - noteStart, cents: sorted.length >= 3 ? sorted[Math.floor(sorted.length / 2)] : null });
+          noteStart = nowMs();
+          off = [];
           i += 1;
           stable = 0;
           setIndex(i);
-          if (i >= targets.length) finishWith(targets.length, targets.length);
+          if (i >= targets.length) {
+            setFeedback({ tips: withNote(untimedFeedback(stats).tips) });
+            finishWith(targets.length, targets.length);
+          }
         }
       });
       if (!listener.current) setPhase('self');
@@ -174,7 +201,21 @@ export function PlayAlongExercise({
       setEventPos(beat < 0 ? -1 : eventAt(eventStarts, beat));
     }, 100);
     timers.current.end = setTimeout(() => {
-      const r = scorePlayAlong(expected.map((timeMs, k) => ({ timeMs, midi: targets[k] })), detected);
+      const goal = expected.map((timeMs, k) => ({ timeMs, midi: targets[k] }));
+      const r = scorePlayAlong(goal, detected);
+      // La devolución juzga cada nota (a tiempo, antes, tarde, otra nota o perdida).
+      const live = judgeLive(goal, detected, Infinity);
+      const fb = timedFeedback({
+        verdicts: live.verdicts,
+        offsets: live.offsets,
+        played: live.played,
+        targets,
+        startBeats,
+        beatsPerBar: exercise.beatsPerBar ?? 4,
+        accuracy: r.accuracy,
+        stars: starsFor(r.accuracy, mastery),
+      });
+      setFeedback(fb);
       finishWith(r.hits, r.total);
     }, startMs - nowMs() + totalBeats * step + 800);
   };
@@ -188,6 +229,7 @@ export function PlayAlongExercise({
         {bpm !== null ? `${t('ui.exercise.tempo', { bpm })} · ` : ''}
         {t('ui.exercise.headphones')}
       </Text>
+      {phase === 'intro' ? <HowToCard tips={howToPlayAlong(exercise, stringNumber)} example={example} width={width} /> : null}
 
       <View style={{ backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1, borderRadius: radius.xl, padding: 16, gap: 10, alignItems: 'center' }}>
         {exercise.score ? (
@@ -251,6 +293,7 @@ export function PlayAlongExercise({
             <Stars count={result.stars} size={36} />
             <Text style={{ fontWeight: '700', color: colors.ink }}>{t('ui.exercise.detected', { hits: result.hits, total: result.total })}</Text>
             {result.next ? <Text style={{ color: colors.tealInk, fontWeight: '700' }}>{t('ui.exercise.nextTempo', { bpm: result.next })}</Text> : null}
+            {feedback ? <FeedbackCard tips={feedback.tips} counts={feedback.counts} problems={feedback.problems} note={label} /> : null}
           </View>
         ) : null}
         {phase === 'self' ? (
