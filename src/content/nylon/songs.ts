@@ -47,6 +47,10 @@ const TANGO_SONG = ['Am', 'Am', 'Dm', 'Am', 'E7', 'E7', 'Am', 'Am'];
 const AVENIDA = ['Gm7', 'C7', 'Fmaj7', 'Fmaj7', 'Em7b5', 'A7b9', 'Dm7', 'Dm7'];
 /** 4.3: la vuelta de bossa con 6/9, disminuido de paso, m6 y 13. */
 const ARENA = ['C6/9', 'G#dim7', 'Am7', 'D7', 'Dm6', 'G13', 'C6/9', 'C6/9'];
+/** 5.2 y 5.3: bajos por grados con acordes de bajo indicado. */
+const ESCALERA = ['C', 'G/B', 'Am', 'G', 'F', 'C/E', 'Dm', 'G'];
+const RUTA_SUR = ['Em', 'C', 'G', 'D/F#', 'Em', 'C', 'G', 'D'];
+const NOCHE = ['Dm7', 'G7', 'Cmaj7', 'A7b9', 'Dm7', 'G7', 'C6/9', 'C6/9'];
 const VALS_SONG = ['C', 'C', 'G7', 'G7', 'G7', 'G7', 'C', 'C', 'F', 'F', 'C', 'C', 'G7', 'G7', 'C', 'C'];
 
 export const NYLON_SONGS: Song[] = [
@@ -274,6 +278,52 @@ export const NYLON_SONGS: Song[] = [
     notation: 'tab',
     skills: ['technique', 'rhythm'],
     strum: BOSSA_FINGERS,
+    tone: 'nylon',
+  }),
+  // ── Nivel 5 ──
+  song({
+    id: 'n-pop-4',
+    genre: 'pop',
+    level: 5,
+    requires: songRequires(ESCALERA, ['5.2']),
+    key: 'C',
+    bpm: 70,
+    tempoSteps: [70, 80, 90],
+    chords: [...ESCALERA],
+    line: ESCALERA.flatMap(balladBar),
+    notation: 'tab',
+    skills: ['technique', 'theory'],
+    strum: BALLAD,
+    tone: 'nylon',
+  }),
+  song({
+    id: 'n-rock-3',
+    genre: 'rock',
+    level: 5,
+    requires: songRequires(RUTA_SUR, ['5.2']),
+    key: 'Em',
+    bpm: 76,
+    tempoSteps: [76, 84, 92],
+    chords: [...RUTA_SUR],
+    line: RUTA_SUR.flatMap(steadyBassBar),
+    notation: 'tab',
+    skills: ['technique', 'rhythm'],
+    strum: QUARTERS,
+    tone: 'nylon',
+  }),
+  song({
+    id: 'n-jazz-2',
+    genre: 'jazz',
+    level: 5,
+    requires: songRequires(NOCHE, ['5.3']),
+    key: 'C',
+    bpm: 80,
+    tempoSteps: [80, 90, 100],
+    chords: [...NOCHE],
+    line: NOCHE.flatMap(pimaBar),
+    notation: 'tab',
+    skills: ['technique', 'theory'],
+    strum: CHARLESTON,
     tone: 'nylon',
   }),
 ];

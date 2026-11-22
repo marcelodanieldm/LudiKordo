@@ -97,6 +97,10 @@ export const BARRE_DIAGRAMS: Readonly<Record<string, DiagramId>> = {
   'Dm6': 'dm6',
   'G13': 'g13',
   'G#dim7': 'gsdim7',
+  // Nivel 5
+  'C/E': 'c-e',
+  'G/B': 'g-b',
+  'D/F#': 'd-fs',
 };
 
 /** Id del diagrama que dibuja un acorde del álbum. */

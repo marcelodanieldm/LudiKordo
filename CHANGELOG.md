@@ -5,6 +5,7 @@ Formato: [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versiones:
 ## [Sin publicar]
 
 ### Nuevo
+- Guitarra criolla: módulos 5.1–5.3 (mapa del mástil, tríadas e inversiones, chord-melody), acordes C/E, G/B y D/F# y tres canciones de nivel 5.
 - Guitarra criolla: Práctica con banda, un ejercicio por cada lección (se abre al terminarla y se enlaza desde su final) y repasos de los niveles 1 a 4; filtro por nivel en la lista de ejercicios.
 - Guitarra criolla: módulos 4.4–4.6 (las cinco cajas, escalas mayor y menor natural, fraseo e improvisación sobre los cambios) y checkpoint 4; nivel 4 completo.
 - Guitarra criolla: módulos 4.1–4.3 (campo armónico, acordes de jazz con II-V-I mayor y menor y comping, bossa nova con pulgar, dedos sincopados y batida), 12 acordes nuevos en el álbum y canciones de jazz y bossa nova.

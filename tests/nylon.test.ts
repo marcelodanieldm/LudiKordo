@@ -19,6 +19,7 @@ import { CHORD_UNLOCKS, allChords, chordModule, missingChords, songRequires, unl
 import { CHORD_FIG, NYLON_CP2, NYLON_LEVEL2_LESSONS, PENTA_AM, PENTA_OPEN } from '../src/content/nylon/level2';
 import { NYLON_GENRES, NYLON_SONGS } from '../src/content/nylon/songs';
 import { albumDiagram, albumMidi, altBassBar, balladBar, chordFigure, pamiBar, pimaBar, pimiBar, steadyBassBar, waltzBar } from '../src/content/nylon/helpers';
+import { ARRANGEMENT, ARRANGEMENT_LINE, CAFG, CFGC, DESCENT, MELODY_BASS, MELODY_FILLS, MELODY_TOP, NYLON_LEVEL5_LESSONS, OCTAVES, TRIADS_123, TRIADS_234, WALK, WALKING_BASS } from '../src/content/nylon/level5';
 import { ACROSS_BOXES, AM_DM, BOSSA_I, BOSSA_MELODY, BOSSA_THUMB, CHORD_TONES, G_ARPEGGIOS, II_V_I_G, II_V_I_LINE, NYLON_CP4, NYLON_LEVEL4_LESSONS, QUESTION_ANSWER, bossaThumbBar, targetsOf } from '../src/content/nylon/level4';
 import { BOSSA_FINGERS, CHARLESTON } from '../src/music/strum';
 import { BLUES_AM, BLUES_SCALE, NYLON_CP3, NYLON_LEVEL3_LESSONS, SLUR_PHRASE, VALS_LINE, ZAMBA_LINE } from '../src/content/nylon/level3';
@@ -248,11 +249,11 @@ test('séptimas abiertas: cada forma suena a tónica, tercera, quinta y séptima
   }
 });
 
-test('álbum de acordes: 40 acordes hasta 4.3, sin repetir, cada uno con su diagrama y su figura', () => {
+test('álbum de acordes: 43 acordes hasta 5.2, sin repetir, cada uno con su diagrama y su figura', () => {
   const all = allChords();
-  assert.equal(all.length, 40);
+  assert.equal(all.length, 43);
   assert.equal(new Set(all).size, all.length);
-  assert.deepEqual(Object.keys(CHORD_UNLOCKS), ['2.1', '2.2', '2.3', '3.1', '3.2', '3.3', '3.4', '4.1', '4.2', '4.3']);
+  assert.deepEqual(Object.keys(CHORD_UNLOCKS), ['2.1', '2.2', '2.3', '3.1', '3.2', '3.3', '3.4', '4.1', '4.2', '4.3', '5.2']);
   for (const c of all) {
     if (c in CHORDS || c in SEVENTHS) {
       const fig = CHORD_FIG[c as keyof typeof CHORD_FIG];
@@ -283,11 +284,11 @@ test('álbum de acordes: 40 acordes hasta 4.3, sin repetir, cada uno con su diag
 });
 
 test('cada acorde nuevo del álbum tiene su lección y sale en el orden del álbum', () => {
-  const taught = [...NYLON_LEVEL2_LESSONS, ...NYLON_LEVEL3_LESSONS, ...NYLON_LEVEL4_LESSONS].flatMap((l) => l.exercises)
+  const taught = [...NYLON_LEVEL2_LESSONS, ...NYLON_LEVEL3_LESSONS, ...NYLON_LEVEL4_LESSONS, ...NYLON_LEVEL5_LESSONS].flatMap((l) => l.exercises)
     .filter((e) => e.kind === 'strum')
     .flatMap((e) => (e.kind === 'strum' ? e.chords : []));
   for (const c of allChords()) assert.ok(taught.includes(c), `${c} no se rasguea en ninguna lección`);
-  for (const ex of [...NYLON_LEVEL2_LESSONS, ...NYLON_LEVEL3_LESSONS, ...NYLON_LEVEL4_LESSONS].flatMap((l) => l.exercises)) {
+  for (const ex of [...NYLON_LEVEL2_LESSONS, ...NYLON_LEVEL3_LESSONS, ...NYLON_LEVEL4_LESSONS, ...NYLON_LEVEL5_LESSONS].flatMap((l) => l.exercises)) {
     if (ex.kind !== 'strum') continue;
     // Una lección solo rasguea acordes de su módulo o anteriores.
     const lessonModule = ex.id.split('.').slice(0, 2).join('.');
@@ -504,5 +505,47 @@ test('nivel 4 completo: cajas, escalas, fraseo y checkpoint 4', () => {
       for (const c of p.chords) assert.ok(chordModule(c), `${c} fuera del álbum`);
     }
     if (p.kind === 'improvise') assert.equal(p.targets?.length, p.backing.strum!.chords.length);
+  }
+});
+
+test('nivel 5, primera parte: mapa del mástil, tríadas e inversiones y chord-melody (5.1 a 5.3)', () => {
+  for (const mod of NYLON_LEVELS[4].modules.filter((m) => ['5.1', '5.2', '5.3'].includes(m.id))) for (const id of lessonIdsOf(mod)) {
+    assert.ok(NYLON_LESSONS[id], `falta la lección ${id}`);
+    assert.ok(NYLON_LESSONS[id].exercises.some((e) => e.needsBass), `${id}: sin ejercicio con guitarra`);
+  }
+  const pc = (e: ScoreEvent) => (isNote(e) ? midiOn(NYLON, e.string, e.fret) % 12 : -1);
+  const pcsOf = (c: string) => new Set((chordFromName(c) ?? []).map((m) => m % 12));
+  // Las octavas: cada par es la misma nota, 12 semitonos más aguda.
+  for (let i = 0; i < OCTAVES.length; i += 2) {
+    const [a, b] = [OCTAVES[i], OCTAVES[i + 1]];
+    assert.ok(isNote(a) && isNote(b));
+    assert.equal(midiOn(NYLON, b.string, b.fret) - midiOn(NYLON, a.string, a.fret), 12);
+  }
+  // Las tríadas usan solo notas del acorde de su compás.
+  for (const line of [TRIADS_123, TRIADS_234]) {
+    let t = 0;
+    for (const e of line) {
+      assert.ok(pcsOf(CFGC[Math.floor(t / 4)]).has(pc(e)), `${e.string}${e.fret} fuera de ${CFGC[Math.floor(t / 4)]}`);
+      t += e.beats;
+    }
+  }
+  // Acordes con bajo indicado: la nota más grave es la de la barra.
+  for (const c of ['C/E', 'G/B', 'D/F#']) assert.equal(albumMidi(c)[0] % 12, chordFromName(c)![0] % 12, c);
+  // El bajo de la conducción de voces baja por grados (Do, Si, La, Sol).
+  assert.deepEqual(DESCENT.map((c) => albumMidi(c)[0] % 12), [0, 11, 9, 7]);
+  // Chord-melody: el tiempo 1 de cada compás es el bajo del acorde y la melodía va más aguda.
+  const lines: [ScoreEvent[], string[], boolean][] = [[MELODY_TOP, CAFG, false], [MELODY_BASS, CAFG, true], [MELODY_FILLS, CAFG, false], [ARRANGEMENT_LINE, ARRANGEMENT, true], [WALKING_BASS, WALK, true]];
+  for (const [line, chords, bass] of lines) {
+    assert.ok(barsAreComplete(line));
+    assert.equal(line.reduce((a, e) => a + e.beats, 0), chords.length * 4);
+    let t = 0;
+    for (const e of line) {
+      if (t % 4 === 0 && isNote(e)) {
+        const c = chords[t / 4];
+        assert.ok(pcsOf(c).has(pc(e)), `compás ${t / 4 + 1}: ${e.string}${e.fret} fuera de ${c}`);
+        if (bass) assert.equal(pc(e), chordFromName(c)![0] % 12, `compás ${t / 4 + 1}: el bajo de ${c}`);
+      }
+      t += e.beats;
+    }
   }
 });
