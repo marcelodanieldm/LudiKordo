@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { Text } from '../Text';
 import { useTranslation } from 'react-i18next';
@@ -15,7 +15,9 @@ import { eventAt, isRest, noteStartBeats } from '../../music/staff';
 import type { ListenExample, ScoreEvent } from '../../content/types';
 import { judgeLive } from '../../music/live';
 import { howToPlayAlong, timedFeedback, untimedFeedback, type Counts, type NoteProblem, type Tip, type UntimedNoteStat } from '../../music/feedback';
-import { FeedbackCard, HowToCard, stringNumber } from './Coaching';
+import { FeedbackCard, HAND_INSTRUMENT, HowToCard, stringNumber } from './Coaching';
+import { handPlan } from '../../music/hands';
+import { FINGERINGS } from '../../content/fingerings';
 import { useSettings } from '../../state/settings';
 import { useProgress } from '../../state/progress';
 import type { PlayAlongExercise as PlayEx } from '../../content/types';
@@ -98,6 +100,8 @@ export function PlayAlongExercise({
   const label = (midi: number) => noteName(midi, i18n.language as Locale, notation);
   // El ejemplo de la explicación: el mismo ejercicio, sintetizado (con clic si tiene tempo).
   const example: ListenExample = { events, bpm: exercise.bpm ?? 60, click: exercise.bpm !== null, beatsPerBar: exercise.beatsPerBar };
+  // Qué dedo pisa cada nota y cómo toca la otra mano (tarjeta «Cómo se hace»).
+  const hands = useMemo(() => handPlan(exercise.notes, HAND_INSTRUMENT, exercise.score, FINGERINGS[HAND_INSTRUMENT][exercise.id]), [exercise]);
   /** Pone nombre, cuerda y traste a la nota de la que habla un consejo. */
   const withNote = (tips: Tip[]): Tip[] =>
     tips.map((tip) => {
@@ -229,7 +233,7 @@ export function PlayAlongExercise({
         {bpm !== null ? `${t('ui.exercise.tempo', { bpm })} · ` : ''}
         {t('ui.exercise.headphones')}
       </Text>
-      {phase === 'intro' ? <HowToCard tips={howToPlayAlong(exercise, stringNumber)} example={example} width={width} /> : null}
+      {phase === 'intro' ? <HowToCard tips={howToPlayAlong(exercise, stringNumber)} example={example} width={width} hands={hands} /> : null}
 
       <View style={{ backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1, borderRadius: radius.xl, padding: 16, gap: 10, alignItems: 'center' }}>
         {exercise.score ? (
