@@ -21,6 +21,7 @@ export const CHORD_UNLOCKS: Readonly<Record<string, readonly string[]>> = {
   '4.1': ['Cmaj7', 'Dm7', 'Gmaj7', 'Bm7b5'],
   '4.2': ['Gm7', 'Bbmaj7', 'Em7b5', 'A7b9'],
   '4.3': ['C6/9', 'Dm6', 'G13', 'G#dim7'],
+  '5.2': ['C/E', 'G/B', 'D/F#'],
 };
 
 const ROUTE_ORDER: string[] = NYLON_LEVELS.flatMap((l) => l.modules.map((m) => m.id));
