@@ -19,6 +19,7 @@ import { MotionFigure } from '../../src/components/MotionFigure';
 import { Kordi } from '../../src/components/Kordi';
 import { colors, fonts, radius } from '../../src/theme';
 import { xpFor } from '../../src/music/scoring';
+import { lessonDrill } from '../../src/content/practice';
 
 type Step = 'watch' | 'learn' | 'noBass' | 'withBass' | 'result';
 const STEPS: Exclude<Step, 'result'>[] = ['watch', 'learn', 'noBass', 'withBass'];
@@ -32,6 +33,8 @@ export default function LessonScreen() {
   const isPremium = useBilling((s) => s.isPremium);
   const { recordExercise, completeLesson, addMinutes } = useProgress();
   const lesson = id ? getLesson(id) : undefined;
+  // Su ejercicio de Práctica con la banda (criolla: uno por lección).
+  const drill = id ? lessonDrill(id) : undefined;
 
   const [step, setStep] = useState<Step>('watch');
   const [card, setCard] = useState(0);
@@ -146,6 +149,9 @@ export default function LessonScreen() {
             <Text style={{ fontSize: 18, fontWeight: '900', color: colors.gold }}>{t('ui.lesson.xp', { xp: stars.current.reduce((a, s) => a + xpFor(s), 0) })}</Text>
           </View>
           <Button style={{ alignSelf: 'stretch', marginTop: 12 }} label={t('ui.lesson.backToToday')} onPress={() => router.replace('/(tabs)')} />
+          {drill && lessonStars() >= 1 ? (
+            <Button style={{ alignSelf: 'stretch' }} variant="secondary" label={t('ui.lesson.practiceDrill')} onPress={() => router.replace(`/practica/${drill.id}`)} testID="lesson-practice" />
+          ) : null}
         </View>
       ) : null}
     </View>
