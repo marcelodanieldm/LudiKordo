@@ -16,6 +16,9 @@ import { freqToMidi, midiAt, noteName, type Locale } from '../../music/notes';
 import { starsFor, TIMING_TOLERANCE_MS, type DetectedNote } from '../../music/scoring';
 import { drillExerciseId, type Drill } from '../../content/practice';
 import { coach, improvExample } from '../../music/coach';
+import { handPlan, improvHands } from '../../music/hands';
+import { drillFingering } from '../../content/fingerings';
+import { HAND_INSTRUMENT, HandsSection, type Hands } from '../exercises/Coaching';
 import { INSTRUMENT } from '../../instruments/current';
 import type { ListenExample, ScoreEvent } from '../../content/types';
 import { useProgress } from '../../state/progress';
@@ -283,6 +286,14 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
   const notesPerLoop = noteMidis.length;
   const loopNow = lastIndex >= 0 ? Math.floor(lastIndex / Math.max(1, notesPerLoop)) : 0;
 
+  // Las manos: qué dedo pisa cada nota y cómo toca la otra mano (como en las lecciones).
+  const hands: Hands = useMemo(() => {
+    if (drill.kind === 'improv' || !drill.line) return { tips: improvHands(HAND_INSTRUMENT) };
+    const notes = drill.line.flatMap((e) => (isRest(e) ? [] : [{ string: e.string, fret: e.fret }]));
+    const plan = handPlan(notes, HAND_INSTRUMENT, drill.line, drillFingering(HAND_INSTRUMENT, drill.id, drill.lessonId));
+    return { tips: plan.tips, steps: plan.steps };
+  }, [drill]);
+
   const steps = [
     t(drill.kind === 'improv' ? 'ui.drills.howTo.listenImprov' : 'ui.drills.howTo.listen'),
     t(`ui.drills.howTo.cat.${drill.category}`),
@@ -316,6 +327,7 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
             </View>
           ))}
           <Listen example={example} width={width - 34} testID="drill-example" />
+          <HandsSection hands={hands} width={width} />
         </Card>
       ) : null}
 

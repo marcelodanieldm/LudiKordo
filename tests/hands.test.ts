@@ -5,7 +5,9 @@ import es from '../src/i18n/locales/es.json';
 import pt from '../src/i18n/locales/pt.json';
 import { HAND_SPAN, bendHands, fingering, handPlan, improvHands, openShape, plucking, strumHands, vibratoHands, type HandInstrument } from '../src/music/hands';
 import { BALLAD, BOSSA_FINGERS, EIGHTHS, QUARTERS } from '../src/music/strum';
-import { FINGERINGS } from '../src/content/fingerings';
+import { FINGERINGS, drillFingering } from '../src/content/fingerings';
+import { BASS_DRILLS, GUITAR_DRILLS } from '../src/content/practice';
+import { NYLON_DRILLS } from '../src/content/nylon/practice';
 import { BASS_LESSONS } from '../src/content/lessons';
 import { GUITAR_LESSONS } from '../src/content/guitar/lessons';
 import { NYLON_LESSONS } from '../src/content/nylon/lessons';
@@ -128,7 +130,8 @@ test('manos: la digitación coincide con lo que dicen las lecciones', () => {
   assert.ok(handPlan(pimi.notes, 'nylon', pimi.score, FINGERINGS.nylon[pimi.id]).tips.some((t) => t.key === 'hand.chordShape'));
   // Todas las digitaciones fijas apuntan a ejercicios que existen y tienen tantas notas como dedos.
   for (const [inst, lessons] of Object.entries(lessonsOf) as [HandInstrument, Record<string, Lesson>][]) {
-    for (const [id, f] of Object.entries(FINGERINGS[inst])) {
+    // Las de lecciones (los ids de la Práctica, como «g-power», se prueban aparte).
+    for (const [id, f] of Object.entries(FINGERINGS[inst]).filter(([id]) => /^\d/.test(id))) {
       const e = playOf(lessons, id);
       if (Array.isArray(f)) assert.equal(f.length, e.notes.length, id);
     }
@@ -140,4 +143,25 @@ test('manos: en la criolla, las melodías de una cuerda alternan i-m (1.2.3)', (
   if (!e || e.kind !== 'playAlong') return;
   const plucks = handPlan(e.notes, 'nylon', e.score).steps.map((s) => s.pluck);
   assert.ok(plucks.every((p, k) => p === (k % 2 === 0 ? 'i' : 'm')), plucks.join(''));
+});
+
+test('manos en la Práctica: cada ejercicio de las tres apps tiene un plan de manos válido', () => {
+  const lists: [HandInstrument, typeof BASS_DRILLS][] = [['bass', BASS_DRILLS], ['guitar', GUITAR_DRILLS], ['nylon', NYLON_DRILLS]];
+  for (const [inst, drills] of lists) {
+    let lines = 0;
+    for (const d of drills) {
+      if (d.kind !== 'line' || !d.line) continue;
+      lines++;
+      const notes = d.line.flatMap((e) => ('rest' in e ? [] : [{ string: e.string, fret: e.fret }]));
+      const plan = handPlan(notes, inst, d.line, drillFingering(inst, d.id, d.lessonId));
+      assert.equal(plan.steps.length, notes.length, d.id);
+      assert.ok(plan.tips.length >= 2, d.id);
+      for (const s of plan.steps) assert.ok(s.finger >= 0 && s.finger <= 4, `${d.id}: dedo ${s.finger}`);
+    }
+    assert.ok(lines > 3, `${inst}: ejercicios de línea`);
+  }
+  // El riff de power chords de la Práctica va con el dedo 1, como en la lección 2.4.
+  assert.equal(drillFingering('guitar', 'g-power'), 1);
+  // La criolla toma la digitación de la lección de la que sale el ejercicio.
+  assert.equal(drillFingering('nylon', 'n-l335', '3.3.5'), false);
 });
