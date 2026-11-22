@@ -51,6 +51,9 @@ const ARENA = ['C6/9', 'G#dim7', 'Am7', 'D7', 'Dm6', 'G13', 'C6/9', 'C6/9'];
 const ESCALERA = ['C', 'G/B', 'Am', 'G', 'F', 'C/E', 'Dm', 'G'];
 const RUTA_SUR = ['Em', 'C', 'G', 'D/F#', 'Em', 'C', 'G', 'D'];
 const NOCHE = ['Dm7', 'G7', 'Cmaj7', 'A7b9', 'Dm7', 'G7', 'C6/9', 'C6/9'];
+/** 5.4 y 5.5: blues menor de 12 compases y bossa en Re menor. */
+const MADRUGADA = ['Am7', 'Am7', 'Am7', 'Am7', 'Dm7', 'Dm7', 'Am7', 'Am7', 'E7', 'Dm7', 'Am7', 'E7'];
+const LLUVIA = ['Dm6', 'Em7b5', 'A7b9', 'Dm6', 'Gm7', 'C7', 'Fmaj7', 'A7b9'];
 const VALS_SONG = ['C', 'C', 'G7', 'G7', 'G7', 'G7', 'C', 'C', 'F', 'F', 'C', 'C', 'G7', 'G7', 'C', 'C'];
 
 export const NYLON_SONGS: Song[] = [
@@ -324,6 +327,36 @@ export const NYLON_SONGS: Song[] = [
     notation: 'tab',
     skills: ['technique', 'theory'],
     strum: CHARLESTON,
+    tone: 'nylon',
+  }),
+  song({
+    id: 'n-blues-3',
+    genre: 'blues',
+    level: 5,
+    requires: songRequires(MADRUGADA, ['5.4']),
+    key: 'Am',
+    bpm: 72,
+    tempoSteps: [72, 80, 90],
+    chords: [...MADRUGADA],
+    line: MADRUGADA.flatMap(pimiBar),
+    notation: 'tab',
+    skills: ['technique', 'ear'],
+    strum: QUARTERS,
+    tone: 'nylon',
+  }),
+  song({
+    id: 'n-bossa-2',
+    genre: 'bossa',
+    level: 5,
+    requires: songRequires(LLUVIA, ['5.5']),
+    key: 'Dm',
+    bpm: 72,
+    tempoSteps: [72, 80, 90],
+    chords: [...LLUVIA],
+    line: LLUVIA.flatMap(altBassBar),
+    notation: 'tab',
+    skills: ['technique', 'theory'],
+    strum: BOSSA_FINGERS,
     tone: 'nylon',
   }),
 ];

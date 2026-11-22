@@ -19,7 +19,7 @@ import { CHORD_UNLOCKS, allChords, chordModule, missingChords, songRequires, unl
 import { CHORD_FIG, NYLON_CP2, NYLON_LEVEL2_LESSONS, PENTA_AM, PENTA_OPEN } from '../src/content/nylon/level2';
 import { NYLON_GENRES, NYLON_SONGS } from '../src/content/nylon/songs';
 import { albumDiagram, albumMidi, altBassBar, balladBar, chordFigure, pamiBar, pimaBar, pimiBar, steadyBassBar, waltzBar } from '../src/content/nylon/helpers';
-import { ARRANGEMENT, ARRANGEMENT_LINE, CAFG, CFGC, DESCENT, MELODY_BASS, MELODY_FILLS, MELODY_TOP, NYLON_LEVEL5_LESSONS, OCTAVES, TRIADS_123, TRIADS_234, WALK, WALKING_BASS } from '../src/content/nylon/level5';
+import { DORIAN_A, DORIAN_NOTES, MIXO_A, MIXO_NOTES, NYLON_CP5, PHRYGIAN_E, PHRYGIAN_NOTES, PIZZICATO, PIZZ_CHORDS, PROJECT, PROJECT_LINE, ARRANGEMENT, ARRANGEMENT_LINE, CAFG, CFGC, DESCENT, MELODY_BASS, MELODY_FILLS, MELODY_TOP, NYLON_LEVEL5_LESSONS, OCTAVES, TRIADS_123, TRIADS_234, WALK, WALKING_BASS } from '../src/content/nylon/level5';
 import { ACROSS_BOXES, AM_DM, BOSSA_I, BOSSA_MELODY, BOSSA_THUMB, CHORD_TONES, G_ARPEGGIOS, II_V_I_G, II_V_I_LINE, NYLON_CP4, NYLON_LEVEL4_LESSONS, QUESTION_ANSWER, bossaThumbBar, targetsOf } from '../src/content/nylon/level4';
 import { BOSSA_FINGERS, CHARLESTON } from '../src/music/strum';
 import { BLUES_AM, BLUES_SCALE, NYLON_CP3, NYLON_LEVEL3_LESSONS, SLUR_PHRASE, VALS_LINE, ZAMBA_LINE } from '../src/content/nylon/level3';
@@ -548,4 +548,43 @@ test('nivel 5, primera parte: mapa del mástil, tríadas e inversiones y chord-m
       t += e.beats;
     }
   }
+});
+
+test('nivel 5 completo: recursos de la criolla, modos, proyecto final y checkpoint 5', () => {
+  for (const mod of NYLON_LEVELS[4].modules) for (const id of lessonIdsOf(mod)) {
+    assert.ok(NYLON_LESSONS[id], `falta la lección ${id}`);
+    assert.ok(NYLON_LESSONS[id].exercises.some((e) => e.needsBass), `${id}: sin ejercicio con guitarra`);
+  }
+  assert.equal(NYLON_LEVEL5_LESSONS.length, 27);
+  assert.equal(Object.keys(NYLON_LESSONS).length, 151, 'el curso completo');
+  const pc = (e: { string: StringId; fret: number }) => midiOn(NYLON, e.string, e.fret) % 12;
+  // Cada modo toca exactamente sus siete notas (y vuelve a la tónica).
+  for (const [notes, scale] of [[DORIAN_NOTES, DORIAN_A], [MIXO_NOTES, MIXO_A], [PHRYGIAN_NOTES, PHRYGIAN_E]] as const) {
+    const pcs = notes.map(([s, f]) => pc({ string: s, fret: f }));
+    assert.deepEqual(new Set(pcs), new Set(scale));
+    assert.equal(pcs[0], pcs[pcs.length - 1]);
+  }
+  // Las líneas: compases completos y el 1 de cada compás en el bajo del acorde.
+  for (const [line, chords] of [[PIZZICATO, PIZZ_CHORDS], [PROJECT_LINE, PROJECT]] as const) {
+    assert.ok(barsAreComplete(line));
+    let t = 0;
+    for (const e of line) {
+      if (t % 4 === 0 && isNote(e)) assert.equal(pc(e), chordFromName(chords[t / 4])![0] % 12, `compás ${t / 4 + 1}`);
+      t += e.beats;
+    }
+  }
+  // El vibrato de la criolla es más angosto que el de la eléctrica.
+  const vibs = NYLON_LEVEL5_LESSONS.flatMap((l) => l.exercises).filter((e) => e.kind === 'vibrato');
+  assert.ok(vibs.length >= 2 && vibs.every((v) => v.kind === 'vibrato' && v.minDepthCents <= 10));
+  // Checkpoint 5: el proyecto con la banda (oído, intro, arreglo y solo).
+  assert.deepEqual(NYLON_CP5.parts.map((p) => p.kind), ['ear', 'strum', 'playAlong', 'improvise']);
+  const solo = NYLON_CP5.parts[3];
+  assert.ok(solo.kind === 'improvise' && solo.targets?.length === PROJECT.length);
+});
+
+test('cancionero de criolla completo: 18 canciones en los 6 géneros del programa', () => {
+  assert.equal(NYLON_SONGS.length, 18);
+  const byGenre: Record<string, number> = {};
+  for (const s of NYLON_SONGS) byGenre[s.genre] = (byGenre[s.genre] ?? 0) + 1;
+  assert.deepEqual(byGenre, { pop: 4, rock: 3, blues: 3, popular: 4, jazz: 2, bossa: 2 });
 });

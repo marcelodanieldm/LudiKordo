@@ -23,6 +23,8 @@ import { NYLON_CP1 } from './level1';
 import { NYLON_CP2 } from './level2';
 import { NYLON_CP3 } from './level3';
 import { NYLON_CP4 } from './level4';
+import { PROJECT, PROJECT_LINE } from './level5';
+import { PENTA_AM } from './level2';
 import { BARRE_DIAGRAMS, albumMidi, pimiBar, pimaBar, waltzBar, type AlbumChord } from './helpers';
 import type { Drill, DrillCategory } from '../practice';
 
@@ -236,9 +238,9 @@ export const NYLON_LESSON_DRILLS: Drill[] = Object.values(NYLON_LESSONS)
 // ───────────── Repasos de cada nivel ─────────────
 
 const reviewKey = (id: string) => `content.practice.${id.replace(/-/g, '_')}.title`;
-const lastModule = (level: number) => `${level}.${level === 1 ? 5 : level === 2 ? 6 : level === 3 ? 7 : 6}`;
+const lastModule = (level: number) => `${level}.${level === 1 ? 5 : level === 2 ? 6 : level === 3 ? 7 : 6}`; // 4.6 y 5.6
 
-function reviewLine(id: string, level: 1 | 2 | 3 | 4, chords: string[], line: ScoreEvent[], style: DrumStyle, bpm: number, category: DrillCategory = 'arpeggios'): Drill {
+function reviewLine(id: string, level: 1 | 2 | 3 | 4 | 5, chords: string[], line: ScoreEvent[], style: DrumStyle, bpm: number, category: DrillCategory = 'arpeggios'): Drill {
   return {
     id, kind: 'line', category, skills: ['technique', 'rhythm'], level, requires: [lastModule(level)],
     titleKey: reviewKey(id), descKey: descKey('review'), chords, style, parts: [...BAND],
@@ -271,6 +273,12 @@ export const NYLON_REVIEW_DRILLS: Drill[] = [
     id: 'n-review-4-jazz', kind: 'improv', category: 'improv', skills: ['ear', 'theory'], level: 4, requires: ['4.6'],
     titleKey: reviewKey('n-review-4-jazz'), descKey: descKey('improv'), chords: CP4_COMPING, style: 'jazz', parts: [...BAND],
     tempoSteps: [80, 90, 100], scale: improvCP4 && improvCP4.kind === 'improvise' ? improvCP4.scale : [0, 2, 4, 5, 7, 9, 10, 11], minNotes: 16,
+  },
+  reviewLine('n-review-5', 5, PROJECT, PROJECT_LINE, 'ballad', 70, 'phrases'),
+  {
+    id: 'n-review-5-solo', kind: 'improv', category: 'improv', skills: ['ear', 'technique'], level: 5, requires: ['5.6'],
+    titleKey: reviewKey('n-review-5-solo'), descKey: descKey('improv'), chords: PROJECT, style: 'ballad', parts: [...BAND],
+    tempoSteps: [70, 80, 90], scale: PENTA_AM, minNotes: 16,
   },
 ];
 
