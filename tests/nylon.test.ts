@@ -6,7 +6,7 @@ import pt from '../src/i18n/locales/pt.json';
 import { NYLON_LEVELS } from '../src/content/nylon/curriculum';
 import { FIRST_ARPEGGIO, FOUR_FINGERS, NYLON_LESSONS, THUMB_BASSES } from '../src/content/nylon/lessons';
 import { lessonIdsOf } from '../src/content/curriculum';
-import { BASS, GUITAR, NYLON, isSixString, midiOn, resolveInstrument } from '../src/instruments/profiles';
+import { BASS, GUITAR, NYLON, isSixString, midiOn, resolveInstrument, type StringId } from '../src/instruments/profiles';
 import { LEGEND_COUNT, RATIO, isGuitarFigure } from '../src/components/guitarFigureMeta';
 import { withInstrumentTexts } from '../src/i18n/overlay';
 import { VOICES, peakGain, voiceFor } from '../src/music/timbre';
@@ -525,7 +525,7 @@ test('nivel 5, primera parte: mapa del mástil, tríadas e inversiones y chord-m
   for (const line of [TRIADS_123, TRIADS_234]) {
     let t = 0;
     for (const e of line) {
-      assert.ok(pcsOf(CFGC[Math.floor(t / 4)]).has(pc(e)), `${e.string}${e.fret} fuera de ${CFGC[Math.floor(t / 4)]}`);
+      assert.ok(isNote(e) && pcsOf(CFGC[Math.floor(t / 4)]).has(pc(e)), `compás ${Math.floor(t / 4) + 1}: nota fuera de ${CFGC[Math.floor(t / 4)]}`);
       t += e.beats;
     }
   }
