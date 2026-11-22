@@ -26,7 +26,7 @@ El equipo es contenido desde la primera lección (1.1: pastillas, volumen, tono 
 - La guitarra necesita cosas que el bajo no tiene: diagramas de acordes, rasgueo y **detección de acordes** (YIN es monofónico; hace falta un cromagrama, en TS puro y en Kotlin). Hasta tenerla, los ejercicios de acordes con guitarra validan ritmo con el detector de ataques y notas sueltas del acorde con YIN; los checkpoints siguen sin autoevaluación.
 - Los bends y el vibrato se miden con YIN siguiendo la afinación en cents en el tiempo.
 - `eas.json` y los workflows (con dueño en CODEOWNERS) necesitan un perfil y un job para la variante de guitarra: se piden en un PR aparte con aprobación de Marcelo.
-- El nombre visible es provisional («Kordi Guitar», cambiable con `APP_GUITAR_NAME`); el paquete Android no depende del nombre.
+- Nombre visible: **«LudiKordo Electric Guitar»**, elegido por Marcelo el 21 nov 2026 (antes, provisional «Kordi Guitar»; se puede cambiar con `APP_GUITAR_NAME`). El paquete Android (`app.ludikordo.guitar`) no depende del nombre y no cambia.
 
 ## Implementación (PR de la APK de guitarra)
 - El motor ya no asume 4 cuerdas: `STRINGS` sale del perfil activo; diapasón, tablatura, afinador, variables de los cartoons (`{{e}} {{a}} {{d}} {{g}} {{b}} {{e1}}`) y rango de YIN (opciones `minFreq`/`maxFreq` del módulo nativo; el algoritmo no cambió) se adaptan solos.
