@@ -6,7 +6,7 @@ import { Button, Stars } from '../ui';
 import { colors, fonts, radius } from '../../theme';
 import { listenAttacks, requestMic, type Listener, type MicStatus } from '../../audio/mic';
 import { nowMs, startMetronome, stopActiveSequence, type MetronomeHandle } from '../../audio/engine';
-import { EIGHTHS_PER_BAR, eighthAt, filterClicks, scoreStrum, type Attack } from '../../music/strum';
+import { barBeatsOf, eighthAt, filterClicks, scoreStrum, type Attack } from '../../music/strum';
 import { TIMING_TOLERANCE_MS, starsFor } from '../../music/scoring';
 import { useProgress } from '../../state/progress';
 import type { StrumExercise as StrumEx } from '../../content/types';
@@ -109,7 +109,10 @@ export function StrumExercise({
     setPos(-1);
     setPhase('running');
     const attacks: Attack[] = [];
-    metro.current = startMetronome(bpm, bars * 4);
+    // 4 pulsos por compás, o 3 en 3/4 y 6/8 (entonces la cuenta es de dos compases de 3).
+    const barBeats = barBeatsOf(exercise.pattern);
+    const countIn = barBeats === 3 ? 6 : 4;
+    metro.current = startMetronome(bpm, bars * barBeats, countIn, barBeats);
     const startMs = metro.current.startMs;
     const beatMs = 60000 / bpm;
     const heard = await listenAttacks((timeMs, rms) => attacks.push({ timeMs, rms }));
@@ -128,16 +131,16 @@ export function StrumExercise({
     timers.current.tick = setInterval(() => setPos(eighthAt(nowMs(), startMs, bpm)), 60);
     timers.current.end = setTimeout(() => {
       // Lo que entró durante la cuenta (el clic por el parlante) no cuenta como golpe.
-      const strokes = filterClicks(attacks, startMs, 4 * beatMs).map((a) => a.timeMs);
+      const strokes = filterClicks(attacks, startMs, countIn * beatMs).map((a) => a.timeMs);
       const r = scoreStrum(exercise.pattern, bars, bpm, startMs, strokes, TIMING_TOLERANCE_MS);
       finishWith(r.hits, r.total + r.extras);
-    }, startMs - nowMs() + bars * 4 * beatMs + 800);
+    }, startMs - nowMs() + bars * barBeats * beatMs + 800);
   };
 
   // Dos compases por renglón en teléfono, cuatro en tablet.
   const perRow = width >= 560 ? 4 : 2;
   const barW = (width - 34 - (perRow - 1) * 8) / perRow;
-  const cell = Math.min(28, barW / EIGHTHS_PER_BAR);
+  const cell = Math.min(28, barW / exercise.pattern.length);
 
   return (
     <View style={{ gap: 14 }}>
@@ -162,7 +165,7 @@ export function StrumExercise({
               <Text style={{ fontFamily: fonts.black, fontSize: 18, color: colors.ink }}>{chord}</Text>
               <View style={{ flexDirection: 'row' }}>
                 {exercise.pattern.map((s, k) => {
-                  const now = phase === 'running' && pos === bar * EIGHTHS_PER_BAR + k;
+                  const now = phase === 'running' && pos === bar * exercise.pattern.length + k;
                   return (
                     <View key={k} style={{ width: cell, height: cell + 6, alignItems: 'center', justifyContent: 'center', borderRadius: 6, backgroundColor: now ? colors.accent : 'transparent' }}>
                       <Text style={{ fontSize: s === '-' ? 14 : 18, fontWeight: '900', color: now ? colors.onAccent : s === 'D' ? colors.gold : s === 'U' ? colors.teal : colors.muted }}>

@@ -62,7 +62,7 @@ export default function DrillScreen() {
           </Card>
         ) : (
           <Card style={{ gap: 10 }}>
-            <Muted>{missing ? t('ui.drills.needs', { module: moduleLabel(missing) }) : t('ui.drills.lockedHint')}</Muted>
+            <Muted>{drill.lessonId ? t('ui.drills.needsLesson', { lesson: drill.lessonId }) : missing ? t('ui.drills.needs', { module: moduleLabel(missing) }) : t('ui.drills.lockedHint')}</Muted>
           </Card>
         )}
       </ScrollView>

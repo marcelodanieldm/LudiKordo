@@ -1,14 +1,17 @@
 /**
  * Batería sintetizada para el acompañamiento de la práctica (lógica pura).
- * Cada estilo es un compás de 4/4 dividido en pasos: 16 (semicorcheas) para los
- * estilos rectos y 12 (tresillos de corchea) para los que van con swing.
+ * Cada estilo es un compás dividido en pasos: en 4/4, 16 (semicorcheas) para los
+ * estilos rectos y 12 (tresillos de corchea) para los que van con swing; en 3/4 y
+ * 6/8 (zamba, chacarera, vals), 6 corcheas en 3 pulsos (`beats: 3`).
  * El motor (src/audio/engine.ts) arma cada golpe con osciladores.
  */
 export type DrumKind = 'kick' | 'snare' | 'hat' | 'ride' | 'rim';
-export type DrumStyle = 'rock' | 'pop' | 'funk' | 'ballad' | 'shuffle' | 'jazz' | 'soul' | 'reggae' | 'bossa';
+export type DrumStyle = 'rock' | 'pop' | 'funk' | 'ballad' | 'shuffle' | 'jazz' | 'soul' | 'reggae' | 'bossa' | 'zamba' | 'chacarera' | 'tango' | 'vals';
 
 export interface DrumPattern {
-  steps: 12 | 16;
+  steps: 6 | 12 | 16;
+  /** Pulsos (negras) por compás: 4 por defecto; 3 en zamba, chacarera y vals. */
+  beats?: 3 | 4;
   kick: number[];
   snare: number[];
   hat: number[];
@@ -33,7 +36,18 @@ export const DRUM_STYLES: Record<DrumStyle, DrumPattern> = {
   // One drop: el 1 vacío; bombo y aro juntos en el 3.
   reggae: { steps: 16, kick: [8], snare: [], hat: [2, 4, 6, 8, 10, 12, 14], ride: [], rim: [8] },
   bossa: { steps: 16, kick: [0, 6, 8, 14], snare: [], hat: [0, 2, 4, 6, 8, 10, 12, 14], ride: [], rim: [0, 3, 6, 10, 12] },
+  // Bombo legüero (6/8): parche (kick) y aro (rim). Zamba: parche en el 1, aro en el resto, el 4 apoyado.
+  zamba: { steps: 6, beats: 3, kick: [0, 3], snare: [], hat: [], ride: [], rim: [2, 4, 5] },
+  // Chacarera: el parche marca el 1 y el aro empuja las corcheas que siguen.
+  chacarera: { steps: 6, beats: 3, kick: [0], snare: [], hat: [], ride: [], rim: [1, 2, 3, 4, 5] },
+  // Tango: el «marcato», cuatro golpes parejos con el 1 y el 3 más fuertes.
+  tango: { steps: 16, kick: [0, 4, 8, 12], snare: [], hat: [], ride: [], rim: [4, 12] },
+  // Vals criollo (3/4): bombo en el 1 y aro en el 2 y el 3.
+  vals: { steps: 6, beats: 3, kick: [0], snare: [], hat: [], ride: [], rim: [2, 4] },
 };
+
+/** Pulsos (negras) por compás de un estilo. */
+export const barBeatsOfStyle = (style: DrumStyle): 3 | 4 => DRUM_STYLES[style].beats ?? 4;
 
 /** Volumen relativo de cada golpe. */
 export const DRUM_LEVEL: Record<DrumKind, number> = { kick: 0.9, snare: 0.6, hat: 0.35, ride: 0.3, rim: 0.4 };
@@ -50,14 +64,16 @@ export interface DrumHit {
  */
 export function drumSchedule(style: DrumStyle, bars: number, bpm: number, offsetBeats = 0): DrumHit[] {
   const p = DRUM_STYLES[style];
+  const barBeats = p.beats ?? 4;
   const beatSec = 60 / bpm;
-  const stepSec = (4 * beatSec) / p.steps;
+  const stepSec = (barBeats * beatSec) / p.steps;
   const hits: DrumHit[] = [];
   for (let bar = 0; bar < bars; bar++) {
-    const barStart = (offsetBeats + bar * 4) * beatSec;
+    const barStart = (offsetBeats + bar * barBeats) * beatSec;
     for (const kind of ['kick', 'snare', 'hat', 'ride', 'rim'] as const) {
       for (const step of p[kind] ?? []) {
-        const accent = step % (p.steps / 4) === 0 ? 1 : 0.75;
+        // Acento en cada pulso (en 6/8, en el 1 y el 4; en 3/4, en cada negra).
+        const accent = step % (p.steps / barBeats) === 0 ? 1 : 0.75;
         const level = DRUM_LEVEL[kind] * accent * (style === 'jazz' && kind === 'kick' ? 0.35 : 1);
         hits.push({ kind, startSec: barStart + step * stepSec, level });
       }
