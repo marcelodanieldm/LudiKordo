@@ -6,7 +6,7 @@ Programa aprobado por Marcelo el 21 nov 2026 (ADR 0010). Versión completa con c
 
 - 5 niveles, 31 módulos, 151 lecciones, unas 60 semanas a 15–20 minutos por día.
 - Guitarra de cuerdas de nylon, tocada con los dedos (p-i-m-a), **con yemas**, y rasgueada. Sin púa, ampli ni efectos.
-- Tercera app en Google Play: «LudiKordo guitar».
+- Tercera app en Google Play: «LudiKordo Guitar».
 - Afinación estándar: E2 A2 D3 G3 B3 E4 (MIDI 40, 45, 50, 55, 59, 64).
 - Lecciones de 4 pasos (Mira, Entiende, Practica sin guitarra, Practica con guitarra), una habilidad por lección, criterio de dominio y checkpoint al final de cada nivel.
 - Canciones que se habilitan al tener todos sus acordes y la técnica que piden.
@@ -90,8 +90,8 @@ Checkpoint 5: el proyecto final, completo con acompañamiento.
 | 3.3 | B♭, B♭m, Bm7, C#m, Cm | 26 |
 | 3.4 | B7, C7 | 28 |
 | 4.1 | Cmaj7, Dm7, Gmaj7, Bm7♭5 | 32 |
-| 4.2 | Gm7, B♭maj7, Em7♭5, A7♭9 (shells) | 36 |
-| 4.3 | C6/9, Dm6, G13, dim7 | 40 |
+| 4.2 | Gm7, B♭maj7, Em7♭5, A7♭9 | 36 |
+| 4.3 | C6/9, Dm6, G13, G#dim7 | 40 |
 | 5.2 | C/E, G/B, D/F# | 43 |
 
 ## Cancionero (18 canciones originales)
@@ -109,5 +109,13 @@ Módulos 1.1 y 1.2, afinador y metrónomo.
 - Hecho: módulos 2.1–2.3 (15 lecciones, 14 acordes en el álbum, con E7, A7, D7, G7, Em7 y Am7) y las primeras canciones: «Melodía del patio» (pop, 1.5) y «Ruta 3» (rock, 2.1).
 - El álbum de acordes está en `src/content/nylon/chordbook.ts`: cada canción en la que el alumno toca acordes arma su `requires` con `songRequires`, así se abre al tener sus acordes.
 - Hecho: nivel 2 completo (35 lecciones) y checkpoint 2; canciones «Postal de domingo» (pop, p-i-m-a) y «Sombra en Am» (blues, melodía pentatónica). Total: 60 lecciones, 2 checkpoints, 4 canciones.
-- Los patrones de rasgueo de la app son de 8 corcheas en 4/4: el 6/8 se enseña con la zamba y la chacarera en 3.7, junto con los estilos de banda nuevos.
-- Siguiente: nivel 3 (cejillas, séptimas y blues, ligados, ritmos de música popular).
+- Los patrones de rasgueo pueden ser de 8 corcheas (4/4) o de 6 (3/4 y 6/8, contados en negras: un compás de 6/8 dura 3 pulsos).
+- Hecho: módulos 3.1–3.4 (19 lecciones): media cejilla (Fmaj7, F, Bm en 4 cuerdas), cejillas formas de E y de A movidas, C7, B7, boogie, blues en Mi y en La y turnaround. Álbum: 28 acordes. Canciones nuevas: «Terraza» (rock, F#m), «Ciudad de papel» (pop, Bm) y «Blues del andén» (blues en La).
+- Hecho: 3.5 (ligados ascendentes y descendentes, arrastre, trino, adornos en la pentatónica), 3.6 (blue note, escala de blues, pentatónica mayor de Do, cajas 1 y 2, improvisar en mayor y menor) y el checkpoint 3. Total: 89 lecciones, 3 checkpoints, 7 canciones.
+- Hecho: 3.7 (6/8, zamba, chacarera, tango y milonga, vals criollo); nivel 3 completo. En la zamba y la chacarera el alumno toca negras de 3/4 (bajo y dos notas, `waltzBar`) sobre la banda en 6/8: es la sesquiáltera de estos ritmos. Canciones de música popular: «Zamba del patio», «Chacarera del camino», «Tango de la esquina» y «Vals de la plaza». Total: 94 lecciones, 3 checkpoints, 11 canciones.
+- Hecho: 4.1–4.3 (campo armónico, II-V-I mayor y menor, comping charleston, pulgar y dedos sincopados de la bossa, batida, 6/9 y disminuido de paso). Álbum: 40 acordes, todos con la 1.ª sonando para servir con p-i-m-a (por eso Gm7 es la cejilla completa en el traste 3 y no una shell de 3 notas). Canciones: «Luces de la avenida» (jazz) y «Arena de enero» (bossa). Total: 109 lecciones, 3 checkpoints, 13 canciones.
+- Hecho: 4.4–4.6 (cajas 3, 4 y 5 y su enlace, escala mayor en dos posiciones, menor natural, relativas, secuencias, arpegios en la escala, pregunta y respuesta, notas del acorde, improvisación en blues, II-V-I y bossa) y el checkpoint 4 (oído, comping, vuelta de bossa e improvisación con metas en cada cambio). Nivel 4 completo: 124 lecciones, 4 checkpoints.
+- Hecho: la Práctica. Un ejercicio con banda por cada lección (124), armado de lo que la lección hace tocar: improvisación → misma pista y escala; partitura a tempo → esa partitura; rasgueo → los mismos acordes en p-i-m-i (o bajo y dos notas en 3/4); notas sin tempo → en negras. Si la línea no trae cifrado, la banda usa el acorde del álbum que mejor calza con cada compás (solo tríadas y séptimas en los niveles 1 y 2). Se abre al terminar la lección y se enlaza desde su pantalla final. Más 6 repasos de nivel sacados de los checkpoints 1 a 4. Total: 130 ejercicios, con filtro por nivel.
+- Hecho: 5.1–5.3 (notas en 6.ª y 5.ª, octavas, CAGED, un acorde en todo el mástil, tríadas en 1-2-3 y 2-3-4, inversiones, C/E, G/B y D/F#, conducción de voces, bajo caminante, chord-melody con bajo en el 1 y melodía arriba, rellenos y un arreglo de 8 compases). El detector escucha una nota por vez: en el chord-melody el bajo va solo en el 1 y el acorde completo se practica aparte, rasgueado en el tiempo fuerte. Álbum: 43 acordes. Canciones: «Escalera de Do» (pop), «Ruta del sur» (rock) y «Noche en Do» (jazz). Total: 138 lecciones, 16 canciones.
+- Hecho: 5.4–5.6 (armónicos del traste 12, pizzicato, tambora, rasgueo continuo a-m-i sobre la cadencia andaluza, vibrato longitudinal; dórico, mixolidio, frigio y elegir el modo; proyecto final: una balada original en La menor con acompañamiento, arreglo de chord-melody y solo) y el checkpoint 5 (el proyecto con la banda). Canciones «Blues de la madrugada» y «Lluvia en Re».
+- **Curso completo: 151 lecciones, 5 checkpoints, 43 acordes, 18 canciones y 159 ejercicios de Práctica (151 de lección y 8 repasos de nivel).**

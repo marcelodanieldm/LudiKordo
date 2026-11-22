@@ -8,7 +8,7 @@
  *   npm run android:guitar     → app de guitarra eléctrica
  *   npm run android:nylon      → app de guitarra criolla
  *
- * La de criolla se llama «LudiKordo guitar» (elegido por Marcelo); el de la
+ * La de criolla se llama «LudiKordo Guitar» (elegido por Marcelo); el de la
  * eléctrica sigue PROVISIONAL hasta que Marcelo lo elija.
  * Los paquetes Android (`app.ludikordo.guitar`, `app.ludikordo.nylon`) no cambian con
  * el nombre: una vez publicados en Google Play ya no se pueden cambiar.
@@ -17,7 +17,7 @@ import type { ConfigContext, ExpoConfig } from 'expo/config';
 
 const GUITAR_NAME = process.env.APP_GUITAR_NAME ?? 'Kordi Guitar';
 // Nombre de la app de criolla, elegido por Marcelo (21 nov 2026).
-const NYLON_NAME = process.env.APP_NYLON_NAME ?? 'LudiKordo guitar';
+const NYLON_NAME = process.env.APP_NYLON_NAME ?? 'LudiKordo Guitar';
 
 type Instrument = 'bass' | 'guitar' | 'nylon';
 

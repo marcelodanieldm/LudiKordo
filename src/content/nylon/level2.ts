@@ -16,7 +16,7 @@ import type { Card, Exercise, Figure, Lesson, ListenExample, ScoreEvent } from '
 import type { StringId } from '../../instruments/profiles';
 import type { OpenChordId } from '../../music/chords';
 import { BALLAD, EIGHTHS, HALVES, QUARTERS, WHOLES, type Stroke } from '../../music/strum';
-import { altBassBar, arpScore, balladBar, chordArp, chordFretted, hz, k, listen, n, notesOf, pamiBar, pimaBar, pimiBar, scenes, scoreNotes, steadyBassBar, strumListen } from './helpers';
+import { type AlbumChord, chordFigure, altBassBar, arpScore, balladBar, chordArp, chordFretted, hz, k, listen, n, notesOf, pamiBar, pimaBar, pimiBar, scenes, scoreNotes, steadyBassBar, strumListen } from './helpers';
 
 export const STEPS = [60, 70, 80];
 
@@ -27,7 +27,7 @@ interface CardSpec {
   listen?: ListenExample;
 }
 
-function lesson(
+export function lesson(
   id: string,
   minutes: number,
   spec: { visuals: (Figure | null)[]; sounds: (ListenExample | null)[]; cards: CardSpec[]; exercises: Exercise[]; mastery?: number },
@@ -44,7 +44,7 @@ function lesson(
   };
 }
 
-const strum = (lessonId: string, key: string, chords: OpenChordId[], pattern: Stroke[], bpm = 60): Exercise => ({
+export const strum = (lessonId: string, key: string, chords: AlbumChord[], pattern: Stroke[], bpm = 60): Exercise => ({
   id: `${lessonId}-${key}`,
   kind: 'strum',
   needsBass: true,
@@ -56,7 +56,7 @@ const strum = (lessonId: string, key: string, chords: OpenChordId[], pattern: St
   tempoSteps: STEPS,
 });
 
-const play = (lessonId: string, key: string, notes: { string: StringId; fret: number }[], bpm: number | null, score?: ScoreEvent[]): Exercise => ({
+export const play = (lessonId: string, key: string, notes: { string: StringId; fret: number }[], bpm: number | null, score?: ScoreEvent[]): Exercise => ({
   id: `${lessonId}-${key}`,
   kind: 'playAlong',
   needsBass: true,
@@ -69,9 +69,9 @@ const play = (lessonId: string, key: string, notes: { string: StringId; fret: nu
 });
 
 /** Partitura a tocar a tempo (con corcheas o silencios, `notes` sale de la partitura). */
-const playScore = (lessonId: string, key: string, score: ScoreEvent[], bpm = 60): Exercise => play(lessonId, key, scoreNotes(score), bpm, score);
+export const playScore = (lessonId: string, key: string, score: ScoreEvent[], bpm = 60): Exercise => play(lessonId, key, scoreNotes(score), bpm, score);
 
-const ear = (lessonId: string, key: string, options: string[], correctIndex: number, extra: { tones?: number[]; example?: ListenExample }): Exercise => ({
+export const ear = (lessonId: string, key: string, options: string[], correctIndex: number, extra: { tones?: number[]; example?: ListenExample }): Exercise => ({
   id: `${lessonId}-${key}`,
   kind: 'ear',
   needsBass: false,
@@ -82,17 +82,18 @@ const ear = (lessonId: string, key: string, options: string[], correctIndex: num
   ...extra,
 });
 
-const tap = (lessonId: string, key: string, sequence: { string: StringId; fret: number }[]): Exercise => ({
+export const tap = (lessonId: string, key: string, sequence: { string: StringId; fret: number }[]): Exercise => ({
   id: `${lessonId}-${key}`,
   kind: 'fretboardTap',
   needsBass: false,
   skills: ['fretboard'],
   promptKey: k(lessonId, key),
   sequence,
-  frets: 4,
+  // Diapasón de 4 trastes, o más si el acorde llega más arriba (G13, Gm7).
+  frets: Math.max(4, ...sequence.map((x) => x.fret)),
 });
 
-const quiz = (lessonId: string, key: string, options: string[], correctIndex: number): Exercise => ({
+export const quiz = (lessonId: string, key: string, options: string[], correctIndex: number): Exercise => ({
   id: `${lessonId}-${key}`,
   kind: 'quiz',
   needsBass: false,
@@ -120,11 +121,11 @@ export const CHORD_FIG: Record<OpenChordId, Figure> = {
 };
 
 /** Un compás p-i-m-i por acorde (acompañamiento con los dedos, como en 1.3.5). */
-export const pimi = (chords: OpenChordId[]) => chords.flatMap(pimiBar);
+export const pimi = (chords: AlbumChord[]) => chords.flatMap(pimiBar);
 
 /** Lección de un acorde nuevo: diagrama, sus notas de a una y rasgueo en negras. */
-function chordLesson(id: string, chord: OpenChordId): Lesson {
-  const fig = CHORD_FIG[chord];
+export function chordLesson(id: string, chord: AlbumChord, figure?: Figure): Lesson {
+  const fig = figure ?? chordFigure(chord);
   return lesson(id, 12, {
     visuals: [null, fig, fig, null],
     sounds: [strumListen([chord], QUARTERS, 70), listen(arpScore(chord), 80), null, listen(pimi([chord, chord]), 70)],
@@ -134,7 +135,7 @@ function chordLesson(id: string, chord: OpenChordId): Lesson {
 }
 
 /** Lección de cambio entre acordes: escuchar, rasguear y tocar p-i-m-i a tempo. */
-function changeLesson(id: string, minutes: number, chords: OpenChordId[], pattern: Stroke[], figs: (Figure | null)[], extra: Exercise[] = []): Lesson {
+export function changeLesson(id: string, minutes: number, chords: AlbumChord[], pattern: Stroke[], figs: (Figure | null)[], extra: Exercise[] = []): Lesson {
   return lesson(id, minutes, {
     visuals: figs,
     sounds: [strumListen(chords, pattern, 70), null, listen(pimi(chords), 70), null],
