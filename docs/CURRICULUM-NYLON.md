@@ -6,7 +6,7 @@ Programa aprobado por Marcelo el 21 nov 2026 (ADR 0010). Versión completa con c
 
 - 5 niveles, 31 módulos, 151 lecciones, unas 60 semanas a 15–20 minutos por día.
 - Guitarra de cuerdas de nylon, tocada con los dedos (p-i-m-a), **con yemas**, y rasgueada. Sin púa, ampli ni efectos.
-- Tercera app en Google Play: «LudiKordo guitar».
+- Tercera app en Google Play: «LudiKordo Guitar».
 - Afinación estándar: E2 A2 D3 G3 B3 E4 (MIDI 40, 45, 50, 55, 59, 64).
 - Lecciones de 4 pasos (Mira, Entiende, Practica sin guitarra, Practica con guitarra), una habilidad por lección, criterio de dominio y checkpoint al final de cada nivel.
 - Canciones que se habilitan al tener todos sus acordes y la técnica que piden.
