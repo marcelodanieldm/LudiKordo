@@ -14,10 +14,14 @@ export default function DrillsScreen() {
   const { t } = useTranslation();
   const all = useDrills();
   const [cat, setCat] = useState<DrillCategory | undefined>(undefined);
+  const [level, setLevel] = useState<number | undefined>(undefined);
+  // Con un ejercicio por lección (criolla) la lista es larga: también se filtra por nivel.
+  const levels = [...new Set(all.map((d) => d.drill.level))].sort((a, b) => a - b);
   // Solo las categorías que tienen ejercicios en este instrumento.
   const cats = DRILL_CATEGORIES.filter((c) => all.some((d) => d.drill.category === c));
   const list = all
     .filter((d) => !cat || d.drill.category === cat)
+    .filter((d) => level === undefined || d.drill.level === level)
     .sort((a, b) => Number(a.state !== 'open') - Number(b.state !== 'open') || a.drill.level - b.drill.level);
   const options: (DrillCategory | undefined)[] = [undefined, ...cats];
 
@@ -47,6 +51,25 @@ export default function DrillsScreen() {
             );
           })}
         </ScrollView>
+
+        {levels.length > 1 ? (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>
+            {[undefined, ...levels].map((n) => {
+              const selected = n === level;
+              return (
+                <Pressable
+                  key={n ?? 'all'}
+                  accessibilityRole="button"
+                  accessibilityState={{ selected }}
+                  onPress={() => setLevel(n)}
+                  style={{ minHeight: 44, paddingHorizontal: 16, borderRadius: 22, justifyContent: 'center', backgroundColor: selected ? colors.accent : colors.card, borderWidth: 1, borderColor: selected ? colors.accent : colors.border }}
+                >
+                  <Text style={{ fontWeight: '800', color: selected ? colors.onAccent : colors.ink }}>{n === undefined ? t('ui.drills.allLevels') : t('ui.drills.level', { n })}</Text>
+                </Pressable>
+              );
+            })}
+          </ScrollView>
+        ) : null}
 
         {list.map((s) => (
           <DrillRow key={s.drill.id} status={s} />
@@ -79,9 +102,15 @@ function DrillRow({ status }: { status: DrillStatus }) {
           </View>
         ) : null}
       </View>
-      <Muted>{t('ui.drills.meta', { category: t(`ui.drills.category.${drill.category}`), level: drill.level, bpm: drill.tempoSteps[0] })}</Muted>
-      {state === 'locked' && missing ? (
-        <Text style={{ fontSize: 14, color: colors.accentInk, fontWeight: '700' }}>{t('ui.drills.needs', { module: moduleLabel(missing) })}</Text>
+      <Muted>
+        {drill.lessonId
+          ? t('ui.drills.lessonMeta', { lesson: drill.lessonId, category: t(`ui.drills.category.${drill.category}`), bpm: drill.tempoSteps[0] })
+          : t('ui.drills.meta', { category: t(`ui.drills.category.${drill.category}`), level: drill.level, bpm: drill.tempoSteps[0] })}
+      </Muted>
+      {state === 'locked' && (drill.lessonId || missing) ? (
+        <Text style={{ fontSize: 14, color: colors.accentInk, fontWeight: '700' }}>
+          {drill.lessonId ? t('ui.drills.needsLesson', { lesson: drill.lessonId }) : t('ui.drills.needs', { module: moduleLabel(missing!) })}
+        </Text>
       ) : null}
       {state === 'premium' ? <Chip label={t('ui.path.premium')} color={colors.gold} bg={colors.goldSoft} /> : null}
     </Pressable>

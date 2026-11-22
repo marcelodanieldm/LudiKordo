@@ -310,7 +310,14 @@ export const SONGS: Song[] = IS_NYLON ? NYLON_SONGS : IS_GUITAR ? GUITAR_SONGS :
  * (guitarra), la línea sobre una pista con los acordes del cifrado.
  */
 export function songExample(song: Song): ListenExample {
-  const base: ListenExample = { events: song.line, bpm: song.bpm, show: song.notation, click: true, ...(song.tone ? { tone: song.tone } : {}) };
+  const base: ListenExample = {
+    events: song.line,
+    bpm: song.bpm,
+    show: song.notation,
+    click: true,
+    ...(song.tone ? { tone: song.tone } : {}),
+    ...(song.beatsPerBar ? { beatsPerBar: song.beatsPerBar } : {}),
+  };
   if (!song.strum) return base;
   const chords = song.chords.map((c) => chordFromName(c) ?? []);
   // En rock la pista suena con crunch, como una segunda guitarra; en el resto, limpia.

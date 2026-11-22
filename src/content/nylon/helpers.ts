@@ -68,7 +68,7 @@ export const spiderDown = (s: StringId) => [4, 3, 2, 1].map((fret) => ({ string:
  */
 export type AlbumChord = string;
 
-/** Diagrama de cada acorde con cejilla del álbum (nivel 3). */
+/** Diagrama de cada acorde del álbum que no es abierto de primera posición (niveles 3 y 4). */
 export const BARRE_DIAGRAMS: Readonly<Record<string, DiagramId>> = {
   Fmaj7: 'fmaj7',
   F: 'f-half',
@@ -84,6 +84,23 @@ export const BARRE_DIAGRAMS: Readonly<Record<string, DiagramId>> = {
   Cm: 'bar-cm',
   B7: 'b7',
   C7: 'c7',
+  // Nivel 4
+  'Cmaj7': 'cmaj7',
+  'Dm7': 'dm7',
+  'Gmaj7': 'gmaj7',
+  'Bm7b5': 'bm7b5',
+  'Gm7': 'gm7',
+  'Bbmaj7': 'bbmaj7',
+  'Em7b5': 'em7b5',
+  'A7b9': 'a7b9',
+  'C6/9': 'c69',
+  'Dm6': 'dm6',
+  'G13': 'g13',
+  'G#dim7': 'gsdim7',
+  // Nivel 5
+  'C/E': 'c-e',
+  'G/B': 'g-b',
+  'D/F#': 'd-fs',
 };
 
 /** Id del diagrama que dibuja un acorde del álbum. */
@@ -159,6 +176,11 @@ export function strumListen(chords: AlbumChord[], pattern: Stroke[], bpm: number
 const onString = (id: AlbumChord, s: StringId) => chordArp(id).find((x) => x.string === s)?.fret ?? 0;
 
 /** p-i-m-a en negras: bajo, 3.ª, 2.ª y 1.ª. */
+/** Compás de 3 pulsos (vals, zamba, chacarera): pulgar en el bajo y dos notas del acorde en la 3.ª y la 2.ª. */
+export function waltzBar(id: AlbumChord): ScoreEvent[] {
+  return pimiBar(id).slice(0, 3);
+}
+
 export function pimaBar(id: AlbumChord): ScoreEvent[] {
   const b = chordArp(id)[0];
   return [n(b.string, b.fret), n('G', onString(id, 'G')), n('B', onString(id, 'B')), n('e', onString(id, 'e'))];

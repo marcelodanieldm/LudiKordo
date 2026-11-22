@@ -12,6 +12,8 @@ import type { Lesson, ListenExample, ScoreEvent } from '../types';
 import { NYLON_LEVEL1_LESSONS } from './level1';
 import { NYLON_LEVEL2_LESSONS } from './level2';
 import { NYLON_LEVEL3_LESSONS } from './level3';
+import { NYLON_LEVEL4_LESSONS } from './level4';
+import { NYLON_LEVEL5_LESSONS } from './level5';
 import { BASS_STRINGS, LOW_TO_HIGH, TREBLE_STRINGS, hear, hz, k, listen, n, notesOf, open, scenes, times } from './helpers';
 
 /** Las 6 cuerdas al aire en dos compases: 4 negras y 2 blancas (Si y Mi aguda). */
@@ -363,7 +365,8 @@ const l121: Lesson = {
       needsBass: true,
       skills: ['technique'],
       promptKey: k('1.2.1', 'play'),
-      notes: [...times('E', 2), ...times('A', 2), ...times('D', 2)],
+      // Sin notas iguales seguidas: sin tempo, una nota que sigue sonando se daría por tocada otra vez.
+      notes: [...times('E', 1), ...times('A', 1), ...times('D', 1), ...times('A', 1), ...times('E', 1)],
       bpm: null,
     },
   ],
@@ -614,5 +617,5 @@ export const NYLON_LESSONS: Record<string, Lesson> = {
   [l123.id]: l123,
   [l124.id]: l124,
   [l125.id]: l125,
-  ...Object.fromEntries([...NYLON_LEVEL1_LESSONS, ...NYLON_LEVEL2_LESSONS, ...NYLON_LEVEL3_LESSONS].map((l) => [l.id, l])),
+  ...Object.fromEntries([...NYLON_LEVEL1_LESSONS, ...NYLON_LEVEL2_LESSONS, ...NYLON_LEVEL3_LESSONS, ...NYLON_LEVEL4_LESSONS, ...NYLON_LEVEL5_LESSONS].map((l) => [l.id, l])),
 };
