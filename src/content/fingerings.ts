@@ -26,6 +26,8 @@ export const FINGERINGS: Record<HandInstrument, Record<string, Fingering>> = {
     '3.3.3-play': [3, 1, 3],
     // Octavas: «dedo 1 en la 6.ª cuerda y dedo 3 en la 4.ª» (3.7.3).
     '3.7.3-play': [1, 3, 1, 3, 1, 3],
+    // Práctica: el riff de power chords (tónicas con el dedo 1).
+    'g-power': 1,
   },
   nylon: {
     // Arpegios de acordes: los dedos salen de la forma del acorde.
@@ -33,3 +35,16 @@ export const FINGERINGS: Record<HandInstrument, Record<string, Fingering>> = {
     '3.3.5-pimi': false,
   },
 };
+
+/**
+ * Digitación de un ejercicio de la Práctica: la suya, o la de la lección de la
+ * que sale (criolla: un ejercicio por lección). Solo se toma de la lección un
+ * dedo único o `false`; una lista por nota no sirve porque la línea cambia.
+ */
+export function drillFingering(instrument: HandInstrument, drillId: string, lessonId?: string): Fingering | undefined {
+  const own = FINGERINGS[instrument][drillId];
+  if (own !== undefined) return own;
+  if (!lessonId) return undefined;
+  const fromLesson = Object.entries(FINGERINGS[instrument]).find(([id, f]) => id.startsWith(`${lessonId}-`) && !Array.isArray(f));
+  return fromLesson?.[1];
+}

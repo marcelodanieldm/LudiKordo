@@ -31,6 +31,22 @@ const Bullet = ({ children, color = colors.ink }: { children: React.ReactNode; c
 );
 
 /** Antes de empezar: qué hay que hacer y un ejemplo para escuchar. */
+/** «Las manos»: diagrama y consejos de las dos manos (lecciones y Práctica). */
+export function HandsSection({ hands, width }: { hands: Hands; width: number }) {
+  const { t } = useTranslation();
+  return (
+    <View style={{ gap: 8, paddingTop: 4 }} testID="howto-hands">
+      <Text style={{ fontFamily: fonts.display, fontSize: 16, lineHeight: 22, color: colors.ink }} accessibilityRole="header">
+        {t('ui.exercise.hand.title')}
+      </Text>
+      {hands.steps || hands.chord ? <HandMap steps={hands.steps} chord={hands.chord} width={width - 34} /> : null}
+      {hands.tips.map((tip, i) => (
+        <Bullet key={`h${i}`}>{t(`ui.exercise.${tip.key}`, tip.params)}</Bullet>
+      ))}
+    </View>
+  );
+}
+
 export function HowToCard({ tips, example, width, hands }: { tips: Tip[]; example?: ListenExample; width: number; hands?: Hands }) {
   const { t } = useTranslation();
   return (
@@ -41,17 +57,7 @@ export function HowToCard({ tips, example, width, hands }: { tips: Tip[]; exampl
       {tips.map((tip, i) => (
         <Bullet key={i}>{t(`ui.exercise.${tip.key}`, tip.params)}</Bullet>
       ))}
-      {hands ? (
-        <View style={{ gap: 8, paddingTop: 4 }} testID="howto-hands">
-          <Text style={{ fontFamily: fonts.display, fontSize: 16, lineHeight: 22, color: colors.ink }} accessibilityRole="header">
-            {t('ui.exercise.hand.title')}
-          </Text>
-          {hands.steps || hands.chord ? <HandMap steps={hands.steps} chord={hands.chord} width={width - 34} /> : null}
-          {hands.tips.map((tip, i) => (
-            <Bullet key={`h${i}`}>{t(`ui.exercise.${tip.key}`, tip.params)}</Bullet>
-          ))}
-        </View>
-      ) : null}
+      {hands ? <HandsSection hands={hands} width={width} /> : null}
       {example ? (
         <View style={{ gap: 6 }}>
           <Text style={{ color: colors.muted, fontSize: 14 }}>{t('ui.exercise.howTo.example')}</Text>
