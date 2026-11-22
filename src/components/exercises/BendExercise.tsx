@@ -13,6 +13,7 @@ import { useSettings } from '../../state/settings';
 import type { BendExercise as BendEx, ListenExample } from '../../content/types';
 import { bendFeedback, howToBend } from '../../music/feedback';
 import { FeedbackCard, HowToCard } from './Coaching';
+import { bendHands, fingering } from '../../music/hands';
 
 type Phase = 'intro' | 'running' | 'result' | 'self';
 
@@ -147,7 +148,7 @@ export function BendExercise({
       <Text style={{ color: colors.muted }}>
         {t('ui.exercise.bendInfo', { from: label(startMidi), to: label(startMidi + exercise.semitones) })}
       </Text>
-      {phase === 'intro' ? <HowToCard tips={howToBend(exercise)} example={example} width={width} /> : null}
+      {phase === 'intro' ? <HowToCard tips={howToBend(exercise)} example={example} width={width} hands={{ tips: bendHands(), steps: fingering([{ string: exercise.string, fret: exercise.fret }]).map((s) => ({ ...s, finger: s.fret > 0 ? 3 : 0, pos: Math.max(1, s.fret - 2), pluck: 'down' as const })) }} /> : null}
 
       <View style={{ backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1, borderRadius: radius.xl, padding: 16, gap: 12 }}>
         {/* Medidor: de la nota de partida (izquierda) a la de llegada (zona turquesa). */}

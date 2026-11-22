@@ -12,7 +12,8 @@ import { useProgress } from '../../state/progress';
 import type { ListenExample, StrumExercise as StrumEx } from '../../content/types';
 import { chordFromName } from '../../music/chords';
 import { howToStrum, strumFeedback, type Tip } from '../../music/feedback';
-import { FeedbackCard, HowToCard } from './Coaching';
+import { FeedbackCard, HAND_INSTRUMENT, HowToCard } from './Coaching';
+import { openShape, strumHands } from '../../music/hands';
 
 type Phase = 'intro' | 'running' | 'result' | 'self';
 
@@ -162,7 +163,7 @@ export function StrumExercise({
       <Text style={{ color: colors.muted }}>
         {t('ui.exercise.tempo', { bpm })} · {t('ui.exercise.headphones')}
       </Text>
-      {phase === 'intro' ? <HowToCard tips={howToStrum({ bpm, chords: exercise.chords, pattern: exercise.pattern }, t('ui.exercise.and'))} example={example} width={width} /> : null}
+      {phase === 'intro' ? <HowToCard tips={howToStrum({ bpm, chords: exercise.chords, pattern: exercise.pattern }, t('ui.exercise.and'))} example={example} width={width} hands={{ tips: strumHands(exercise.chords, exercise.pattern, HAND_INSTRUMENT), chord: exercise.chords.map(openShape).find(Boolean) }} /> : null}
 
       <View style={{ backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1, borderRadius: radius.xl, padding: 16, gap: 10 }}>
         <View

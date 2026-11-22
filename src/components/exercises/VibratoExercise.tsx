@@ -13,7 +13,8 @@ import { useSettings } from '../../state/settings';
 import type { VibratoExercise as VibEx } from '../../content/types';
 import { howToVibrato, vibratoFeedback } from '../../music/feedback';
 import { IS_NYLON } from '../../instruments/current';
-import { FeedbackCard, HowToCard } from './Coaching';
+import { FeedbackCard, HAND_INSTRUMENT, HowToCard } from './Coaching';
+import { vibratoHands } from '../../music/hands';
 
 type Phase = 'intro' | 'waiting' | 'recording' | 'result' | 'self';
 
@@ -140,7 +141,7 @@ export function VibratoExercise({
     <View style={{ gap: 14 }}>
       <Text style={{ fontFamily: fonts.display, fontSize: 24, lineHeight: 30, color: colors.ink }}>{t(exercise.promptKey)}</Text>
       <Text style={{ color: colors.muted }}>{t('ui.exercise.vibratoInfo', { note, seconds: exercise.seconds })}</Text>
-      {phase === 'intro' ? <HowToCard tips={howToVibrato(exercise, IS_NYLON)} width={width} /> : null}
+      {phase === 'intro' ? <HowToCard tips={howToVibrato(exercise, IS_NYLON)} width={width} hands={{ tips: vibratoHands(HAND_INSTRUMENT), steps: [{ string: exercise.string, fret: exercise.fret, finger: exercise.fret > 0 ? 3 : 0, pos: Math.max(1, exercise.fret - 2), shift: false, pluck: IS_NYLON ? 'i' : 'down' }] }} /> : null}
 
       <View style={{ backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1, borderRadius: radius.xl, padding: 16, gap: 10, alignItems: 'center' }} accessibilityLiveRegion="polite">
         {phase === 'waiting' ? <Text style={{ fontSize: 16, fontWeight: '800', color: colors.teal }}>{t('ui.exercise.vibratoWaiting', { note })}</Text> : null}

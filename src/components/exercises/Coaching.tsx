@@ -7,6 +7,18 @@ import { colors, fonts, radius } from '../../theme';
 import type { Counts, NoteProblem, Tip } from '../../music/feedback';
 import type { ListenExample } from '../../content/types';
 import { INSTRUMENT } from '../../instruments/current';
+import type { ChordShape } from '../../music/chords';
+import type { HandInstrument, HandStep } from '../../music/hands';
+import { HandMap } from './HandMap';
+
+/** Instrumento de esta build, para las manos. */
+export const HAND_INSTRUMENT = INSTRUMENT.id as HandInstrument;
+
+export interface Hands {
+  tips: Tip[];
+  steps?: HandStep[];
+  chord?: ChordShape;
+}
 
 /** Número de cuerda (6 = la más grave en guitarra, 4 en bajo) del instrumento de esta build. */
 export const stringNumber = (id: string) => INSTRUMENT.strings.find((s) => s.id === id)?.number ?? 0;
@@ -19,7 +31,7 @@ const Bullet = ({ children, color = colors.ink }: { children: React.ReactNode; c
 );
 
 /** Antes de empezar: qué hay que hacer y un ejemplo para escuchar. */
-export function HowToCard({ tips, example, width }: { tips: Tip[]; example?: ListenExample; width: number }) {
+export function HowToCard({ tips, example, width, hands }: { tips: Tip[]; example?: ListenExample; width: number; hands?: Hands }) {
   const { t } = useTranslation();
   return (
     <View style={{ backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1, borderRadius: radius.xl, padding: 16, gap: 10 }} testID="howto">
@@ -29,6 +41,17 @@ export function HowToCard({ tips, example, width }: { tips: Tip[]; example?: Lis
       {tips.map((tip, i) => (
         <Bullet key={i}>{t(`ui.exercise.${tip.key}`, tip.params)}</Bullet>
       ))}
+      {hands ? (
+        <View style={{ gap: 8, paddingTop: 4 }} testID="howto-hands">
+          <Text style={{ fontFamily: fonts.display, fontSize: 16, lineHeight: 22, color: colors.ink }} accessibilityRole="header">
+            {t('ui.exercise.hand.title')}
+          </Text>
+          {hands.steps || hands.chord ? <HandMap steps={hands.steps} chord={hands.chord} width={width - 34} /> : null}
+          {hands.tips.map((tip, i) => (
+            <Bullet key={`h${i}`}>{t(`ui.exercise.${tip.key}`, tip.params)}</Bullet>
+          ))}
+        </View>
+      ) : null}
       {example ? (
         <View style={{ gap: 6 }}>
           <Text style={{ color: colors.muted, fontSize: 14 }}>{t('ui.exercise.howTo.example')}</Text>

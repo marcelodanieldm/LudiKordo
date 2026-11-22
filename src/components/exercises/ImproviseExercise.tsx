@@ -9,7 +9,8 @@ import { playSequence, stopActiveSequence, type SequenceHandle } from '../../aud
 import { exampleSchedule } from '../../music/examples';
 import { LISTEN_COUNT_IN } from '../../music/listen';
 import { howToImprovise, improvFeedback } from '../../music/feedback';
-import { FeedbackCard, HowToCard } from './Coaching';
+import { FeedbackCard, HAND_INSTRUMENT, HowToCard } from './Coaching';
+import { improvHands } from '../../music/hands';
 import { filterBacking, scoreImprov, targetTimes, type ImprovNote, type ImprovResult } from '../../music/improv';
 import { freqToMidi, noteName, type Locale } from '../../music/notes';
 import { starsFor } from '../../music/scoring';
@@ -145,7 +146,7 @@ export function ImproviseExercise({
       <Text style={{ fontFamily: fonts.display, fontSize: 24, lineHeight: 30, color: colors.ink }}>{t(exercise.promptKey)}</Text>
       <Text style={{ color: colors.muted }}>{t('ui.exercise.improvInfo', { notes: scaleNames, count: exercise.minNotes })}</Text>
       <Text style={{ color: colors.muted }}>{t('ui.exercise.improvHeadphones')}</Text>
-      {phase === 'intro' ? <HowToCard tips={howToImprovise(exercise, scaleNames)} example={exercise.backing} width={width} /> : null}
+      {phase === 'intro' ? <HowToCard tips={howToImprovise(exercise, scaleNames)} example={exercise.backing} width={width} hands={{ tips: improvHands(HAND_INSTRUMENT) }} /> : null}
 
       <View style={{ backgroundColor: colors.card, borderColor: colors.border, borderWidth: 1, borderRadius: radius.xl, padding: 16, gap: 10, alignItems: 'center' }} accessibilityLiveRegion="polite">
         {phase === 'playing' ? <Text style={{ fontSize: 18, fontWeight: '800', color: colors.teal, textAlign: 'center' }}>{t('ui.exercise.improvPlaying')}</Text> : null}
