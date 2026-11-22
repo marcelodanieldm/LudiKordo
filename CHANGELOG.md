@@ -6,6 +6,7 @@ Formato: [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versiones:
 
 ### Nuevo
 - La app de guitarra criolla se llama «LudiKordo Guitar».
+- La app de guitarra eléctrica se llama «LudiKordo Electric Guitar» (antes, provisional «Kordi Guitar»).
 - Guitarra criolla: módulos 5.4–5.6 (armónicos, pizzicato, tambora, rasgueo continuo, vibrato, modos dórico, mixolidio y frigio, proyecto final) y checkpoint 5; curso completo de 151 lecciones y cancionero de 18 canciones.
 - Guitarra criolla: módulos 5.1–5.3 (mapa del mástil, tríadas e inversiones, chord-melody), acordes C/E, G/B y D/F# y tres canciones de nivel 5.
 - Guitarra criolla: Práctica con banda, un ejercicio por cada lección (se abre al terminarla y se enlaza desde su final) y repasos de los niveles 1 a 4; filtro por nivel en la lista de ejercicios.
