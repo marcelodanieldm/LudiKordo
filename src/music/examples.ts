@@ -19,7 +19,8 @@ export interface ExampleSchedule {
 export function exampleSchedule(ex: ListenExample): ExampleSchedule {
   const offset = ex.click ? LISTEN_COUNT_IN : 0;
   const melodyBeats = ex.events.reduce((a, e) => a + e.beats, 0);
-  const bodyBeats = Math.max(ex.strum ? ex.strum.chords.length * 4 : 0, melodyBeats);
+  // Un compás de rasgueo dura lo que su patrón: 4 pulsos (8 corcheas) o 3 (6 corcheas, 3/4 y 6/8).
+  const bodyBeats = Math.max(ex.strum ? ex.strum.chords.length * (ex.strum.pattern.length / 2) : 0, melodyBeats);
   const melody = applyFx(listenSchedule(ex.events, ex.bpm, offset), ex.fx);
   const chords = ex.strum
     ? strumSchedule(ex.strum.chords, ex.strum.pattern, ex.bpm, offset).map((n) => ({

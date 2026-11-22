@@ -21,12 +21,12 @@ function asTab(events: ScoreEvent[]): TabNote[] | null {
 }
 
 /** Notación de un ejemplo o ejercicio: pentagrama o tablatura. */
-export function Score({ events, notation, width, current, noteNames }: { events: ScoreEvent[]; notation: 'tab' | 'staff'; width: number; current?: number; noteNames?: boolean }) {
+export function Score({ events, notation, width, current, noteNames, beatsPerBar }: { events: ScoreEvent[]; notation: 'tab' | 'staff'; width: number; current?: number; noteNames?: boolean; beatsPerBar?: number }) {
   const tab = notation === 'tab' ? asTab(events) : null;
-  if (tab) return <TabStaff notes={tab} width={width} current={current} />;
+  if (tab) return <TabStaff notes={tab} width={width} current={current} beatsPerBar={beatsPerBar} />;
   // La guitarra no tiene pentagrama todavía (el de la app es en clave de fa, del bajo):
   // corcheas y silencios también van en tablatura.
-  if (notation === 'tab' && IS_GUITAR) return <TabStaff notes={events} width={width} current={current} />;
+  if (notation === 'tab' && IS_GUITAR) return <TabStaff notes={events} width={width} current={current} beatsPerBar={beatsPerBar} />;
   return <Staff events={events} width={width} current={current} noteNames={noteNames} />;
 }
 
@@ -69,7 +69,7 @@ export function Listen({ example, width, testID = 'listen' }: { example: ListenE
 
   return (
     <View style={{ gap: 10 }}>
-      {example.show && example.events.length > 0 ? <Score events={example.events} notation={example.show} width={width} noteNames={example.noteNames} /> : null}
+      {example.show && example.events.length > 0 ? <Score events={example.events} notation={example.show} width={width} noteNames={example.noteNames} beatsPerBar={example.beatsPerBar} /> : null}
       <Button
         variant="secondary"
         label={playing ? t('ui.listen.stop') : t('ui.listen.play')}
