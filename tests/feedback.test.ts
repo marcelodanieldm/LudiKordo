@@ -17,6 +17,10 @@ import { scoreStrum, strokeTimes, QUARTERS, ZAMBA } from '../src/music/strum';
 import { scoreImprov } from '../src/music/improv';
 import { midiToFreq } from '../src/music/notes';
 import type { NoteVerdict } from '../src/music/live';
+import { readFileSync } from 'node:fs';
+import es from '../src/i18n/locales/es.json';
+import en from '../src/i18n/locales/en.json';
+import pt from '../src/i18n/locales/pt.json';
 
 const guitarNumber = (id: string) => ({ E: 6, A: 5, D: 4, G: 3, B: 2, e: 1 })[id] ?? 0;
 const keys = (tips: { key: string }[]) => tips.map((t) => t.key);
@@ -118,16 +122,15 @@ test('devolución de la improvisación: pocas notas, fuera de escala, metas y va
   assert.deepEqual(keys(improvFeedback({ notes: 20, inScale: 1, distinct: 5, targetHits: 4, targetTotal: 4 }, 12, 3)), ['tip.improvGreat']);
 });
 
-test('cada clave de la explicación y la devolución existe en los 3 idiomas', async () => {
-  const { readFileSync } = await import('node:fs');
-  const src = readFileSync(new URL('../src/music/feedback.ts', import.meta.url), 'utf8');
+test('cada clave de la explicación y la devolución existe en los 3 idiomas', () => {
+  // Las pruebas corren desde la raíz del repo.
+  const src = readFileSync('src/music/feedback.ts', 'utf8');
   const used = [...new Set([...src.matchAll(/'((?:howTo|tip)\.[A-Za-z0-9]+)'/g)].map((m) => m[1]))];
   assert.ok(used.length > 30);
   const extra = ['howTo.title', 'howTo.example', 'feedback.title', 'feedback.problem', 'feedback.problemWrong', 'and'];
-  for (const lang of ['es', 'en', 'pt']) {
-    const tree = JSON.parse(readFileSync(new URL(`../src/i18n/locales/${lang}.json`, import.meta.url), 'utf8'));
+  for (const [lang, tree] of Object.entries({ es, en, pt })) {
     for (const k of [...used, ...extra]) {
-      const v = k.split('.').reduce((o: Record<string, unknown> | undefined, p) => o?.[p] as Record<string, unknown> | undefined, tree.ui.exercise);
+      const v = k.split('.').reduce<unknown>((o, p) => (o as Record<string, unknown> | undefined)?.[p], tree.ui.exercise);
       assert.equal(typeof v, 'string', `${lang}: ui.exercise.${k}`);
     }
   }
