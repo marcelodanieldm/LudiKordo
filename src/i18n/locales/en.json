@@ -343,7 +343,7 @@
       "restore": "Restore purchases"
     },
     "paywall": {
-      "title": "Unlock all of LudiKordo",
+      "title": "Unlock all of {{app}}",
       "b1": "151 lessons from zero to intermediate",
       "b2": "Mic exercises and backing tracks",
       "b3": "Checkpoints and certificates",
