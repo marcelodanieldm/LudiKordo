@@ -12,7 +12,7 @@
  * Devuelve pasos para el dibujo y consejos (`ui.exercise.hand.*`) para la tarjeta.
  */
 import type { Tip } from './feedback';
-import type { Stroke } from './strum';
+import { BOSSA_FINGERS, RASGUEO, type Stroke } from './strum';
 import { CHORDS, SEVENTHS, type ChordShape } from './chords';
 
 export type HandInstrument = 'bass' | 'guitar' | 'nylon';
@@ -74,16 +74,28 @@ export function fingering(notes: HandNote[]): Omit<HandStep, 'pluck'>[] {
   });
 }
 
-/** Cuerda de la criolla → dedo de la mano derecha (posición fija: p en los bordones, i-m-a en las agudas). */
+/** Cuerda de la criolla → dedo de la mano que toca en los arpegios (posición fija: p en los bordones, i-m-a en las agudas). */
 const PIMA: Record<string, Pluck> = { E: 'p', A: 'p', D: 'p', G: 'i', B: 'm', e: 'a' };
+const BASS_STRINGS = new Set(['E', 'A', 'D']);
+
+/**
+ * ¿Es un arpegio (cada nota en otra cuerda, con bordón y al menos dos agudas)?
+ * En la criolla, los arpegios van con p-i-m-a por cuerda; las melodías, con i-m alternados.
+ */
+export function isArpeggio(notes: HandNote[]): boolean {
+  const treble = new Set(notes.filter((n) => !BASS_STRINGS.has(n.string)).map((n) => n.string));
+  const hasBass = notes.some((n) => BASS_STRINGS.has(n.string));
+  const changes = notes.every((n, k) => k === 0 || n.string !== notes[k - 1].string);
+  return hasBass && treble.size >= 2 && changes;
+}
 
 /**
  * Cómo toca cada nota la otra mano. `onBeat[k]` dice si la nota k cae en el
  * tiempo (para la púa alternada: abajo en el tiempo, arriba en la «y»).
  */
 export function plucking(notes: HandNote[], instrument: HandInstrument, onBeat?: boolean[]): Pluck[] {
-  if (instrument === 'nylon') return notes.map((n) => PIMA[n.string] ?? 'i');
-  if (instrument === 'bass') return notes.map((_, k) => (k % 2 === 0 ? 'i' : 'm'));
+  if (instrument === 'nylon' && isArpeggio(notes)) return notes.map((n) => PIMA[n.string] ?? 'i');
+  if (instrument === 'bass' || instrument === 'nylon') return notes.map((_, k) => (k % 2 === 0 ? 'i' : 'm'));
   return notes.map((_, k) => (onBeat && onBeat[k] === false ? 'up' : 'down'));
 }
 
@@ -102,8 +114,12 @@ interface EventLike {
 
 const FINGER_SEQ_MAX = 12;
 
-/** Plan de manos para tocar unas notas (con su partitura, si tiene tempo). */
-export function handPlan(notes: HandNote[], instrument: HandInstrument, score?: EventLike[]): HandPlan {
+/**
+ * Plan de manos para tocar unas notas (con su partitura, si tiene tempo).
+ * `fixed` es la digitación que pide la lección, si no es «un dedo por traste»
+ * (src/content/fingerings.ts): un dedo para todas, uno por nota, o `false` (sin números).
+ */
+export function handPlan(notes: HandNote[], instrument: HandInstrument, score?: EventLike[], fixed?: number | number[] | false): HandPlan {
   // ¿Cae cada nota en el tiempo? Solo importa si hay corcheas.
   let onBeat: boolean[] | undefined;
   const hasEighths = Boolean(score?.some((e) => e.beats < 1));
@@ -115,7 +131,7 @@ export function handPlan(notes: HandNote[], instrument: HandInstrument, score?: 
       beat += e.beats;
     }
   }
-  const fingers = fingering(notes);
+  const fingers = fixed === undefined ? fingering(notes) : fixedFingering(notes, fixed);
   const plucks = plucking(notes, instrument, onBeat);
   const steps: HandStep[] = fingers.map((f, k) => ({ ...f, pluck: plucks[k] }));
   const positions = [...new Set(steps.filter((s) => s.fret > 0).map((s) => s.pos))];
@@ -123,14 +139,19 @@ export function handPlan(notes: HandNote[], instrument: HandInstrument, score?: 
   const tips: Tip[] = [];
 
   // Mano que pisa.
-  if (positions.length === 0) {
+  if (fixed === false) {
+    tips.push({ key: 'hand.chordShape' });
+    tips.push({ key: `hand.thumb.${instrument}` });
+  } else if (positions.length === 0) {
     tips.push({ key: 'hand.leftOpen' });
   } else {
     const p = positions[0];
-    tips.push({ key: 'hand.left', params: { pos: p, p2: p + 1, p3: p + 2, p4: p + 3 } });
+    // Con un dedo para todas (power chords, slides), la mano viaja: se dice el dedo, no la posición.
+    if (typeof fixed === 'number') tips.push({ key: 'hand.sameFinger', params: { finger: fixed } });
+    else tips.push({ key: 'hand.left', params: { pos: p, p2: p + 1, p3: p + 2, p4: p + 3 } });
     tips.push({ key: 'hand.fingers', params: { seq: steps.slice(0, FINGER_SEQ_MAX).map((s) => String(s.finger)).join(' · ') + (steps.length > FINGER_SEQ_MAX ? ' …' : '') } });
     tips.push({ key: `hand.thumb.${instrument}` });
-    if (shifts > 0) {
+    if (shifts > 0 && typeof fixed !== 'number') {
       const first = steps.find((s) => s.shift)!;
       tips.push({ key: shifts === 1 ? 'hand.shiftOne' : 'hand.shift', params: { count: shifts, fret: first.fret, pos: first.pos } });
     }
@@ -139,8 +160,9 @@ export function handPlan(notes: HandNote[], instrument: HandInstrument, score?: 
 
   // Mano que toca.
   const strings = new Set(notes.map((n) => n.string));
+  const seq = plucks.slice(0, FINGER_SEQ_MAX).join(' · ') + (plucks.length > FINGER_SEQ_MAX ? ' …' : '');
   if (instrument === 'nylon') {
-    tips.push({ key: 'hand.pima', params: { seq: plucks.slice(0, FINGER_SEQ_MAX).join(' · ') + (plucks.length > FINGER_SEQ_MAX ? ' …' : '') } });
+    tips.push({ key: isArpeggio(notes) ? 'hand.pima' : 'hand.imNylon', params: { seq } });
   } else if (instrument === 'bass') {
     tips.push({ key: 'hand.bassFingers' });
   } else {
@@ -148,6 +170,19 @@ export function handPlan(notes: HandNote[], instrument: HandInstrument, score?: 
   }
   if (strings.size > 1 && instrument !== 'nylon') tips.push({ key: 'hand.cross' });
   return { steps, positions, shifts, tips };
+}
+
+/** Digitación fija: cada nota con el dedo pedido; la posición sale de ese dedo. */
+function fixedFingering(notes: HandNote[], fixed: number | number[] | false): Omit<HandStep, 'pluck'>[] {
+  let prev = -1;
+  return notes.map((n, k) => {
+    const f = fixed === false ? 0 : Array.isArray(fixed) ? (fixed[k] ?? 1) : fixed;
+    const finger = (n.fret > 0 ? f : 0) as Finger;
+    const pos = n.fret > 0 && finger > 0 ? Math.max(1, n.fret - finger + 1) : prev > 0 ? prev : 1;
+    const shift = n.fret > 0 && finger > 0 && prev !== -1 && pos !== prev;
+    if (n.fret > 0 && finger > 0) prev = pos;
+    return { ...n, finger, pos, shift };
+  });
 }
 
 const STRING_ORDINAL = [6, 5, 4, 3, 2, 1];
@@ -170,15 +205,25 @@ export function chordFingers(shape: ChordShape): { finger: number; fret: number;
 /** Manos para un rasgueo: cómo armar el primer acorde, cómo cambiar y cómo se mueve el brazo. */
 export function strumHands(chords: string[], pattern: Stroke[], instrument: HandInstrument): Tip[] {
   const tips: Tip[] = [];
-  const named = [...new Set(chords)].map((c) => ({ name: c, shape: openShape(c) })).find((c) => c.shape);
+  // El acorde con el que empieza el ejercicio (si es abierto); si no, no se dibuja nada.
+  const named = chords.length ? { name: chords[0], shape: openShape(chords[0]) } : undefined;
   if (named?.shape) {
     const fingers = chordFingers(named.shape);
     if (fingers.length > 0) tips.push({ key: 'hand.chord', params: { chord: named.name, fingers: fingers.map((f) => f.finger).join(', ') } });
   }
   if (new Set(chords).size > 1) tips.push({ key: 'hand.chordChange' });
-  tips.push({ key: instrument === 'nylon' ? 'hand.strumNylon' : 'hand.strumArm' });
+  tips.push({ key: instrument === 'nylon' ? nylonStrumKey(pattern) : 'hand.strumArm' });
   if (pattern.includes('-')) tips.push({ key: 'hand.strumAir' });
   return tips;
+}
+
+const same = (a: Stroke[], b: Stroke[]) => a.length === b.length && a.every((s, i) => s === b[i]);
+
+/** Rasgueo en la criolla, como lo enseña el curso: pulgar, índice, bossa con p + i-m-a, rasgueo con a-m-i. */
+function nylonStrumKey(pattern: Stroke[]): string {
+  if (same(pattern, BOSSA_FINGERS)) return 'hand.strumBossa';
+  if (same(pattern, RASGUEO)) return 'hand.strumRasgueo';
+  return pattern.includes('U') ? 'hand.strumIndex' : 'hand.strumThumb';
 }
 
 export function bendHands(): Tip[] {

@@ -432,14 +432,20 @@
         "chord": "Form {{chord}} as in the diagram with fingers {{fingers}} before you start. Keep the fingers curved so they don't mute the next strings.",
         "chordChange": "To change chords, lift your fingers together and put them all down at once. If a finger stays in the next chord, keep it down: it's your guide.",
         "strumArm": "The forearm swings like a pendulum from the elbow, with a loose wrist. The pick barely sticks out of your fingers.",
-        "strumNylon": "Strum down with the nails of i and m and up with the pad of the thumb. Loose wrist, arm resting.",
         "strumAir": "Your hand never stops: on the \"·\" it passes without touching the strings and keeps the beat.",
         "bendWrist": "Finger 3 pushes the string while fingers 1 and 2 help from behind. The power comes from turning the wrist, like opening a lock.",
         "bendThumb": "The thumb hooks over the top of the neck and acts as a pivot.",
         "vibratoWrist": "Thumb over the neck as a pivot; the wrist turns and the string goes up and down a little. The finger doesn't slide.",
         "vibratoNylon": "The fingertip stays in place and the hand rocks along the string, toward the bridge and toward the headstock. The thumb lifts off slightly.",
         "improvBox": "Fretting hand in the box: one finger per fret, without looking at your hand. Use fingers 1 and 3 where notes are two frets apart, and 1 and 4 where they are three apart.",
-        "improvNylon": "Plucking hand: alternate i and m on the treble strings and use p on the bass strings."
+        "improvNylon": "Plucking hand: alternate i and m on the treble strings and use p on the bass strings.",
+        "chordShape": "Your fretting hand forms the chord shape the lesson shows and holds it while you arpeggiate.",
+        "sameFinger": "Every note with finger {{finger}}: your hand slides along the neck without changing its shape.",
+        "imNylon": "Plucking hand: {{seq}}. Alternate i and m on every note, even when changing strings; keep the wrist still.",
+        "strumThumb": "Strum down with the thumb, using the pad; arm resting and wrist loose.",
+        "strumIndex": "Strum with the index finger: down with the back of the nail and up with the pad; loose wrist.",
+        "strumBossa": "Bossa: the thumb plays the bass and i, m and a pinch the treble strings together, like a hand closing.",
+        "strumRasgueo": "Continuous rasgueo: a, m and i open one after another downward, from a closed hand."
       }
     },
     "practice": {

@@ -4,7 +4,8 @@ import en from '../src/i18n/locales/en.json';
 import es from '../src/i18n/locales/es.json';
 import pt from '../src/i18n/locales/pt.json';
 import { HAND_SPAN, bendHands, fingering, handPlan, improvHands, openShape, plucking, strumHands, vibratoHands, type HandInstrument } from '../src/music/hands';
-import { BALLAD, QUARTERS } from '../src/music/strum';
+import { BALLAD, BOSSA_FINGERS, EIGHTHS, QUARTERS } from '../src/music/strum';
+import { FINGERINGS } from '../src/content/fingerings';
 import { BASS_LESSONS } from '../src/content/lessons';
 import { GUITAR_LESSONS } from '../src/content/guitar/lessons';
 import { NYLON_LESSONS } from '../src/content/nylon/lessons';
@@ -34,7 +35,9 @@ test('manos: una nota fuera de los 4 trastes es un cambio de posición', () => {
 
 test('manos: cómo toca la otra mano en cada instrumento', () => {
   const notes = [n('E', 0), n('G', 2), n('B', 1), n('e', 0)];
-  assert.deepEqual(plucking(notes, 'nylon'), ['p', 'i', 'm', 'a']);
+  // Criolla: arpegio (bordón y agudas, cada nota en otra cuerda) → p-i-m-a por cuerda; melodía → i-m alternados.
+  assert.deepEqual(plucking([n('A', 0), n('G', 2), n('B', 1), n('e', 0)], 'nylon'), ['p', 'i', 'm', 'a']);
+  assert.deepEqual(plucking([n('e', 0), n('e', 1), n('e', 3), n('B', 1)], 'nylon'), ['i', 'm', 'i', 'm']);
   assert.deepEqual(plucking(notes, 'bass'), ['i', 'm', 'i', 'm']);
   // Eléctrica con corcheas: abajo en el tiempo, arriba en la «y».
   assert.deepEqual(plucking(notes, 'guitar', [true, false, true, false]), ['down', 'up', 'down', 'up']);
@@ -60,7 +63,11 @@ test('manos: el plan dice posición, dedos, pulgar, cambios y la otra mano', () 
 test('manos: rasgueo con el acorde armado, cambios y brazo', () => {
   const tips = strumHands(['Am', 'G'], BALLAD, 'guitar').map((t) => t.key);
   assert.deepEqual(tips, ['hand.chord', 'hand.chordChange', 'hand.strumArm', 'hand.strumAir']);
-  assert.equal(strumHands(['C5'], QUARTERS, 'nylon')[0].key, 'hand.strumNylon', 'sin diagrama abierto no hay «arma el acorde»');
+  assert.equal(strumHands(['C5'], QUARTERS, 'nylon')[0].key, 'hand.strumThumb', 'sin diagrama abierto no hay «arma el acorde»');
+  // Solo el acorde con el que empieza: si no es abierto, no se dibuja otro.
+  assert.ok(!strumHands(['Gm7', 'Am'], QUARTERS, 'guitar').some((t) => t.key === 'hand.chord'));
+  assert.equal(strumHands(['Am'], BOSSA_FINGERS, 'nylon').find((t) => t.key.startsWith('hand.strum'))?.key, 'hand.strumBossa');
+  assert.equal(strumHands(['Am'], EIGHTHS, 'nylon').find((t) => t.key.startsWith('hand.strum'))?.key, 'hand.strumIndex');
   assert.ok(openShape('Am7') && !openShape('C5'));
 });
 
@@ -73,11 +80,11 @@ test('manos: cada ejercicio de tocar notas de las tres apps tiene dedos válidos
       for (const e of l.exercises) {
         if (e.kind !== 'playAlong') continue;
         count++;
-        const plan = handPlan(e.notes, inst, e.score);
+        const plan = handPlan(e.notes, inst, e.score, FINGERINGS[inst][e.id]);
         assert.equal(plan.steps.length, e.notes.length, e.id);
         for (const s of plan.steps) {
           assert.ok(s.finger >= 0 && s.finger <= 4, `${e.id}: dedo ${s.finger}`);
-          if (s.fret > 0) assert.ok(s.fret >= s.pos && s.fret < s.pos + HAND_SPAN, `${e.id}: ${s.string}${s.fret} fuera de la posición ${s.pos}`);
+          if (s.fret > 0 && s.finger > 0) assert.ok(s.fret >= s.pos && s.fret < s.pos + HAND_SPAN, `${e.id}: ${s.string}${s.fret} fuera de la posición ${s.pos}`);
         }
       }
     }
@@ -97,4 +104,40 @@ test('manos: todas las claves existen en los 3 idiomas', () => {
     const get = (key: string) => key.split('.').reduce<unknown>((o, p) => (o as Record<string, unknown> | undefined)?.[p], tree);
     for (const k of keys) assert.equal(typeof get(`ui.exercise.${k}`), 'string', `${lang}: ui.exercise.${k}`);
   }
+});
+
+const playOf = (lessons: Record<string, Lesson>, id: string) => {
+  const e = lessons[id.split('-')[0]].exercises.find((x) => x.id === id);
+  assert.ok(e && e.kind === 'playAlong', id);
+  return e as Extract<typeof e, { kind: 'playAlong' }>;
+};
+
+test('manos: la digitación coincide con lo que dicen las lecciones', () => {
+  const fingersOf = (inst: HandInstrument, lessons: Record<string, Lesson>, id: string) => {
+    const e = playOf(lessons, id);
+    return handPlan(e.notes, inst, e.score, FINGERINGS[inst][e.id]).steps.map((s) => s.finger);
+  };
+  // Octavas (3.7.3): «dedo 1 en la 6.ª y dedo 3 en la 4.ª».
+  assert.deepEqual(fingersOf('guitar', GUITAR_LESSONS, '3.7.3-play'), [1, 3, 1, 3, 1, 3]);
+  // Slide (3.2.2): «con el mismo dedo».
+  assert.equal(new Set(fingersOf('guitar', GUITAR_LESSONS, '3.2.2-play')).size, 1);
+  // Power chords (2.4.2): la tónica siempre con el dedo 1.
+  assert.ok(fingersOf('guitar', GUITAR_LESSONS, '2.4.2-play').every((f) => f === 1));
+  // Arpegios de acordes en la criolla: sin números.
+  const pimi = playOf(NYLON_LESSONS, '3.3.5-pimi');
+  assert.ok(handPlan(pimi.notes, 'nylon', pimi.score, FINGERINGS.nylon[pimi.id]).tips.some((t) => t.key === 'hand.chordShape'));
+  // Todas las digitaciones fijas apuntan a ejercicios que existen y tienen tantas notas como dedos.
+  for (const [inst, lessons] of Object.entries(lessonsOf) as [HandInstrument, Record<string, Lesson>][]) {
+    for (const [id, f] of Object.entries(FINGERINGS[inst])) {
+      const e = playOf(lessons, id);
+      if (Array.isArray(f)) assert.equal(f.length, e.notes.length, id);
+    }
+  }
+});
+
+test('manos: en la criolla, las melodías de una cuerda alternan i-m (1.2.3)', () => {
+  const e = Object.values(NYLON_LESSONS['1.2.3'].exercises).find((x) => x.kind === 'playAlong');
+  if (!e || e.kind !== 'playAlong') return;
+  const plucks = handPlan(e.notes, 'nylon', e.score).steps.map((s) => s.pluck);
+  assert.ok(plucks.every((p, k) => p === (k % 2 === 0 ? 'i' : 'm')), plucks.join(''));
 });

@@ -15,7 +15,7 @@ const PLUCK_LABEL: Record<Pluck, string> = { down: '↓', up: '↑', p: 'p', i: 
 const FRETS = 5;
 /** Un paso por pulso a este tempo, lento para que se vea el movimiento. */
 const STEP_MS = 800;
-const MAX_STEPS = 16;
+const MAX_STEPS = 12;
 
 /**
  * Las dos manos sobre el diapasón: dedos numerados en la posición, cuerdas al
@@ -36,7 +36,13 @@ export function HandMap({ steps, chord, width }: { steps?: HandStep[]; chord?: C
   const strings = [...INSTRUMENT.strings].sort((a, b) => a.number - b.number);
   const rowOf = (id: string) => strings.findIndex((s) => s.id === id);
   const shown = (steps ?? []).slice(0, MAX_STEPS);
-  const pos = steps ? (shown.find((s) => s.fret > 0)?.pos ?? 1) : Math.max(1, Math.min(...(chord?.frets.filter((f) => f > 0) ?? [1])));
+  // Con un acorde, la misma regla que la digitación: si entra en los primeros 4 trastes, 1.ª posición.
+  const chordFrets = chord?.frets.filter((f) => f > 0) ?? [];
+  const pos = steps
+    ? (shown.find((s) => s.fret > 0)?.pos ?? 1)
+    : chordFrets.length && Math.max(...chordFrets) > 4
+      ? Math.min(...chordFrets)
+      : 1;
   const view = active >= 0 && shown[active] ? shown[active].pos : pos;
 
   const W = 360;
@@ -51,7 +57,7 @@ export function HandMap({ steps, chord, width }: { steps?: HandStep[]; chord?: C
   const y = (row: number) => top + row * gap;
 
   // Lo que se dibuja: las notas de la posición visible (o del paso activo) o el acorde.
-  type Dot = { row: number; fret: number; finger: number; key: string; on: boolean };
+  type Dot = { row: number; fret: number; finger: number; key: string; on: boolean; muted?: boolean };
   const dots: Dot[] = [];
   if (steps) {
     const seen = new Set<string>();
@@ -60,14 +66,16 @@ export function HandMap({ steps, chord, width }: { steps?: HandStep[]; chord?: C
       const key = `${s.string}${s.fret}`;
       const on = k === active;
       if (seen.has(key) && !on) return;
+      // La nota activa repetida reemplaza a la anterior (una sola por lugar, sin keys repetidas).
+      const prev = dots.findIndex((d) => d.key === key);
+      if (prev >= 0) dots.splice(prev, 1);
       seen.add(key);
       dots.push({ row: rowOf(s.string), fret: s.fret, finger: s.finger, key, on });
     });
   } else if (chord) {
     // `frets` va de la 6.ª a la 1.ª; en el dibujo la 1.ª va arriba.
     chord.frets.forEach((fret, i) => {
-      if (fret < 0) return;
-      dots.push({ row: strings.length - 1 - i, fret, finger: chord.fingers[i], key: `c${i}`, on: false });
+      dots.push({ row: strings.length - 1 - i, fret: Math.max(0, fret), finger: chord.fingers[i], key: `c${i}`, on: false, muted: fret < 0 });
     });
   }
   const thumbFret = view + 1;
@@ -116,15 +124,24 @@ export function HandMap({ steps, chord, width }: { steps?: HandStep[]; chord?: C
           ))}
           {/* Dedos. */}
           {dots.map((d) =>
-            d.fret === 0 ? (
+            d.muted ? (
+              // Cuerda que no se toca: ×.
+              <G key={d.key}>
+                <Line x1={x(nutX - 32)} y1={y(d.row) - 6} x2={x(nutX - 20)} y2={y(d.row) + 6} stroke={colors.accentInk} strokeWidth={2.5} />
+                <Line x1={x(nutX - 32)} y1={y(d.row) + 6} x2={x(nutX - 20)} y2={y(d.row) - 6} stroke={colors.accentInk} strokeWidth={2.5} />
+              </G>
+            ) : d.fret === 0 ? (
               <Circle key={d.key} cx={x(nutX - 26)} cy={y(d.row)} r={7} fill="none" stroke={d.on ? colors.gold : colors.ink} strokeWidth={d.on ? 3 : 2} />
             ) : d.fret >= view && d.fret < view + FRETS ? (
               <G key={d.key}>
                 {d.on ? <Circle cx={x(fretX(d.fret))} cy={y(d.row)} r={14} fill="none" stroke={colors.ink} strokeWidth={3} /> : null}
-                <Circle cx={x(fretX(d.fret))} cy={y(d.row)} r={10} fill={FINGER_COLOR[d.finger] ?? colors.muted} />
-                <SvgText x={x(fretX(d.fret))} y={y(d.row) + 4} fontSize={12} fill={colors.bg} textAnchor="middle" fontFamily={fonts.black}>
-                  {d.finger}
-                </SvgText>
+                {/* Sin dedo indicado (la digitación sale del acorde): punto gris sin número. */}
+                <Circle cx={x(fretX(d.fret))} cy={y(d.row)} r={10} fill={d.finger > 0 ? FINGER_COLOR[d.finger] : colors.muted} />
+                {d.finger > 0 ? (
+                  <SvgText x={x(fretX(d.fret))} y={y(d.row) + 4} fontSize={12} fill={colors.bg} textAnchor="middle" fontFamily={fonts.black}>
+                    {d.finger}
+                  </SvgText>
+                ) : null}
               </G>
             ) : null,
           )}
@@ -135,10 +152,11 @@ export function HandMap({ steps, chord, width }: { steps?: HandStep[]; chord?: C
           </SvgText>
           {/* La otra mano, nota por nota. */}
           {steps
-            ? shown.slice(0, 12).map((s, k) => (
+            ? shown.map((s, k) => (
+                // La fila es una secuencia en el tiempo: se lee de izquierda a derecha también para zurdos.
                 <G key={`p${k}`}>
-                  <Rect x={x(nutX - 30 + k * 26) - 11} y={top + neckH + 44} width={22} height={24} rx={6} fill={k === active ? colors.accent : colors.track} />
-                  <SvgText x={x(nutX - 30 + k * 26)} y={top + neckH + 61} fontSize={13} fill={k === active ? colors.onAccent : colors.ink} textAnchor="middle" fontFamily={fonts.black}>
+                  <Rect x={nutX - 30 + k * 26 - 11} y={top + neckH + 44} width={22} height={24} rx={6} fill={k === active ? colors.accent : colors.track} />
+                  <SvgText x={nutX - 30 + k * 26} y={top + neckH + 61} fontSize={13} fill={k === active ? colors.onAccent : colors.ink} textAnchor="middle" fontFamily={fonts.black}>
                     {PLUCK_LABEL[s.pluck]}
                   </SvgText>
                 </G>

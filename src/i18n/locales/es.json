@@ -432,14 +432,20 @@
         "chord": "Arma {{chord}} como en el dibujo con los dedos {{fingers}}, antes de empezar. Los dedos curvos para no apagar las cuerdas de al lado.",
         "chordChange": "Para cambiar de acorde, levanta los dedos juntos y bájalos todos a la vez. Si un dedo se repite en el acorde siguiente, déjalo apoyado: es tu guía.",
         "strumArm": "El antebrazo se mueve como un péndulo desde el codo, con la muñeca suelta. La púa apenas asoma de los dedos.",
-        "strumNylon": "Rasguea con las uñas de i y m al bajar y con la yema del pulgar al subir. La muñeca suelta, el brazo apoyado.",
         "strumAir": "La mano no se detiene nunca: en los «·» pasa sin tocar las cuerdas y sigue el pulso.",
         "bendWrist": "El dedo 3 empuja la cuerda y los dedos 1 y 2 lo ayudan desde atrás. La fuerza sale de girar la muñeca, como al abrir una cerradura.",
         "bendThumb": "El pulgar se engancha arriba del mástil y hace de pivote.",
         "vibratoWrist": "El pulgar arriba del mástil como pivote; la muñeca gira y la cuerda sube y baja un poco. El dedo no se desliza.",
         "vibratoNylon": "La yema queda en su lugar y la mano se mece a lo largo de la cuerda, hacia el puente y hacia la cabeza. El pulgar se despega un poco.",
         "improvBox": "Mano que pisa en la caja: un dedo por traste, sin mirar la mano. Usa los dedos 1 y 3 donde las notas están a dos trastes y 1 y 4 donde están a tres.",
-        "improvNylon": "Mano que toca: alterna i y m en las cuerdas agudas y usa p en los bordones."
+        "improvNylon": "Mano que toca: alterna i y m en las cuerdas agudas y usa p en los bordones.",
+        "chordShape": "La mano que pisa arma la forma del acorde que muestra la lección y la mantiene mientras arpegias.",
+        "sameFinger": "Todas las notas con el dedo {{finger}}: la mano se desliza por el mástil sin cambiar la forma.",
+        "imNylon": "Mano que toca: {{seq}}. Alterna i y m en cada nota, también al cambiar de cuerda; la muñeca quieta.",
+        "strumThumb": "Rasguea hacia abajo con el pulgar, con la yema; el brazo apoyado y la muñeca suelta.",
+        "strumIndex": "Rasguea con el índice: hacia abajo con el dorso de la uña y hacia arriba con la yema; la muñeca suelta.",
+        "strumBossa": "Bossa: el pulgar marca el bajo y i, m y a pellizcan las agudas juntos, como una mano que se cierra.",
+        "strumRasgueo": "Rasgueo continuo: a, m e i se abren uno tras otro hacia abajo, desde la mano cerrada."
       }
     },
     "practice": {

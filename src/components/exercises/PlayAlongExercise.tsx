@@ -17,6 +17,7 @@ import { judgeLive } from '../../music/live';
 import { howToPlayAlong, timedFeedback, untimedFeedback, type Counts, type NoteProblem, type Tip, type UntimedNoteStat } from '../../music/feedback';
 import { FeedbackCard, HAND_INSTRUMENT, HowToCard, stringNumber } from './Coaching';
 import { handPlan } from '../../music/hands';
+import { FINGERINGS } from '../../content/fingerings';
 import { useSettings } from '../../state/settings';
 import { useProgress } from '../../state/progress';
 import type { PlayAlongExercise as PlayEx } from '../../content/types';
@@ -100,7 +101,7 @@ export function PlayAlongExercise({
   // El ejemplo de la explicación: el mismo ejercicio, sintetizado (con clic si tiene tempo).
   const example: ListenExample = { events, bpm: exercise.bpm ?? 60, click: exercise.bpm !== null, beatsPerBar: exercise.beatsPerBar };
   // Qué dedo pisa cada nota y cómo toca la otra mano (tarjeta «Cómo se hace»).
-  const hands = useMemo(() => handPlan(exercise.notes, HAND_INSTRUMENT, exercise.score), [exercise]);
+  const hands = useMemo(() => handPlan(exercise.notes, HAND_INSTRUMENT, exercise.score, FINGERINGS[HAND_INSTRUMENT][exercise.id]), [exercise]);
   /** Pone nombre, cuerda y traste a la nota de la que habla un consejo. */
   const withNote = (tips: Tip[]): Tip[] =>
     tips.map((tip) => {
