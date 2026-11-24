@@ -3,6 +3,8 @@
  * se calculan con el perfil de criolla (no con el instrumento activo) para que
  * las pruebas de Node, que corren como bajo, las validen igual.
  */
+import { postureFromDiagram } from '../../music/handPosition';
+import type { HandsSpec } from '../types';
 import type { Beats, Figure, ListenExample, ScoreEvent, TabNote } from '../types';
 import { CHORD_FIGURES } from '../../components/guitarFigureMeta';
 import type { StringId } from '../../instruments/profiles';
@@ -115,6 +117,10 @@ export function albumDiagram(name: AlbumChord): GridDiagram {
   const id = albumDiagramId(name);
   return id in CHORDS || id in SEVENTHS ? chordDiagram(id as OpenChordId) : diagramOf(id);
 }
+
+/** Tarjeta «Tus manos en la guitarra» de un acorde del álbum: dedos de colores, pulgar, pasos y sonido. */
+export const handsOf = (name: AlbumChord): HandsSpec => ({ kind: 'chord', posture: postureFromDiagram(albumDiagram(name)) });
+export { spiderHands } from '../hands';
 
 /** Figura (diagrama) de un acorde del álbum. */
 export function chordFigure(name: AlbumChord): Figure {

@@ -6,6 +6,7 @@ import type { StringId } from '../music/notes';
 import type { Tone } from '../music/timbre';
 import type { Stroke } from '../music/strum';
 import type { Fx } from '../music/fx';
+import type { HandPosture } from '../music/handPosition';
 import type { DrumStyle } from '../music/drums';
 
 export type Skill = 'technique' | 'rhythm' | 'fretboard' | 'theory' | 'ear';
@@ -380,7 +381,12 @@ export interface Card {
   listen?: ListenExample;
   /** El dibujo se anima paso a paso, con el sonido de cada movimiento. */
   motion?: FigureMotion;
+  /** «Tus manos en la guitarra»: dedos de colores, pulgar, pasos y sonido (reemplaza a la figura). */
+  hands?: HandsSpec;
 }
+
+/** Tarjeta de manos: un acorde o la araña en el diapasón, o la guía de postura de una mano. */
+export type HandsSpec = { kind: 'chord' | 'spider'; posture: HandPosture } | { kind: 'guide'; hand: 'left' | 'right' };
 
 /** Dedo que se mueve en un paso: i/m de la mano que pulsa, 1–4 de la que pisa. */
 export type HandFinger = 'i' | 'm' | 1 | 2 | 3 | 4;

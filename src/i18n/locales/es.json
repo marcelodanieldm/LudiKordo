@@ -1,5 +1,64 @@
 {
   "ui": {
+    "hands": {
+      "pov": "Como la ves tú",
+      "front": "De frente (espejo)",
+      "povHint": "Como la ves al bajar la mirada: la 6.ª cuerda, la más gruesa, arriba.",
+      "frontHint": "Como te ve alguien que está enfrente: la cejuela queda del otro lado.",
+      "listen": "Escuchar cómo suena",
+      "stop": "Detener",
+      "steps": "Paso a paso",
+      "thumb": "T · pulgar, detrás del mástil",
+      "open": "al aire",
+      "muted": "no suena",
+      "finger": {
+        "1": "índice",
+        "2": "medio",
+        "3": "anular",
+        "4": "meñique"
+      },
+      "step": {
+        "finger": "Dedo {{finger}} ({{name}}) en el traste {{fret}} de la {{string}}.ª cuerda.",
+        "barre": "Cejilla: el dedo 1 acostado en el traste {{fret}}, de la {{from}}.ª a la {{to}}.ª cuerda.",
+        "open": "Suenan al aire las cuerdas {{strings}}.",
+        "mute": "No suenan las cuerdas {{strings}}: no las toques."
+      },
+      "guide": {
+        "good": "Bien",
+        "bad": "Evita",
+        "goodBody": "El dedo forma una garra y pisa con la punta. El pulgar (T) se apoya detrás del mástil, a la altura del dedo 2, sin asomarse por arriba.",
+        "badBody": "El dedo acostado roza la cuerda de al lado y la apaga. Si el pulgar asoma por arriba, los dedos no llegan.",
+        "goodA11y": "Mástil de costado: dedo arqueado que pisa con la punta y pulgar detrás, a media altura.",
+        "badA11y": "Mástil de costado: dedo plano que roza otra cuerda y pulgar que asoma por arriba.",
+        "zone": "Zona de toque",
+        "rightBody": {
+          "fingers": "Apoya el antebrazo en el borde de la caja y deja la mano suelta sobre la zona marcada, entre la boca y el puente. Cada dedo tiene sus cuerdas:",
+          "pick": "Apoya el antebrazo en el borde del cuerpo y rasguea o púa sobre la zona marcada, entre las dos pastillas. Así se toma la púa:",
+          "bass": "Apoya el pulgar en la pastilla y toca con el índice y el medio, alternando, cerca de ella. Cada dedo tiene su tarea:"
+        },
+        "rightA11y": {
+          "fingers": "Caja de la guitarra: zona de toque entre la boca y el puente; pulgar en las cuerdas 6 a 4; índice, medio y anular en las cuerdas 3, 2 y 1.",
+          "pick": "Cuerpo de la guitarra eléctrica: zona de toque entre las dos pastillas; la púa asoma entre el pulgar y el índice.",
+          "bass": "Cuerpo del bajo: el pulgar descansa en la pastilla; el índice y el medio tocan alternados cerca de ella."
+        },
+        "role": {
+          "p": "Pulgar: cuerdas 6, 5 y 4 (los bajos).",
+          "i": "Índice: 3.ª cuerda.",
+          "m": "Medio: 2.ª cuerda.",
+          "a": "Anular: 1.ª cuerda."
+        },
+        "pick": {
+          "1": "Dobla el índice y apoya la púa en el costado de la última falange.",
+          "2": "Pon el pulgar plano encima: la púa queda entre los dos.",
+          "3": "Deja asomar solo la punta, unos 2 o 3 mm, y no aprietes de más."
+        },
+        "bass": {
+          "i": "Índice: toca una nota y descansa en la cuerda de al lado.",
+          "m": "Medio: toca la siguiente. Alterna siempre i y m.",
+          "thumb": "Pulgar: apoyado en la pastilla, da estabilidad a la mano."
+        }
+      }
+    },
     "drills": {
       "eyebrow": "Práctica",
       "title": "Práctica de habilidades",

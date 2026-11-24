@@ -3,6 +3,7 @@
  * 1.4 (silencio entre notas) y 1.5 (leer guitarra), y el checkpoint 1.
  * Riffs y ejercicios originales. Textos en `content.g.l13x…l15x` y `content.g.cp1`.
  */
+import { LEFT_GUIDE, spiderHands } from '../hands';
 import type { Checkpoint } from '../checkpoints';
 import type { Lesson, ScoreEvent } from '../types';
 import type { StringId } from '../../instruments/profiles';
@@ -112,8 +113,8 @@ const l131: Lesson = {
   },
   cards: [
     { titleKey: k('1.3.1', 'c1t'), bodyKey: k('1.3.1', 'c1b'), figure: 'fret-hand' },
-    { titleKey: k('1.3.1', 'c2t'), bodyKey: k('1.3.1', 'c2b'), figure: 'fretboard-1234', listen: listen(asScore(spider('E')), 70, { show: 'tab' }) },
-    { titleKey: k('1.3.1', 'c3t'), bodyKey: k('1.3.1', 'c3b') },
+    { titleKey: k('1.3.1', 'c2t'), bodyKey: k('1.3.1', 'c2b'), figure: 'fretboard-1234', hands: spiderHands(0), listen: listen(asScore(spider('E')), 70, { show: 'tab' }) },
+    { titleKey: k('1.3.1', 'c3t'), bodyKey: k('1.3.1', 'c3b'), hands: LEFT_GUIDE },
   ],
   exercises: [
     {

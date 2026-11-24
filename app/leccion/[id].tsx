@@ -15,6 +15,7 @@ import { Figure } from '../../src/components/Figure';
 import { ExerciseView } from '../../src/components/exercises/ExerciseView';
 import { Button, Card, CloseButton, Eyebrow, Muted, Stars } from '../../src/components/ui';
 import { Listen } from '../../src/components/Listen';
+import { HandsCard } from '../../src/components/HandsCard';
 import { MotionFigure } from '../../src/components/MotionFigure';
 import { Kordi } from '../../src/components/Kordi';
 import { colors, fonts, radius } from '../../src/theme';
@@ -108,7 +109,9 @@ export default function LessonScreen() {
         <>
           <Card>
             <Text style={{ fontFamily: fonts.display, fontSize: 24, lineHeight: 29 }}>{t(lesson.cards[card].titleKey)}</Text>
-            {lesson.cards[card].figure && lesson.cards[card].motion ? (
+            {lesson.cards[card].hands ? (
+              <HandsCard spec={lesson.cards[card].hands!} width={contentWidth - 34} />
+            ) : lesson.cards[card].figure && lesson.cards[card].motion ? (
               <MotionFigure id={lesson.cards[card].figure!} motion={lesson.cards[card].motion!} width={contentWidth - 34} testID={`motion-${lesson.id}-${card}`} />
             ) : lesson.cards[card].figure ? (
               <Figure id={lesson.cards[card].figure!} width={contentWidth - 34} />

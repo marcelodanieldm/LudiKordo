@@ -11,12 +11,13 @@
  * con el pulgar o con el índice, sin púa. Textos en `content.n.l21x…l27x` y
  * `content.n.cp2`.
  */
+import type { HandsSpec } from '../types';
 import type { Checkpoint } from '../checkpoints';
 import type { Card, Exercise, Figure, Lesson, ListenExample, ScoreEvent } from '../types';
 import type { StringId } from '../../instruments/profiles';
 import type { OpenChordId } from '../../music/chords';
 import { BALLAD, EIGHTHS, HALVES, QUARTERS, WHOLES, type Stroke } from '../../music/strum';
-import { type AlbumChord, chordFigure, altBassBar, arpScore, balladBar, chordArp, chordFretted, hz, k, listen, n, notesOf, pamiBar, pimaBar, pimiBar, scenes, scoreNotes, steadyBassBar, strumListen } from './helpers';
+import { type AlbumChord, chordFigure, handsOf, altBassBar, arpScore, balladBar, chordArp, chordFretted, hz, k, listen, n, notesOf, pamiBar, pimaBar, pimiBar, scenes, scoreNotes, steadyBassBar, strumListen } from './helpers';
 
 export const STEPS = [60, 70, 80];
 
@@ -25,6 +26,7 @@ export const STEPS = [60, 70, 80];
 interface CardSpec {
   figure?: Figure;
   listen?: ListenExample;
+  hands?: HandsSpec;
 }
 
 export function lesson(
@@ -129,7 +131,7 @@ export function chordLesson(id: string, chord: AlbumChord, figure?: Figure): Les
   return lesson(id, 12, {
     visuals: [null, fig, fig, null],
     sounds: [strumListen([chord], QUARTERS, 70), listen(arpScore(chord), 80), null, listen(pimi([chord, chord]), 70)],
-    cards: [{ figure: fig, listen: listen(arpScore(chord), 70) }, { listen: listen(pimi([chord, chord]), 70) }],
+    cards: [{ figure: fig, hands: handsOf(chord), listen: listen(arpScore(chord), 70) }, { listen: listen(pimi([chord, chord]), 70) }],
     exercises: [tap(id, 'tap', chordFretted(chord)), play(id, 'arp', chordArp(chord), null), strum(id, 'strum', [chord, chord], QUARTERS)],
   });
 }

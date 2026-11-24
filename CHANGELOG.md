@@ -7,6 +7,8 @@ Formato: [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versiones:
 ## [0.4.0] — 2026-11-24
 
 ### Nuevo
+- LudiKordo Guitar: tarjeta «Tus manos en la guitarra» en el paso «Entiende». Muestra el acorde (o la araña) con un color por dedo, vista como la ve el alumno o de frente, el pulgar detrás del mástil, O y X, los pasos para colocar los dedos uno por uno con su nota, y «Escuchar cómo suena» con la cuerda que suena iluminada. Guías de postura: el mástil de costado (bien y evita) y la zona de la mano derecha con p-i-m-a. En todas las lecciones de acorde, en 1.2.2, 1.2.3 y 1.4.2.
+- La misma tarjeta llega a LudiKordo (bajo) y LudiKordo Electric Guitar: araña y guías de postura en 1.2.1, 1.3.1 y 1.3.2 del bajo y en 1.2.2 y 1.3.1 de la eléctrica, más todos los acordes de mano de la eléctrica. La guía de mano derecha muestra la púa entre las pastillas en la eléctrica y el pulgar apoyado en la pastilla con índice y medio alternados en el bajo.
 - Cambios en un minuto (bajo y guitarras): un minuto cambiando entre dos acordes (o dos notas en el bajo), contados por el micrófono o tocando la pantalla, con récord, historial y consejos para la mano (dedo ancla, dedo que se desliza, dedos que se mueven en bloque).
 - Notas en el mástil: entrenador del diapasón de un minuto por ronda, en tres etapas (trastes 0 a 5, hasta el 12, con ♯ y ♭); se contesta en la pantalla o tocando el instrumento, y las notas falladas o lentas vuelven más seguido.
 - Ritmo: cuatro compases en una grilla de corcheas, con cuenta previa y clic, en tres niveles y cinco tempos; cada nota queda marcada a tiempo, adelantada, atrasada o perdida, con consejos para la mano y el tempo sugerido.

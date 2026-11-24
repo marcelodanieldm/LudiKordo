@@ -1,5 +1,64 @@
 {
   "ui": {
+    "hands": {
+      "pov": "As you see it",
+      "front": "From the front (mirror)",
+      "povHint": "As you see it looking down: the 6th string, the thickest, on top.",
+      "frontHint": "As someone facing you sees it: the nut is on the other side.",
+      "listen": "Hear how it sounds",
+      "stop": "Stop",
+      "steps": "Step by step",
+      "thumb": "T · thumb, behind the neck",
+      "open": "open",
+      "muted": "not played",
+      "finger": {
+        "1": "index",
+        "2": "middle",
+        "3": "ring",
+        "4": "pinky"
+      },
+      "step": {
+        "finger": "Finger {{finger}} ({{name}}) on fret {{fret}} of string {{string}}.",
+        "barre": "Barre: finger 1 laid flat on fret {{fret}}, from string {{from}} to string {{to}}.",
+        "open": "Strings {{strings}} ring open.",
+        "mute": "Strings {{strings}} are not played: do not hit them."
+      },
+      "guide": {
+        "good": "Good",
+        "bad": "Avoid",
+        "goodBody": "The finger makes a claw and presses with the tip. The thumb (T) rests behind the neck, behind finger 2, without peeking over the top.",
+        "badBody": "A flat finger brushes the next string and mutes it. If the thumb peeks over the top, the fingers cannot reach.",
+        "goodA11y": "Neck from the side: arched finger pressing with the tip and thumb behind, halfway up.",
+        "badA11y": "Neck from the side: flat finger touching another string and thumb peeking over the top.",
+        "zone": "Playing zone",
+        "rightBody": {
+          "fingers": "Rest your forearm on the edge of the body and let your hand hang loose over the marked zone, between the sound hole and the bridge. Each finger has its strings:",
+          "pick": "Rest your forearm on the edge of the body and strum or pick over the marked zone, between the two pickups. This is how to hold the pick:",
+          "bass": "Rest your thumb on the pickup and play with your index and middle fingers, alternating, close to it. Each finger has its job:"
+        },
+        "rightA11y": {
+          "fingers": "Guitar body: playing zone between the sound hole and the bridge; thumb on strings 6 to 4; index, middle and ring on strings 3, 2 and 1.",
+          "pick": "Electric guitar body: playing zone between the two pickups; the pick shows between thumb and index finger.",
+          "bass": "Bass body: the thumb rests on the pickup; index and middle fingers alternate close to it."
+        },
+        "role": {
+          "p": "Thumb: strings 6, 5 and 4 (the basses).",
+          "i": "Index: string 3.",
+          "m": "Middle: string 2.",
+          "a": "Ring: string 1."
+        },
+        "pick": {
+          "1": "Curl your index finger and lay the pick on the side of its last joint.",
+          "2": "Put your thumb flat on top: the pick sits between the two.",
+          "3": "Let only the tip show, about 2 to 3 mm, and don't squeeze too hard."
+        },
+        "bass": {
+          "i": "Index: plays one note and comes to rest on the next string.",
+          "m": "Middle: plays the next one. Always alternate i and m.",
+          "thumb": "Thumb: resting on the pickup, it keeps your hand steady."
+        }
+      }
+    },
     "drills": {
       "eyebrow": "Practice",
       "title": "Skills practice",

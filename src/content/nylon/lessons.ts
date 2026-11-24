@@ -14,7 +14,8 @@ import { NYLON_LEVEL2_LESSONS } from './level2';
 import { NYLON_LEVEL3_LESSONS } from './level3';
 import { NYLON_LEVEL4_LESSONS } from './level4';
 import { NYLON_LEVEL5_LESSONS } from './level5';
-import { BASS_STRINGS, LOW_TO_HIGH, TREBLE_STRINGS, hear, hz, k, listen, n, notesOf, open, scenes, times } from './helpers';
+import { LEFT_GUIDE, RIGHT_GUIDE } from '../hands';
+import { BASS_STRINGS, LOW_TO_HIGH, TREBLE_STRINGS, spiderHands, hear, hz, k, listen, n, notesOf, open, scenes, times } from './helpers';
 
 /** Las 6 cuerdas al aire en dos compases: 4 negras y 2 blancas (Si y Mi aguda). */
 const openStringsExample = (bpm = 70): ListenExample => listen(LOW_TO_HIGH.map((s, i) => open(s, i >= 4 ? 2 : 1)), bpm);
@@ -388,7 +389,7 @@ const l122: Lesson = {
   cards: [
     { titleKey: k('1.2.2', 'c1t'), bodyKey: k('1.2.2', 'c1b'), figure: 'pima-hand' },
     { titleKey: k('1.2.2', 'c2t'), bodyKey: k('1.2.2', 'c2b'), listen: listen(THUMB_BASSES, 70) },
-    { titleKey: k('1.2.2', 'c3t'), bodyKey: k('1.2.2', 'c3b') },
+    { titleKey: k('1.2.2', 'c3t'), bodyKey: k('1.2.2', 'c3b'), hands: RIGHT_GUIDE },
   ],
   exercises: [
     {
@@ -446,9 +447,9 @@ const l123: Lesson = {
     sounds: [null, null, listen(FOUR_FINGERS, 60), null],
   },
   cards: [
-    { titleKey: k('1.2.3', 'c1t'), bodyKey: k('1.2.3', 'c1b'), figure: 'fret-hand' },
+    { titleKey: k('1.2.3', 'c1t'), bodyKey: k('1.2.3', 'c1b'), figure: 'fret-hand', hands: spiderHands(5) },
     { titleKey: k('1.2.3', 'c2t'), bodyKey: k('1.2.3', 'c2b'), listen: listen(FOUR_FINGERS, 60) },
-    { titleKey: k('1.2.3', 'c3t'), bodyKey: k('1.2.3', 'c3b') },
+    { titleKey: k('1.2.3', 'c3t'), bodyKey: k('1.2.3', 'c3b'), hands: LEFT_GUIDE },
   ],
   exercises: [
     {
