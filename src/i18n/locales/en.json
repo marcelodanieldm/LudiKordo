@@ -138,6 +138,11 @@
           "improv": "Repeat an idea you liked and change one note: that is how a solo is built."
         }
       },
+      "section": "Section",
+      "sectionAll": "Whole piece",
+      "sectionBars": "Bars {{from}}–{{to}}",
+      "sectionNote": "You're looping a section: it's scored note by note, but stars and new tempos are earned with the whole piece.",
+      "sectionBar": "Bar {{n}}",
       "exampleWithBand": "The example plays over the chords, the way you'll play it with the band."
     },
     "motion": {

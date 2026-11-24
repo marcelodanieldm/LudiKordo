@@ -138,6 +138,11 @@
           "improv": "Repite una idea que te gustó y cámbiale una nota: así se construye un solo."
         }
       },
+      "section": "Tramo",
+      "sectionAll": "Toda la pieza",
+      "sectionBars": "Compases {{from}}–{{to}}",
+      "sectionNote": "Practicas un tramo en bucle: se evalúa nota por nota, pero las estrellas y los tempos nuevos se ganan con la pieza entera.",
+      "sectionBar": "Compás {{n}}",
       "exampleWithBand": "El ejemplo suena sobre los acordes, como lo vas a tocar con la banda."
     },
     "motion": {

@@ -138,6 +138,11 @@
           "improv": "Repita uma ideia de que você gostou e mude uma nota: é assim que se constrói um solo."
         }
       },
+      "section": "Trecho",
+      "sectionAll": "A peça inteira",
+      "sectionBars": "Compassos {{from}}–{{to}}",
+      "sectionNote": "Você está repetindo um trecho: ele é avaliado nota por nota, mas as estrelas e os andamentos novos se ganham com a peça inteira.",
+      "sectionBar": "Compasso {{n}}",
       "exampleWithBand": "O exemplo toca sobre os acordes, do jeito que você vai tocar com a banda."
     },
     "motion": {
