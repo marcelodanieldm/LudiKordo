@@ -14,7 +14,10 @@ import { playClip } from '../audio/voice';
 import { STRINGS, noteName, type Locale } from '../music/notes';
 import { useSettings } from '../state/settings';
 import { GuitarDrawingFor, isGuitarFigure } from './GuitarFigures';
-import { RATIO } from './guitarFigureMeta';
+import { CHORD_FIGURES, RATIO } from './guitarFigureMeta';
+import { ChordHandCartoon, CHORD_CARTOON_RATIO } from './ChordHandCartoon';
+import { diagramOf } from '../music/chords';
+import { isHandChord } from '../music/chordCartoon';
 import { playSequence } from '../audio/engine';
 import { exampleSchedule } from '../music/examples';
 import type { Figure, ListenExample } from '../content/types';
@@ -152,7 +155,7 @@ export function CartoonPlayer({ lesson }: { lesson: Lesson }) {
               <Rect x={0} y={176} width={350} height={34} fill={colors.stage} />
               <Rect x={0} y={175} width={350} height={2} fill={colors.line} />
             </Svg>
-            {visuals?.[scene] ? <SceneVisual key={scene} figure={visuals[scene]!} playing={playing} /> : <Kordi size={160} />}
+            {visuals?.[scene] ? <SceneVisual key={scene} figure={visuals[scene]!} playing={playing} sceneMs={readMs[scene]} /> : <Kordi size={160} />}
           </>
         )}
         <View style={styles.badge}>
@@ -211,7 +214,7 @@ function soundMs(sound: ListenExample | null | undefined): number {
  * Ilustración animada de una escena, mientras no está el .riv: Kordi a un costado
  * y la figura que entra (aparece, sube y se asienta) y después «respira» bajo el foco.
  */
-function SceneVisual({ figure, playing }: { figure: Figure; playing: boolean }) {
+function SceneVisual({ figure, playing, sceneMs }: { figure: Figure; playing: boolean; sceneMs: number }) {
   const [w, setW] = useState(0);
   const left = useSettings((st) => st.hand) === 'left';
   const enter = useRef(new Animated.Value(0)).current;
@@ -233,8 +236,15 @@ function SceneVisual({ figure, playing }: { figure: Figure; playing: boolean }) 
     return () => loop.stop();
   }, [breathe, playing]);
 
+  // Un acorde se cuenta con la mano animada; el resto, con su dibujo.
+  const chord = useMemo(() => {
+    const id = CHORD_FIGURES[figure];
+    const d = id ? diagramOf(id) : undefined;
+    return d && isHandChord(d) ? d : undefined;
+  }, [figure]);
   // El dibujo entra entero en el escenario: se limita por ancho y por alto (tablet).
-  const figW = Math.max(0, Math.min(w - 92, (STAGE_H - 46) / (RATIO[figure] ?? 0.4)));
+  const ratio = chord ? CHORD_CARTOON_RATIO : (RATIO[figure] ?? 0.4);
+  const figW = Math.max(0, Math.min(w - 92, (STAGE_H - 46) / ratio));
   const style = {
     opacity: enter,
     transform: [
@@ -247,7 +257,7 @@ function SceneVisual({ figure, playing }: { figure: Figure; playing: boolean }) 
       <Kordi size={88} mood="happy" />
       {w > 0 && isGuitarFigure(figure) ? (
         <Animated.View style={[{ width: figW, maxHeight: STAGE_H - 46, justifyContent: 'center' }, style]}>
-          <GuitarDrawingFor id={figure} width={figW} leftHanded={left} compact />
+          {chord ? <ChordHandCartoon diagram={chord} width={figW} leftHanded={left} playing={playing} sceneMs={sceneMs} /> : <GuitarDrawingFor id={figure} width={figW} leftHanded={left} compact />}
         </Animated.View>
       ) : null}
     </View>
