@@ -11,6 +11,7 @@
  * con el pulgar o con el índice, sin púa. Textos en `content.n.l21x…l27x` y
  * `content.n.cp2`.
  */
+import type { HandsSpec } from '../types';
 import type { Checkpoint } from '../checkpoints';
 import type { Card, Exercise, Figure, Lesson, ListenExample, ScoreEvent } from '../types';
 import type { StringId } from '../../instruments/profiles';
@@ -25,6 +26,7 @@ export const STEPS = [60, 70, 80];
 interface CardSpec {
   figure?: Figure;
   listen?: ListenExample;
+  hands?: HandsSpec;
 }
 
 export function lesson(
