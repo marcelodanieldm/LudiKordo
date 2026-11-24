@@ -1,7 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { barStarts, sectionsOf, sliceDrill, sliceLine } from '../src/music/section';
-import { songDrill } from '../src/content/practice';
+import { DRILLS, songDrill } from '../src/content/practice';
+import { practiceOutcome } from '../src/state/rules';
+import { coach } from '../src/music/coach';
 import { BASS_SONGS } from '../src/content/songs';
 import { GUITAR_SONGS } from '../src/content/guitar/songs';
 import { NYLON_SONGS } from '../src/content/nylon/songs';
@@ -30,16 +32,33 @@ test('cortes: en las barras de compás; una nota que cruza la barra no se corta'
   assert.equal(sliceLine(line, 4, { from: 2, to: 5 }), null);
 });
 
-test('todas las canciones se pueden practicar por tramos: línea y acordes recortados juntos', () => {
-  for (const song of [...BASS_SONGS, ...GUITAR_SONGS, ...NYLON_SONGS]) {
-    const drill = songDrill(song);
+test('todas las canciones y ejercicios de línea se pueden practicar por tramos: línea y acordes recortados juntos', () => {
+  const drills = [...[...BASS_SONGS, ...GUITAR_SONGS, ...NYLON_SONGS].map(songDrill), ...DRILLS.filter((d) => d.kind === 'line')];
+  for (const drill of drills) {
     const bb = barBeatsOfStyle(drill.style);
     for (const s of sectionsOf(drill.chords.length)) {
       const part = sliceDrill(drill, s, bb);
-      assert.ok(part, `${song.id} ${s.from}-${s.to}`);
+      assert.ok(part, `${drill.id} ${s.from}-${s.to}`);
       assert.equal(part.chords.length, s.to - s.from + 1);
-      assert.equal(beatsOf(part.line ?? []), part.chords.length * bb, `${song.id} ${s.from}-${s.to}`);
+      assert.equal(beatsOf(part.line ?? []), part.chords.length * bb, `${drill.id} ${s.from}-${s.to}`);
       assert.equal(part.id, drill.id);
     }
   }
+});
+
+test('un tramo se evalúa pero no guarda estrellas ni desbloquea tempo', () => {
+  const steps = [70, 80, 90];
+  assert.deepEqual(practiceOutcome({ stars: 3, bpm: 70, unlockedBpm: 70, tempoSteps: steps, section: false }), { record: 3, unlock: 80 });
+  assert.deepEqual(practiceOutcome({ stars: 3, bpm: 70, unlockedBpm: 70, tempoSteps: steps, section: true }), { record: 0 });
+  assert.deepEqual(practiceOutcome({ stars: 2, bpm: 70, unlockedBpm: 70, tempoSteps: steps, section: false }), { record: 2 });
+  // En el tempo más alto no hay nada más que desbloquear.
+  assert.deepEqual(practiceOutcome({ stars: 3, bpm: 90, unlockedBpm: 90, tempoSteps: steps, section: false }), { record: 3 });
+  // Tres estrellas en un tempo ya superado no desbloquean de nuevo.
+  assert.deepEqual(practiceOutcome({ stars: 3, bpm: 70, unlockedBpm: 90, tempoSteps: steps, section: false }), { record: 3 });
+});
+
+test('con un tramo, la devolución no dice que la pieza está dominada', () => {
+  const base = { category: 'riffs', stars: 3, accuracy: 1, counts: { hit: 8, early: 0, late: 0, wrong: 0, miss: 0 }, meanOffset: 0, bpm: 90, tempos: [55, 70, 80, 90] };
+  assert.ok(coach(base).tips.some((x) => x.key.endsWith('mastered')));
+  assert.ok(!coach({ ...base, section: true }).tips.some((x) => x.key.endsWith('mastered') || x.key.endsWith('faster')));
 });

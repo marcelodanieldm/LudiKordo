@@ -54,7 +54,7 @@ export default function DrillScreen() {
         <H1>{t(drill.titleKey)}</H1>
         <Text style={{ fontSize: 16, lineHeight: 24, color: colors.ink }}>{t(drill.descKey)}</Text>
         {state === 'open' ? (
-          <LiveSession drill={drill} width={contentWidth} />
+          <LiveSession key={drill.id} drill={drill} width={contentWidth} />
         ) : state === 'premium' ? (
           <Card style={{ gap: 10 }}>
             <Muted>{t('ui.drills.premium')}</Muted>

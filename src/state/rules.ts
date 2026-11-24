@@ -95,3 +95,14 @@ export function applyCheckpointPass(
     skippedLevels: [...skipped].sort((a, b) => a - b),
   };
 }
+
+/**
+ * Qué deja una toma de la práctica en vivo: estrellas para guardar y tempo que
+ * se desbloquea (tres estrellas en el escalón más alto abierto). Un tramo se
+ * evalúa pero no guarda nada: las estrellas y los tempos son de la pieza entera.
+ */
+export function practiceOutcome(o: { stars: number; bpm: number; unlockedBpm: number; tempoSteps: number[]; section: boolean }): { record: number; unlock?: number } {
+  if (o.section) return { record: 0 };
+  const unlock = o.stars === 3 && o.bpm >= o.unlockedBpm ? o.tempoSteps.find((s) => s > o.bpm) : undefined;
+  return unlock ? { record: o.stars, unlock } : { record: o.stars };
+}

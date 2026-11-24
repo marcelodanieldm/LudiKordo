@@ -24,6 +24,8 @@ export interface CoachInput {
   improv?: { notes: number; inScale: number; required: number };
   /** Sin micrófono: no hubo puntaje. */
   unscored?: boolean;
+  /** Se practicó un tramo: no se habla de dominar la pieza ni de subir el tempo. */
+  section?: boolean;
 }
 
 export interface CoachTip {
@@ -75,7 +77,7 @@ export function coach(input: CoachInput): Coaching {
     if (input.accuracy < SLOWER_BELOW && input.bpm > slowest) tips.push({ key: `${P}slower`, params: { bpm: slowest } });
   }
 
-  if (input.stars >= 3) {
+  if (input.stars >= 3 && !input.section) {
     if (input.unlocked) tips.unshift({ key: `${P}faster`, params: { bpm: input.unlocked } });
     else if (input.bpm >= fastest) tips.unshift({ key: `${P}mastered` });
   }

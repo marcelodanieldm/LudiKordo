@@ -16,6 +16,7 @@ import { freqToMidi, midiAt, noteName, type Locale } from '../../music/notes';
 import { starsFor, TIMING_TOLERANCE_MS, type DetectedNote } from '../../music/scoring';
 import { drillExerciseId, type Drill } from '../../content/practice';
 import { sectionsOf, sliceDrill, type Section } from '../../music/section';
+import { practiceOutcome } from '../../state/rules';
 import { coach, improvExample } from '../../music/coach';
 import { handPlan, improvHands } from '../../music/hands';
 import { drillFingering } from '../../content/fingerings';
@@ -62,6 +63,8 @@ export function LiveSession({ drill: full, width }: { drill: Drill; width: numbe
   const { t, i18n } = useTranslation();
   // Tramo elegido (unos compases en bucle) o la pieza entera. Todo lo de abajo usa `drill`, ya recortado.
   const [section, setSection] = useState<Section | null>(null);
+  /** Vueltas elegidas antes del tramo (al elegir uno suben a 4; al volver a la pieza entera, se restauran). */
+  const loopsBefore = useRef<number | null>(null);
   const sections = useMemo(() => {
     if (full.kind !== 'line') return [];
     const bb = barBeatsOfStyle(full.style);
@@ -235,15 +238,13 @@ export function LiveSession({ drill: full, width }: { drill: Drill; width: numbe
           }
           // Tres estrellas en el escalón más alto abierto desbloquean el siguiente.
           // Un tramo es práctica: no gana estrellas ni desbloquea tempo (eso es para la pieza entera).
+          const outcome = practiceOutcome({ stars: r.stars, bpm, unlockedBpm, tempoSteps: drill.tempoSteps, section: !!section });
           if (section) r.section = true;
-          else if (r.stars === 3 && bpm >= unlockedBpm) {
-            const next = drill.tempoSteps.find((s) => s > bpm);
-            if (next) {
-              unlockTempo(exId, next);
-              r.unlocked = next;
-            }
+          if (outcome.unlock) {
+            unlockTempo(exId, outcome.unlock);
+            r.unlocked = outcome.unlock;
           }
-          if (r.stars > 0 && !section) recordExercise(exId, r.stars, drill.skills);
+          if (outcome.record > 0) recordExercise(exId, outcome.record, drill.skills);
           setResult(r);
           setPhase('result');
         },
@@ -327,6 +328,7 @@ export function LiveSession({ drill: full, width }: { drill: Drill; width: numbe
         unlocked: result.unlocked,
         improv: result.improv ? { ...result.improv, required: (drill.minNotes ?? 0) * loops } : undefined,
         unscored: result.unscored,
+        section: result.section,
       })
     : null;
 
@@ -360,12 +362,30 @@ export function LiveSession({ drill: full, width }: { drill: Drill; width: numbe
           {parts.includes('drums') ? row(t('ui.drills.styleTitle'), STYLES.filter((s) => barBeatsOfStyle(s) === barBeats).map((s) => chip(s, t(`ui.drills.style.${s}`), style === s, () => setStyle(s)))) : null}
           {sections.length > 1
             ? row(t('ui.drills.section'), [
-                chip('all', t('ui.drills.sectionAll'), section === null, () => setSection(null)),
+                chip(
+                  'all',
+                  t('ui.drills.sectionAll'),
+                  section === null,
+                  () => {
+                    // Vuelven las vueltas que había antes de elegir un tramo.
+                    if (section && loopsBefore.current !== null) setLoops(loopsBefore.current);
+                    loopsBefore.current = null;
+                    setSection(null);
+                  },
+                  phase === 'starting',
+                ),
                 ...sections.map((sec) =>
-                  chip(`s${sec.from}`, t('ui.drills.sectionBars', { from: sec.from + 1, to: sec.to + 1 }), section?.from === sec.from, () => {
-                    setSection(sec);
-                    setLoops((l) => Math.max(l, 4));
-                  }),
+                  chip(
+                    `s${sec.from}`,
+                    sec.from === sec.to ? t('ui.drills.sectionBar', { n: sec.from + 1 }) : t('ui.drills.sectionBars', { from: sec.from + 1, to: sec.to + 1 }),
+                    section?.from === sec.from,
+                    () => {
+                      if (!section) loopsBefore.current = loops;
+                      setSection(sec);
+                      setLoops((l) => Math.max(l, 4));
+                    },
+                    phase === 'starting',
+                  ),
                 ),
               ])
             : null}

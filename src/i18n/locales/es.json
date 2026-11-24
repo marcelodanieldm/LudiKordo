@@ -141,7 +141,8 @@
       "section": "Tramo",
       "sectionAll": "Toda la pieza",
       "sectionBars": "Compases {{from}}–{{to}}",
-      "sectionNote": "Practicas un tramo en bucle: se evalúa nota por nota, pero las estrellas y los tempos nuevos se ganan con la pieza entera."
+      "sectionNote": "Practicas un tramo en bucle: se evalúa nota por nota, pero las estrellas y los tempos nuevos se ganan con la pieza entera.",
+      "sectionBar": "Compás {{n}}"
     },
     "motion": {
       "play": "Ver y escuchar",

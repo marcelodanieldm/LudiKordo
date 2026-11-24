@@ -141,7 +141,8 @@
       "section": "Trecho",
       "sectionAll": "A peça inteira",
       "sectionBars": "Compassos {{from}}–{{to}}",
-      "sectionNote": "Você está repetindo um trecho: ele é avaliado nota por nota, mas as estrelas e os andamentos novos se ganham com a peça inteira."
+      "sectionNote": "Você está repetindo um trecho: ele é avaliado nota por nota, mas as estrelas e os andamentos novos se ganham com a peça inteira.",
+      "sectionBar": "Compasso {{n}}"
     },
     "motion": {
       "play": "Ver e ouvir",

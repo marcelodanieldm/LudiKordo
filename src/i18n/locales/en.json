@@ -141,7 +141,8 @@
       "section": "Section",
       "sectionAll": "Whole piece",
       "sectionBars": "Bars {{from}}–{{to}}",
-      "sectionNote": "You're looping a section: it's scored note by note, but stars and new tempos are earned with the whole piece."
+      "sectionNote": "You're looping a section: it's scored note by note, but stars and new tempos are earned with the whole piece.",
+      "sectionBar": "Bar {{n}}"
     },
     "motion": {
       "play": "Watch and listen",
