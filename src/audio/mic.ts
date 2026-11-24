@@ -49,7 +49,13 @@ export async function listenNotes(onNote: (n: DetectedNote) => void, latencyMs =
     onNote({ freq: e.freq, timeMs: startedAt + e.elapsedMs - latencyMs });
   });
   startedAt = nowMs();
-  await PitchDetector.start(START_OPTIONS);
+  try {
+    await PitchDetector.start(START_OPTIONS);
+  } catch (e) {
+    // Sin arrancar, la suscripción quedaría colgada: se suelta y el error sigue hacia arriba.
+    sub.remove();
+    throw e;
+  }
   return {
     stop: () => {
       sub.remove();
@@ -69,7 +75,13 @@ export async function listenAttacks(onAttack: (timeMs: number, rms: number) => v
     onAttack(startedAt + e.elapsedMs - latencyMs, e.rms);
   });
   startedAt = nowMs();
-  await PitchDetector.start(START_OPTIONS);
+  try {
+    await PitchDetector.start(START_OPTIONS);
+  } catch (e) {
+    // Sin arrancar, la suscripción quedaría colgada: se suelta y el error sigue hacia arriba.
+    sub.remove();
+    throw e;
+  }
   return {
     stop: () => {
       sub.remove();
