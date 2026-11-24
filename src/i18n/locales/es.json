@@ -95,7 +95,7 @@
       "howTo": {
         "title": "Cómo se hace",
         "listen": "Escucha el ejemplo y sigue la partitura con la vista: así tiene que sonar.",
-        "listenImprov": "Escucha el ejemplo: es la escala del ejercicio, subiendo y bajando. Con esas notas vas a improvisar.",
+        "listenImprov": "Escucha el ejemplo: una pregunta y una respuesta con notas de la escala. Fíjate que cada compás termina en una nota larga que es del acorde de ese compás: apunta ahí.",
         "scoring": "Después de la cuenta de {{beats}} tiempos, toca junto con la banda. La app juzga cada nota en vivo: a tiempo, antes, tarde u otra nota.",
         "scoringImprov": "Después de la cuenta de {{beats}} tiempos, inventa frases con las notas de la escala. Toca al menos {{n}} notas por vuelta; la app te muestra si cada una está en la escala.",
         "cat": {
@@ -137,7 +137,8 @@
           "reading": "Antes de empezar, recorre la partitura con la vista y busca los compases difíciles.",
           "improv": "Repite una idea que te gustó y cámbiale una nota: así se construye un solo."
         }
-      }
+      },
+      "exampleWithBand": "El ejemplo suena sobre los acordes, como lo vas a tocar con la banda."
     },
     "motion": {
       "play": "Ver y escuchar",
@@ -445,7 +446,16 @@
         "strumThumb": "Rasguea hacia abajo con el pulgar, con la yema; el brazo apoyado y la muñeca suelta.",
         "strumIndex": "Rasguea con el índice: hacia abajo con el dorso de la uña y hacia arriba con la yema; la muñeca suelta.",
         "strumBossa": "Bossa: el pulgar marca el bajo y i, m y a pellizcan las agudas juntos, como una mano que se cierra.",
-        "strumRasgueo": "Rasgueo continuo: a, m e i se abren uno tras otro hacia abajo, desde la mano cerrada."
+        "strumRasgueo": "Rasgueo continuo: a, m e i se abren uno tras otro hacia abajo, desde la mano cerrada.",
+        "cartoonA11y": "Animación: la mano arma {{name}} con los dedos {{fingers}}, el pulgar detrás del mástil.",
+        "cartoonThumb": "Pulgar detrás del mástil",
+        "cartoonPlace": "Dedo {{finger}}: traste {{fret}}, cuerda {{string}}",
+        "cartoonBarre": "Dedo 1 en cejilla, traste {{fret}}",
+        "cartoonStrum": "Toca: suenan {{n}} cuerdas",
+        "cartoonHold": "Dedos arqueados y firmes",
+        "fretShort": "traste {{n}}",
+        "thumbLetter": "p",
+        "cartoonTitle": "{{name}} · {{caption}}"
       }
     },
     "practice": {

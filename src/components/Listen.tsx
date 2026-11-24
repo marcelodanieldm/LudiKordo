@@ -6,7 +6,7 @@ import { Staff } from './Staff';
 import { TabStaff } from './TabStaff';
 import { IS_GUITAR } from '../instruments/current';
 import { playSequence, type SequenceHandle } from '../audio/engine';
-import { exampleSchedule } from '../music/examples';
+import { eventAtMs, exampleSchedule } from '../music/examples';
 import { isRest } from '../music/staff';
 import type { ListenExample, ScoreEvent, TabNote } from '../content/types';
 
@@ -34,11 +34,37 @@ export function Score({ events, notation, width, current, noteNames, beatsPerBar
  * Ejemplo sonoro de una tarjeta: dibuja la notación (si corresponde) y lo toca
  * con un tono sintetizado. Se corta al desmontar o al tocar «Detener».
  */
-export function Listen({ example, width, testID = 'listen' }: { example: ListenExample; width: number; testID?: string }) {
+export function Listen({ example, width, testID = 'listen', onProgress }: { example: ListenExample; width: number; testID?: string; onProgress?: (event: number) => void }) {
   const { t } = useTranslation();
   const [playing, setPlaying] = useState(false);
+  // La nota que suena, para seguirla en la partitura (-1: ninguna).
+  const [current, setCurrent] = useState(-1);
   const handle = useRef<SequenceHandle | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const shown = !!example.show && example.events.length > 0;
+  // Quien muestra la partitura en otro lado (la práctica) la sigue con `onProgress`.
+  const follow = shown || (!!onProgress && example.events.length > 0);
+  const progress = useRef(onProgress);
+  progress.current = onProgress;
+
+  useEffect(() => {
+    if (!playing || !follow) {
+      setCurrent(-1);
+      progress.current?.(-1);
+      return;
+    }
+    const id = setInterval(() => {
+      const h = handle.current;
+      if (!h) return;
+      const i = eventAtMs(example, h.elapsedMs());
+      setCurrent(i);
+      progress.current?.(i);
+    }, 60);
+    return () => {
+      clearInterval(id);
+      progress.current?.(-1);
+    };
+  }, [playing, follow, example]);
 
   const stop = () => {
     handle.current?.stop();
@@ -69,7 +95,7 @@ export function Listen({ example, width, testID = 'listen' }: { example: ListenE
 
   return (
     <View style={{ gap: 10 }}>
-      {example.show && example.events.length > 0 ? <Score events={example.events} notation={example.show} width={width} noteNames={example.noteNames} beatsPerBar={example.beatsPerBar} /> : null}
+      {shown && example.show ? <Score events={example.events} notation={example.show} width={width} noteNames={example.noteNames} beatsPerBar={example.beatsPerBar} current={playing ? current : undefined} /> : null}
       <Button
         variant="secondary"
         label={playing ? t('ui.listen.stop') : t('ui.listen.play')}

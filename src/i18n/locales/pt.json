@@ -95,7 +95,7 @@
       "howTo": {
         "title": "Como se faz",
         "listen": "Escute o exemplo e acompanhe a partitura com os olhos: é assim que tem que soar.",
-        "listenImprov": "Escute o exemplo: é a escala do exercício, subindo e descendo. Você vai improvisar com essas notas.",
+        "listenImprov": "Escute o exemplo: uma pergunta e uma resposta com notas da escala. Repare que cada compasso termina numa nota longa do acorde daquele compasso: mire ali.",
         "scoring": "Depois da contagem de {{beats}} tempos, toque junto com a banda. O app avalia cada nota ao vivo: no tempo, antes, depois ou outra nota.",
         "scoringImprov": "Depois da contagem de {{beats}} tempos, invente frases com as notas da escala. Toque pelo menos {{n}} notas por volta; o app mostra se cada uma está na escala.",
         "cat": {
@@ -137,7 +137,8 @@
           "reading": "Antes de começar, percorra a partitura com os olhos e procure os compassos difíceis.",
           "improv": "Repita uma ideia de que você gostou e mude uma nota: é assim que se constrói um solo."
         }
-      }
+      },
+      "exampleWithBand": "O exemplo toca sobre os acordes, do jeito que você vai tocar com a banda."
     },
     "motion": {
       "play": "Ver e ouvir",
@@ -445,7 +446,16 @@
         "strumThumb": "Faça o rasgueado para baixo com o polegar, com a polpa; o braço apoiado e o pulso solto.",
         "strumIndex": "Faça o rasgueado com o indicador: para baixo com o dorso da unha e para cima com a polpa; o pulso solto.",
         "strumBossa": "Bossa: o polegar marca o baixo e i, m e a pinçam as cordas agudas juntos, como uma mão que se fecha.",
-        "strumRasgueo": "Rasgueado contínuo: a, m e i se abrem um depois do outro para baixo, a partir da mão fechada."
+        "strumRasgueo": "Rasgueado contínuo: a, m e i se abrem um depois do outro para baixo, a partir da mão fechada.",
+        "cartoonA11y": "Animação: a mão monta {{name}} com os dedos {{fingers}}, o polegar atrás do braço.",
+        "cartoonThumb": "Polegar atrás do braço",
+        "cartoonPlace": "Dedo {{finger}}: casa {{fret}}, corda {{string}}",
+        "cartoonBarre": "Dedo 1 em pestana, casa {{fret}}",
+        "cartoonStrum": "Toque: soam {{n}} cordas",
+        "cartoonHold": "Dedos arqueados e firmes",
+        "fretShort": "casa {{n}}",
+        "thumbLetter": "p",
+        "cartoonTitle": "{{name}} · {{caption}}"
       }
     },
     "practice": {

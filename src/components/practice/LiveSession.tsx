@@ -7,7 +7,7 @@ import { Listen, Score } from '../Listen';
 import { colors, fonts, radius } from '../../theme';
 import { listenNotes, requestMic, type Listener } from '../../audio/mic';
 import { nowMs, startJam, stopActiveSequence, type JamHandle } from '../../audio/engine';
-import { JAM_PARTS, jamSchedule, type JamPart } from '../../music/jam';
+import { JAM_PARTS, exampleBacking, jamSchedule, type JamPart } from '../../music/jam';
 import { DRUM_STYLES, barBeatsOfStyle, type DrumStyle } from '../../music/drums';
 import { cleanDetections, isHit, judgeLive, type LiveState, type LiveTarget } from '../../music/live';
 import { scoreImprov } from '../../music/improv';
@@ -15,7 +15,8 @@ import { eventAt, isRest, noteStartBeats } from '../../music/staff';
 import { freqToMidi, midiAt, noteName, type Locale } from '../../music/notes';
 import { starsFor, TIMING_TOLERANCE_MS, type DetectedNote } from '../../music/scoring';
 import { drillExerciseId, type Drill } from '../../content/practice';
-import { coach, improvExample } from '../../music/coach';
+import { coach } from '../../music/coach';
+import { improvPhrase } from '../../music/phrase';
 import { handPlan, improvHands } from '../../music/hands';
 import { drillFingering } from '../../content/fingerings';
 import { HAND_INSTRUMENT, HandsSection, type Hands } from '../exercises/Coaching';
@@ -55,6 +56,9 @@ interface Result {
  * estilo de batería, qué instrumentos lo acompañan y cuántas vueltas; la app
  * toca la pista y juzga cada nota mientras suena.
  */
+/** Acordes apenas de fondo, para que el ejemplo se oiga en contexto. */
+const EXAMPLE_BACKING_LEVEL = 0.35;
+
 export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
   const { t, i18n } = useTranslation();
   const notation = useSettings((s) => s.notation);
@@ -111,14 +115,19 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
   const noteBeats = useMemo(() => noteStartBeats(line), [line]);
   const noteMidis = useMemo(() => line.flatMap((e) => (isRest(e) ? [] : [midiAt(e.string, e.fret)])), [line]);
   const label = (midi: number) => noteName(midi, i18n.language as Locale, notation);
-  // Ejemplo sonoro al tempo elegido: la línea del ejercicio, o la escala en una frase para improvisar.
-  const example = useMemo<ListenExample>(
-    () =>
-      drill.kind === 'improv'
-        ? { events: improvExample(drill.scale ?? [], INSTRUMENT.strings), bpm, click: true, show: 'tab', beatsPerBar: 4 }
-        : { events: line, bpm, click: true, beatsPerBar: barBeats === 3 ? 3 : 4 },
-    [drill, line, bpm, barBeats],
-  );
+  // Ejemplo sonoro al tempo elegido, sobre los acordes del ejercicio (si hay acompañamiento elegido):
+  // la línea del ejercicio, o una frase de pregunta y respuesta que cae en notas de cada acorde.
+  const meter = barBeats === 3 ? 3 : 4;
+  const backing = useMemo(() => exampleBacking(drill.chords, meter), [drill.chords, meter]);
+  const withBand = parts.some((p) => p !== 'drums') && !!backing;
+  const example = useMemo<ListenExample>(() => {
+    const strum = withBand && backing ? { strum: { ...backing, tone: 'keys' as const, level: EXAMPLE_BACKING_LEVEL } } : {};
+    return drill.kind === 'improv'
+      ? { events: improvPhrase(drill.scale ?? [], drill.chords, INSTRUMENT.strings, meter), bpm, click: true, show: drill.notation ?? 'tab', beatsPerBar: meter, ...strum }
+      : { events: line, bpm, click: true, beatsPerBar: meter, ...strum };
+  }, [drill, line, bpm, meter, withBand, backing]);
+  // Mientras suena el ejemplo, la partitura del ejercicio sigue la nota.
+  const [exampleNote, setExampleNote] = useState(-1);
   const togglePart = (p: JamPart) => setParts((ps) => (ps.includes(p) ? ps.filter((x) => x !== p) : [...ps, p]));
 
   const start = async () => {
@@ -326,7 +335,8 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
               <Text style={{ flex: 1, fontSize: 15, lineHeight: 22, color: colors.ink }}>{step}</Text>
             </View>
           ))}
-          <Listen example={example} width={width - 34} testID="drill-example" />
+          <Listen example={example} width={width - 34} testID="drill-example" onProgress={drill.kind === 'line' ? setExampleNote : undefined} />
+          {withBand ? <Muted>{t('ui.drills.exampleWithBand')}</Muted> : null}
           <HandsSection hands={hands} width={width} />
         </Card>
       ) : null}
@@ -354,7 +364,7 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
 
       {drill.kind === 'line' ? (
         <Card style={{ gap: 10, alignItems: 'center' }}>
-          <MemoScore events={line} notation={drill.notation ?? 'tab'} width={width - 34} current={phase === 'running' ? eventPos : -1} beatsPerBar={barBeats} />
+          <MemoScore events={line} notation={drill.notation ?? 'tab'} width={width - 34} current={phase === 'running' ? eventPos : exampleNote} beatsPerBar={barBeats} />
           {phase === 'running' && loops > 1 ? <Muted>{t('ui.drills.loopOf', { n: Math.min(loops, loopNow + 1), total: loops })}</Muted> : null}
         </Card>
       ) : (

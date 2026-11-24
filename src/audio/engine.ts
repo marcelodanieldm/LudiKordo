@@ -153,6 +153,8 @@ export interface SequenceHandle {
   stop: () => void;
   /** Momento (ms, reloj de audio) en que empieza a sonar el ejemplo: el 0 de `startSec`. */
   startMs: number;
+  /** Ms transcurridos desde `startMs`, en el reloj de este ejemplo (no abre otro contexto). */
+  elapsedMs: () => number;
 }
 
 /**
@@ -203,7 +205,7 @@ export function playSequence(
     },
   };
   activeSequence = handle;
-  return { stop: handle.stop, startMs: t0 * 1000 };
+  return { stop: handle.stop, startMs: t0 * 1000, elapsedMs: () => c.currentTime * 1000 - t0 * 1000 };
 }
 
 // ───────────── Acompañamiento de la práctica ─────────────
