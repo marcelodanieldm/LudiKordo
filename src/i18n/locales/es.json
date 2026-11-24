@@ -997,6 +997,54 @@
         "sharps": "Un sostenido (♯) está un traste más arriba de su nota natural; un bemol (♭), uno más abajo. Fa♯ y Sol♭ son el mismo traste.",
         "sayIt": "Di el nombre en voz alta mientras buscas: nombrar la nota ayuda a recordarla."
       }
+    },
+    "rhythmTrainer": {
+      "eyebrow": "Práctica diaria",
+      "title": "Ritmo",
+      "intro": "Cuatro compases para leer y tocar con el clic. Cada casilla es media negra: «1 y 2 y 3 y 4 y». Toca donde empieza cada bloque de color y calla en los puntos.",
+      "levelTitle": "Nivel",
+      "level": {
+        "1": "Negras y silencios",
+        "2": "Con corcheas",
+        "3": "Contratiempos"
+      },
+      "bestShort": "récord {{n}} %",
+      "tempo": "Tempo",
+      "bpm": "{{bpm}} bpm",
+      "byMic": "Tocar en el instrumento (el micrófono oye cada ataque)",
+      "noMic": "Sin micrófono: toca el botón grande en cada nota.",
+      "listen": "Escuchar cómo suena",
+      "newRound": "Otros compases",
+      "start": "Empezar",
+      "cancel": "Terminar",
+      "tap": "Toca aquí",
+      "playHint": "Toca cada nota en tu instrumento, una cuerda al aire alcanza.",
+      "countIn": "Cuenta: {{n}}…",
+      "and": "y",
+      "gridA11y": "Ritmo de cuatro compases. Las notas empiezan en los pulsos {{beats}}.",
+      "legend": "Verde: a tiempo · amarillo: adelantada o atrasada · rojo: no sonó.",
+      "percent": "{{n}} %",
+      "result": {
+        "great": "¡Ritmo firme!",
+        "good": "Bien: casi todo en su lugar.",
+        "keepGoing": "Vamos de nuevo, más tranquilo."
+      },
+      "summary": "{{hits}} de {{total}} notas a tiempo · {{extras}} de más",
+      "tip": {
+        "rushing": "Te adelantas: escucha el clic y espera a que llegue. Toca «dentro» del clic, no antes.",
+        "dragging": "Te atrasas: prepara la mano antes del pulso, así el ataque sale justo con el clic.",
+        "countAnd": "Los «y» (contratiempos) son los que más se escapan: cuenta en voz alta «1 y 2 y» y toca en la «y».",
+        "restsBass": "En los silencios no alcanza con no tocar: apoya un dedo de cualquiera de las dos manos sobre la cuerda para que deje de sonar.",
+        "restsGuitar": "En los silencios, la mano de la púa sigue moviéndose arriba y abajo sin tocar las cuerdas: así no pierdes el pulso.",
+        "restsNylon": "En los silencios, apoya la palma o los dedos de la mano derecha sobre las cuerdas para apagarlas, y vuelve a tocar en el pulso.",
+        "handBass": "Alterna índice y medio en cada nota, aunque sea la misma cuerda: los dos dedos reparten el trabajo y el pulso queda parejo.",
+        "handGuitar": "Mueve la mano de la púa como un péndulo: abajo en cada número, arriba en cada «y». El brazo no para; solo decides cuándo tocar.",
+        "handNylon": "Toca con el pulgar en los números y con el índice en las «y»: la mano reparte el ritmo sin apurarse."
+      },
+      "again": "Otra ronda",
+      "againAt": "Otra ronda a {{bpm}} bpm",
+      "repeat": "Repetir estos compases",
+      "change": "Cambiar nivel o tempo"
     }
   },
   "content": {
