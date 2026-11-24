@@ -5,6 +5,7 @@ import { applyCheckpointPass, isoDate } from './rules';
 import { XP_CHECKPOINT, xpFor } from '../music/scoring';
 import type { Skill } from '../content/types';
 import type { Stats as FretStats } from '../music/fretTrainer';
+import { pushScore } from '../music/changes';
 
 export interface LessonRecord {
   stars: 0 | 1 | 2 | 3;
@@ -27,6 +28,8 @@ interface ProgressState {
   /** Entrenador del mástil: aciertos de las últimas rondas por etapa y la estadística por nota. */
   fretRounds: Record<string, number[]>;
   fretStats: FretStats;
+  /** «Cambios en un minuto»: últimos resultados por par (src/music/changes.ts). */
+  changes: Record<string, number[]>;
 
   recordExercise: (id: string, stars: number, skills: Skill[]) => void;
   completeLesson: (id: string, stars: 0 | 1 | 2 | 3) => void;
@@ -34,6 +37,8 @@ interface ProgressState {
   unlockTempo: (exerciseId: string, bpm: number) => void;
   /** Guarda una ronda del entrenador del mástil: suma el minuto y un punto de diapasón. */
   recordFretRound: (scope: string, right: number, stats: FretStats) => void;
+  /** Guarda una ronda de cambios: suma el minuto practicado y un punto de técnica. */
+  recordChanges: (pairId: string, count: number) => void;
   /**
    * Guarda un checkpoint aprobado. Si el nivel no estaba terminado, se marca
    * como saltado para desbloquear el siguiente.
@@ -65,6 +70,7 @@ export const useProgress = create<ProgressState>()(
       checkpoints: {},
       fretRounds: {},
       fretStats: {},
+      changes: {},
 
       recordExercise: (id, stars, skills) =>
         set((s) => {
@@ -112,6 +118,15 @@ export const useProgress = create<ProgressState>()(
           fretStats: stats,
           skills: { ...s.skills, fretboard: { points: s.skills.fretboard.points + 1, last: isoDate() } },
         }));
+        get().addMinutes(1);
+      },
+
+      recordChanges: (pairId, count) => {
+        set((s) => ({
+          changes: { ...s.changes, [pairId]: pushScore(s.changes[pairId], count) },
+          skills: { ...s.skills, technique: { points: s.skills.technique.points + 1, last: isoDate() } },
+        }));
+        // El minuto cuenta para la racha y las medallas de días, como cualquier práctica.
         get().addMinutes(1);
       },
 

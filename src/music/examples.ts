@@ -36,3 +36,19 @@ export function exampleSchedule(ex: ListenExample): ExampleSchedule {
   const lastEnd = notes.reduce((a, x) => Math.max(a, x.startSec + x.durSec), 0);
   return { notes, beats, lengthSec: Math.max((beats * 60) / ex.bpm, lastEnd) };
 }
+
+/**
+ * Índice del evento de la melodía que suena a los `elapsedMs` desde el inicio
+ * del ejemplo (con la cuenta previa, si hay clic), o -1 antes o después de la
+ * melodía. Sirve para seguir la partitura mientras suena.
+ */
+export function eventAtMs(ex: ListenExample, elapsedMs: number): number {
+  const beat = (elapsedMs / 60000) * ex.bpm - (ex.click ? LISTEN_COUNT_IN : 0);
+  if (beat < 0) return -1;
+  let start = 0;
+  for (let i = 0; i < ex.events.length; i++) {
+    start += ex.events[i].beats;
+    if (beat < start) return i;
+  }
+  return -1;
+}

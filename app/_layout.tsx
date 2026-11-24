@@ -62,6 +62,8 @@ export default function RootLayout() {
           <Stack.Screen name="practica/index" />
           <Stack.Screen name="practica/[id]" />
           <Stack.Screen name="mastil/index" />
+          <Stack.Screen name="cambios/index" />
+          <Stack.Screen name="cambios/[id]" />
         </Stack>
       </SafeAreaProvider>
     </I18nextProvider>

@@ -14,6 +14,10 @@ import { useDrills } from '../../src/components/PracticeHooks';
 import { firstSongModule, recommendedSong } from '../../src/content/songbook';
 import Svg, { Circle, Path, Text as SvgText } from 'react-native-svg';
 import { colors, fonts, radius } from '../../src/theme';
+import { bestOf, changePairs, suggestedPair } from '../../src/music/changes';
+import { HAND_INSTRUMENT } from '../../src/components/exercises/Coaching';
+import { useProgress } from '../../src/state/progress';
+import { usePairLabel } from '../../src/components/practice/ChangesSession';
 
 /** Herramientas sueltas. El afinador y el metrónomo son gratis para siempre. */
 export default function Practice() {
@@ -28,6 +32,7 @@ export default function Practice() {
       <ScrollView contentContainerStyle={{ padding: 20, gap: 14, maxWidth: 720, width: '100%', alignSelf: 'center' }}>
         <H1>{t('ui.practice.title')}</H1>
         <DrillsCard />
+        <ChangesCard />
         <SongbookCard />
         <Tuner />
         <Metronome />
@@ -55,6 +60,25 @@ export default function Practice() {
         </View>
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+/** «Cambios en un minuto»: el par sugerido y su récord. */
+function ChangesCard() {
+  const { t } = useTranslation();
+  const label = usePairLabel();
+  const history = useProgress((s) => s.changes);
+  const pair = suggestedPair(changePairs(HAND_INSTRUMENT), history);
+  if (!pair) return null;
+  const best = bestOf(history[pair.id]);
+  const name = t('ui.changes.pair', { a: label(pair, 'a'), b: label(pair, 'b') });
+  return (
+    <Card style={{ gap: 10 }}>
+      <H2>{t('ui.changes.title')}</H2>
+      <Muted>{t('ui.changes.cardIntro')}</Muted>
+      <Button label={best > 0 ? t('ui.changes.cardBest', { name, best }) : t('ui.changes.cardTry', { name })} onPress={() => router.push(`/cambios/${pair.id}`)} testID="open-changes-pair" />
+      <Button variant="secondary" label={t('ui.changes.open')} onPress={() => router.push('/cambios')} testID="open-changes" />
+    </Card>
   );
 }
 
