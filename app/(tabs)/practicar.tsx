@@ -14,35 +14,71 @@ import { useDrills } from '../../src/components/PracticeHooks';
 import { firstSongModule, recommendedSong } from '../../src/content/songbook';
 import Svg, { Circle, Path, Text as SvgText } from 'react-native-svg';
 import { colors, fonts, radius } from '../../src/theme';
+import { bestOf, changePairs, suggestedPair } from '../../src/music/changes';
+import { HAND_INSTRUMENT } from '../../src/components/exercises/Coaching';
+import { useProgress } from '../../src/state/progress';
+import { usePairLabel } from '../../src/components/practice/ChangesSession';
 
 /** Herramientas sueltas. El afinador y el metrónomo son gratis para siempre. */
 export default function Practice() {
   const { t } = useTranslation();
-  const tools = [
-    { k: 'fretboard', color: colors.accentInk, d: 'M3 7h18M3 12h18M3 17h18M8 4v16M14 4v16' },
-    { k: 'rhythm', color: colors.gold, d: 'M9 18V5l10-2v13M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM16 19a3 3 0 1 0 0-6 3 3 0 0 0 0 6z' },
-  ] as const;
+  // Herramientas con su pantalla; las que no tienen ruta todavía se muestran como «próximamente».
+  const tools: { k: string; color: string; d: string; href?: '/mastil' | '/ritmo' }[] = [
+    { k: 'fretboard', color: colors.accentInk, d: 'M3 7h18M3 12h18M3 17h18M8 4v16M14 4v16', href: '/mastil' },
+    { k: 'rhythm', color: colors.gold, d: 'M9 18V5l10-2v13M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM16 19a3 3 0 1 0 0-6 3 3 0 0 0 0 6z', href: '/ritmo' },
+  ];
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
       <ScrollView contentContainerStyle={{ padding: 20, gap: 14, maxWidth: 720, width: '100%', alignSelf: 'center' }}>
         <H1>{t('ui.practice.title')}</H1>
         <DrillsCard />
+        <ChangesCard />
         <SongbookCard />
         <Tuner />
         <Metronome />
         <View style={{ flexDirection: 'row', gap: 8 }}>
-          {tools.map((tool) => (
-            <View key={tool.k} style={{ flex: 1, minHeight: 88, borderRadius: radius.lg, backgroundColor: colors.card, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center', gap: 6, padding: 8 }}>
-              <Svg width={22} height={22} viewBox="0 0 24 24">
-                <Path d={tool.d} stroke={tool.color} strokeWidth={2.2} fill="none" strokeLinecap="round" strokeLinejoin="round" />
-              </Svg>
-              <Text style={{ fontSize: 13, fontWeight: '800', textAlign: 'center' }}>{t(`ui.practice.${tool.k}`)}</Text>
-            </View>
-          ))}
+          {tools.map((tool) => {
+            const href = tool.href;
+            return (
+              <Pressable
+                key={tool.k}
+                accessibilityRole="button"
+                accessibilityState={{ disabled: !href }}
+                disabled={!href}
+                onPress={() => href && router.push(href)}
+                testID={`tool-${tool.k}`}
+                style={{ flex: 1, minHeight: 88, borderRadius: radius.lg, backgroundColor: colors.card, borderWidth: 1, borderColor: href ? tool.color : colors.border, alignItems: 'center', justifyContent: 'center', gap: 6, padding: 8 }}
+              >
+                <Svg width={22} height={22} viewBox="0 0 24 24">
+                  <Path d={tool.d} stroke={tool.color} strokeWidth={2.2} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                </Svg>
+                <Text style={{ fontSize: 13, fontWeight: '800', textAlign: 'center' }}>{t(`ui.practice.${tool.k}`)}</Text>
+                {href ? null : <Text style={{ fontSize: 11, color: colors.muted, textAlign: 'center' }}>{t('ui.common.comingSoon')}</Text>}
+              </Pressable>
+            );
+          })}
         </View>
-        <Muted>{t('ui.common.comingSoon')}</Muted>
       </ScrollView>
     </SafeAreaView>
+  );
+}
+
+/** «Cambios en un minuto»: el par sugerido y su récord. */
+function ChangesCard() {
+  const { t } = useTranslation();
+  const label = usePairLabel();
+  const history = useProgress((s) => s.changes);
+  const pair = suggestedPair(changePairs(HAND_INSTRUMENT), history);
+  if (!pair) return null;
+  const best = bestOf(history[pair.id]);
+  const name = t('ui.changes.pair', { a: label(pair, 'a'), b: label(pair, 'b') });
+  return (
+    <Card style={{ gap: 10 }}>
+      <H2>{t('ui.changes.title')}</H2>
+      <Muted>{t('ui.changes.cardIntro')}</Muted>
+      <Button label={best > 0 ? t('ui.changes.cardBest', { name, best }) : t('ui.changes.cardTry', { name })} onPress={() => router.push(`/cambios/${pair.id}`)} testID="open-changes-pair" />
+      <Button variant="secondary" label={t('ui.changes.open')} onPress={() => router.push('/cambios')} testID="open-changes" />
+    </Card>
   );
 }
 

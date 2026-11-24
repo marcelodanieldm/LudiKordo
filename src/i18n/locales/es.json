@@ -95,7 +95,7 @@
       "howTo": {
         "title": "Cómo se hace",
         "listen": "Escucha el ejemplo y sigue la partitura con la vista: así tiene que sonar.",
-        "listenImprov": "Escucha el ejemplo: es la escala del ejercicio, subiendo y bajando. Con esas notas vas a improvisar.",
+        "listenImprov": "Escucha el ejemplo: una pregunta y una respuesta con notas de la escala. Fíjate que cada compás termina en una nota larga que es del acorde de ese compás: apunta ahí.",
         "scoring": "Después de la cuenta de {{beats}} tiempos, toca junto con la banda. La app juzga cada nota en vivo: a tiempo, antes, tarde u otra nota.",
         "scoringImprov": "Después de la cuenta de {{beats}} tiempos, inventa frases con las notas de la escala. Toca al menos {{n}} notas por vuelta; la app te muestra si cada una está en la escala.",
         "cat": {
@@ -142,7 +142,8 @@
       "sectionAll": "Toda la pieza",
       "sectionBars": "Compases {{from}}–{{to}}",
       "sectionNote": "Practicas un tramo en bucle: se evalúa nota por nota, pero las estrellas y los tempos nuevos se ganan con la pieza entera.",
-      "sectionBar": "Compás {{n}}"
+      "sectionBar": "Compás {{n}}",
+      "exampleWithBand": "El ejemplo suena sobre los acordes, como lo vas a tocar con la banda."
     },
     "motion": {
       "play": "Ver y escuchar",
@@ -450,7 +451,16 @@
         "strumThumb": "Rasguea hacia abajo con el pulgar, con la yema; el brazo apoyado y la muñeca suelta.",
         "strumIndex": "Rasguea con el índice: hacia abajo con el dorso de la uña y hacia arriba con la yema; la muñeca suelta.",
         "strumBossa": "Bossa: el pulgar marca el bajo y i, m y a pellizcan las agudas juntos, como una mano que se cierra.",
-        "strumRasgueo": "Rasgueo continuo: a, m e i se abren uno tras otro hacia abajo, desde la mano cerrada."
+        "strumRasgueo": "Rasgueo continuo: a, m e i se abren uno tras otro hacia abajo, desde la mano cerrada.",
+        "cartoonA11y": "Animación: la mano arma {{name}} con los dedos {{fingers}}, el pulgar detrás del mástil.",
+        "cartoonThumb": "Pulgar detrás del mástil",
+        "cartoonPlace": "Dedo {{finger}}: traste {{fret}}, cuerda {{string}}",
+        "cartoonBarre": "Dedo 1 en cejilla, traste {{fret}}",
+        "cartoonStrum": "Toca: suenan {{n}} cuerdas",
+        "cartoonHold": "Dedos arqueados y firmes",
+        "fretShort": "traste {{n}}",
+        "thumbLetter": "p",
+        "cartoonTitle": "{{name}} · {{caption}}"
       }
     },
     "practice": {
@@ -956,6 +966,172 @@
         "feedback": "FEEDBACK",
         "mix": "MIX"
       }
+    },
+    "changes": {
+      "eyebrow": "Práctica diaria",
+      "title": "Cambios en un minuto",
+      "intro": "Elige dos notas en lugares distintos del mástil y cambia de una a otra durante un minuto. La app cuenta los cambios. Un minuto por día alcanza para que la mano que pisa encuentre el camino sola.",
+      "cardIntro": "Un minuto, dos notas, todos los cambios que puedas. Supera tu récord un poco cada día.",
+      "cardTry": "Probar {{name}}",
+      "cardBest": "{{name}} · récord {{best}}",
+      "open": "Ver todos los pares",
+      "pair": "{{a}} ↔ {{b}}",
+      "noteAt": "{{note}} · cuerda {{string}}, traste {{fret}}",
+      "suggested": "Te sugerimos este",
+      "bestShort": "récord {{n}}",
+      "notYet": "nuevo",
+      "rowA11y_one": "{{name}}, récord {{count}} cambio",
+      "rowA11y_other": "{{name}}, récord {{count}} cambios",
+      "notFound": "No encontramos ese par.",
+      "zero": "No se contó ningún cambio, así que esta ronda no se guarda. Si tocaste, acerca el teléfono al instrumento o elige «Contar yo».",
+      "howTitle": "Cómo se hace",
+      "how1": "Toca la primera nota. Cuando suene, lleva la mano a la otra y tócala. Cada vez que llegas a la otra nota es un cambio.",
+      "how2": "No vayas a toda velocidad: una nota limpia por cambio vale más que muchas sucias. El dedo llega a su traste antes de tocar.",
+      "how3": "Al terminar, mira tu récord y la meta de la próxima vez. Con un minuto por día alcanza.",
+      "bestGoal": "Récord: {{best}} · meta: {{goal}}",
+      "firstGoal": "Primera vez: la meta es simplemente contar cuántos salen.",
+      "manual": "Contar yo (tocando la pantalla en cada cambio)",
+      "noMic": "Sin micrófono: cuenta tú, tocando la pantalla en cada cambio.",
+      "start": "Empezar el minuto",
+      "go": "¡Ya!",
+      "secondsLeft": "Quedan {{count}} s",
+      "countA11y_one": "{{count}} cambio",
+      "countA11y_other": "{{count}} cambios",
+      "tapHint": "Toca la pantalla cada vez que cambias.",
+      "strumHint": "Un rasgueo en cada acorde: la app cuenta los golpes.",
+      "noteHint": "Solo cuenta cuando suena la otra nota.",
+      "tap": "+1 cambio",
+      "cancel": "Cancelar",
+      "result": {
+        "first_one": "¡Primera marca: {{count}} cambio!",
+        "first_other": "¡Primera marca: {{count}} cambios!",
+        "record": "¡Nuevo récord: {{count}}!",
+        "close": "Muy cerca de tu récord ({{best}}).",
+        "below": "Hoy salieron menos. Pasa: lo que cuenta es la constancia."
+      },
+      "history": "Tus últimas rondas",
+      "historyA11y": "Últimas rondas: {{values}}",
+      "again": "Otro minuto",
+      "otherPair": "Elegir otro par",
+      "nowA11y": "Ahora: {{name}}",
+      "sideA11y": "{{name}}",
+      "tip": {
+        "anchorStay": "El dedo {{finger}} no se mueve: queda apoyado en la cuerda {{string}}. Úsalo de ancla y mueve solo los demás.",
+        "anchorSlide": "El dedo {{finger}} se queda en la cuerda {{string}}: deslízalo sin levantarlo y deja que guíe a la mano.",
+        "shapeShiftTreble_one": "Los dedos {{fingers}} tienen la misma forma en los dos acordes: muévelos juntos, como un bloque, {{count}} cuerda hacia las agudas.",
+        "shapeShiftTreble_other": "Los dedos {{fingers}} tienen la misma forma en los dos acordes: muévelos juntos, como un bloque, {{count}} cuerdas hacia las agudas.",
+        "shapeShiftBass_one": "Los dedos {{fingers}} tienen la misma forma en los dos acordes: muévelos juntos, como un bloque, {{count}} cuerda hacia las graves.",
+        "shapeShiftBass_other": "Los dedos {{fingers}} tienen la misma forma en los dos acordes: muévelos juntos, como un bloque, {{count}} cuerdas hacia las graves.",
+        "block": "Levanta todos los dedos a la vez y bájalos juntos en el acorde nuevo, en lugar de ponerlos de a uno.",
+        "lightPress": "Afloja la mano entre acorde y acorde: apenas tocando las cuerdas, los dedos viajan más rápido.",
+        "eyesClosed": "Ya sale fluido: prueba una ronda sin mirar el mástil. La mano ya sabe el camino.",
+        "bassSameFret": "Es el mismo traste en otra cuerda: el dedo cruza de cuerda sin despegarse del todo y el pulgar no se mueve.",
+        "bassShift": "Es un salto de posición: mueve la mano entera (pulgar incluido) y mira el traste de destino antes de llegar.",
+        "bassLookAhead": "Mientras suena una nota, mira ya la siguiente: la mano sigue a los ojos.",
+        "slowIsFast": "Si hoy cuesta, haz una ronda más lenta y limpia: mañana la velocidad vuelve sola."
+      }
+    },
+    "fretTrainer": {
+      "eyebrow": "Práctica diaria",
+      "title": "Notas en el mástil",
+      "intro": "La app te pide una nota en una cuerda y la buscas en el diapasón. Las que más te cuestan aparecen más seguido. Un minuto por ronda.",
+      "scopeTitle": "Qué parte del mástil",
+      "scope": {
+        "low": "Trastes 0 a 5",
+        "twelve": "Hasta el 12",
+        "all": "Hasta el 12, con ♯ y ♭"
+      },
+      "bestShort": "récord {{n}}",
+      "byMic": "Contestar tocando el instrumento (con el micrófono)",
+      "noMic": "Sin micrófono: contesta tocando el diapasón de la pantalla.",
+      "start": "Empezar el minuto",
+      "cancel": "Terminar",
+      "skip": "No la encuentro: mostrar dónde está",
+      "status": "{{s}} s · ✓ {{right}} · ✗ {{wrong}}",
+      "question": "¿Dónde está {{note}} en la cuerda {{string}}?",
+      "hintTap": "Toca el traste en el diapasón (el 0 es la cuerda al aire).",
+      "hintMic": "Tócala en tu instrumento, en esa cuerda.",
+      "heard": "Oímos {{note}}.",
+      "wasHere": "{{note}} en la cuerda {{string}} estaba en las marcas verdes.",
+      "result": {
+        "first_one": "¡Primera ronda: {{count}} nota encontrada!",
+        "first_other": "¡Primera ronda: {{count}} notas encontradas!",
+        "record": "¡Nuevo récord: {{count}}!",
+        "good": "Muy preciso. Tu récord es {{best}}.",
+        "keepGoing": "Vas armando el mapa. Tu récord es {{best}}."
+      },
+      "empty": "No contestaste ninguna, así que esta ronda no se guarda.",
+      "summary": "Aciertos: {{right}} · errores: {{wrong}} · tiempo medio: {{s}} s",
+      "summaryNoTime": "Aciertos: {{right}} · errores: {{wrong}}",
+      "weakTitle": "Para repasar",
+      "weakItem": "{{note}} en la cuerda {{string}}",
+      "again": "Otra ronda",
+      "change": "Cambiar de parte del mástil",
+      "tip": {
+        "naturals": "Entre Mi y Fa, y entre Si y Do, no hay nota en el medio: están en trastes vecinos. Entre las demás notas naturales queda un traste libre.",
+        "twelve": "El traste 12 repite la cuerda al aire, una octava más aguda: de ahí en adelante el mástil se repite. Usa los puntos del diapasón (3, 5, 7 y 9) como referencias.",
+        "fifthBass": "En el traste 5 de cada cuerda suena la cuerda de al lado al aire: el 5 de la 4.ª es La, como la 3.ª.",
+        "fifthGuitar": "En el traste 5 de cada cuerda suena la cuerda siguiente al aire; solo en la 3.ª es el traste 4 (Si).",
+        "octave": "La misma nota está dos cuerdas más arriba y dos trastes más adelante: es su octava. Ubica una y encuentras la otra.",
+        "sharps": "Un sostenido (♯) está un traste más arriba de su nota natural; un bemol (♭), uno más abajo. Fa♯ y Sol♭ son el mismo traste.",
+        "sayIt": "Di el nombre en voz alta mientras buscas: nombrar la nota ayuda a recordarla."
+      }
+    },
+    "rhythmTrainer": {
+      "eyebrow": "Práctica diaria",
+      "title": "Ritmo",
+      "intro": "Cuatro compases para leer y tocar con el clic. Cada casilla es media negra: «1 y 2 y 3 y 4 y». Toca donde empieza cada bloque de color y calla en los puntos.",
+      "levelTitle": "Nivel",
+      "level": {
+        "1": "Negras y silencios",
+        "2": "Con corcheas",
+        "3": "Contratiempos"
+      },
+      "bestShort": "récord {{n}} %",
+      "tempo": "Tempo",
+      "bpm": "{{bpm}} bpm",
+      "byMic": "Tocar en el instrumento (el micrófono oye cada ataque)",
+      "noMic": "Sin micrófono: toca el botón grande en cada nota.",
+      "listen": "Escuchar cómo suena",
+      "newRound": "Otros compases",
+      "start": "Empezar",
+      "cancel": "Terminar",
+      "tap": "Toca aquí",
+      "playHint": "Toca cada nota en tu instrumento (una cuerda al aire alcanza). Con auriculares, el clic no se mezcla con lo que tocas.",
+      "countIn": "Cuenta: {{n}}…",
+      "and": "y",
+      "barA11y": "Compás {{n}}: {{counts}}",
+      "countMarked": "{{count}} ({{mark}})",
+      "mark": {
+        "ok": "a tiempo",
+        "early": "adelantada",
+        "late": "atrasada",
+        "miss": "no sonó"
+      },
+      "legend": "✓ a tiempo · ‹ adelantada · › atrasada · ✕ no sonó.",
+      "percent": "{{n}} %",
+      "result": {
+        "great": "¡Ritmo firme!",
+        "good": "Bien: casi todo en su lugar.",
+        "keepGoing": "Vamos de nuevo, más tranquilo."
+      },
+      "summary": "{{hits}} de {{total}} notas a tiempo · {{extras}} de más",
+      "tip": {
+        "rushing": "Te adelantas: escucha el clic y espera a que llegue. Toca «dentro» del clic, no antes.",
+        "dragging": "Te atrasas: prepara la mano antes del pulso, así el ataque sale justo con el clic.",
+        "countAnd": "Los «y» (contratiempos) son los que más se escapan: cuenta en voz alta «1 y 2 y» y toca en la «y».",
+        "restsBass": "En los silencios no alcanza con no tocar: apoya un dedo de cualquiera de las dos manos sobre la cuerda para que deje de sonar.",
+        "restsGuitar": "En los silencios, apaga las cuerdas (afloja la mano del mástil o apoya el canto de la mano de la púa) y deja que esa mano siga el péndulo sin tocar: así no pierdes el pulso.",
+        "restsNylon": "En los silencios, apoya la palma o los dedos de la mano que pulsa sobre las cuerdas para apagarlas, y vuelve a tocar en el pulso.",
+        "restsTap": "Tocaste también en algunos silencios: en los puntos, la mano se queda quieta aunque sigas contando.",
+        "handBass": "Alterna índice y medio en cada nota, aunque sea la misma cuerda: los dos dedos reparten el trabajo y el pulso queda parejo.",
+        "handGuitar": "Mueve la mano de la púa como un péndulo: abajo en cada número, arriba en cada «y». El brazo no para; solo decides cuándo tocar.",
+        "handNylon": "Alterna índice y medio (i-m) en cada nota, como al caminar: los dos dedos reparten el trabajo y el pulso queda parejo."
+      },
+      "again": "Otra ronda",
+      "againAt": "Otra ronda a {{bpm}} bpm",
+      "repeat": "Repetir estos compases",
+      "change": "Cambiar nivel o tempo"
     }
   },
   "content": {
@@ -6753,9 +6929,20 @@
         "intro": "Riffs y melodías originales para tocar por género, con una pista que te acompaña. Se desbloquean con los módulos donde aprendes lo que usan.",
         "playPrompt": "Tócala con la guitarra, a tempo con el metrónomo.",
         "chordsHint": "Un acorde por compás. En el ejemplo suenan de fondo; tu guitarra toca la melodía o el riff."
+      },
+      "changes": {
+        "intro": "Elige dos acordes y cambia de uno a otro durante un minuto, con un rasgueo en cada uno. La app cuenta los cambios. Es la práctica que más rápido hace que los acordes dejen de cortar la canción.",
+        "cardIntro": "Un minuto, dos acordes, todos los cambios que puedas. Supera tu récord un poco cada día.",
+        "how1": "Arma el primer acorde y rasguéalo una vez. Cambia al otro y rasguéalo una vez. Cada rasgueo después del primero es un cambio.",
+        "how2": "No vayas a toda velocidad: el acorde tiene que sonar limpio. Los dedos llegan juntos y después rasgueas."
+      },
+      "fretTrainer": {
+        "tip": {
+          "octave": "La misma nota está dos cuerdas más arriba y dos trastes más adelante: es su octava. Si el salto pasa por la 3.ª y la 2.ª (Sol y Si), son tres trastes."
+        }
       }
     }
-  },
+    },
   "nylon": {
     "ui": {
       "onboarding": {
