@@ -1025,6 +1025,52 @@
         "bassLookAhead": "Enquanto uma nota soa, já olhe a próxima: a mão segue os olhos.",
         "slowIsFast": "Se hoje está difícil, faça uma rodada mais lenta e limpa: amanhã a velocidade volta sozinha."
       }
+    },
+    "fretTrainer": {
+      "eyebrow": "Prática diária",
+      "title": "Notas no braço",
+      "intro": "O app pede uma nota em uma corda e você procura no braço. As que mais custam aparecem mais vezes. Um minuto por rodada.",
+      "scopeTitle": "Qual parte do braço",
+      "scope": {
+        "low": "Casas 0 a 5",
+        "twelve": "Até a casa 12",
+        "all": "Até a 12, com ♯ e ♭"
+      },
+      "bestShort": "recorde {{n}}",
+      "byMic": "Responder tocando o instrumento (com o microfone)",
+      "noMic": "Sem microfone: responda tocando o braço na tela.",
+      "start": "Começar o minuto",
+      "cancel": "Terminar",
+      "skip": "Não encontro: mostrar onde está",
+      "status": "{{s}} s · ✓ {{right}} · ✗ {{wrong}}",
+      "question": "Onde está {{note}} na corda {{string}}?",
+      "hintTap": "Toque a casa no braço (o 0 é a corda solta).",
+      "hintMic": "Toque no seu instrumento, nessa corda.",
+      "heard": "Ouvimos {{note}}.",
+      "wasHere": "{{note}} na corda {{string}} estava nas marcas verdes.",
+      "result": {
+        "first_one": "Primeira rodada: {{count}} nota encontrada!",
+        "first_other": "Primeira rodada: {{count}} notas encontradas!",
+        "record": "Novo recorde: {{count}}!",
+        "good": "Muito preciso. Seu recorde é {{best}}.",
+        "keepGoing": "Você está montando o mapa. Seu recorde é {{best}}."
+      },
+      "empty": "Você não respondeu nenhuma, então esta rodada não é salva.",
+      "summary": "Acertos: {{right}} · erros: {{wrong}} · tempo médio: {{s}} s",
+      "summaryNoTime": "Acertos: {{right}} · erros: {{wrong}}",
+      "weakTitle": "Para revisar",
+      "weakItem": "{{note}} na corda {{string}}",
+      "again": "Outra rodada",
+      "change": "Mudar a parte do braço",
+      "tip": {
+        "naturals": "Entre Mi e Fá, e entre Si e Dó, não há nota no meio: ficam em casas vizinhas. Entre as outras notas naturais sobra uma casa.",
+        "twelve": "A casa 12 repete a corda solta, uma oitava acima: dali em diante o braço se repete. Use as marcações (3, 5, 7 e 9) como referência.",
+        "fifthBass": "Na casa 5 de cada corda soa a corda vizinha solta: a casa 5 da 4ª corda é Lá, como a 3ª.",
+        "fifthGuitar": "Na casa 5 de cada corda soa a corda seguinte solta; só na 3ª é a casa 4 (Si).",
+        "octave": "A mesma nota está duas cordas acima e duas casas à frente: é a oitava dela. Ache uma e você acha a outra.",
+        "sharps": "Um sustenido (♯) fica uma casa acima da nota natural; um bemol (♭), uma casa abaixo. Fá♯ e Sol♭ são a mesma casa.",
+        "sayIt": "Diga o nome em voz alta enquanto procura: nomear a nota ajuda a lembrar."
+      }
     }
   },
   "content": {
@@ -6828,6 +6874,11 @@
         "cardIntro": "Um minuto, dois acordes, todas as trocas que conseguir. Supere seu recorde um pouco a cada dia.",
         "how1": "Monte o primeiro acorde e toque uma vez. Troque para o outro e toque uma vez. Cada batida depois da primeira é uma troca.",
         "how2": "Não vá na velocidade máxima: o acorde tem que soar limpo. Os dedos chegam juntos e depois você toca."
+      },
+      "fretTrainer": {
+        "tip": {
+          "octave": "A mesma nota está duas cordas acima e duas casas à frente: é a oitava dela. Se o salto passar pela 3ª e a 2ª (Sol e Si), são três casas."
+        }
       }
     }
     },
