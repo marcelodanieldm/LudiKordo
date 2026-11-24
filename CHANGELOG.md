@@ -4,7 +4,16 @@ Formato: [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versiones:
 
 ## [Sin publicar]
 
+## [0.4.0] — 2026-11-24
+
 ### Nuevo
+- Cambios en un minuto (bajo y guitarras): un minuto cambiando entre dos acordes (o dos notas en el bajo), contados por el micrófono o tocando la pantalla, con récord, historial y consejos para la mano (dedo ancla, dedo que se desliza, dedos que se mueven en bloque).
+- Notas en el mástil: entrenador del diapasón de un minuto por ronda, en tres etapas (trastes 0 a 5, hasta el 12, con ♯ y ♭); se contesta en la pantalla o tocando el instrumento, y las notas falladas o lentas vuelven más seguido.
+- Ritmo: cuatro compases en una grilla de corcheas, con cuenta previa y clic, en tres niveles y cinco tempos; cada nota queda marcada a tiempo, adelantada, atrasada o perdida, con consejos para la mano y el tempo sugerido.
+- Repetir un tramo: en la práctica en vivo de canciones y ejercicios se eligen unos compases para tocar en bucle (hasta 8 vueltas), también a tempo lento.
+- Cartoon de acordes animado (guitarras): la mano arma el acorde dedo por dedo, con el pulgar detrás del mástil, la cejilla y el rasgueo, y vibran solo las cuerdas que suenan.
+- Ejemplos de práctica sobre los acordes del ejercicio y con la partitura que sigue la nota que suena; en improvisación, una frase de pregunta y respuesta que cae en notas del acorde.
+- Explicaciones centradas en la mano y los cinco dedos en lecciones y práctica de las tres apps.
 - Ejercicios con el instrumento (notas, rasgueo, improvisación, vibrato y bend): antes de empezar, una explicación de cómo hacerlo armada con los datos del ejercicio (tempo, cuerdas, trastes, figuras, patrón contado, escala) y un ejemplo para escuchar; al terminar, una devolución con el conteo nota por nota (a tiempo, antes, tarde, otra nota, no se oyó), las notas con problemas y hasta tres consejos concretos. En las tres apps.
 - La app de guitarra criolla se llama «LudiKordo Guitar».
 - La app de guitarra eléctrica se llama «LudiKordo Electric Guitar» (antes, provisional «Kordi Guitar»).
