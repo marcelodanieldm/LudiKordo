@@ -15,6 +15,7 @@ import { eventAt, isRest, noteStartBeats } from '../../music/staff';
 import { freqToMidi, midiAt, noteName, type Locale } from '../../music/notes';
 import { starsFor, TIMING_TOLERANCE_MS, type DetectedNote } from '../../music/scoring';
 import { drillExerciseId, type Drill } from '../../content/practice';
+import { sectionsOf, sliceDrill, type Section } from '../../music/section';
 import { coach, improvExample } from '../../music/coach';
 import { handPlan, improvHands } from '../../music/hands';
 import { drillFingering } from '../../content/fingerings';
@@ -29,7 +30,7 @@ const countInFor = (barBeats: number) => (barBeats === 3 ? 6 : 4);
 const TICK_MS = 80;
 const MASTERY = 0.8;
 const STYLES = Object.keys(DRUM_STYLES) as DrumStyle[];
-const LOOPS = [1, 2, 4] as const;
+const LOOPS = [1, 2, 4, 8] as const;
 
 type Phase = 'setup' | 'starting' | 'running' | 'result';
 
@@ -48,6 +49,8 @@ interface Result {
   unlocked?: number;
   /** Sin micrófono: se tocó con el acompañamiento, sin evaluar. */
   unscored?: boolean;
+  /** Se practicó un tramo: se evalúa, pero no gana estrellas ni tempo. */
+  section?: boolean;
 }
 
 /**
@@ -55,8 +58,18 @@ interface Result {
  * estilo de batería, qué instrumentos lo acompañan y cuántas vueltas; la app
  * toca la pista y juzga cada nota mientras suena.
  */
-export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
+export function LiveSession({ drill: full, width }: { drill: Drill; width: number }) {
   const { t, i18n } = useTranslation();
+  // Tramo elegido (unos compases en bucle) o la pieza entera. Todo lo de abajo usa `drill`, ya recortado.
+  const [section, setSection] = useState<Section | null>(null);
+  const sections = useMemo(() => {
+    if (full.kind !== 'line') return [];
+    const bb = barBeatsOfStyle(full.style);
+    const list = sectionsOf(full.chords.length);
+    // Solo si todos los tramos se pueden cortar sin partir notas.
+    return list.every((s) => sliceDrill(full, s, bb)) ? list : [];
+  }, [full]);
+  const drill = useMemo(() => (section ? (sliceDrill(full, section, barBeatsOfStyle(full.style)) ?? full) : full), [full, section]);
   const notation = useSettings((s) => s.notation);
   const exId = drillExerciseId(drill.id);
   const unlockedBpm = useProgress((s) => s.tempo[exId]) ?? drill.tempoSteps[0];
@@ -221,14 +234,16 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
             r = { stars: starsFor(ir.accuracy, MASTERY), accuracy: ir.accuracy, bestStreak: 0, counts: { hit: 0, early: 0, late: 0, wrong: 0, miss: 0 }, meanOffset: null, improv: { notes: ir.notes, inScale: ir.inScale } };
           }
           // Tres estrellas en el escalón más alto abierto desbloquean el siguiente.
-          if (r.stars === 3 && bpm >= unlockedBpm) {
+          // Un tramo es práctica: no gana estrellas ni desbloquea tempo (eso es para la pieza entera).
+          if (section) r.section = true;
+          else if (r.stars === 3 && bpm >= unlockedBpm) {
             const next = drill.tempoSteps.find((s) => s > bpm);
             if (next) {
               unlockTempo(exId, next);
               r.unlocked = next;
             }
           }
-          if (r.stars > 0) recordExercise(exId, r.stars, drill.skills);
+          if (r.stars > 0 && !section) recordExercise(exId, r.stars, drill.skills);
           setResult(r);
           setPhase('result');
         },
@@ -343,6 +358,18 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
             JAM_PARTS.map((p) => chip(p, t(`ui.drills.part.${p}`), parts.includes(p), () => togglePart(p))),
           )}
           {parts.includes('drums') ? row(t('ui.drills.styleTitle'), STYLES.filter((s) => barBeatsOfStyle(s) === barBeats).map((s) => chip(s, t(`ui.drills.style.${s}`), style === s, () => setStyle(s)))) : null}
+          {sections.length > 1
+            ? row(t('ui.drills.section'), [
+                chip('all', t('ui.drills.sectionAll'), section === null, () => setSection(null)),
+                ...sections.map((sec) =>
+                  chip(`s${sec.from}`, t('ui.drills.sectionBars', { from: sec.from + 1, to: sec.to + 1 }), section?.from === sec.from, () => {
+                    setSection(sec);
+                    setLoops((l) => Math.max(l, 4));
+                  }),
+                ),
+              ])
+            : null}
+          {section ? <Muted>{t('ui.drills.sectionNote')}</Muted> : null}
           {row(
             t('ui.drills.loops'),
             LOOPS.map((n) => chip(`l${n}`, t('ui.drills.loopsN', { n }), loops === n, () => setLoops(n))),
@@ -433,6 +460,7 @@ export function LiveSession({ drill, width }: { drill: Drill; width: number }) {
                 </>
               ) : null}
               {result.unlocked ? <Text style={{ fontWeight: '800', color: colors.teal }}>{t('ui.drills.unlocked', { bpm: result.unlocked })}</Text> : null}
+              {result.section ? <Muted style={{ textAlign: 'center' }}>{t('ui.drills.sectionNote')}</Muted> : null}
               {coaching ? <Text style={{ fontSize: 16, fontWeight: '800', lineHeight: 23, color: colors.ink, textAlign: 'center' }}>{t(coaching.headline)}</Text> : null}
             </>
           )}

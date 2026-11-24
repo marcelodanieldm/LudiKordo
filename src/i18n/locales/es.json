@@ -137,7 +137,11 @@
           "reading": "Antes de empezar, recorre la partitura con la vista y busca los compases difíciles.",
           "improv": "Repite una idea que te gustó y cámbiale una nota: así se construye un solo."
         }
-      }
+      },
+      "section": "Tramo",
+      "sectionAll": "Toda la pieza",
+      "sectionBars": "Compases {{from}}–{{to}}",
+      "sectionNote": "Practicas un tramo en bucle: se evalúa nota por nota, pero las estrellas y los tempos nuevos se ganan con la pieza entera."
     },
     "motion": {
       "play": "Ver y escuchar",
