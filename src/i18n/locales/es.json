@@ -983,13 +983,14 @@
       },
       "empty": "No contestaste ninguna, así que esta ronda no se guarda.",
       "summary": "Aciertos: {{right}} · errores: {{wrong}} · tiempo medio: {{s}} s",
+      "summaryNoTime": "Aciertos: {{right}} · errores: {{wrong}}",
       "weakTitle": "Para repasar",
       "weakItem": "{{note}} en la cuerda {{string}}",
       "again": "Otra ronda",
       "change": "Cambiar de parte del mástil",
       "tip": {
         "naturals": "Entre Mi y Fa, y entre Si y Do, no hay nota en el medio: están en trastes vecinos. Entre las demás notas naturales queda un traste libre.",
-        "twelve": "El traste 12 repite la cuerda al aire, una octava más aguda: de ahí en adelante el mástil se repite. Usa los puntos (3, 5, 7, 12) como referencias.",
+        "twelve": "El traste 12 repite la cuerda al aire, una octava más aguda: de ahí en adelante el mástil se repite. Usa los puntos del diapasón (3, 5, 7 y 9) como referencias.",
         "fifthBass": "En el traste 5 de cada cuerda suena la cuerda de al lado al aire: el 5 de la 4.ª es La, como la 3.ª.",
         "fifthGuitar": "En el traste 5 de cada cuerda suena la cuerda siguiente al aire; solo en la 3.ª es el traste 4 (Si).",
         "octave": "La misma nota está dos cuerdas más arriba y dos trastes más adelante: es su octava. Ubica una y encuentras la otra.",
@@ -6796,7 +6797,7 @@
       },
       "fretTrainer": {
         "tip": {
-          "octave": "La misma nota está dos cuerdas más arriba y dos trastes más adelante: es su octava. Si cruzas la 2.ª cuerda, son tres trastes."
+          "octave": "La misma nota está dos cuerdas más arriba y dos trastes más adelante: es su octava. Si el salto pasa por la 3.ª y la 2.ª (Sol y Si), son tres trastes."
         }
       }
     }

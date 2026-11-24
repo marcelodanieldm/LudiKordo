@@ -16,6 +16,7 @@ import {
   answersOf,
   isHeardRight,
   isTapRight,
+  minBoardWidth,
   nextQuestion,
   questionsFor,
   record,
@@ -30,8 +31,6 @@ import { useProgress } from '../../state/progress';
 import { useSettings } from '../../state/settings';
 
 type Phase = 'setup' | 'running' | 'result';
-/** Ancho mínimo de cada traste para que el toque mida al menos 44 dp. */
-const MIN_FRET_W = 48;
 const TICK_MS = 250;
 const stringNumberOf = (id: string) => INSTRUMENT.strings.find((s) => s.id === id)?.number ?? 0;
 const bestOf = (h: number[] | undefined) => (h?.length ? Math.max(...h) : 0);
@@ -57,6 +56,9 @@ export function FretTrainer({ width }: { width: number }) {
   const [left, setLeft] = useState(ROUND_MS / 1000);
   const [flash, setFlash] = useState<{ wrong?: { string: StringId; fret: number }; missed?: StringId; missedPc?: number; show: number[]; heard?: number } | null>(null);
   const [noMic, setNoMic] = useState(false);
+  // Mientras se pide el micrófono, «Empezar» no se puede volver a tocar (hay un solo detector).
+  const [starting, setStarting] = useState(false);
+  const board = useRef<ScrollView | null>(null);
   const [result, setResult] = useState<{ right: number; wrong: number; meanMs: number; feedback: TrainerFeedback; weak: Question[]; best: number } | null>(null);
 
   const stats = useRef<Stats>({});
@@ -118,7 +120,8 @@ export function FretTrainer({ width }: { width: number }) {
   const onTap = (string: StringId, fret: number) => {
     const q = current.current;
     if (phase !== 'running' || !q) return;
-    void playTone(midiToFreq(midiAt(string, fret)), 0.5);
+    // Con el micrófono abierto, el tono del parlante se oiría como una respuesta: no suena.
+    if (!listener.current) void playTone(midiToFreq(midiAt(string, fret)), 0.5);
     if (isTapRight(q, string, fret, scope, INSTRUMENT.strings)) answer(true);
     else answer(false, { string, fret });
   };
@@ -130,7 +133,7 @@ export function FretTrainer({ width }: { width: number }) {
     const meanMs = times.current.length ? times.current.reduce((a, b) => a + b, 0) / times.current.length : 0;
     const history = rounds[scope.id];
     const previous = bestOf(history);
-    const weak = weakest(stats.current);
+    const weak = weakest(stats.current, 3, pool);
     const feedback = trainerFeedback({ right, wrong, meanMs }, previous, (history?.length ?? 0) > 0, scope, weak, HAND_INSTRUMENT);
     // Una ronda sin respuestas no se guarda ni suma a la racha.
     if (right + wrong > 0) recordFretRound(scope.id, right, stats.current);
@@ -139,6 +142,7 @@ export function FretTrainer({ width }: { width: number }) {
   };
 
   const start = async () => {
+    if (starting) return;
     const myRun = ++run.current;
     stopAll();
     stats.current = { ...savedStats };
@@ -149,8 +153,12 @@ export function FretTrainer({ width }: { width: number }) {
     setResult(null);
     let mic = false;
     if (byMic) {
+      setStarting(true);
       const status = await requestMic();
-      if (!mounted.current || myRun !== run.current) return;
+      if (!mounted.current || myRun !== run.current) {
+        if (mounted.current) setStarting(false);
+        return;
+      }
       if (status === 'ok') {
         try {
           const heard = await listenNotes((n) => {
@@ -159,10 +167,11 @@ export function FretTrainer({ width }: { width: number }) {
             const midi = Math.round(freqToMidi(n.freq));
             // Solo la nota correcta avanza: otra nota (o ruido) no se cuenta como error.
             if (isHeardRight(q, midi, scope, INSTRUMENT.strings)) answer(true);
-            else setFlash({ heard: midi, show: [] });
+            else setFlash((f) => ({ ...(f ?? { show: [] }), heard: midi }));
           });
           if (!mounted.current || myRun !== run.current) {
             heard?.stop();
+            if (mounted.current) setStarting(false);
             return;
           }
           listener.current = heard;
@@ -172,6 +181,7 @@ export function FretTrainer({ width }: { width: number }) {
         }
       }
       setNoMic(!mic);
+      setStarting(false);
     }
     ask(null);
     const t0 = Date.now();
@@ -190,7 +200,7 @@ export function FretTrainer({ width }: { width: number }) {
   };
 
   // El diapasón entra entero en tablet; en teléfono, con 12 trastes, se desplaza de costado.
-  const boardW = Math.max(width, (scope.frets + 1) * MIN_FRET_W);
+  const boardW = Math.max(width, minBoardWidth(scope.frets));
   const lastWrong = flash?.wrong;
   // La pregunta fallada: dónde estaba la nota (en verde) y dónde se tocó (×).
   const dots: Dot[] = [
@@ -210,8 +220,8 @@ export function FretTrainer({ width }: { width: number }) {
               return (
                 <Pressable
                   key={sc.id}
-                  accessibilityRole="button"
-                  accessibilityState={{ selected }}
+                  accessibilityRole="radio"
+                  accessibilityState={{ checked: selected }}
                   onPress={() => setScope(sc)}
                   style={{ minHeight: 44, paddingHorizontal: 14, paddingVertical: 8, borderRadius: 22, justifyContent: 'center', backgroundColor: selected ? colors.accent : colors.card, borderWidth: 1, borderColor: selected ? colors.accent : colors.border }}
                 >
@@ -226,7 +236,7 @@ export function FretTrainer({ width }: { width: number }) {
             <Text style={{ flex: 1, color: colors.ink }}>{t('ui.fretTrainer.byMic')}</Text>
           </Pressable>
           {noMic ? <Muted>{t('ui.fretTrainer.noMic')}</Muted> : null}
-          <Button label={t('ui.fretTrainer.start')} onPress={() => void start()} testID="fret-start" />
+          <Button label={t('ui.fretTrainer.start')} disabled={starting} onPress={() => void start()} testID="fret-start" />
         </Card>
       ) : null}
 
@@ -243,7 +253,13 @@ export function FretTrainer({ width }: { width: number }) {
             {flash?.heard !== undefined ? <Muted>{t('ui.fretTrainer.heard', { note: noteName(flash.heard, i18n.language as Locale, notation) })}</Muted> : null}
             {flash?.missed ? <Muted>{t('ui.fretTrainer.wasHere', { note: name(flash.missedPc ?? 0), string: stringNumberOf(flash.missed) })}</Muted> : null}
           </Card>
-          <ScrollView horizontal showsHorizontalScrollIndicator={boardW > width}>
+          <ScrollView
+            ref={board}
+            horizontal
+            showsHorizontalScrollIndicator={boardW > width}
+            // Zurdos: el mástil está espejado, la cejuela queda a la derecha; se empieza por ahí.
+            onContentSizeChange={() => leftHanded && boardW > width && board.current?.scrollToEnd({ animated: false })}
+          >
             <Fretboard
               width={boardW}
               frets={scope.frets}
@@ -267,7 +283,9 @@ export function FretTrainer({ width }: { width: number }) {
             <Muted style={{ textAlign: 'center' }}>{t('ui.fretTrainer.empty')}</Muted>
           )}
           <Muted style={{ textAlign: 'center' }}>
-            {t('ui.fretTrainer.summary', { right: result.right, wrong: result.wrong, s: (result.meanMs / 1000).toFixed(1) })}
+            {result.right > 0
+              ? t('ui.fretTrainer.summary', { right: result.right, wrong: result.wrong, s: (result.meanMs / 1000).toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) })
+              : t('ui.fretTrainer.summaryNoTime', { right: result.right, wrong: result.wrong })}
           </Muted>
           {result.weak.length ? (
             <View style={{ gap: 4 }}>

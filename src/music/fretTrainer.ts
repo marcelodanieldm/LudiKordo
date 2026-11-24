@@ -85,8 +85,10 @@ export function isTapRight(q: Question, string: StringId, fret: number, scope: S
 
 /**
  * ¿La nota oída (MIDI) contesta la pregunta? Tiene que ser la altura exacta de
- * alguna de las posiciones en esa cuerda: la misma nota una octava más arriba
- * o en otra cuerda no cuenta como «encontrada en esta cuerda».
+ * alguna de las posiciones en esa cuerda: la misma nota una octava más arriba no
+ * cuenta. Límite conocido: el micrófono oye la altura, no la cuerda, así que la
+ * misma altura tocada en otra cuerda (por ejemplo, la cuerda vecina al aire en
+ * lugar del traste 5) también se acepta.
  */
 export function isHeardRight(q: Question, midi: number, scope: Scope, strings: readonly InstrumentString[]): boolean {
   const s = strings.find((x) => x.id === q.string);
@@ -100,9 +102,11 @@ export function record(stats: Stats, q: Question, right: boolean, ms: number): S
   return { ...stats, [k]: { right: cur.right + (right ? 1 : 0), wrong: cur.wrong + (right ? 0 : 1), slow: cur.slow + (right && ms > SLOW_MS ? 1 : 0) } };
 }
 
-/** Las preguntas a repasar: con más errores y lentitud, las peores primero. */
-export function weakest(stats: Stats, max = 3): Question[] {
+/** Las preguntas a repasar: con más errores y lentitud, las peores primero (solo de `within`, si se da). */
+export function weakest(stats: Stats, max = 3, within?: Question[]): Question[] {
+  const allowed = within ? new Set(within.map(keyOf)) : null;
   return Object.entries(stats)
+    .filter(([k]) => !allowed || allowed.has(k))
     .map(([k, st]) => ({ k, score: st.wrong * 2 + st.slow - st.right * 0.5 }))
     .filter((x) => x.score > 0)
     .sort((a, b) => b.score - a.score)
@@ -142,4 +146,14 @@ export function trainerFeedback(r: RoundResult, previousBest: number, hadHistory
   if (!scope.naturals) tips.push('sharps');
   if (r.meanMs > SLOW_MS) tips.push('sayIt');
   return { headline, tips: [...new Set(tips)].slice(0, 3) };
+}
+
+/**
+ * Ancho mínimo del diapasón tocable para que el traste más angosto (el último:
+ * los trastes se achican como en un instrumento real) mida `minFret` dp.
+ * `pad` es lo que el diapasón usa fuera de los trastes (cuerdas al aire y borde).
+ */
+export function minBoardWidth(frets: number, minFret = 44, pad = 56): number {
+  const raw = (n: number) => 1 - Math.pow(2, -n / 12);
+  return Math.ceil((minFret * raw(frets)) / (raw(frets) - raw(frets - 1)) + pad);
 }

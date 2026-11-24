@@ -983,13 +983,14 @@
       },
       "empty": "Você não respondeu nenhuma, então esta rodada não é salva.",
       "summary": "Acertos: {{right}} · erros: {{wrong}} · tempo médio: {{s}} s",
+      "summaryNoTime": "Acertos: {{right}} · erros: {{wrong}}",
       "weakTitle": "Para revisar",
       "weakItem": "{{note}} na corda {{string}}",
       "again": "Outra rodada",
       "change": "Mudar a parte do braço",
       "tip": {
         "naturals": "Entre Mi e Fá, e entre Si e Dó, não há nota no meio: ficam em casas vizinhas. Entre as outras notas naturais sobra uma casa.",
-        "twelve": "A casa 12 repete a corda solta, uma oitava acima: dali em diante o braço se repete. Use as marcações (3, 5, 7, 12) como referência.",
+        "twelve": "A casa 12 repete a corda solta, uma oitava acima: dali em diante o braço se repete. Use as marcações (3, 5, 7 e 9) como referência.",
         "fifthBass": "Na casa 5 de cada corda soa a corda vizinha solta: a casa 5 da 4ª corda é Lá, como a 3ª.",
         "fifthGuitar": "Na casa 5 de cada corda soa a corda seguinte solta; só na 3ª é a casa 4 (Si).",
         "octave": "A mesma nota está duas cordas acima e duas casas à frente: é a oitava dela. Ache uma e você acha a outra.",
@@ -6796,7 +6797,7 @@
       },
       "fretTrainer": {
         "tip": {
-          "octave": "A mesma nota está duas cordas acima e duas casas à frente: é a oitava dela. Se cruzar a 2ª corda, são três casas."
+          "octave": "A mesma nota está duas cordas acima e duas casas à frente: é a oitava dela. Se o salto passar pela 3ª e a 2ª (Sol e Si), são três casas."
         }
       }
     }

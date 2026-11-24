@@ -983,13 +983,14 @@
       },
       "empty": "You didn't answer any, so this round isn't saved.",
       "summary": "Right: {{right}} · wrong: {{wrong}} · average time: {{s}} s",
+      "summaryNoTime": "Right: {{right}} · wrong: {{wrong}}",
       "weakTitle": "To review",
       "weakItem": "{{note}} on string {{string}}",
       "again": "Another round",
       "change": "Change part of the neck",
       "tip": {
         "naturals": "Between E and F, and between B and C, there's no note in between: they're on neighboring frets. Between the other natural notes there's one fret free.",
-        "twelve": "Fret 12 repeats the open string, one octave higher: from there on the neck repeats. Use the dots (3, 5, 7, 12) as landmarks.",
+        "twelve": "Fret 12 repeats the open string, one octave higher: from there on the neck repeats. Use the fretboard dots (3, 5, 7 and 9) as landmarks.",
         "fifthBass": "Fret 5 on each string sounds like the next open string: fret 5 on the 4th string is A, like the 3rd string.",
         "fifthGuitar": "Fret 5 on each string sounds like the next open string; only on the 3rd string it's fret 4 (B).",
         "octave": "The same note is two strings up and two frets along: that's its octave. Find one and you find the other.",
@@ -6796,7 +6797,7 @@
       },
       "fretTrainer": {
         "tip": {
-          "octave": "The same note is two strings up and two frets along: that's its octave. When you cross the 2nd string, it's three frets."
+          "octave": "The same note is two strings up and two frets along: that's its octave. If the jump goes past the 3rd and 2nd strings (G and B), it's three frets."
         }
       }
     }

@@ -11,6 +11,7 @@ import {
   isHeardRight,
   isTapRight,
   keyOf,
+  minBoardWidth,
   nextQuestion,
   questionsFor,
   record,
@@ -43,7 +44,7 @@ test('respuestas: Sol en la 4.ª del bajo es el traste 3; Mi, al aire y en el 12
   assert.ok(!isTapRight(q, 'E', 5, LOW, BASS.strings));
 });
 
-test('micrófono: la altura exacta en esa cuerda; la octava u otra cuerda no cuentan', () => {
+test('micrófono: la altura exacta de esa cuerda; la octava no cuenta', () => {
   const q = { string: 'A' as const, pc: 0 }; // Do en la 3.ª del bajo: traste 3 = MIDI 36.
   assert.ok(isHeardRight(q, 36, LOW, BASS.strings));
   assert.ok(!isHeardRight(q, 48, LOW, BASS.strings));
@@ -53,6 +54,20 @@ test('micrófono: la altura exacta en esa cuerda; la octava u otra cuerda no cue
   assert.ok(isHeardRight(e, 64, TWELVE, GUITAR.strings));
   assert.ok(isHeardRight(e, 76, TWELVE, GUITAR.strings));
   assert.ok(!isHeardRight(e, 76, LOW, GUITAR.strings));
+  // Límite conocido: el micrófono oye la altura, no la cuerda. La en la 4.ª (traste 5)
+  // suena igual que la 3.ª al aire, y se acepta.
+  assert.ok(isHeardRight({ string: 'E', pc: 9 }, 33, LOW, BASS.strings));
+});
+
+test('diapasón tocable: el último traste mide al menos 44 dp', () => {
+  for (const frets of [5, 12]) {
+    const w = minBoardWidth(frets);
+    const inner = w - 56;
+    const raw = (n: number) => 1 - Math.pow(2, -n / 12);
+    const last = (inner * (raw(frets) - raw(frets - 1))) / raw(frets);
+    assert.ok(last >= 44 - 1e-9, `${frets}: ${last}`);
+  }
+  assert.ok(minBoardWidth(12) > minBoardWidth(5));
 });
 
 test('las falladas y lentas pesan más; nunca se repite la anterior', () => {
@@ -86,6 +101,8 @@ test('para repasar: primero las de más errores, después las lentas', () => {
   st = record(st, { string: 'D', pc: 2 }, true, 800);
   // La lenta también se repasa, después de la fallada; la rápida y correcta no.
   assert.deepEqual(weakest(st), [{ string: 'E', pc: 5 }, { string: 'A', pc: 0 }]);
+  // Solo las de la etapa que se tocó.
+  assert.deepEqual(weakest(st, 3, [{ string: 'A', pc: 0 }]), [{ string: 'A', pc: 0 }]);
 });
 
 test('devolución: titular según el récord y consejos que existen en los 3 idiomas', () => {
