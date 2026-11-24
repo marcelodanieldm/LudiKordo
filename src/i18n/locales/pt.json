@@ -1071,6 +1071,62 @@
         "sharps": "Um sustenido (♯) fica uma casa acima da nota natural; um bemol (♭), uma casa abaixo. Fá♯ e Sol♭ são a mesma casa.",
         "sayIt": "Diga o nome em voz alta enquanto procura: nomear a nota ajuda a lembrar."
       }
+    },
+    "rhythmTrainer": {
+      "eyebrow": "Prática diária",
+      "title": "Ritmo",
+      "intro": "Quatro compassos para ler e tocar com o clique. Cada casa é meio tempo: «1 e 2 e 3 e 4 e». Toque onde começa cada bloco colorido e fique em silêncio nos pontos.",
+      "levelTitle": "Nível",
+      "level": {
+        "1": "Semínimas e pausas",
+        "2": "Com colcheias",
+        "3": "Contratempos"
+      },
+      "bestShort": "recorde {{n}}%",
+      "tempo": "Andamento",
+      "bpm": "{{bpm}} bpm",
+      "byMic": "Tocar no instrumento (o microfone ouve cada ataque)",
+      "noMic": "Sem microfone: toque o botão grande em cada nota.",
+      "listen": "Ouvir como soa",
+      "newRound": "Outros compassos",
+      "start": "Começar",
+      "cancel": "Terminar",
+      "tap": "Toque aqui",
+      "playHint": "Toque cada nota no seu instrumento (uma corda solta basta). Com fones de ouvido, o clique não se mistura com o que você toca.",
+      "countIn": "Contagem: {{n}}…",
+      "and": "e",
+      "barA11y": "Compasso {{n}}: {{counts}}",
+      "countMarked": "{{count}} ({{mark}})",
+      "mark": {
+        "ok": "no tempo",
+        "early": "adiantada",
+        "late": "atrasada",
+        "miss": "não soou"
+      },
+      "legend": "✓ no tempo · ‹ adiantada · › atrasada · ✕ não soou.",
+      "percent": "{{n}}%",
+      "result": {
+        "great": "Ritmo firme!",
+        "good": "Bom: quase tudo no lugar.",
+        "keepGoing": "Vamos de novo, com mais calma."
+      },
+      "summary": "{{hits}} de {{total}} notas no tempo · {{extras}} a mais",
+      "tip": {
+        "rushing": "Você está adiantando: escute o clique e espere ele chegar. Toque «dentro» do clique, não antes.",
+        "dragging": "Você está atrasando: prepare a mão antes do tempo, assim o ataque sai junto com o clique.",
+        "countAnd": "Os «e» (contratempos) são os que mais escapam: conte em voz alta «1 e 2 e» e toque no «e».",
+        "restsBass": "Nas pausas não basta não tocar: apoie um dedo de qualquer uma das mãos na corda para ela parar de soar.",
+        "restsGuitar": "Nas pausas, abafe as cordas (solte a mão do braço ou apoie a lateral da mão da palheta) e deixe essa mão seguir o pêndulo sem tocar: assim você não perde o tempo.",
+        "restsNylon": "Nas pausas, apoie a palma ou os dedos da mão que dedilha nas cordas para abafá-las, e volte a tocar no tempo.",
+        "restsTap": "Você também tocou em algumas pausas: nos pontos, a mão fica parada enquanto você continua contando.",
+        "handBass": "Alterne indicador e médio em cada nota, mesmo na mesma corda: os dois dedos dividem o trabalho e o pulso fica regular.",
+        "handGuitar": "Mova a mão da palheta como um pêndulo: para baixo em cada número, para cima em cada «e». O braço não para; você só escolhe quando tocar.",
+        "handNylon": "Alterne indicador e médio (i-m) em cada nota, como ao caminhar: os dois dedos dividem o trabalho e o pulso fica regular."
+      },
+      "again": "Outra rodada",
+      "againAt": "Outra rodada a {{bpm}} bpm",
+      "repeat": "Repetir estes compassos",
+      "change": "Mudar nível ou andamento"
     }
   },
   "content": {

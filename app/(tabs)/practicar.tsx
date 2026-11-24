@@ -23,9 +23,9 @@ import { usePairLabel } from '../../src/components/practice/ChangesSession';
 export default function Practice() {
   const { t } = useTranslation();
   // Herramientas con su pantalla; las que no tienen ruta todavía se muestran como «próximamente».
-  const tools: { k: string; color: string; d: string; href?: '/mastil' }[] = [
+  const tools: { k: string; color: string; d: string; href?: '/mastil' | '/ritmo' }[] = [
     { k: 'fretboard', color: colors.accentInk, d: 'M3 7h18M3 12h18M3 17h18M8 4v16M14 4v16', href: '/mastil' },
-    { k: 'rhythm', color: colors.gold, d: 'M9 18V5l10-2v13M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM16 19a3 3 0 1 0 0-6 3 3 0 0 0 0 6z' },
+    { k: 'rhythm', color: colors.gold, d: 'M9 18V5l10-2v13M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM16 19a3 3 0 1 0 0-6 3 3 0 0 0 0 6z', href: '/ritmo' },
   ];
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>

@@ -28,6 +28,8 @@ interface ProgressState {
   /** Entrenador del mástil: aciertos de las últimas rondas por etapa y la estadística por nota. */
   fretRounds: Record<string, number[]>;
   fretStats: FretStats;
+  /** Entrenador de ritmo: porcentaje de las últimas rondas por nivel. */
+  rhythmRounds: Record<string, number[]>;
   /** «Cambios en un minuto»: últimos resultados por par (src/music/changes.ts). */
   changes: Record<string, number[]>;
 
@@ -37,6 +39,8 @@ interface ProgressState {
   unlockTempo: (exerciseId: string, bpm: number) => void;
   /** Guarda una ronda del entrenador del mástil: suma el minuto y un punto de diapasón. */
   recordFretRound: (scope: string, right: number, stats: FretStats) => void;
+  /** Guarda una ronda del entrenador de ritmo: suma el minuto y un punto de ritmo. */
+  recordRhythmRound: (level: number, percent: number) => void;
   /** Guarda una ronda de cambios: suma el minuto practicado y un punto de técnica. */
   recordChanges: (pairId: string, count: number) => void;
   /**
@@ -70,6 +74,7 @@ export const useProgress = create<ProgressState>()(
       checkpoints: {},
       fretRounds: {},
       fretStats: {},
+      rhythmRounds: {},
       changes: {},
 
       recordExercise: (id, stars, skills) =>
@@ -117,6 +122,14 @@ export const useProgress = create<ProgressState>()(
           fretRounds: { ...s.fretRounds, [scope]: [...(s.fretRounds[scope] ?? []), right].slice(-12) },
           fretStats: stats,
           skills: { ...s.skills, fretboard: { points: s.skills.fretboard.points + 1, last: isoDate() } },
+        }));
+        get().addMinutes(1);
+      },
+
+      recordRhythmRound: (level, percent) => {
+        set((s) => ({
+          rhythmRounds: { ...s.rhythmRounds, [level]: [...(s.rhythmRounds[level] ?? []), percent].slice(-12) },
+          skills: { ...s.skills, rhythm: { points: s.skills.rhythm.points + 1, last: isoDate() } },
         }));
         get().addMinutes(1);
       },
