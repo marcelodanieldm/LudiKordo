@@ -961,6 +961,70 @@
         "feedback": "FEEDBACK",
         "mix": "MIX"
       }
+    },
+    "changes": {
+      "eyebrow": "Daily practice",
+      "title": "One-minute changes",
+      "intro": "Pick two notes in different places on the neck and switch between them for one minute. The app counts your changes. One minute a day is enough for your fretting hand to find the way on its own.",
+      "cardIntro": "One minute, two notes, as many changes as you can. Beat your record a little every day.",
+      "cardTry": "Try {{name}}",
+      "cardBest": "{{name}} · record {{best}}",
+      "open": "See all pairs",
+      "pair": "{{a}} ↔ {{b}}",
+      "noteAt": "{{note}} · string {{string}}, fret {{fret}}",
+      "suggested": "Suggested for you",
+      "bestShort": "record {{n}}",
+      "notYet": "new",
+      "rowA11y_one": "{{name}}, record {{count}} change",
+      "rowA11y_other": "{{name}}, record {{count}} changes",
+      "notFound": "We couldn't find that pair.",
+      "zero": "No changes were counted, so this round isn't saved. If you played, move the phone closer to your instrument or choose \"Count myself\".",
+      "howTitle": "How it works",
+      "how1": "Play the first note. When it sounds, move your hand to the other one and play it. Every time you reach the other note is one change.",
+      "how2": "Don't go flat out: one clean note per change beats many messy ones. Your finger lands on its fret before you play.",
+      "how3": "When you finish, check your record and next time's goal. One minute a day is enough.",
+      "bestGoal": "Record: {{best}} · goal: {{goal}}",
+      "firstGoal": "First time: the goal is just to count how many you get.",
+      "manual": "Count myself (tap the screen on each change)",
+      "noMic": "No microphone: count yourself by tapping the screen on each change.",
+      "start": "Start the minute",
+      "go": "Go!",
+      "secondsLeft": "{{count}} s left",
+      "countA11y_one": "{{count}} change",
+      "countA11y_other": "{{count}} changes",
+      "tapHint": "Tap the screen every time you change.",
+      "strumHint": "One strum on each chord: the app counts the strums.",
+      "noteHint": "It only counts when the other note sounds.",
+      "tap": "+1 change",
+      "cancel": "Cancel",
+      "result": {
+        "first_one": "First score: {{count}} change!",
+        "first_other": "First score: {{count}} changes!",
+        "record": "New record: {{count}}!",
+        "close": "Very close to your record ({{best}}).",
+        "below": "Fewer today. That happens: what counts is showing up."
+      },
+      "history": "Your last rounds",
+      "historyA11y": "Last rounds: {{values}}",
+      "again": "Another minute",
+      "otherPair": "Pick another pair",
+      "nowA11y": "Now: {{name}}",
+      "sideA11y": "{{name}}",
+      "tip": {
+        "anchorStay": "Finger {{finger}} doesn't move: it stays on string {{string}}. Use it as an anchor and move only the others.",
+        "anchorSlide": "Finger {{finger}} stays on string {{string}}: slide it without lifting and let it guide your hand.",
+        "shapeShiftTreble_one": "Fingers {{fingers}} keep the same shape in both chords: move them together, as a block, {{count}} string toward the treble side.",
+        "shapeShiftTreble_other": "Fingers {{fingers}} keep the same shape in both chords: move them together, as a block, {{count}} strings toward the treble side.",
+        "shapeShiftBass_one": "Fingers {{fingers}} keep the same shape in both chords: move them together, as a block, {{count}} string toward the bass side.",
+        "shapeShiftBass_other": "Fingers {{fingers}} keep the same shape in both chords: move them together, as a block, {{count}} strings toward the bass side.",
+        "block": "Lift all your fingers at once and put them down together on the new chord, instead of one at a time.",
+        "lightPress": "Relax your hand between chords: barely touching the strings, your fingers travel faster.",
+        "eyesClosed": "It's flowing now: try a round without looking at the neck. Your hand already knows the way.",
+        "bassSameFret": "Same fret, another string: your finger crosses over without fully lifting, and your thumb stays put.",
+        "bassShift": "It's a position shift: move your whole hand (thumb included) and look at the target fret before you get there.",
+        "bassLookAhead": "While one note sounds, look at the next one: the hand follows the eyes.",
+        "slowIsFast": "If it's hard today, do a slower, clean round: the speed comes back on its own tomorrow."
+      }
     }
   },
   "content": {
@@ -6758,9 +6822,15 @@
         "intro": "Original riffs and melodies to play by genre, with a backing track. They unlock with the modules where you learn what they use.",
         "playPrompt": "Play it on your guitar, in time with the metronome.",
         "chordsHint": "One chord per bar. In the example they play in the background; your guitar plays the melody or riff."
+      },
+      "changes": {
+        "intro": "Pick two chords and switch between them for one minute, with one strum on each. The app counts the changes. It's the fastest way to stop chord changes from breaking up a song.",
+        "cardIntro": "One minute, two chords, as many changes as you can. Beat your record a little every day.",
+        "how1": "Form the first chord and strum it once. Switch to the other and strum it once. Every strum after the first is one change.",
+        "how2": "Don't go flat out: the chord has to ring clean. Your fingers land together, then you strum."
       }
     }
-  },
+    },
   "nylon": {
     "ui": {
       "onboarding": {

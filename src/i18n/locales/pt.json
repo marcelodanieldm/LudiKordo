@@ -961,6 +961,70 @@
         "feedback": "FEEDBACK",
         "mix": "MIX"
       }
+    },
+    "changes": {
+      "eyebrow": "Prática diária",
+      "title": "Trocas em um minuto",
+      "intro": "Escolha duas notas em lugares diferentes do braço e troque de uma para a outra durante um minuto. O app conta as trocas. Um minuto por dia basta para a mão que pisa achar o caminho sozinha.",
+      "cardIntro": "Um minuto, duas notas, todas as trocas que conseguir. Supere seu recorde um pouco a cada dia.",
+      "cardTry": "Experimentar {{name}}",
+      "cardBest": "{{name}} · recorde {{best}}",
+      "open": "Ver todos os pares",
+      "pair": "{{a}} ↔ {{b}}",
+      "noteAt": "{{note}} · corda {{string}}, casa {{fret}}",
+      "suggested": "Sugerido para você",
+      "bestShort": "recorde {{n}}",
+      "notYet": "novo",
+      "rowA11y_one": "{{name}}, recorde {{count}} troca",
+      "rowA11y_other": "{{name}}, recorde {{count}} trocas",
+      "notFound": "Não encontramos esse par.",
+      "zero": "Nenhuma troca foi contada, então esta rodada não é salva. Se você tocou, aproxime o celular do instrumento ou escolha «Contar eu mesmo».",
+      "howTitle": "Como fazer",
+      "how1": "Toque a primeira nota. Quando soar, leve a mão até a outra e toque. Cada vez que você chega na outra nota é uma troca.",
+      "how2": "Não vá na velocidade máxima: uma nota limpa por troca vale mais que muitas sujas. O dedo chega na casa antes de tocar.",
+      "how3": "No fim, veja seu recorde e a meta da próxima vez. Um minuto por dia basta.",
+      "bestGoal": "Recorde: {{best}} · meta: {{goal}}",
+      "firstGoal": "Primeira vez: a meta é só contar quantas saem.",
+      "manual": "Contar eu mesmo (tocando a tela a cada troca)",
+      "noMic": "Sem microfone: conte você, tocando a tela a cada troca.",
+      "start": "Começar o minuto",
+      "go": "Já!",
+      "secondsLeft": "Faltam {{count}} s",
+      "countA11y_one": "{{count}} troca",
+      "countA11y_other": "{{count}} trocas",
+      "tapHint": "Toque a tela cada vez que trocar.",
+      "strumHint": "Um rasgueado em cada acorde: o app conta as batidas.",
+      "noteHint": "Só conta quando soa a outra nota.",
+      "tap": "+1 troca",
+      "cancel": "Cancelar",
+      "result": {
+        "first_one": "Primeira marca: {{count}} troca!",
+        "first_other": "Primeira marca: {{count}} trocas!",
+        "record": "Novo recorde: {{count}}!",
+        "close": "Bem perto do seu recorde ({{best}}).",
+        "below": "Hoje saíram menos. Acontece: o que conta é a constância."
+      },
+      "history": "Suas últimas rodadas",
+      "historyA11y": "Últimas rodadas: {{values}}",
+      "again": "Mais um minuto",
+      "otherPair": "Escolher outro par",
+      "nowA11y": "Agora: {{name}}",
+      "sideA11y": "{{name}}",
+      "tip": {
+        "anchorStay": "O dedo {{finger}} não se move: fica apoiado na corda {{string}}. Use-o como âncora e mova só os outros.",
+        "anchorSlide": "O dedo {{finger}} fica na corda {{string}}: deslize-o sem levantar e deixe que ele guie a mão.",
+        "shapeShiftTreble_one": "Os dedos {{fingers}} têm o mesmo formato nos dois acordes: mova-os juntos, como um bloco, {{count}} corda em direção às agudas.",
+        "shapeShiftTreble_other": "Os dedos {{fingers}} têm o mesmo formato nos dois acordes: mova-os juntos, como um bloco, {{count}} cordas em direção às agudas.",
+        "shapeShiftBass_one": "Os dedos {{fingers}} têm o mesmo formato nos dois acordes: mova-os juntos, como um bloco, {{count}} corda em direção às graves.",
+        "shapeShiftBass_other": "Os dedos {{fingers}} têm o mesmo formato nos dois acordes: mova-os juntos, como um bloco, {{count}} cordas em direção às graves.",
+        "block": "Levante todos os dedos de uma vez e desça-os juntos no acorde novo, em vez de colocar um por um.",
+        "lightPress": "Solte a mão entre um acorde e outro: mal encostando nas cordas, os dedos viajam mais rápido.",
+        "eyesClosed": "Já está fluindo: tente uma rodada sem olhar para o braço. A mão já sabe o caminho.",
+        "bassSameFret": "É a mesma casa em outra corda: o dedo cruza sem se soltar de todo e o polegar não se mexe.",
+        "bassShift": "É uma mudança de posição: mova a mão inteira (polegar incluído) e olhe a casa de destino antes de chegar.",
+        "bassLookAhead": "Enquanto uma nota soa, já olhe a próxima: a mão segue os olhos.",
+        "slowIsFast": "Se hoje está difícil, faça uma rodada mais lenta e limpa: amanhã a velocidade volta sozinha."
+      }
     }
   },
   "content": {
@@ -6758,9 +6822,15 @@
         "intro": "Riffs e melodias originais para tocar por gênero, com uma base que acompanha você. Eles são liberados com os módulos em que você aprende o que eles usam.",
         "playPrompt": "Toque na guitarra, no tempo do metrônomo.",
         "chordsHint": "Um acorde por compasso. No exemplo eles soam ao fundo; sua guitarra toca a melodia ou o riff."
+      },
+      "changes": {
+        "intro": "Escolha dois acordes e troque de um para o outro durante um minuto, com um rasgueado em cada um. O app conta as trocas. É a prática que mais rápido faz os acordes pararem de cortar a música.",
+        "cardIntro": "Um minuto, dois acordes, todas as trocas que conseguir. Supere seu recorde um pouco a cada dia.",
+        "how1": "Monte o primeiro acorde e toque uma vez. Troque para o outro e toque uma vez. Cada batida depois da primeira é uma troca.",
+        "how2": "Não vá na velocidade máxima: o acorde tem que soar limpo. Os dedos chegam juntos e depois você toca."
       }
     }
-  },
+    },
   "nylon": {
     "ui": {
       "onboarding": {
