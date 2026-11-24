@@ -951,6 +951,51 @@
         "feedback": "FEEDBACK",
         "mix": "MIX"
       }
+    },
+    "fretTrainer": {
+      "eyebrow": "Práctica diaria",
+      "title": "Notas en el mástil",
+      "intro": "La app te pide una nota en una cuerda y la buscas en el diapasón. Las que más te cuestan aparecen más seguido. Un minuto por ronda.",
+      "scopeTitle": "Qué parte del mástil",
+      "scope": {
+        "low": "Trastes 0 a 5",
+        "twelve": "Hasta el 12",
+        "all": "Hasta el 12, con ♯ y ♭"
+      },
+      "bestShort": "récord {{n}}",
+      "byMic": "Contestar tocando el instrumento (con el micrófono)",
+      "noMic": "Sin micrófono: contesta tocando el diapasón de la pantalla.",
+      "start": "Empezar el minuto",
+      "cancel": "Terminar",
+      "skip": "No la encuentro: mostrar dónde está",
+      "status": "{{s}} s · ✓ {{right}} · ✗ {{wrong}}",
+      "question": "¿Dónde está {{note}} en la cuerda {{string}}?",
+      "hintTap": "Toca el traste en el diapasón (el 0 es la cuerda al aire).",
+      "hintMic": "Tócala en tu instrumento, en esa cuerda.",
+      "heard": "Oímos {{note}}.",
+      "wasHere": "{{note}} en la cuerda {{string}} estaba en las marcas verdes.",
+      "result": {
+        "first_one": "¡Primera ronda: {{count}} nota encontrada!",
+        "first_other": "¡Primera ronda: {{count}} notas encontradas!",
+        "record": "¡Nuevo récord: {{count}}!",
+        "good": "Muy preciso. Tu récord es {{best}}.",
+        "keepGoing": "Vas armando el mapa. Tu récord es {{best}}."
+      },
+      "empty": "No contestaste ninguna, así que esta ronda no se guarda.",
+      "summary": "Aciertos: {{right}} · errores: {{wrong}} · tiempo medio: {{s}} s",
+      "weakTitle": "Para repasar",
+      "weakItem": "{{note}} en la cuerda {{string}}",
+      "again": "Otra ronda",
+      "change": "Cambiar de parte del mástil",
+      "tip": {
+        "naturals": "Entre Mi y Fa, y entre Si y Do, no hay nota en el medio: están en trastes vecinos. Entre las demás notas naturales queda un traste libre.",
+        "twelve": "El traste 12 repite la cuerda al aire, una octava más aguda: de ahí en adelante el mástil se repite. Usa los puntos (3, 5, 7, 12) como referencias.",
+        "fifthBass": "En el traste 5 de cada cuerda suena la cuerda de al lado al aire: el 5 de la 4.ª es La, como la 3.ª.",
+        "fifthGuitar": "En el traste 5 de cada cuerda suena la cuerda siguiente al aire; solo en la 3.ª es el traste 4 (Si).",
+        "octave": "La misma nota está dos cuerdas más arriba y dos trastes más adelante: es su octava. Ubica una y encuentras la otra.",
+        "sharps": "Un sostenido (♯) está un traste más arriba de su nota natural; un bemol (♭), uno más abajo. Fa♯ y Sol♭ son el mismo traste.",
+        "sayIt": "Di el nombre en voz alta mientras buscas: nombrar la nota ayuda a recordarla."
+      }
     }
   },
   "content": {
@@ -6748,6 +6793,11 @@
         "intro": "Riffs y melodías originales para tocar por género, con una pista que te acompaña. Se desbloquean con los módulos donde aprendes lo que usan.",
         "playPrompt": "Tócala con la guitarra, a tempo con el metrónomo.",
         "chordsHint": "Un acorde por compás. En el ejemplo suenan de fondo; tu guitarra toca la melodía o el riff."
+      },
+      "fretTrainer": {
+        "tip": {
+          "octave": "La misma nota está dos cuerdas más arriba y dos trastes más adelante: es su octava. Si cruzas la 2.ª cuerda, son tres trastes."
+        }
       }
     }
   },

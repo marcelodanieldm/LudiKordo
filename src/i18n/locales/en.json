@@ -951,6 +951,51 @@
         "feedback": "FEEDBACK",
         "mix": "MIX"
       }
+    },
+    "fretTrainer": {
+      "eyebrow": "Daily practice",
+      "title": "Notes on the neck",
+      "intro": "The app asks for a note on a string and you find it on the fretboard. The ones you find hardest come up more often. One minute per round.",
+      "scopeTitle": "Which part of the neck",
+      "scope": {
+        "low": "Frets 0 to 5",
+        "twelve": "Up to fret 12",
+        "all": "Up to 12, with ♯ and ♭"
+      },
+      "bestShort": "record {{n}}",
+      "byMic": "Answer by playing your instrument (with the microphone)",
+      "noMic": "No microphone: answer by tapping the on-screen fretboard.",
+      "start": "Start the minute",
+      "cancel": "Finish",
+      "skip": "I can't find it: show me",
+      "status": "{{s}} s · ✓ {{right}} · ✗ {{wrong}}",
+      "question": "Where is {{note}} on string {{string}}?",
+      "hintTap": "Tap the fret on the fretboard (0 is the open string).",
+      "hintMic": "Play it on your instrument, on that string.",
+      "heard": "We heard {{note}}.",
+      "wasHere": "{{note}} on string {{string}} was at the green marks.",
+      "result": {
+        "first_one": "First round: {{count}} note found!",
+        "first_other": "First round: {{count}} notes found!",
+        "record": "New record: {{count}}!",
+        "good": "Very accurate. Your record is {{best}}.",
+        "keepGoing": "You're building the map. Your record is {{best}}."
+      },
+      "empty": "You didn't answer any, so this round isn't saved.",
+      "summary": "Right: {{right}} · wrong: {{wrong}} · average time: {{s}} s",
+      "weakTitle": "To review",
+      "weakItem": "{{note}} on string {{string}}",
+      "again": "Another round",
+      "change": "Change part of the neck",
+      "tip": {
+        "naturals": "Between E and F, and between B and C, there's no note in between: they're on neighboring frets. Between the other natural notes there's one fret free.",
+        "twelve": "Fret 12 repeats the open string, one octave higher: from there on the neck repeats. Use the dots (3, 5, 7, 12) as landmarks.",
+        "fifthBass": "Fret 5 on each string sounds like the next open string: fret 5 on the 4th string is A, like the 3rd string.",
+        "fifthGuitar": "Fret 5 on each string sounds like the next open string; only on the 3rd string it's fret 4 (B).",
+        "octave": "The same note is two strings up and two frets along: that's its octave. Find one and you find the other.",
+        "sharps": "A sharp (♯) is one fret above its natural note; a flat (♭), one fret below. F♯ and G♭ are the same fret.",
+        "sayIt": "Say the name out loud while you look: naming the note helps you remember it."
+      }
     }
   },
   "content": {
@@ -6748,6 +6793,11 @@
         "intro": "Original riffs and melodies to play by genre, with a backing track. They unlock with the modules where you learn what they use.",
         "playPrompt": "Play it on your guitar, in time with the metronome.",
         "chordsHint": "One chord per bar. In the example they play in the background; your guitar plays the melody or riff."
+      },
+      "fretTrainer": {
+        "tip": {
+          "octave": "The same note is two strings up and two frets along: that's its octave. When you cross the 2nd string, it's three frets."
+        }
       }
     }
   },

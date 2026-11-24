@@ -18,10 +18,11 @@ import { colors, fonts, radius } from '../../src/theme';
 /** Herramientas sueltas. El afinador y el metrónomo son gratis para siempre. */
 export default function Practice() {
   const { t } = useTranslation();
-  const tools = [
-    { k: 'fretboard', color: colors.accentInk, d: 'M3 7h18M3 12h18M3 17h18M8 4v16M14 4v16' },
+  // Herramientas con su pantalla; las que no tienen ruta todavía se muestran como «próximamente».
+  const tools: { k: string; color: string; d: string; href?: '/mastil' }[] = [
+    { k: 'fretboard', color: colors.accentInk, d: 'M3 7h18M3 12h18M3 17h18M8 4v16M14 4v16', href: '/mastil' },
     { k: 'rhythm', color: colors.gold, d: 'M9 18V5l10-2v13M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM16 19a3 3 0 1 0 0-6 3 3 0 0 0 0 6z' },
-  ] as const;
+  ];
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
       <ScrollView contentContainerStyle={{ padding: 20, gap: 14, maxWidth: 720, width: '100%', alignSelf: 'center' }}>
@@ -31,16 +32,27 @@ export default function Practice() {
         <Tuner />
         <Metronome />
         <View style={{ flexDirection: 'row', gap: 8 }}>
-          {tools.map((tool) => (
-            <View key={tool.k} style={{ flex: 1, minHeight: 88, borderRadius: radius.lg, backgroundColor: colors.card, borderWidth: 1, borderColor: colors.border, alignItems: 'center', justifyContent: 'center', gap: 6, padding: 8 }}>
-              <Svg width={22} height={22} viewBox="0 0 24 24">
-                <Path d={tool.d} stroke={tool.color} strokeWidth={2.2} fill="none" strokeLinecap="round" strokeLinejoin="round" />
-              </Svg>
-              <Text style={{ fontSize: 13, fontWeight: '800', textAlign: 'center' }}>{t(`ui.practice.${tool.k}`)}</Text>
-            </View>
-          ))}
+          {tools.map((tool) => {
+            const href = tool.href;
+            return (
+              <Pressable
+                key={tool.k}
+                accessibilityRole="button"
+                accessibilityState={{ disabled: !href }}
+                disabled={!href}
+                onPress={() => href && router.push(href)}
+                testID={`tool-${tool.k}`}
+                style={{ flex: 1, minHeight: 88, borderRadius: radius.lg, backgroundColor: colors.card, borderWidth: 1, borderColor: href ? tool.color : colors.border, alignItems: 'center', justifyContent: 'center', gap: 6, padding: 8 }}
+              >
+                <Svg width={22} height={22} viewBox="0 0 24 24">
+                  <Path d={tool.d} stroke={tool.color} strokeWidth={2.2} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                </Svg>
+                <Text style={{ fontSize: 13, fontWeight: '800', textAlign: 'center' }}>{t(`ui.practice.${tool.k}`)}</Text>
+                {href ? null : <Text style={{ fontSize: 11, color: colors.muted, textAlign: 'center' }}>{t('ui.common.comingSoon')}</Text>}
+              </Pressable>
+            );
+          })}
         </View>
-        <Muted>{t('ui.common.comingSoon')}</Muted>
       </ScrollView>
     </SafeAreaView>
   );

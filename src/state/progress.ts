@@ -4,6 +4,7 @@ import { zustandStorage } from './storage';
 import { applyCheckpointPass, isoDate } from './rules';
 import { XP_CHECKPOINT, xpFor } from '../music/scoring';
 import type { Skill } from '../content/types';
+import type { Stats as FretStats } from '../music/fretTrainer';
 
 export interface LessonRecord {
   stars: 0 | 1 | 2 | 3;
@@ -23,11 +24,16 @@ interface ProgressState {
   tempo: Record<string, number>;
   /** Mejor resultado de cada checkpoint aprobado, por nivel. */
   checkpoints: Record<number, { stars: number; passedAt: string }>;
+  /** Entrenador del mástil: aciertos de las últimas rondas por etapa y la estadística por nota. */
+  fretRounds: Record<string, number[]>;
+  fretStats: FretStats;
 
   recordExercise: (id: string, stars: number, skills: Skill[]) => void;
   completeLesson: (id: string, stars: 0 | 1 | 2 | 3) => void;
   addMinutes: (minutes: number) => void;
   unlockTempo: (exerciseId: string, bpm: number) => void;
+  /** Guarda una ronda del entrenador del mástil: suma el minuto y un punto de diapasón. */
+  recordFretRound: (scope: string, right: number, stats: FretStats) => void;
   /**
    * Guarda un checkpoint aprobado. Si el nivel no estaba terminado, se marca
    * como saltado para desbloquear el siguiente.
@@ -57,6 +63,8 @@ export const useProgress = create<ProgressState>()(
       skippedLevels: [],
       tempo: {},
       checkpoints: {},
+      fretRounds: {},
+      fretStats: {},
 
       recordExercise: (id, stars, skills) =>
         set((s) => {
@@ -97,6 +105,15 @@ export const useProgress = create<ProgressState>()(
           if (Object.keys(minutesByDay).length >= 100) badges.add('days-100');
           return { minutesByDay, badges: [...badges] };
         }),
+
+      recordFretRound: (scope, right, stats) => {
+        set((s) => ({
+          fretRounds: { ...s.fretRounds, [scope]: [...(s.fretRounds[scope] ?? []), right].slice(-12) },
+          fretStats: stats,
+          skills: { ...s.skills, fretboard: { points: s.skills.fretboard.points + 1, last: isoDate() } },
+        }));
+        get().addMinutes(1);
+      },
 
       unlockTempo: (exerciseId, bpm) => set((s) => ({ tempo: { ...s.tempo, [exerciseId]: Math.max(s.tempo[exerciseId] ?? 0, bpm) } })),
 
