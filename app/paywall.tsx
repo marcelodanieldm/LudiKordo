@@ -4,6 +4,7 @@ import { Text } from '../src/components/Text';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
+import Constants from 'expo-constants';
 import type { PurchasesPackage } from 'react-native-purchases';
 import Svg, { Path } from 'react-native-svg';
 import { Button, Chip, CloseButton } from '../src/components/ui';
@@ -50,7 +51,7 @@ export default function Paywall() {
           <Chip label={t('ui.path.premium')} color={colors.gold} bg={colors.goldSoft} />
           <CloseButton label={t('ui.common.close')} onPress={close} />
         </View>
-        <Text style={{ fontFamily: fonts.display, fontSize: 32, lineHeight: 36 }}>{t('ui.paywall.title')}</Text>
+        <Text style={{ fontFamily: fonts.display, fontSize: 32, lineHeight: 36 }}>{t('ui.paywall.title', { app: Constants.expoConfig?.name ?? 'LudiKordo' })}</Text>
         <View style={{ gap: 12 }}>
           {BENEFITS.map((b) => (
             <View key={b.key} style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>

@@ -493,7 +493,7 @@
       "restore": "Restaurar compras"
     },
     "paywall": {
-      "title": "Desbloquea todo LudiKordo",
+      "title": "Desbloquea todo {{app}}",
       "b1": "151 lecciones de cero a intermedio",
       "b2": "Ejercicios con micrófono y pistas",
       "b3": "Checkpoints y certificados",
