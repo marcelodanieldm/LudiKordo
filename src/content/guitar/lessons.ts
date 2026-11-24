@@ -9,6 +9,7 @@
  * Las alturas se calculan con el perfil de guitarra (no con el instrumento
  * activo) para que las pruebas de Node, que corren como bajo, las validen igual.
  */
+import { RIGHT_GUIDE } from '../hands';
 import type { Beats, Lesson, ListenExample, ScoreEvent } from '../types';
 import type { StringId } from '../../instruments/profiles';
 import { GUITAR, midiOn } from '../../instruments/profiles';
@@ -418,7 +419,7 @@ const l122: Lesson = {
   cards: [
     { titleKey: k('1.2.2', 'c1t'), bodyKey: k('1.2.2', 'c1b'), figure: 'pick-grip' },
     { titleKey: k('1.2.2', 'c2t'), bodyKey: k('1.2.2', 'c2b'), figure: 'pick-down' },
-    { titleKey: k('1.2.2', 'c3t'), bodyKey: k('1.2.2', 'c3b') },
+    { titleKey: k('1.2.2', 'c3t'), bodyKey: k('1.2.2', 'c3b'), hands: RIGHT_GUIDE },
   ],
   exercises: [
     {

@@ -2,6 +2,7 @@
  * Las 4 lecciones modelo del documento de producto. El resto de las lecciones
  * se agrega siguiendo exactamente este formato.
  */
+import { LEFT_GUIDE, RIGHT_GUIDE, spiderHands, withChordHandsAll } from './hands';
 import type { FigureMotion, Lesson, MotionStep } from './types';
 import { LESSONS_2_6 } from './lessons26';
 import { midiToFreq } from '../music/notes';
@@ -129,7 +130,7 @@ const l121: Lesson = {
   cartoon: { riveResource: 'kordi_1_2_1', durationSec: 120, sceneKeys: [1, 2, 3, 4].map((n) => k('1.2.1', `s${n}`)) },
   cards: [
     { titleKey: k('1.2.1', 'c1t'), bodyKey: k('1.2.1', 'c1b'), figure: 'right-hand', motion: { bpm: 72, steps: IM('E', 8) } },
-    { titleKey: k('1.2.1', 'c2t'), bodyKey: k('1.2.1', 'c2b') },
+    { titleKey: k('1.2.1', 'c2t'), bodyKey: k('1.2.1', 'c2b'), hands: RIGHT_GUIDE },
   ],
   exercises: [
     {
@@ -176,7 +177,7 @@ const l131: Lesson = {
   cartoon: { riveResource: 'kordi_1_3_1', durationSec: 150, sceneKeys: [1, 2, 3, 4].map((n) => k('1.3.1', `s${n}`)) },
   cards: [
     { titleKey: k('1.3.1', 'c1t'), bodyKey: k('1.3.1', 'c1b'), figure: 'left-hand', motion: FINGERS_1234([1, 2, 3, 4]) },
-    { titleKey: k('1.3.1', 'c3t'), bodyKey: k('1.3.1', 'c3b'), figure: 'fretboard-1234', motion: FINGERS_1234([1, 2, 3, 4]) },
+    { titleKey: k('1.3.1', 'c3t'), bodyKey: k('1.3.1', 'c3b'), figure: 'fretboard-1234', motion: FINGERS_1234([1, 2, 3, 4]), hands: spiderHands(0) },
   ],
   exercises: [
     {
@@ -224,7 +225,7 @@ const l132: Lesson = {
   cards: [
     { titleKey: k('1.3.2', 'c1t'), bodyKey: k('1.3.2', 'c1b'), figure: 'left-hand', motion: { bpm: 60, steps: [step('E', 3, { beats: 2, mark: 'ok' }), step('E', 3, { beats: 2, mark: 'onFret', muted: true }), step('E', 3, { beats: 2, mark: 'middle', muted: true }), step('E', 3, { beats: 2, mark: 'ok' })] } },
     { titleKey: k('1.3.2', 'c2t'), bodyKey: k('1.3.2', 'c2b') },
-    { titleKey: k('1.3.2', 'c3t'), bodyKey: k('1.3.2', 'c3b') },
+    { titleKey: k('1.3.2', 'c3t'), bodyKey: k('1.3.2', 'c3b'), hands: LEFT_GUIDE },
   ],
   exercises: [
     {
@@ -1277,7 +1278,8 @@ export const BASS_LESSONS: Record<string, Lesson> = {
 };
 
 /** Lecciones del instrumento de esta build (las guitarras tienen las suyas en guitar/ y nylon/lessons.ts). */
-export const LESSONS: Record<string, Lesson> = IS_NYLON ? NYLON_LESSONS : IS_GUITAR ? GUITAR_LESSONS : BASS_LESSONS;
+// Las tarjetas con el diagrama de un acorde suman «Tus manos en la guitarra» (content/hands.ts).
+export const LESSONS: Record<string, Lesson> = withChordHandsAll(IS_NYLON ? NYLON_LESSONS : IS_GUITAR ? GUITAR_LESSONS : BASS_LESSONS);
 
 export function getLesson(id: string): Lesson | undefined {
   return LESSONS[id];

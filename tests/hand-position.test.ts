@@ -92,7 +92,15 @@ test('los textos de la tarjeta de manos existen en los 3 idiomas', async () => {
   const { readFileSync } = await import('node:fs');
   const src = readFileSync('src/components/HandsCard.tsx', 'utf8');
   const used = [...new Set([...src.matchAll(/'(ui\.hands\.[A-Za-z.]+)'/g)].map((m) => m[1]))];
-  const keys = [...used, ...[1, 2, 3, 4].map((f) => `ui.hands.finger.${f}`), ...['p', 'i', 'm', 'a'].map((r) => `ui.hands.guide.role.${r}`)];
+  const kinds = ['fingers', 'pick', 'bass'].flatMap((k) => [`ui.hands.guide.rightBody.${k}`, `ui.hands.guide.rightA11y.${k}`]);
+  const keys = [
+    ...used,
+    ...kinds,
+    ...[1, 2, 3, 4].map((f) => `ui.hands.finger.${f}`),
+    ...['p', 'i', 'm', 'a'].map((r) => `ui.hands.guide.role.${r}`),
+    ...[1, 2, 3].map((k) => `ui.hands.guide.pick.${k}`),
+    ...['i', 'm', 'thumb'].map((k) => `ui.hands.guide.bass.${k}`),
+  ];
   assert.ok(used.length > 15);
   for (const lang of ['es', 'en', 'pt']) {
     const tree = JSON.parse(readFileSync(`src/i18n/locales/${lang}.json`, 'utf8'));
@@ -101,4 +109,37 @@ test('los textos de la tarjeta de manos existen en los 3 idiomas', async () => {
       assert.equal(typeof v, 'string', `${lang}: ${k}`);
     }
   }
+});
+
+test('eléctrica: los acordes de mano llevan su tarjeta de manos; las cajas de escala y las de movimiento no', async () => {
+  const { GUITAR_LESSONS } = await import('../src/content/guitar/lessons');
+  const { withChordHandsAll } = await import('../src/content/hands');
+  const lessons = withChordHandsAll(GUITAR_LESSONS);
+  const cards = Object.values(lessons).flatMap((l) => l.cards.map((c) => ({ id: l.id, c })));
+  const chords = cards.filter((x) => x.c.hands?.kind === 'chord');
+  assert.ok(chords.length >= 10, `tarjetas de acorde: ${chords.length}`);
+  for (const { id, c } of chords) {
+    const h = c.hands;
+    const p = h && h.kind !== 'guide' ? h.posture : null;
+    assert.ok(p && (p.dots.length > 0 || p.barre), `${id}: sin dedos`);
+    assert.ok(!c.motion, `${id}: la tarjeta de movimiento no se reemplaza`);
+  }
+  // Las tarjetas originales no cambian: withChordHands devuelve copias.
+  assert.ok(!Object.values(GUITAR_LESSONS).some((l) => l.cards.some((c) => c.hands?.kind === 'chord')));
+  assert.ok(cards.some((x) => x.id === '1.3.1' && x.c.hands?.kind === 'spider'));
+  assert.ok(cards.some((x) => x.id === '1.3.1' && x.c.hands?.kind === 'guide'));
+  assert.ok(cards.some((x) => x.id === '1.2.2' && x.c.hands?.kind === 'guide'));
+});
+
+test('bajo: araña en 4 cuerdas y las dos guías de manos', async () => {
+  const { BASS_LESSONS } = await import('../src/content/lessons');
+  const cards = Object.values(BASS_LESSONS).flatMap((l) => l.cards.map((c) => ({ id: l.id, c })));
+  const spider = cards.find((x) => x.id === '1.3.1' && x.c.hands?.kind === 'spider');
+  assert.ok(spider);
+  const h = spider.c.hands;
+  const p = h && h.kind === 'spider' ? h.posture : null;
+  assert.ok(p && p.dots.every((d) => d.string >= 0 && d.string < 4));
+  assert.ok(cards.some((x) => x.id === '1.2.1' && x.c.hands?.kind === 'guide'));
+  assert.ok(cards.some((x) => x.id === '1.3.2' && x.c.hands?.kind === 'guide'));
+  assert.ok(!cards.some((x) => x.c.hands?.kind === 'chord'), 'el bajo no tiene acordes de mano');
 });

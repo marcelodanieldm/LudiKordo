@@ -31,13 +31,31 @@
         "goodA11y": "Braço de lado: dedo arqueado apertando com a ponta e polegar atrás, no meio.",
         "badA11y": "Braço de lado: dedo deitado encostando em outra corda e polegar aparecendo por cima.",
         "zone": "Zona de toque",
-        "rightBody": "Apoie o antebraço na borda do corpo e deixe a mão solta sobre a zona marcada, entre a boca e o cavalete. Cada dedo tem suas cordas:",
-        "rightA11y": "Corpo do violão: zona de toque entre a boca e o cavalete; polegar nas cordas 6 a 4; indicador, médio e anelar nas cordas 3, 2 e 1.",
+        "rightBody": {
+          "fingers": "Apoie o antebraço na borda do corpo e deixe a mão solta sobre a zona marcada, entre a boca e o cavalete. Cada dedo tem suas cordas:",
+          "pick": "Apoie o antebraço na borda do corpo e faça o ritmo ou palhete sobre a zona marcada, entre os dois captadores. Assim se segura a palheta:",
+          "bass": "Apoie o polegar no captador e toque com o indicador e o médio, alternando, perto dele. Cada dedo tem sua função:"
+        },
+        "rightA11y": {
+          "fingers": "Corpo do violão: zona de toque entre a boca e o cavalete; polegar nas cordas 6 a 4; indicador, médio e anelar nas cordas 3, 2 e 1.",
+          "pick": "Corpo da guitarra: zona de toque entre os dois captadores; a palheta aparece entre o polegar e o indicador.",
+          "bass": "Corpo do baixo: o polegar descansa no captador; indicador e médio tocam alternados perto dele."
+        },
         "role": {
           "p": "Polegar: cordas 6, 5 e 4 (os baixos).",
           "i": "Indicador: 3ª corda.",
           "m": "Médio: 2ª corda.",
           "a": "Anelar: 1ª corda."
+        },
+        "pick": {
+          "1": "Dobre o indicador e apoie a palheta na lateral da última falange.",
+          "2": "Coloque o polegar reto por cima: a palheta fica entre os dois.",
+          "3": "Deixe só a ponta aparecer, uns 2 ou 3 mm, e não aperte demais."
+        },
+        "bass": {
+          "i": "Indicador: toca uma nota e descansa na corda ao lado.",
+          "m": "Médio: toca a seguinte. Alterne sempre i e m.",
+          "thumb": "Polegar: apoiado no captador, dá estabilidade à mão."
         }
       }
     },
