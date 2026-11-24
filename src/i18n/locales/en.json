@@ -1018,11 +1018,18 @@
       "start": "Start",
       "cancel": "Finish",
       "tap": "Tap here",
-      "playHint": "Play each note on your instrument; an open string is enough.",
+      "playHint": "Play each note on your instrument (an open string is enough). With headphones, the click doesn't mix with what you play.",
       "countIn": "Count: {{n}}…",
       "and": "&",
-      "gridA11y": "Four-bar rhythm. Notes start on beats {{beats}}.",
-      "legend": "Green: on time · yellow: early or late · red: missed.",
+      "barA11y": "Bar {{n}}: {{counts}}",
+      "countMarked": "{{count}} ({{mark}})",
+      "mark": {
+        "ok": "on time",
+        "early": "early",
+        "late": "late",
+        "miss": "missed"
+      },
+      "legend": "✓ on time · ‹ early · › late · ✕ missed.",
       "percent": "{{n}}%",
       "result": {
         "great": "Solid rhythm!",
@@ -1035,11 +1042,12 @@
         "dragging": "You're dragging: get your hand ready before the beat, so the attack lands right on the click.",
         "countAnd": "The \"&\"s (offbeats) are the ones that slip: count \"1 & 2 &\" out loud and play on the \"&\".",
         "restsBass": "In rests, not playing isn't enough: rest a finger from either hand on the string so it stops ringing.",
-        "restsGuitar": "In rests, your picking hand keeps moving down and up without touching the strings: that way you don't lose the beat.",
-        "restsNylon": "In rests, rest your right palm or fingers on the strings to mute them, then play again on the beat.",
+        "restsGuitar": "In rests, mute the strings (relax your fretting hand or rest the edge of your picking hand) and let that hand keep swinging without hitting: that way you don't lose the beat.",
+        "restsNylon": "In rests, rest the palm or fingers of your plucking hand on the strings to mute them, then play again on the beat.",
+        "restsTap": "You also tapped on some rests: on the dots, your hand stays still while you keep counting.",
         "handBass": "Alternate index and middle on every note, even on the same string: the two fingers share the work and the pulse stays even.",
         "handGuitar": "Swing your picking hand like a pendulum: down on every number, up on every \"&\". The arm never stops; you only choose when to hit.",
-        "handNylon": "Play the numbers with your thumb and the \"&\"s with your index: the hand shares the rhythm without rushing."
+        "handNylon": "Alternate index and middle (i-m) on every note, like walking: the two fingers share the work and the pulse stays even."
       },
       "again": "Another round",
       "againAt": "Another round at {{bpm}} bpm",

@@ -16,6 +16,14 @@ export const BEATS_PER_BAR = 4;
 export const TEMPOS = [60, 70, 80, 90, 100] as const;
 /** Desvío medio (ms) a partir del cual decimos «te adelantas» o «te atrasas». */
 export const LEAN_MS = 25;
+/**
+ * Tolerancia al tocar la pantalla. Es mayor que la del micrófono: el toque
+ * suma la latencia de la pantalla y del audio del teléfono (50 a 150 ms en
+ * Android). Además, en ese modo se descuenta el retraso constante (ver gradeRhythm).
+ */
+export const TAP_WINDOW_MS = 90;
+/** Corrimiento máximo que se descuenta como latencia fija del toque. */
+export const MAX_DEBIAS_MS = 150;
 
 const n = (beats: Beats): RhythmEvent => ({ beats });
 const r = (beats: Beats): RhythmEvent => ({ beats, rest: true });
@@ -124,13 +132,23 @@ export const MARK_MS = 40;
  * Evalúa los toques contra las notas. Cada toque se usa una vez; los que sobran
  * son «de más» y bajan la precisión (tocar en los silencios también es un error).
  */
-export function gradeRhythm(bars: Bar[], bpm: number, startMs: number, taps: number[], toleranceMs: number): RhythmResult {
+export function gradeRhythm(bars: Bar[], bpm: number, startMs: number, taps: number[], toleranceMs: number, debias = false): RhythmResult {
   const beats = attackBeats(bars);
   const step = 60000 / bpm;
   const expected = beats.map((b) => startMs + b * step);
   // Toques antes del primer pulso (con su margen) o después del final no cuentan: son la cuenta o el cierre.
   const end = startMs + BARS_PER_ROUND * BEATS_PER_BAR * step;
-  const inside = taps.filter((t) => t >= startMs - toleranceMs && t <= end);
+  let inside = taps.filter((t) => t >= startMs - toleranceMs && t <= end + toleranceMs);
+  if (debias) {
+    // Al tocar la pantalla, el teléfono agrega un retraso fijo: se mide (mediana de los
+    // desvíos) y se descuenta, así se juzga la regularidad y no la latencia del equipo.
+    const first = scoreTiming(expected, inside, toleranceMs + MAX_DEBIAS_MS).offsets.filter((o): o is number => o !== null).sort((a, b) => a - b);
+    if (first.length) {
+      const median = first[Math.floor(first.length / 2)];
+      const shift = Math.max(-MAX_DEBIAS_MS, Math.min(MAX_DEBIAS_MS, median));
+      inside = inside.map((t) => t - shift);
+    }
+  }
   const res = scoreTiming(expected, inside, toleranceMs);
   const extras = inside.length - res.hits;
   const offs = res.offsets.filter((o): o is number => o !== null);
@@ -153,6 +171,23 @@ export function gradeRhythm(bars: Bar[], bpm: number, startMs: number, taps: num
   };
 }
 
+/** Si se tocó algo: una ronda sin ningún toque no se guarda ni suma a la racha. */
+export const hasPlayed = (r: RhythmResult) => r.hits + r.extras > 0;
+
+/** Cómo se cuenta cada nota del compás, para leerla en voz alta: «1», «2 y», «4». */
+export function countsOf(bar: Bar, and: string): string[] {
+  const out: string[] = [];
+  let at = 0;
+  for (const e of bar) {
+    if (!e.rest) {
+      const beat = Math.floor(at + 1e-9) + 1;
+      out.push(Math.abs(at - Math.round(at)) < 1e-9 ? String(beat) : `${beat} ${and}`);
+    }
+    at += e.beats;
+  }
+  return out;
+}
+
 /** Porcentaje que se guarda y se muestra. */
 export const percentOf = (r: RhythmResult) => Math.round(r.accuracy * 100);
 
@@ -169,14 +204,17 @@ export interface RhythmFeedback {
  * tocar en los silencios) y siempre un consejo para la mano según el instrumento.
  * Con 90 % o más se sugiere subir el tempo; con menos de 60 %, bajarlo.
  */
-export function rhythmFeedback(res: RhythmResult, bpm: number, instrument: 'bass' | 'guitar' | 'nylon'): RhythmFeedback {
+export function rhythmFeedback(res: RhythmResult, bpm: number, instrument: 'bass' | 'guitar' | 'nylon', byTaps = false): RhythmFeedback {
   const pct = res.accuracy;
   const headline = pct >= 0.9 ? 'great' : pct >= 0.7 ? 'good' : 'keepGoing';
   const tips: string[] = [];
   if (res.meanOffset < -LEAN_MS) tips.push('rushing');
   else if (res.meanOffset > LEAN_MS) tips.push('dragging');
   if (res.missedOff > res.missedOn && res.missedOff > 0) tips.push('countAnd');
-  if (res.extras > 0) tips.push(instrument === 'bass' ? 'restsBass' : instrument === 'nylon' ? 'restsNylon' : 'restsGuitar');
+  // Tocando la pantalla no hay cuerdas que apagar: el consejo es no tocar en los puntos.
+  if (res.extras > 0) tips.push(byTaps ? 'restsTap' : instrument === 'bass' ? 'restsBass' : instrument === 'nylon' ? 'restsNylon' : 'restsGuitar');
+  // Dos consejos del error y siempre uno para la mano.
+  tips.splice(2);
   tips.push(instrument === 'bass' ? 'handBass' : instrument === 'nylon' ? 'handNylon' : 'handGuitar');
   const i = TEMPOS.indexOf(bpm as (typeof TEMPOS)[number]);
   const nextBpm = pct >= 0.9 && i >= 0 && i < TEMPOS.length - 1 ? TEMPOS[i + 1] : pct < 0.6 && i > 0 ? TEMPOS[i - 1] : bpm;

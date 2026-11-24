@@ -11,7 +11,9 @@ import {
   TEMPOS,
   attackBeats,
   cellsOf,
+  countsOf,
   gradeRhythm,
+  hasPlayed,
   makeRound,
   poolFor,
   rhythmFeedback,
@@ -81,10 +83,31 @@ test('devolución: tempo siguiente y consejos que existen en los 3 idiomas', () 
   for (const inst of ['bass', 'guitar', 'nylon'] as const) {
     const fb = rhythmFeedback({ ...base, accuracy: 0.6, meanOffset: -50, extras: 2, missedOff: 3, missedOn: 1 }, 80, inst);
     assert.ok(fb.tips.length <= 3);
-    assert.ok(fb.tips.some((tip) => tip.startsWith('hand') || tip.startsWith('rests')), inst);
+    // Siempre hay un consejo para la mano, aunque haya varios errores.
+    assert.ok(fb.tips.some((tip) => tip.startsWith('hand')), inst);
+    assert.ok(rhythmFeedback({ ...base, extras: 2 }, 80, inst, true).tips.includes('restsTap'));
     for (const dict of [es, en, pt]) {
       for (const tip of fb.tips) assert.equal(typeof lookup(dict, `ui.rhythmTrainer.tip.${tip}`), 'string', tip);
       assert.equal(typeof lookup(dict, `ui.rhythmTrainer.result.${fb.headline}`), 'string');
     }
   }
+});
+
+test('al tocar la pantalla se descuenta el retraso fijo del teléfono', () => {
+  const bars: Bar[] = [[{ beats: 1 }, { beats: 1 }, { beats: 1 }, { beats: 1 }], [{ beats: 4 }], [{ beats: 4 }], [{ beats: 4 }]];
+  const start = 5000;
+  // Todo llega 120 ms tarde (latencia del equipo), parejo.
+  const taps = [0, 1000, 2000, 3000, 4000, 8000, 12000].map((x) => start + x + 120);
+  const raw = gradeRhythm(bars, 60, start, taps, 90);
+  assert.equal(raw.hits, 0);
+  const fixed = gradeRhythm(bars, 60, start, taps, 90, true);
+  assert.equal(fixed.hits, 7);
+  assert.ok(Math.abs(fixed.meanOffset) < 1);
+  assert.ok(hasPlayed(fixed));
+  assert.ok(!hasPlayed(gradeRhythm(bars, 60, start, [], 90)));
+});
+
+test('cómo se cuenta cada compás, para el lector de pantalla', () => {
+  assert.deepEqual(countsOf([{ beats: 1 }, { beats: 0.5, rest: true }, { beats: 0.5 }, { beats: 2 }], 'y'), ['1', '2 y', '3']);
+  assert.deepEqual(countsOf([{ beats: 0.5, rest: true }, { beats: 0.5 }, { beats: 1, rest: true }, { beats: 2 }], '&'), ['1 &', '3']);
 });

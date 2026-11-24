@@ -7,16 +7,18 @@ import { colors, fonts, radius } from '../../theme';
 import { nowMs, playSequence, startMetronome, stopActiveSequence, type MetronomeHandle } from '../../audio/engine';
 import { listenAttacks, requestMic, type Listener } from '../../audio/mic';
 import { midiToFreq } from '../../music/notes';
-import { TAP_TOLERANCE_MS, TIMING_TOLERANCE_MS } from '../../music/scoring';
-import { INSTRUMENT } from '../../instruments/current';
+import { TIMING_TOLERANCE_MS } from '../../music/scoring';
+import { filterClicks, type Attack } from '../../music/strum';
 import { HAND_INSTRUMENT } from '../exercises/Coaching';
 import {
   BARS_PER_ROUND,
   BEATS_PER_BAR,
+  TAP_WINDOW_MS,
   TEMPOS,
-  attackBeats,
   cellsOf,
+  countsOf,
   gradeRhythm,
+  hasPlayed,
   makeRound,
   percentOf,
   rhythmFeedback,
@@ -33,8 +35,13 @@ const COUNT_IN = 4;
 const LEVELS: RhythmLevel[] = [1, 2, 3];
 const TICK_MS = 50;
 const MARK_COLOR: Record<Mark, string> = { ok: colors.teal, early: colors.gold, late: colors.gold, miss: colors.danger };
-/** Una nota del ejemplo: la cuerda La al aire (o su octava), corta para que se oiga el ataque. */
-const EXAMPLE_MIDI = (INSTRUMENT.strings.find((s) => s.id === 'A')?.openMidi ?? 45) + 12;
+/** Además del color, un signo: el resultado no depende solo de distinguir colores. */
+const MARK_SIGN: Record<Mark, string> = { ok: '✓', early: '‹', late: '›', miss: '✕' };
+/** Nota del ejemplo: La3 (220 Hz), que el parlante del teléfono reproduce bien en las tres apps. */
+const EXAMPLE_MIDI = 57;
+/** Padding y borde de la tarjeta que contiene la grilla (16 + 1 por lado) y el espacio entre celdas. */
+const CARD_INSET = 34;
+const CELL_GAP = 1;
 
 /**
  * Entrenador de ritmo: cuatro compases en una grilla de corcheas («1 y 2 y…»),
@@ -50,6 +57,9 @@ export function RhythmTrainer({ width }: { width: number }) {
   const [bpm, setBpm] = useState<number>(TEMPOS[0]);
   const [byMic, setByMic] = useState(false);
   const [noMic, setNoMic] = useState(false);
+  // Si esta ronda escucha el micrófono (en estado, para dibujar; y en ref, para las funciones del audio).
+  const [micOn, setMicOn] = useState(false);
+  const [starting, setStarting] = useState(false);
   const [bars, setBars] = useState<Bar[]>(() => makeRound(1));
   const [phase, setPhase] = useState<Phase>('setup');
   const [cell, setCell] = useState(-1);
@@ -59,6 +69,7 @@ export function RhythmTrainer({ width }: { width: number }) {
   const metro = useRef<MetronomeHandle | null>(null);
   const listener = useRef<Listener | null>(null);
   const taps = useRef<number[]>([]);
+  const attacks = useRef<Attack[]>([]);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const ticker = useRef<ReturnType<typeof setInterval> | null>(null);
   const run = useRef(0);
@@ -83,8 +94,15 @@ export function RhythmTrainer({ width }: { width: number }) {
       mounted.current = false;
       run.current += 1;
       stopAll();
+      // El ejemplo («Escuchar cómo suena») tampoco sigue sonando al salir.
+      stopActiveSequence();
     };
   }, []);
+
+  const newBars = (l: RhythmLevel) => {
+    setBars(makeRound(l));
+    setResult(null);
+  };
 
   const chooseLevel = (l: RhythmLevel) => {
     setLevel(l);
@@ -110,34 +128,46 @@ export function RhythmTrainer({ width }: { width: number }) {
     const h = metro.current;
     if (!mounted.current || myRun !== run.current || !h) return;
     const { bars: round, bpm: tempo, level: lvl } = playing.current;
-    const res = gradeRhythm(round, tempo, h.startMs, taps.current, usingMic.current ? TIMING_TOLERANCE_MS : Math.max(TAP_TOLERANCE_MS, 75));
+    const step = 60000 / tempo;
+    // Con el micrófono, el clic del parlante también entra: se descarta lo que no supera
+    // lo que se oyó durante la cuenta previa (donde no se toca).
+    const heard = usingMic.current ? filterClicks(attacks.current, h.startMs, COUNT_IN * step).map((a) => a.timeMs) : taps.current;
+    const res = usingMic.current ? gradeRhythm(round, tempo, h.startMs, heard, TIMING_TOLERANCE_MS) : gradeRhythm(round, tempo, h.startMs, heard, TAP_WINDOW_MS, true);
     stopAll();
-    const feedback = rhythmFeedback(res, tempo, HAND_INSTRUMENT);
+    const feedback = rhythmFeedback(res, tempo, HAND_INSTRUMENT, !usingMic.current);
     // Sin ningún toque, la ronda no se guarda ni suma a la racha.
-    if (taps.current.length > 0) recordRhythmRound(lvl, percentOf(res));
+    if (hasPlayed(res)) recordRhythmRound(lvl, percentOf(res));
     setResult({ res, feedback });
     setCell(-1);
     setPhase('result');
   };
 
   const start = async (tempo = bpm, round = bars) => {
+    // Mientras se pide el micrófono, no se puede volver a empezar (hay un solo detector).
+    if (starting) return;
     const myRun = ++run.current;
     stopAll();
     stopActiveSequence();
     taps.current = [];
+    attacks.current = [];
     setResult(null);
     setBpm(tempo);
     setBars(round);
     playing.current = { bars: round, bpm: tempo, level };
     usingMic.current = false;
     if (byMic) {
+      setStarting(true);
       const status = await requestMic();
-      if (!mounted.current || myRun !== run.current) return;
+      if (!mounted.current || myRun !== run.current) {
+        if (mounted.current) setStarting(false);
+        return;
+      }
       if (status === 'ok') {
         try {
-          const heard = await listenAttacks((time) => taps.current.push(time));
+          const heard = await listenAttacks((timeMs, rms) => attacks.current.push({ timeMs, rms }));
           if (!mounted.current || myRun !== run.current) {
             heard?.stop();
+            if (mounted.current) setStarting(false);
             return;
           }
           listener.current = heard;
@@ -146,8 +176,10 @@ export function RhythmTrainer({ width }: { width: number }) {
           usingMic.current = false;
         }
       }
-      setNoMic(!usingMic.current);
+      setStarting(false);
     }
+    setNoMic(byMic && !usingMic.current);
+    setMicOn(usingMic.current);
     const beats = BARS_PER_ROUND * BEATS_PER_BAR;
     const h = startMetronome(tempo, beats, COUNT_IN, BEATS_PER_BAR);
     metro.current = h;
@@ -163,7 +195,7 @@ export function RhythmTrainer({ width }: { width: number }) {
   };
 
   const tap = () => {
-    if (phase === 'running' && !usingMic.current) taps.current.push(nowMs());
+    if (phase === 'running' && !micOn) taps.current.push(nowMs());
   };
 
   const cancel = () => {
@@ -173,15 +205,15 @@ export function RhythmTrainer({ width }: { width: number }) {
     setPhase('setup');
   };
 
-  // Colores por nota (en orden) después de la ronda.
-  const marks = result?.res.marks ?? [];
-  const cellW = Math.floor((width - 8) / 8);
+  // Colores por nota (en orden), solo mientras se muestra el resultado de esa ronda.
+  const marks = phase === 'result' ? (result?.res.marks ?? []) : [];
+  const cellW = Math.floor((width - CARD_INSET - 7 * CELL_GAP) / 8);
   const syllables = Array.from({ length: 8 }, (_, k) => (k % 2 === 0 ? String(k / 2 + 1) : t('ui.rhythmTrainer.and')));
   let noteIndex = 0;
   const grid = bars.map((bar, b) => {
     const cells = cellsOf(bar);
     return (
-      <View key={b} style={{ flexDirection: 'row', gap: 1 }}>
+      <View key={b} style={{ flexDirection: 'row', gap: CELL_GAP }}>
         {cells.map((c, k) => {
           const absolute = b * 8 + k;
           const mark = c === 'start' ? marks[noteIndex++] : undefined;
@@ -202,14 +234,25 @@ export function RhythmTrainer({ width }: { width: number }) {
                 justifyContent: 'center',
               }}
             >
-              <Text style={{ fontSize: 13, fontWeight: '900', color: c === 'rest' ? colors.muted : c === 'start' ? colors.bg : colors.ink }}>{c === 'rest' ? '·' : syllables[k]}</Text>
+              <Text style={{ fontSize: 13, fontWeight: '900', color: c === 'rest' ? colors.muted : c === 'start' ? colors.bg : colors.ink }}>{c === 'rest' ? '·' : mark ? `${MARK_SIGN[mark]} ${syllables[k]}` : syllables[k]}</Text>
             </View>
           );
         })}
       </View>
     );
   });
-  const a11yGrid = t('ui.rhythmTrainer.gridA11y', { beats: attackBeats(bars).map((x) => x + 1).join(', ') });
+  // Para el lector de pantalla, compás por compás: «Compás 2: 1, 2 y, 4».
+  const and = t('ui.rhythmTrainer.and');
+  let markAt = 0;
+  const a11yGrid = bars
+    .map((bar, b) => {
+      const counts = countsOf(bar, and).map((c) => {
+        const m = marks[markAt++];
+        return m ? t('ui.rhythmTrainer.countMarked', { count: c, mark: t(`ui.rhythmTrainer.mark.${m}`) }) : c;
+      });
+      return t('ui.rhythmTrainer.barA11y', { n: b + 1, counts: counts.join(', ') });
+    })
+    .join('. ');
   const best = (l: RhythmLevel) => {
     const h = history[l];
     return h?.length ? Math.max(...h) : 0;
@@ -249,14 +292,14 @@ export function RhythmTrainer({ width }: { width: number }) {
           </Pressable>
           {noMic ? <Muted>{t('ui.rhythmTrainer.noMic')}</Muted> : null}
           <Button variant="secondary" label={t('ui.rhythmTrainer.listen')} onPress={listen} testID="rhythm-listen" />
-          <Button variant="secondary" label={t('ui.rhythmTrainer.newRound')} onPress={() => setBars(makeRound(level))} />
-          <Button label={t('ui.rhythmTrainer.start')} onPress={() => void start()} testID="rhythm-start" />
+          <Button variant="secondary" label={t('ui.rhythmTrainer.newRound')} onPress={() => newBars(level)} />
+          <Button label={t('ui.rhythmTrainer.start')} disabled={starting} onPress={() => void start()} testID="rhythm-start" />
         </Card>
       ) : null}
 
       {phase === 'running' ? (
         <>
-          {usingMic.current ? (
+          {micOn ? (
             <Muted>{t('ui.rhythmTrainer.playHint')}</Muted>
           ) : (
             <Pressable
@@ -292,7 +335,14 @@ export function RhythmTrainer({ width }: { width: number }) {
             testID="rhythm-again"
           />
           <Button variant="secondary" label={t('ui.rhythmTrainer.repeat')} onPress={() => void start(bpm, bars)} />
-          <Button variant="secondary" label={t('ui.rhythmTrainer.change')} onPress={() => setPhase('setup')} />
+          <Button
+            variant="secondary"
+            label={t('ui.rhythmTrainer.change')}
+            onPress={() => {
+              setResult(null);
+              setPhase('setup');
+            }}
+          />
         </Card>
       ) : null}
     </View>
