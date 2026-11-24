@@ -11,7 +11,7 @@
 import type { Checkpoint } from '../checkpoints';
 import type { Lesson, ScoreEvent } from '../types';
 import type { StringId } from '../../instruments/profiles';
-import { hear, hz, k, listen, n, notesOf, open, rest, scenes, scoreNotes, spider, spiderDown, tabOf, times } from './helpers';
+import { hear, hz, k, listen, spiderHands, n, notesOf, open, rest, scenes, scoreNotes, spider, spiderDown, tabOf, times } from './helpers';
 
 const STEPS = [60, 70, 80];
 
@@ -356,7 +356,7 @@ const l142: Lesson = {
     sounds: [null, null, hear(ONE_STRING.slice(0, 8).map((x) => n(x.string, x.fret)), 70), null],
   },
   cards: [
-    { titleKey: k('1.4.2', 'c1t'), bodyKey: k('1.4.2', 'c1b'), figure: 'fret-hand' },
+    { titleKey: k('1.4.2', 'c1t'), bodyKey: k('1.4.2', 'c1b'), figure: 'fret-hand', hands: spiderHands(0) },
     { titleKey: k('1.4.2', 'c2t'), bodyKey: k('1.4.2', 'c2b'), listen: listen(ONE_STRING.map((x) => n(x.string, x.fret)), 70) },
   ],
   exercises: [

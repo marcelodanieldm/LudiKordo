@@ -1,5 +1,46 @@
 {
   "ui": {
+    "hands": {
+      "pov": "Como la ves tú",
+      "front": "De frente (espejo)",
+      "povHint": "Como la ves al bajar la mirada: la 6.ª cuerda, la más gruesa, arriba.",
+      "frontHint": "Como te ve alguien que está enfrente: la cejuela queda del otro lado.",
+      "listen": "Escuchar cómo suena",
+      "stop": "Detener",
+      "steps": "Paso a paso",
+      "thumb": "T · pulgar, detrás del mástil",
+      "open": "al aire",
+      "muted": "no suena",
+      "finger": {
+        "1": "índice",
+        "2": "medio",
+        "3": "anular",
+        "4": "meñique"
+      },
+      "step": {
+        "finger": "Dedo {{finger}} ({{name}}) en el traste {{fret}} de la {{string}}.ª cuerda.",
+        "barre": "Cejilla: el dedo 1 acostado en el traste {{fret}}, de la {{from}}.ª a la {{to}}.ª cuerda.",
+        "open": "Suenan al aire las cuerdas {{strings}}.",
+        "mute": "No suenan las cuerdas {{strings}}: no las toques."
+      },
+      "guide": {
+        "good": "Bien",
+        "bad": "Evita",
+        "goodBody": "El dedo forma una garra y pisa con la punta. El pulgar (T) se apoya detrás del mástil, a la altura del dedo 2, sin asomarse por arriba.",
+        "badBody": "El dedo acostado roza la cuerda de al lado y la apaga. Si el pulgar asoma por arriba, los dedos no llegan.",
+        "goodA11y": "Mástil de costado: dedo arqueado que pisa con la punta y pulgar detrás, a media altura.",
+        "badA11y": "Mástil de costado: dedo plano que roza otra cuerda y pulgar que asoma por arriba.",
+        "zone": "Zona de toque",
+        "rightBody": "Apoya el antebrazo en el borde de la caja y deja la mano suelta sobre la zona marcada, entre la boca y el puente. Cada dedo tiene sus cuerdas:",
+        "rightA11y": "Caja de la guitarra: zona de toque entre la boca y el puente; pulgar en las cuerdas 6 a 4; índice, medio y anular en las cuerdas 3, 2 y 1.",
+        "role": {
+          "p": "Pulgar: cuerdas 6, 5 y 4 (los bajos).",
+          "i": "Índice: 3.ª cuerda.",
+          "m": "Medio: 2.ª cuerda.",
+          "a": "Anular: 1.ª cuerda."
+        }
+      }
+    },
     "drills": {
       "eyebrow": "Práctica",
       "title": "Práctica de habilidades",

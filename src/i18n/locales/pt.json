@@ -1,5 +1,46 @@
 {
   "ui": {
+    "hands": {
+      "pov": "Como você vê",
+      "front": "De frente (espelho)",
+      "povHint": "Como você vê ao olhar para baixo: a 6ª corda, a mais grossa, em cima.",
+      "frontHint": "Como alguém à sua frente vê: a pestana do braço fica do outro lado.",
+      "listen": "Ouvir como soa",
+      "stop": "Parar",
+      "steps": "Passo a passo",
+      "thumb": "T · polegar, atrás do braço",
+      "open": "solta",
+      "muted": "não soa",
+      "finger": {
+        "1": "indicador",
+        "2": "médio",
+        "3": "anelar",
+        "4": "mínimo"
+      },
+      "step": {
+        "finger": "Dedo {{finger}} ({{name}}) na casa {{fret}} da {{string}}ª corda.",
+        "barre": "Pestana: o dedo 1 deitado na casa {{fret}}, da {{from}}ª à {{to}}ª corda.",
+        "open": "Soam soltas as cordas {{strings}}.",
+        "mute": "Não soam as cordas {{strings}}: não toque nelas."
+      },
+      "guide": {
+        "good": "Certo",
+        "bad": "Evite",
+        "goodBody": "O dedo forma uma garra e aperta com a ponta. O polegar (T) se apoia atrás do braço, na altura do dedo 2, sem aparecer por cima.",
+        "badBody": "O dedo deitado encosta na corda ao lado e a abafa. Se o polegar aparece por cima, os dedos não alcançam.",
+        "goodA11y": "Braço de lado: dedo arqueado apertando com a ponta e polegar atrás, no meio.",
+        "badA11y": "Braço de lado: dedo deitado encostando em outra corda e polegar aparecendo por cima.",
+        "zone": "Zona de toque",
+        "rightBody": "Apoie o antebraço na borda do corpo e deixe a mão solta sobre a zona marcada, entre a boca e o cavalete. Cada dedo tem suas cordas:",
+        "rightA11y": "Corpo do violão: zona de toque entre a boca e o cavalete; polegar nas cordas 6 a 4; indicador, médio e anelar nas cordas 3, 2 e 1.",
+        "role": {
+          "p": "Polegar: cordas 6, 5 e 4 (os baixos).",
+          "i": "Indicador: 3ª corda.",
+          "m": "Médio: 2ª corda.",
+          "a": "Anelar: 1ª corda."
+        }
+      }
+    },
     "drills": {
       "eyebrow": "Prática",
       "title": "Prática de habilidades",
