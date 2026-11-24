@@ -95,7 +95,7 @@
       "howTo": {
         "title": "How it works",
         "listen": "Listen to the example and follow the score with your eyes: this is how it should sound.",
-        "listenImprov": "Listen to the example: it is the exercise scale, going up and down. You will improvise with those notes.",
+        "listenImprov": "Listen to the example: a question and an answer using the scale. Notice each bar ends on a long note from that bar's chord: aim there.",
         "scoring": "After a {{beats}}-beat count-in, play along with the band. The app judges each note live: on time, early, late or another note.",
         "scoringImprov": "After a {{beats}}-beat count-in, make up phrases with the scale notes. Play at least {{n}} notes per loop; the app shows whether each one is in the scale.",
         "cat": {
@@ -137,7 +137,8 @@
           "reading": "Before you start, scan the score and look for the hard bars.",
           "improv": "Repeat an idea you liked and change one note: that is how a solo is built."
         }
-      }
+      },
+      "exampleWithBand": "The example plays over the chords, the way you'll play it with the band."
     },
     "motion": {
       "play": "Watch and listen",
@@ -445,7 +446,16 @@
         "strumThumb": "Strum down with the thumb, using the pad; arm resting and wrist loose.",
         "strumIndex": "Strum with the index finger: down with the back of the nail and up with the pad; loose wrist.",
         "strumBossa": "Bossa: the thumb plays the bass and i, m and a pinch the treble strings together, like a hand closing.",
-        "strumRasgueo": "Continuous rasgueo: a, m and i open one after another downward, from a closed hand."
+        "strumRasgueo": "Continuous rasgueo: a, m and i open one after another downward, from a closed hand.",
+        "cartoonA11y": "Animation: the hand builds {{name}} with fingers {{fingers}}, thumb behind the neck.",
+        "cartoonThumb": "Thumb behind the neck",
+        "cartoonPlace": "Finger {{finger}}: fret {{fret}}, string {{string}}",
+        "cartoonBarre": "Finger 1 barre, fret {{fret}}",
+        "cartoonStrum": "Play: {{n}} strings ring",
+        "cartoonHold": "Arched, steady fingers",
+        "fretShort": "fret {{n}}",
+        "thumbLetter": "p",
+        "cartoonTitle": "{{name}} · {{caption}}"
       }
     },
     "practice": {

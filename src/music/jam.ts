@@ -102,6 +102,25 @@ export interface JamSchedule {
 
 const voicing = (name: string) => chordFromName(name) ?? [45, 52, 57];
 
+/** Un golpe por compás de 3 pulsos; con dos acordes en 4/4, un golpe por medio compás. */
+const STRIKE_3: Stroke[] = ['D', '-', '-', '-', '-', '-'];
+const STRIKE_HALF: Stroke[] = ['D', '-', '-', '-'];
+
+/**
+ * Acordes de fondo para el ejemplo de un ejercicio, con la misma regla que la
+ * pista en vivo: si un compás de 4 tiene dos acordes, el segundo suena desde el
+ * tercer tiempo. Devuelve las notas de cada golpe y su patrón (para `strum`), o
+ * null si algún acorde no se reconoce.
+ */
+export function exampleBacking(chords: readonly string[], barBeats: 3 | 4): { chords: number[][]; pattern: Stroke[] } | null {
+  const bars = chords.map((c) => c.trim().split(/\s+/));
+  const split = barBeats === 4 && bars.some((b) => b.length > 1);
+  const names = split ? bars.flatMap((b) => [b[0], b[b.length > 1 ? 1 : 0]]) : bars.map((b) => b[0]);
+  const notes = names.map((n) => chordFromName(n));
+  if (!notes.every((n): n is number[] => !!n)) return null;
+  return { chords: notes, pattern: split ? STRIKE_HALF : barBeats === 3 ? STRIKE_3 : HALVES };
+}
+
 export function jamSchedule(o: JamOptions): JamSchedule {
   const bars = o.chords.length * o.loops;
   const beatSec = 60 / o.bpm;

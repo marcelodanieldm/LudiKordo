@@ -3,10 +3,8 @@ import assert from 'node:assert/strict';
 import en from '../src/i18n/locales/en.json';
 import es from '../src/i18n/locales/es.json';
 import pt from '../src/i18n/locales/pt.json';
-import { coach, improvExample, MAX_TIPS, type CoachInput } from '../src/music/coach';
-import { BASS, GUITAR, midiOn } from '../src/instruments/profiles';
-import { DRILL_CATEGORIES, BASS_DRILLS, GUITAR_DRILLS } from '../src/content/practice';
-import { totalBeats } from '../src/music/staff';
+import { coach, MAX_TIPS, type CoachInput } from '../src/music/coach';
+import { DRILL_CATEGORIES } from '../src/content/practice';
 
 const counts = (c: Partial<CoachInput['counts']>) => ({ hit: 0, early: 0, late: 0, wrong: 0, miss: 0, ...c });
 const base = (over: Partial<CoachInput> = {}): CoachInput => ({
@@ -96,21 +94,4 @@ test('coach: todas las claves que puede devolver existen en los 3 idiomas', () =
   }
 });
 
-test('improvExample: la pentatónica de La en el bajo, de la tónica y de vuelta, en dos compases', () => {
-  const ev = improvExample([9, 0, 2, 4, 7], BASS.strings);
-  const midis = ev.map((e) => ('rest' in e ? -1 : midiOn(BASS, e.string, e.fret)));
-  assert.deepEqual(midis, [33, 36, 38, 40, 38, 36, 33]);
-  assert.equal(totalBeats(ev), 8);
-  for (const e of ev) if (!('rest' in e)) assert.ok(e.fret >= 0 && e.fret <= 4);
-});
 
-test('improvExample: cada ejercicio de improvisación tiene ejemplo, solo con notas de su escala', () => {
-  for (const [profile, drills] of [[BASS, BASS_DRILLS], [GUITAR, GUITAR_DRILLS]] as const) {
-    for (const d of drills.filter((x) => x.kind === 'improv')) {
-      const ev = improvExample(d.scale ?? [], profile.strings);
-      assert.ok(ev.length >= 5, d.id);
-      const pcs = new Set((d.scale ?? []).map((p) => p % 12));
-      for (const e of ev) if (!('rest' in e)) assert.ok(pcs.has(midiOn(profile, e.string, e.fret) % 12), d.id);
-    }
-  }
-});

@@ -4,8 +4,6 @@
  * equivocadas, tiempo). Lógica pura: devuelve claves de i18n (`ui.drills.coach.*`)
  * con sus parámetros; la pantalla solo las traduce.
  */
-import type { InstrumentProfile, InstrumentString } from '../instruments/profiles';
-import type { ScoreEvent } from '../content/types';
 
 export type Verdicts = Record<'hit' | 'early' | 'late' | 'wrong' | 'miss', number>;
 
@@ -83,36 +81,4 @@ export function coach(input: CoachInput): Coaching {
   const out = tips.slice(0, MAX_TIPS - 1);
   out.push(categoryTip);
   return { headline, tips: out };
-}
-
-/**
- * Frase de ejemplo para la improvisación: la escala en la primera posición
- * (trastes 0 a 4), subiendo desde la nota más grave que pertenece a la escala,
- * y bajando de vuelta hasta la tónica: hasta `count - 1` notas, en dos compases de 4.
- */
-export function improvExample(scale: readonly number[], strings: InstrumentProfile['strings'], count = 8): ScoreEvent[] {
-  const pcs = new Set(scale.map((p) => ((p % 12) + 12) % 12));
-  const seen = new Set<number>();
-  const up: { s: InstrumentString; fret: number; midi: number }[] = [];
-  const ordered = [...strings].sort((a, b) => a.openMidi - b.openMidi);
-  for (const s of ordered) {
-    for (let fret = 0; fret <= 4; fret++) {
-      const midi = s.openMidi + fret;
-      if (pcs.has(midi % 12) && !seen.has(midi)) {
-        seen.add(midi);
-        up.push({ s, fret, midi });
-      }
-    }
-  }
-  up.sort((a, b) => a.midi - b.midi);
-  if (up.length === 0) return [];
-  // Empieza en la tónica (la primera clase de altura de la escala) si está en la posición.
-  const root = ((scale[0] % 12) + 12) % 12;
-  const from = Math.max(0, up.findIndex((n) => n.midi % 12 === root));
-  const half = Math.ceil(count / 2);
-  const rise = up.slice(from, from + half);
-  const fall = rise.slice(0, -1).reverse();
-  const phrase = [...rise, ...fall].slice(0, count - 1);
-  // La última nota (la tónica, al volver) dura dos tiempos: la frase llena dos compases de 4.
-  return phrase.map((n, i) => ({ string: n.s.id, fret: n.fret, beats: i === phrase.length - 1 ? 2 : 1 }));
 }
