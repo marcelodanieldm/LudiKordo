@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, Card, H1, Pill } from '../../src/components/ui';
 import { useSettings } from '../../src/state/settings';
 import { openManageSubscription, restore, useBilling } from '../../src/billing/purchases';
+import { accountAvailable, signInWithGoogle, signOut, useSession } from '../../src/billing/session';
 import { colors } from '../../src/theme';
 import type { Locale, Notation } from '../../src/music/notes';
 
@@ -14,6 +15,7 @@ export default function Profile() {
   const { t, i18n } = useTranslation();
   const s = useSettings();
   const isPremium = useBilling((b) => b.isPremium);
+  const account = useSession((a) => a.account);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bg }}>
@@ -65,6 +67,22 @@ export default function Profile() {
           <Button variant="ghost" label={t('ui.profile.manage')} onPress={() => void openManageSubscription()} />
           <Button variant="ghost" label={t('ui.profile.restore')} onPress={() => void restore()} />
         </Card>
+        {accountAvailable ? (
+          <Card>
+            <Text style={{ fontSize: 14, fontWeight: '800', color: colors.muted }}>{t('ui.account.title')}</Text>
+            {account ? (
+              <>
+                <Text style={{ fontSize: 16, fontWeight: '700', color: colors.ink }}>{t('ui.account.signedAs', { email: account.email })}</Text>
+                <Button variant="ghost" label={t('ui.account.signOut')} onPress={() => void signOut()} />
+              </>
+            ) : (
+              <>
+                <Text style={{ fontSize: 15, lineHeight: 21, color: colors.ink }}>{t('ui.account.body')}</Text>
+                <Button testID="account-sign-in" variant="secondary" label={t('ui.account.signIn')} onPress={() => void signInWithGoogle()} />
+              </>
+            )}
+          </Card>
+        ) : null}
       </ScrollView>
     </SafeAreaView>
   );
