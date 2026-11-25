@@ -7,5 +7,7 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", "expo-env.d.ts"]
+  "include": ["**/*.ts", "**/*.tsx", "expo-env.d.ts"],
+  // Las funciones de Supabase corren en Deno; su lógica pura (_shared/billing.ts) sí se chequea.
+  "exclude": ["node_modules", "supabase/functions/*/index.ts", "supabase/functions/_shared/server.ts"]
 }

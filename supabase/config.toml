@@ -1,0 +1,28 @@
+# Proyecto Supabase del cobro web (ADR 0011). Solo lo que difiere de los valores
+# por defecto; el resto se configura en el panel de Supabase (docs/WEB_BILLING.md).
+project_id = "ludikordo"
+
+[auth]
+# La dirección del sitio de Netlify (o el dominio propio) va en la variable SITE_URL.
+site_url = "env(SITE_URL)"
+# A dónde puede volver el inicio de sesión: las tres apps (la web es site_url).
+additional_redirect_urls = [
+  "ludikordo://auth",
+  "ludikordoguitar://auth",
+  "ludikordonylon://auth",
+]
+
+[auth.external.google]
+enabled = true
+client_id = "env(GOOGLE_OAUTH_CLIENT_ID)"
+secret = "env(GOOGLE_OAUTH_SECRET)"
+
+# Los avisos de Mercado Pago y NOWPayments no traen sesión: se validan por firma.
+[functions.mp-webhook]
+verify_jwt = false
+
+[functions.crypto-webhook]
+verify_jwt = false
+
+[functions.promo]
+verify_jwt = false

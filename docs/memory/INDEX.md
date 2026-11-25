@@ -18,6 +18,7 @@ Memoria compartida por todos los agentes (Antigravity, Claude Code local y en Gi
 | [0008](decisions/0008-cancionero-original.md) | Cancionero propio con líneas originales por género y nivel | Aceptada |
 | [0009](decisions/0009-app-de-guitarra.md) | App de guitarra eléctrica: mismo repo, dos apps por variante de build | Aceptada |
 | [0010](decisions/0010-app-de-guitarra-criolla.md) | App de guitarra criolla: tercera variante de build (`nylon`), contenido propio | Aceptada |
+| [0011](decisions/0011-cobro-web-opcion-b.md) | Cobro web junto a Play: Mercado Pago (ARS), Paddle (USD/BRL), cripto; backend en Supabase | Aceptada |
 
 ## Aprendizajes y trampas
 
@@ -32,3 +33,4 @@ Ver [learnings.md](learnings.md): errores que ya cometimos y cómo no repetirlos
 - [Currículo de guitarra criolla](../CURRICULUM-NYLON.md)
 - [Pipeline de cartoons](../CARTOON_PIPELINE.md)
 - [Herramientas, MCPs y skills](../TOOLING.md)
+- [Cobro web: puesta en marcha](../WEB_BILLING.md)
