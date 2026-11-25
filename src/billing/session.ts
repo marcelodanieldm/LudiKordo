@@ -32,7 +32,7 @@ interface SessionState {
 }
 
 export const useSession = create<SessionState>()(
-  persist(() => ({ account: null, status: 'idle' as Status, error: null }), {
+  persist((): SessionState => ({ account: null, status: 'idle', error: null }), {
     name: 'account',
     storage: createJSONStorage(() => zustandStorage),
     partialize: (s) => ({ account: s.account }),
