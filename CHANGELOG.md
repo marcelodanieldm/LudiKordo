@@ -4,6 +4,9 @@ Formato: [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versiones:
 
 ## [Sin publicar]
 
+### Nuevo
+- Cobro web (opción B, ADR 0011), parte 1: backend en Supabase para suscripciones con Mercado Pago en pesos, cripto (USDC/USDT, prepago) y promos con porcentaje, ciclos, vigencia y tope; Paddle en dólares y reales va por RevenueCat. Guía de puesta en marcha en `docs/WEB_BILLING.md`.
+
 ## [0.4.0] — 2026-11-24
 
 ### Nuevo
