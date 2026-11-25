@@ -44,7 +44,10 @@ Alumno ── site/premium ── inicia sesión con Google (Supabase Auth)
 1. Cuenta de comercio con verificación; confirmar que te acepta desde Argentina.
 2. Billetera de cobro (USDC/USDT) y la clave IPN. URL de avisos: `https://<ref>.supabase.co/functions/v1/crypto-webhook`.
 
-## 7. Secretos y despliegue
+## 7. Web
+En `site/premium/config.js`, la URL del proyecto y la clave **anon** (es pública; la protegen las reglas RLS). Nunca la clave de servicio. Netlify publica `site/` como siempre: la suscripción queda en `/premium/` y el panel en `/premium/admin.html`.
+
+## 8. Secretos y despliegue
 
 ```sh
 supabase secrets set \
@@ -59,8 +62,8 @@ supabase functions deploy checkout mp-webhook crypto-webhook promo premium
 
 `SUPABASE_URL` y `SUPABASE_SERVICE_ROLE_KEY` ya existen en las funciones.
 
-## 8. Precios web
-En el panel (`site/premium/admin.html`, próximo PR) o en la tabla `prices`: un precio por app, plan, canal y moneda (`mercadopago`/`ARS`, `crypto`/`USDC`). Los de Paddle viven en Paddle y los de Play en Play Console.
+## 9. Precios web y promos
+En el panel (`/premium/admin.html`, con una cuenta de la tabla `admins`): precios de lista de Mercado Pago (ARS) y cripto (USDC), y el seteador de promos, que muestra cómo queda el primer cobro y los datos para crear la misma promo en Paddle y en Google Play. También se puede usar la tabla `prices`: un precio por app, plan, canal y moneda (`mercadopago`/`ARS`, `crypto`/`USDC`). Los de Paddle viven en Paddle y los de Play en Play Console.
 
 ## Flujos cubiertos
 

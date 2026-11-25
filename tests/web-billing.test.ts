@@ -182,3 +182,27 @@ test('comparación de firmas en tiempo constante', () => {
   assert.ok(!safeEqualHex('abcd', 'abce'));
   assert.ok(!safeEqualHex('abcd', 'abc'));
 });
+
+test('la web usa las mismas reglas que el servidor (site/premium/rules.js)', async () => {
+  const web = await import('../site/premium/rules.js');
+  const server = await import('../supabase/functions/_shared/billing');
+  for (const c of ['AR', 'BR', 'MX', 'ES', 'US', 'ZZ', 'ar']) assert.deepEqual(web.checkoutOptions(c), server.checkoutOptions(c), c);
+  assert.deepEqual(web.LATAM, server.LATAM);
+  for (const cur of ['ARS', 'USD', 'BRL', 'USDC'] as const) {
+    for (const list of [999, 29.99, 44.99, 129.9, 199.9, 42999, 64999]) {
+      for (const pct of [5, 15, 30, 45, 90]) {
+        assert.equal(web.discounted(list, pct, cur), server.discounted(list, pct, cur), `${list} ${cur} ${pct}`);
+        for (const cycles of [0, 1, 2]) {
+          for (const cycle of [0, 1, 2, 3]) {
+            const promo = { percent: pct, cycles };
+            assert.equal(web.amountForCycle(list, cur, cycle, promo), server.amountForCycle(list, cur, cycle, promo));
+          }
+        }
+      }
+    }
+  }
+  for (const bad of [{ ...PROMO, code: 'x' }, { ...PROMO, percent: 0 }, { ...PROMO, apps: [] }, PROMO]) {
+    assert.deepEqual(web.promoErrors(bad), server.promoErrors(bad));
+  }
+  assert.equal(web.normalizeCode(' a-b c '), server.normalizeCode(' a-b c '));
+});

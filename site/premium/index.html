@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LudiKordo Premium</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#14121F">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="premium.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="../">Ludi<b>Kordo</b></a>
+  <div class="lang" role="group" aria-label="Idioma / Language / Idioma">
+    <button type="button" data-lang="es" aria-pressed="true">ES</button>
+    <button type="button" data-lang="en" aria-pressed="false">EN</button>
+    <button type="button" data-lang="pt" aria-pressed="false">PT</button>
+  </div>
+</div></header>
+
+<main class="wrap">
+  <h1 data-i18n="title">Hazte Premium</h1>
+  <p class="lead" data-i18n="lead">Todo el curso, el cancionero y la práctica con la banda. Pagas en tu moneda y lo usas en la app con tu cuenta de Google.</p>
+
+  <p id="setup" class="notice" hidden data-i18n="setup">La suscripción web todavía no está configurada.</p>
+  <p id="done" class="notice ok" hidden></p>
+
+  <section class="step" aria-labelledby="s1">
+    <h2 id="s1"><span class="n">1</span><span data-i18n="s1">Tu cuenta</span></h2>
+    <div id="signedOut">
+      <p data-i18n="s1Body">Usa la misma cuenta de Google con la que vas a entrar en la app.</p>
+      <button type="button" class="btn primary" id="signIn" data-i18n="signIn">Continuar con Google</button>
+    </div>
+    <div id="signedIn" hidden>
+      <p><span data-i18n="signedAs">Sesión iniciada como</span> <b id="email"></b></p>
+      <button type="button" class="btn ghost" id="signOut" data-i18n="signOut">Salir</button>
+    </div>
+  </section>
+
+  <section class="step" aria-labelledby="s2">
+    <h2 id="s2"><span class="n">2</span><span data-i18n="s2">Qué app y qué plan</span></h2>
+    <div class="chips" id="apps" role="radiogroup" aria-labelledby="s2"></div>
+    <div class="chips" id="plans" role="radiogroup" aria-labelledby="s2"></div>
+    <label for="country" data-i18n="country">Dónde vives</label>
+    <select id="country"></select>
+  </section>
+
+  <section class="step" aria-labelledby="s3">
+    <h2 id="s3"><span class="n">3</span><span data-i18n="s3">Cómo pagas</span></h2>
+    <div class="options" id="options" role="radiogroup" aria-labelledby="s3"></div>
+    <div class="promo">
+      <label for="code" data-i18n="code">Código de promo</label>
+      <div class="row"><input id="code" autocomplete="off" autocapitalize="characters" maxlength="32"><button type="button" class="btn ghost" id="apply" data-i18n="apply">Aplicar</button></div>
+      <p id="promoMsg" class="small" role="status"></p>
+    </div>
+    <div class="total" aria-live="polite"><span data-i18n="total">Primer cobro</span><b id="total">—</b><span id="totalNote" class="small"></span></div>
+    <p id="err" class="err" role="alert"></p>
+    <button type="button" class="btn primary wide" id="pay" data-i18n="pay">Ir a pagar</button>
+    <p class="small" data-i18n="legal">Renovación automática al final de cada período, salvo cripto (prepago). Puedes cancelar cuando quieras y conservas el acceso hasta la fecha pagada.</p>
+  </section>
+
+  <section class="step" id="mine" hidden aria-labelledby="s4">
+    <h2 id="s4" data-i18n="s4">Tus suscripciones</h2>
+    <ul id="subs" class="subs"></ul>
+  </section>
+</main>
+<footer><div class="wrap small" data-i18n="foot">Si ya pagas con Google Play, no hace falta suscribirte acá.</div></footer>
+
+<script type="module">
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from './config.js';
+import { checkoutOptions, formatMoney, normalizeCode, amountForCycle } from './rules.js';
+
+const T = {
+  es: { title: 'Hazte Premium', lead: 'Todo el curso, el cancionero y la práctica con la banda. Pagas en tu moneda y lo usas en la app con tu cuenta de Google.', setup: 'La suscripción web todavía no está configurada.', s1: 'Tu cuenta', s1Body: 'Usa la misma cuenta de Google con la que vas a entrar en la app.', signIn: 'Continuar con Google', signedAs: 'Sesión iniciada como', signOut: 'Salir', s2: 'Qué app y qué plan', country: 'Dónde vives', s3: 'Cómo pagas', code: 'Código de promo', apply: 'Aplicar', total: 'Primer cobro', pay: 'Ir a pagar', legal: 'Renovación automática al final de cada período, salvo cripto (prepago). Puedes cancelar cuando quieras y conservas el acceso hasta la fecha pagada.', s4: 'Tus suscripciones', foot: 'Si ya pagas con Google Play, no hace falta suscribirte acá.',
+    anual: 'Anual', semestral: 'Semestral', mercadopago: 'Mercado Pago', paddle: 'Tarjeta o PayPal', crypto: 'USDC o USDT', atCheckout: 'El precio final se ve en el pago, con los impuestos de tu país.', prepaid: 'Pago único por {m} meses.', promoOk: '{p}% de descuento', promoCycles: 'en el primer cobro|en los primeros {n} cobros|mientras sigas suscripto', promoBad: 'Ese código no sirve para esta compra.', promoPaddle: 'Escribe el código {c} en la página de pago.', needLogin: 'Primero inicia sesión con Google.', noPrice: 'Este plan todavía no tiene precio para esta forma de pago.', fail: 'No se pudo iniciar el pago. Prueba de nuevo en un rato.', done: '¡Listo! Abre la app, ve a Perfil y toca «Iniciar sesión con Google» con este mismo correo.', until: 'Premium hasta el {d}', cancel: 'Cancelar', cancelled: 'Cancelada: conservas Premium hasta el {d}.', other: 'Otro país' },
+  en: { title: 'Go Premium', lead: 'The whole course, the songbook and band practice. Pay in your currency and use it in the app with your Google account.', setup: 'Web subscriptions are not set up yet.', s1: 'Your account', s1Body: 'Use the same Google account you will sign in with in the app.', signIn: 'Continue with Google', signedAs: 'Signed in as', signOut: 'Sign out', s2: 'Which app and plan', country: 'Where you live', s3: 'How you pay', code: 'Promo code', apply: 'Apply', total: 'First charge', pay: 'Go to payment', legal: 'Renews automatically at the end of each period, except crypto (prepaid). Cancel anytime and keep access until the paid date.', s4: 'Your subscriptions', foot: 'If you already pay through Google Play, you don\'t need to subscribe here.',
+    anual: 'Yearly', semestral: '6 months', mercadopago: 'Mercado Pago', paddle: 'Card or PayPal', crypto: 'USDC or USDT', atCheckout: 'The final price, with your country\'s taxes, shows at checkout.', prepaid: 'One payment for {m} months.', promoOk: '{p}% off', promoCycles: 'on the first charge|on the first {n} charges|while you stay subscribed', promoBad: 'That code doesn\'t work for this purchase.', promoPaddle: 'Type the code {c} on the payment page.', needLogin: 'Sign in with Google first.', noPrice: 'This plan has no price yet for this payment method.', fail: 'Couldn\'t start the payment. Try again shortly.', done: 'Done! Open the app, go to Profile and tap "Sign in with Google" with this same email.', until: 'Premium until {d}', cancel: 'Cancel', cancelled: 'Cancelled: you keep Premium until {d}.', other: 'Other country' },
+  pt: { title: 'Seja Premium', lead: 'O curso inteiro, o cancioneiro e a prática com a banda. Pague na sua moeda e use no app com sua conta Google.', setup: 'A assinatura pela web ainda não está configurada.', s1: 'Sua conta', s1Body: 'Use a mesma conta Google com que você vai entrar no app.', signIn: 'Continuar com o Google', signedAs: 'Conectado como', signOut: 'Sair', s2: 'Qual app e qual plano', country: 'Onde você mora', s3: 'Como você paga', code: 'Código promocional', apply: 'Aplicar', total: 'Primeira cobrança', pay: 'Ir para o pagamento', legal: 'Renovação automática no fim de cada período, exceto cripto (pré-pago). Cancele quando quiser e mantenha o acesso até a data paga.', s4: 'Suas assinaturas', foot: 'Se você já paga pelo Google Play, não precisa assinar aqui.',
+    anual: 'Anual', semestral: 'Semestral', mercadopago: 'Mercado Pago', paddle: 'Cartão ou PayPal', crypto: 'USDC ou USDT', atCheckout: 'O preço final, com os impostos do seu país, aparece no pagamento.', prepaid: 'Pagamento único por {m} meses.', promoOk: '{p}% de desconto', promoCycles: 'na primeira cobrança|nas primeiras {n} cobranças|enquanto você continuar assinando', promoBad: 'Esse código não vale para esta compra.', promoPaddle: 'Digite o código {c} na página de pagamento.', needLogin: 'Primeiro entre com o Google.', noPrice: 'Este plano ainda não tem preço para esta forma de pagamento.', fail: 'Não foi possível iniciar o pagamento. Tente de novo daqui a pouco.', done: 'Pronto! Abra o app, vá em Perfil e toque em "Entrar com o Google" com este mesmo e-mail.', until: 'Premium até {d}', cancel: 'Cancelar', cancelled: 'Cancelada: você mantém o Premium até {d}.', other: 'Outro país' },
+};
+const APPS = [['bass', 'LudiKordo'], ['guitar', 'LudiKordo Electric Guitar'], ['nylon', 'LudiKordo Guitar']];
+const COUNTRIES = ['AR', 'BR', 'BO', 'CL', 'CO', 'CR', 'DO', 'EC', 'ES', 'GT', 'HN', 'MX', 'NI', 'PA', 'PE', 'PY', 'SV', 'UY', 'VE', 'US', 'ZZ'];
+const $ = (id) => document.getElementById(id);
+const q = new URLSearchParams(location.search);
+let lang = (() => { try { return localStorage.getItem('lk-lang'); } catch { return null; } })() || (navigator.language || 'es').slice(0, 2);
+if (!T[lang]) lang = 'es';
+const st = {
+  app: APPS.some(([a]) => a === q.get('app')) ? q.get('app') : 'bass',
+  plan: 'anual',
+  country: (navigator.language.split('-')[1] || '').toUpperCase(),
+  option: 0,
+  promo: null,
+  prices: [],
+  session: null,
+};
+if (!COUNTRIES.includes(st.country)) st.country = lang === 'pt' ? 'BR' : 'AR';
+const t = (k, v = {}) => (T[lang][k] ?? k).replace(/\{(\w+)\}/g, (_, n) => v[n] ?? '');
+const locale = () => ({ es: 'es-AR', en: 'en-US', pt: 'pt-BR' })[lang];
+
+const configured = !SUPABASE_URL.startsWith('REEMPLAZAR') && window.supabase;
+const sb = configured ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+
+function chips(el, items, current, onPick) {
+  el.replaceChildren(...items.map(([v, label]) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('role', 'radio');
+    b.setAttribute('aria-checked', String(v === current));
+    b.textContent = label;
+    b.addEventListener('click', () => onPick(v));
+    return b;
+  }));
+}
+
+function options() { return checkoutOptions(st.country === 'ZZ' ? 'US' : st.country); }
+function listFor(o) {
+  const row = st.prices.find((p) => p.app === st.app && p.plan === st.plan && p.channel === o.channel && p.currency === o.currency);
+  return row ? Number(row.amount) : null;
+}
+
+function render() {
+  document.documentElement.lang = lang;
+  for (const el of document.querySelectorAll('[data-i18n]')) el.textContent = t(el.dataset.i18n);
+  for (const b of document.querySelectorAll('.lang button')) b.setAttribute('aria-pressed', String(b.dataset.lang === lang));
+  $('setup').hidden = Boolean(configured);
+  $('country').replaceChildren(...COUNTRIES.map((c) => {
+    const o = document.createElement('option');
+    o.value = c;
+    o.textContent = c === 'ZZ' ? t('other') : new Intl.DisplayNames([locale()], { type: 'region' }).of(c);
+    o.selected = c === st.country;
+    return o;
+  }));
+  chips($('apps'), APPS, st.app, (v) => { st.app = v; st.promo = null; render(); });
+  chips($('plans'), [['anual', t('anual')], ['semestral', t('semestral')]], st.plan, (v) => { st.plan = v; st.promo = null; render(); });
+  const opts = options();
+  if (st.option >= opts.length) st.option = 0;
+  $('options').replaceChildren(...opts.map((o, i) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'opt';
+    b.setAttribute('role', 'radio');
+    b.setAttribute('aria-checked', String(i === st.option));
+    const list = listFor(o);
+    const name = document.createElement('b');
+    name.textContent = `${t(o.channel)} · ${o.currency === 'USDC' ? 'USDC/USDT' : o.currency}`;
+    const price = document.createElement('span');
+    price.textContent = o.channel === 'paddle' ? t('atCheckout') : list === null ? '—' : formatMoney(list, o.currency, locale());
+    b.append(name, price);
+    b.addEventListener('click', () => { st.option = i; st.promo = null; render(); });
+    return b;
+  }));
+  const o = opts[st.option];
+  const list = listFor(o);
+  const first = list === null ? null : amountForCycle(list, o.currency, 0, st.promo);
+  $('total').textContent = o.channel === 'paddle' ? '—' : first === null ? '—' : formatMoney(first, o.currency, locale());
+  $('totalNote').textContent = o.channel === 'crypto' ? t('prepaid', { m: st.plan === 'anual' ? 12 : 6 }) : o.channel === 'paddle' ? t('atCheckout') : '';
+  $('signedOut').hidden = Boolean(st.session);
+  $('signedIn').hidden = !st.session;
+  $('email').textContent = st.session?.user.email ?? '';
+  $('pay').disabled = !configured;
+}
+
+async function loadPrices() {
+  if (!sb) return;
+  const { data } = await sb.from('prices').select('app, plan, channel, currency, amount');
+  st.prices = data ?? [];
+}
+
+async function fn(name, init = {}) {
+  const headers = { apikey: SUPABASE_ANON_KEY, 'Content-Type': 'application/json' };
+  if (st.session) headers.Authorization = `Bearer ${st.session.access_token}`;
+  const res = await fetch(`${SUPABASE_URL}/functions/v1/${name}`, { ...init, headers });
+  return { ok: res.ok, body: await res.json().catch(() => ({})) };
+}
+
+async function applyPromo() {
+  const code = normalizeCode($('code').value);
+  $('code').value = code;
+  st.promo = null;
+  if (!code || !sb) { $('promoMsg').textContent = ''; render(); return; }
+  const o = options()[st.option];
+  const qs = new URLSearchParams({ code, app: st.app, plan: st.plan, channel: o.channel, currency: o.currency });
+  const { body } = await fn(`promo?${qs}`);
+  if (!body.ok) { $('promoMsg').textContent = t('promoBad'); render(); return; }
+  st.promo = { code, percent: body.percent, cycles: body.cycles };
+  const forms = t('promoCycles').split('|');
+  const when = body.cycles === 0 ? forms[2] : body.cycles === 1 ? forms[0] : forms[1].replace('{n}', body.cycles);
+  $('promoMsg').textContent = `${t('promoOk', { p: body.percent })} ${when}.` + (o.channel === 'paddle' ? ` ${t('promoPaddle', { c: code })}` : '');
+  render();
+}
+
+async function pay() {
+  $('err').textContent = '';
+  if (!st.session) { $('err').textContent = t('needLogin'); return; }
+  const o = options()[st.option];
+  if (o.channel !== 'paddle' && listFor(o) === null) { $('err').textContent = t('noPrice'); return; }
+  $('pay').disabled = true;
+  const { ok, body } = await fn('checkout', {
+    method: 'POST',
+    body: JSON.stringify({ app: st.app, plan: st.plan, channel: o.channel, currency: o.currency, country: st.country === 'ZZ' ? 'US' : st.country, promoCode: st.promo?.code ?? null }),
+  });
+  if (ok && body.url) { location.href = body.url; return; }
+  $('err').textContent = body.error === 'promo' ? t('promoBad') : body.error === 'price' ? t('noPrice') : t('fail');
+  $('pay').disabled = false;
+}
+
+async function loadMine() {
+  if (!st.session) { $('mine').hidden = true; return; }
+  const { ok, body } = await fn('premium');
+  if (!ok) return;
+  const fmt = (d) => new Intl.DateTimeFormat(locale(), { dateStyle: 'long' }).format(new Date(d));
+  const name = Object.fromEntries(APPS);
+  const items = [];
+  for (const a of body.access ?? []) {
+    const li = document.createElement('li');
+    li.textContent = `${name[a.app]} — ${t('until', { d: fmt(a.access_until) })}`;
+    items.push(li);
+  }
+  for (const s of (body.subscriptions ?? []).filter((x) => x.channel === 'mercadopago' && x.status === 'authorized')) {
+    const li = document.createElement('li');
+    li.textContent = `${name[s.app]} · ${t(s.plan)} · Mercado Pago `;
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'btn ghost small';
+    b.textContent = t('cancel');
+    b.addEventListener('click', async () => {
+      b.disabled = true;
+      const r = await fn('premium', { method: 'POST', body: JSON.stringify({ cancel: s.id }) });
+      li.textContent = r.ok ? t('cancelled', { d: fmt(r.body.access_until ?? s.access_until) }) : t('fail');
+    });
+    li.append(b);
+    items.push(li);
+  }
+  $('subs').replaceChildren(...items);
+  $('mine').hidden = items.length === 0;
+}
+
+for (const b of document.querySelectorAll('.lang button')) b.addEventListener('click', () => {
+  lang = b.dataset.lang;
+  try { localStorage.setItem('lk-lang', lang); } catch {}
+  render();
+});
+$('country').addEventListener('change', (e) => { st.country = e.target.value; st.option = 0; st.promo = null; render(); });
+$('apply').addEventListener('click', () => void applyPromo());
+$('code').addEventListener('keydown', (e) => { if (e.key === 'Enter') void applyPromo(); });
+$('pay').addEventListener('click', () => void pay());
+$('signIn').addEventListener('click', () => sb && sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.origin + location.pathname + `?app=${st.app}` } }));
+$('signOut').addEventListener('click', async () => { await sb?.auth.signOut(); st.session = null; render(); loadMine(); });
+if (q.get('listo')) { $('done').hidden = false; $('done').dataset.i18n = 'done'; }
+
+render();
+if (sb) {
+  const { data } = await sb.auth.getSession();
+  st.session = data.session;
+  sb.auth.onAuthStateChange((_e, session) => { st.session = session; render(); void loadMine(); });
+  await loadPrices();
+  render();
+  void loadMine();
+}
+</script>
+</body>
+</html>
