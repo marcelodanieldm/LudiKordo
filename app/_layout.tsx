@@ -17,6 +17,7 @@ import { I18nextProvider } from 'react-i18next';
 import i18n, { deviceLocale, initI18n } from '../src/i18n';
 import { useSettings } from '../src/state/settings';
 import { initBilling } from '../src/billing/purchases';
+import { listenForAuth, useSession } from '../src/billing/session';
 import { colors } from '../src/theme';
 
 initI18n(deviceLocale());
@@ -40,7 +41,8 @@ export default function RootLayout() {
   }, [locale]);
 
   useEffect(() => {
-    void initBilling();
+    void initBilling(useSession.getState().account?.userId);
+    return listenForAuth();
   }, []);
 
   setFontsReady(fontsLoaded);
@@ -54,6 +56,7 @@ export default function RootLayout() {
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="onboarding" />
           <Stack.Screen name="paywall" options={{ presentation: 'modal' }} />
+          <Stack.Screen name="auth" />
           <Stack.Screen name="leccion/[id]" />
           <Stack.Screen name="checkpoint/[level]" />
           <Stack.Screen name="ficha/[module]" />

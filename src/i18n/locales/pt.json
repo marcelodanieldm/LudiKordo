@@ -1,5 +1,16 @@
 {
   "ui": {
+    "account": {
+      "title": "Sua conta",
+      "body": "Entre para usar seu Premium neste e nos seus outros aparelhos.",
+      "signIn": "Entrar com o Google",
+      "signedAs": "Conectado: {{email}}",
+      "signOut": "Sair",
+      "haveAccount": "Já tenho conta: entrar",
+      "connecting": "Conectando sua conta…",
+      "done": "Tudo certo, {{email}}!",
+      "error": "Não foi possível entrar. Tente de novo."
+    },
     "hands": {
       "pov": "Como você vê",
       "front": "De frente (espelho)",

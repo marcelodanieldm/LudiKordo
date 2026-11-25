@@ -9,6 +9,7 @@ import type { PurchasesPackage } from 'react-native-purchases';
 import Svg, { Path } from 'react-native-svg';
 import { Button, Chip, CloseButton } from '../src/components/ui';
 import { useBilling, purchase, restore } from '../src/billing/purchases';
+import { accountAvailable, signInWithGoogle, useSession } from '../src/billing/session';
 import { annualSavingsPct, formatMoney, TRIAL_DAYS, trialEndDate } from '../src/billing/access';
 import { colors, fonts, radius } from '../src/theme';
 
@@ -21,6 +22,7 @@ type Plan = 'annual' | 'semiannual';
 export default function Paywall() {
   const { t, i18n } = useTranslation();
   const { annual, semiannual } = useBilling();
+  const account = useSession((a) => a.account);
   const [plan, setPlan] = useState<Plan>('annual');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -100,6 +102,9 @@ export default function Paywall() {
 
         <Button testID="paywall-free" variant="secondary" label={t('ui.paywall.free')} onPress={close} />
         <Button variant="ghost" label={t('ui.paywall.restore')} onPress={() => void restore().then((ok) => ok && close())} />
+        {accountAvailable && !account ? (
+          <Button variant="ghost" label={t('ui.account.haveAccount')} onPress={() => void signInWithGoogle()} />
+        ) : null}
       </ScrollView>
     </SafeAreaView>
   );

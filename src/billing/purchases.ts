@@ -37,7 +37,13 @@ function applyCustomerInfo(info: CustomerInfo) {
   });
 }
 
-export async function initBilling(): Promise<void> {
+let configured = false;
+
+/**
+ * Arranca RevenueCat. Con una cuenta iniciada (ADR 0011), su id de Supabase es el
+ * App User ID, así el Premium pagado en la web aparece también acá.
+ */
+export async function initBilling(appUserId?: string | null): Promise<void> {
   const apiKey = Constants.expoConfig?.extra?.revenueCatAndroidKey as string | undefined;
   if (!apiKey || apiKey.startsWith('REEMPLAZAR')) {
     // Sin clave configurada: la app funciona en modo gratis, salvo que una
@@ -50,7 +56,8 @@ export async function initBilling(): Promise<void> {
     });
     return;
   }
-  Purchases.configure({ apiKey });
+  Purchases.configure(appUserId ? { apiKey, appUserID: appUserId } : { apiKey });
+  configured = true;
   Purchases.addCustomerInfoUpdateListener(applyCustomerInfo);
   try {
     const [info, offerings] = await Promise.all([Purchases.getCustomerInfo(), Purchases.getOfferings()]);
@@ -91,4 +98,21 @@ export async function openManageSubscription(): Promise<void> {
     useBilling.getState().managementURL ??
     `https://play.google.com/store/account/subscriptions?sku=${PRODUCT_ID}&package=app.ludikordo`;
   await Linking.openURL(url);
+}
+
+/** Conecta la cuenta con RevenueCat: lo comprado con ella (en la web o en otro teléfono) aparece acá. */
+export async function linkAccount(userId: string): Promise<void> {
+  if (!configured) return;
+  const { customerInfo } = await Purchases.logIn(userId);
+  applyCustomerInfo(customerInfo);
+}
+
+/** Vuelve a un usuario anónimo. Las compras de Google Play de este teléfono se recuperan con «Restaurar». */
+export async function unlinkAccount(): Promise<void> {
+  if (!configured) return;
+  try {
+    applyCustomerInfo(await Purchases.logOut());
+  } catch {
+    // RevenueCat avisa con un error si ya era anónimo: no hay nada que deshacer.
+  }
 }

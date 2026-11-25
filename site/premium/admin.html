@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LudiKordo · Promos y precios</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="premium.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+</head>
+<body>
+<header class="top"><div class="wrap wide-wrap">
+  <a class="brand" href="./">Ludi<b>Kordo</b> · panel</a>
+  <span class="small" id="who" style="margin-left:auto"></span>
+</div></header>
+<main class="wrap wide-wrap">
+  <h1>Promos y precios web</h1>
+  <p id="gate" class="notice">Inicia sesión con una cuenta de Google cargada en la tabla <code>admins</code>.</p>
+  <button type="button" class="btn primary" id="signIn">Continuar con Google</button>
+
+  <div id="panel" hidden>
+    <section class="step" aria-labelledby="h-promo">
+      <h2 id="h-promo">Seteador de promo</h2>
+      <div class="grid2">
+        <div>
+          <label for="code">Código</label><input id="code" maxlength="32" autocomplete="off" value="KORDI30">
+          <label for="pct">Descuento: <b id="pctOut">30%</b></label><input type="range" id="pct" min="5" max="90" step="5" value="30">
+          <label for="cycles">Cuántos cobros con descuento</label>
+          <select id="cycles"><option value="1">Solo el primero</option><option value="2">Los dos primeros</option><option value="3">Los tres primeros</option><option value="0">Mientras siga suscripto</option></select>
+          <div class="grid2">
+            <div><label for="starts">Desde</label><input type="date" id="starts"></div>
+            <div><label for="ends">Hasta</label><input type="date" id="ends"></div>
+          </div>
+          <label for="max">Tope de canjes (vacío = sin tope)</label><input type="number" id="max" min="1" inputmode="numeric">
+          <label for="note">Nota interna</label><input id="note" maxlength="120">
+        </div>
+        <div>
+          <span class="small">Planes</span><div class="checks" id="plansBox"></div>
+          <span class="small">Canales</span><div class="checks" id="channelsBox"></div>
+          <span class="small">Apps</span><div class="checks" id="appsBox"></div>
+          <label class="checks"><input type="checkbox" id="active" checked> Activa</label>
+          <p id="formErr" class="err" role="alert"></p>
+          <button type="button" class="btn primary wide" id="save">Guardar promo</button>
+          <p id="saved" class="small" role="status"></p>
+        </div>
+      </div>
+      <h3 style="margin-top:20px">Así queda el primer cobro</h3>
+      <div style="overflow-x:auto"><table><thead><tr><th>App</th><th>Plan</th><th>Canal</th><th class="num">Lista</th><th class="num">Con promo</th></tr></thead><tbody id="preview"></tbody></table></div>
+      <h3 style="margin-top:20px">Para cargar a mano en Paddle y Google Play</h3>
+      <p class="small">Mercado Pago y cripto aplican la promo solos. En Paddle hay que crear el mismo código; en Google Play, una oferta en Play Console (no admite códigos con %: se ofrece como oferta «determinada por el desarrollador»).</p>
+      <pre id="manual"></pre>
+      <button type="button" class="btn ghost" id="copy">Copiar</button> <span id="copied" class="small" role="status"></span>
+    </section>
+
+    <section class="step" aria-labelledby="h-list">
+      <h2 id="h-list">Promos cargadas</h2>
+      <div style="overflow-x:auto"><table><thead><tr><th>Código</th><th class="num">%</th><th>Cobros</th><th>Vigencia</th><th class="num">Canjes</th><th>Estado</th><th></th></tr></thead><tbody id="list"></tbody></table></div>
+    </section>
+
+    <section class="step" aria-labelledby="h-prices">
+      <h2 id="h-prices">Precios de lista web</h2>
+      <p class="small">Los que cobra este backend: Mercado Pago en pesos y cripto en USDC. Los de Paddle se cargan en Paddle y los de Google Play en Play Console.</p>
+      <div style="overflow-x:auto"><table><thead><tr><th>App</th><th>Plan</th><th class="num">Mercado Pago (ARS)</th><th class="num">Cripto (USDC)</th></tr></thead><tbody id="prices"></tbody></table></div>
+      <button type="button" class="btn primary" id="savePrices" style="margin-top:12px">Guardar precios</button> <span id="pricesMsg" class="small" role="status"></span>
+    </section>
+  </div>
+</main>
+
+<script type="module">
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from './config.js';
+import { amountForCycle, formatMoney, normalizeCode, promoErrors } from './rules.js';
+
+const $ = (id) => document.getElementById(id);
+const APPS = { bass: 'LudiKordo', guitar: 'Electric Guitar', nylon: 'Guitar (criolla)' };
+const PLANS = { anual: 'Anual', semestral: 'Semestral' };
+const CHANNELS = { mercadopago: 'Mercado Pago', paddle: 'Paddle', crypto: 'Cripto' };
+const ERR = { code: 'Código: 3 a 32 letras mayúsculas, números, - o _.', percent: 'Porcentaje entero de 1 a 90.', cycles: 'Cobros de 0 a 52.', plans: 'Elige al menos un plan.', channels: 'Elige al menos un canal.', apps: 'Elige al menos una app.', dates: '«Desde» tiene que ser antes de «Hasta».' };
+const configured = !SUPABASE_URL.startsWith('REEMPLAZAR') && window.supabase;
+const sb = configured ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+let prices = [];
+
+function checks(el, map, name) {
+  el.replaceChildren(...Object.entries(map).map(([v, label]) => {
+    const l = document.createElement('label');
+    const i = document.createElement('input');
+    i.type = 'checkbox'; i.name = name; i.value = v; i.checked = true;
+    i.addEventListener('change', render);
+    l.append(i, document.createTextNode(label));
+    return l;
+  }));
+}
+const picked = (name) => [...document.querySelectorAll(`input[name=${name}]:checked`)].map((i) => i.value);
+
+function form() {
+  return {
+    code: normalizeCode($('code').value),
+    percent: Number($('pct').value),
+    cycles: Number($('cycles').value),
+    plans: picked('plans'),
+    channels: picked('channels'),
+    apps: picked('apps'),
+    startsAt: $('starts').value ? new Date($('starts').value + 'T00:00:00-03:00').toISOString() : null,
+    endsAt: $('ends').value ? new Date($('ends').value + 'T23:59:59-03:00').toISOString() : null,
+    maxRedemptions: $('max').value ? Number($('max').value) : null,
+    note: $('note').value.trim() || null,
+    active: $('active').checked,
+  };
+}
+
+function render() {
+  const p = form();
+  $('pctOut').textContent = p.percent + '%';
+  const errs = promoErrors(p);
+  $('formErr').textContent = errs.map((e) => ERR[e]).join(' ');
+  $('save').disabled = errs.length > 0 || !sb;
+  const rows = [];
+  for (const app of p.apps) for (const plan of p.plans) for (const [channel, currency] of [['mercadopago', 'ARS'], ['crypto', 'USDC']]) {
+    if (!p.channels.includes(channel)) continue;
+    const row = prices.find((x) => x.app === app && x.plan === plan && x.channel === channel && x.currency === currency);
+    const list = row ? Number(row.amount) : null;
+    const tr = document.createElement('tr');
+    for (const [txt, cls] of [[APPS[app]], [PLANS[plan]], [CHANNELS[channel]], [list === null ? 'sin precio' : formatMoney(list, currency, 'es-AR'), 'num'], [list === null ? '—' : formatMoney(amountForCycle(list, currency, 0, p), currency, 'es-AR'), 'num']]) {
+      const td = document.createElement('td'); td.textContent = txt; if (cls) td.className = cls; tr.append(td);
+    }
+    rows.push(tr);
+  }
+  $('preview').replaceChildren(...rows);
+  const n = p.cycles === 0 ? 52 : p.cycles;
+  $('manual').textContent = [
+    `Promo ${p.code} · ${p.percent}% · ${p.cycles === 0 ? 'mientras siga suscripto' : `${p.cycles} cobro(s)`} · ${p.startsAt ? p.startsAt.slice(0, 10) : 'ya'} → ${p.endsAt ? p.endsAt.slice(0, 10) : 'sin fin'}`,
+    '',
+    'PADDLE (Catalog → Discounts → New discount)',
+    JSON.stringify({ code: p.code, type: 'percentage', amount: String(p.percent), recur: p.cycles !== 1, maximum_recurring_intervals: p.cycles > 1 ? p.cycles : null, usage_limit: p.maxRedemptions, expires_at: p.endsAt }, null, 2),
+    '',
+    'GOOGLE PLAY (Play Console → ludikordo_premium → plan base → Agregar oferta)',
+    `Planes base: ${p.plans.join(', ')}`,
+    `Id de la oferta: promo-${p.code.toLowerCase()}`,
+    'Elegibilidad: determinada por el desarrollador',
+    `Fase: descuento porcentual ${p.percent}% durante ${n} período(s)${p.cycles === 0 ? ' (máximo de Play)' : ''}`,
+    `Etiqueta: promo-${p.code.toLowerCase()}`,
+  ].join('\n');
+}
+
+async function loadAll() {
+  const [pr, pm] = await Promise.all([sb.from('prices').select('*'), sb.from('promos').select('*').order('created_at', { ascending: false })]);
+  prices = pr.data ?? [];
+  renderPrices();
+  const list = (pm.data ?? []).map((x) => {
+    const tr = document.createElement('tr');
+    const cells = [x.code, String(x.percent), x.cycles === 0 ? 'siempre' : String(x.cycles), `${x.starts_at ? x.starts_at.slice(0, 10) : '—'} → ${x.ends_at ? x.ends_at.slice(0, 10) : '—'}`, `${x.redemptions}${x.max_redemptions ? ' / ' + x.max_redemptions : ''}`, x.active ? 'activa' : 'pausada'];
+    cells.forEach((c, i) => { const td = document.createElement('td'); td.textContent = c; if (i === 1 || i === 4) td.className = 'num'; tr.append(td); });
+    const td = document.createElement('td');
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'btn ghost small'; b.textContent = x.active ? 'Pausar' : 'Activar';
+    b.addEventListener('click', async () => { b.disabled = true; await sb.from('promos').update({ active: !x.active, updated_at: new Date().toISOString() }).eq('code', x.code); await loadAll(); });
+    const e = document.createElement('button');
+    e.type = 'button'; e.className = 'btn ghost small'; e.textContent = 'Editar';
+    e.addEventListener('click', () => edit(x));
+    td.append(e, b); tr.append(td);
+    return tr;
+  });
+  $('list').replaceChildren(...list);
+  render();
+}
+
+function edit(x) {
+  $('code').value = x.code; $('pct').value = x.percent; $('cycles').value = String(x.cycles);
+  $('starts').value = x.starts_at ? x.starts_at.slice(0, 10) : ''; $('ends').value = x.ends_at ? x.ends_at.slice(0, 10) : '';
+  $('max').value = x.max_redemptions ?? ''; $('note').value = x.note ?? ''; $('active').checked = x.active;
+  for (const [name, vals] of [['plans', x.plans], ['channels', x.channels], ['apps', x.apps]]) for (const i of document.querySelectorAll(`input[name=${name}]`)) i.checked = vals.includes(i.value);
+  render();
+  $('code').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function renderPrices() {
+  const rows = [];
+  for (const app of Object.keys(APPS)) for (const plan of Object.keys(PLANS)) {
+    const tr = document.createElement('tr');
+    for (const txt of [APPS[app], PLANS[plan]]) { const td = document.createElement('td'); td.textContent = txt; tr.append(td); }
+    for (const [channel, currency] of [['mercadopago', 'ARS'], ['crypto', 'USDC']]) {
+      const td = document.createElement('td'); td.className = 'num';
+      const i = document.createElement('input');
+      i.type = 'number'; i.min = '0'; i.step = currency === 'ARS' ? '1' : '0.01'; i.inputMode = 'decimal';
+      i.dataset.k = [app, plan, channel, currency].join('|');
+      i.setAttribute('aria-label', `${APPS[app]} ${PLANS[plan]} ${CHANNELS[channel]}`);
+      const row = prices.find((x) => x.app === app && x.plan === plan && x.channel === channel && x.currency === currency);
+      i.value = row ? row.amount : '';
+      td.append(i); tr.append(td);
+    }
+    rows.push(tr);
+  }
+  $('prices').replaceChildren(...rows);
+}
+
+$('save').addEventListener('click', async () => {
+  const p = form();
+  if (promoErrors(p).length) return;
+  $('save').disabled = true;
+  const { error } = await sb.from('promos').upsert({
+    code: p.code, percent: p.percent, cycles: p.cycles, plans: p.plans, channels: p.channels, apps: p.apps,
+    starts_at: p.startsAt, ends_at: p.endsAt, max_redemptions: p.maxRedemptions, note: p.note, active: p.active, updated_at: new Date().toISOString(),
+  });
+  $('saved').textContent = error ? `No se pudo guardar: ${error.message}` : `Guardada ${p.code}. Acuérdate de crearla también en Paddle y, si aplica, en Google Play.`;
+  await loadAll();
+});
+$('savePrices').addEventListener('click', async () => {
+  const rows = [...document.querySelectorAll('#prices input')].filter((i) => Number(i.value) > 0).map((i) => {
+    const [app, plan, channel, currency] = i.dataset.k.split('|');
+    return { app, plan, channel, currency, amount: Number(i.value), updated_at: new Date().toISOString() };
+  });
+  const { error } = await sb.from('prices').upsert(rows);
+  $('pricesMsg').textContent = error ? `No se pudo guardar: ${error.message}` : 'Precios guardados.';
+  await loadAll();
+});
+$('copy').addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText($('manual').textContent); $('copied').textContent = 'Copiado.'; } catch { $('copied').textContent = 'Selecciona el texto y cópialo a mano.'; }
+});
+for (const id of ['code', 'pct', 'cycles', 'starts', 'ends', 'max', 'note', 'active']) $(id).addEventListener('input', render);
+$('code').addEventListener('blur', () => { $('code').value = normalizeCode($('code').value); render(); });
+$('signIn').addEventListener('click', () => sb && sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.origin + location.pathname } }));
+
+checks($('plansBox'), PLANS, 'plans');
+checks($('channelsBox'), CHANNELS, 'channels');
+checks($('appsBox'), APPS, 'apps');
+render();
+
+if (!sb) {
+  $('gate').textContent = 'Falta configurar Supabase en site/premium/config.js (docs/WEB_BILLING.md).';
+  $('signIn').hidden = true;
+} else {
+  const { data } = await sb.auth.getSession();
+  if (data.session) {
+    $('who').textContent = data.session.user.email;
+    const { data: isAdmin } = await sb.rpc('is_admin');
+    if (isAdmin) {
+      $('gate').hidden = true; $('signIn').hidden = true; $('panel').hidden = false;
+      await loadAll();
+    } else {
+      $('gate').textContent = 'Esta cuenta no es admin. Agrégala a la tabla admins desde Supabase.';
+      $('signIn').hidden = true;
+    }
+  }
+}
+</script>
+</body>
+</html>
