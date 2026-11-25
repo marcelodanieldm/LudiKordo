@@ -1,5 +1,16 @@
 {
   "ui": {
+    "account": {
+      "title": "Your account",
+      "body": "Sign in to use your Premium on this and your other devices.",
+      "signIn": "Sign in with Google",
+      "signedAs": "Signed in: {{email}}",
+      "signOut": "Sign out",
+      "haveAccount": "I have an account: sign in",
+      "connecting": "Connecting your account…",
+      "done": "All set, {{email}}!",
+      "error": "Couldn't sign in. Please try again."
+    },
     "hands": {
       "pov": "As you see it",
       "front": "From the front (mirror)",

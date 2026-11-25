@@ -47,6 +47,9 @@ Alumno ── site/premium ── inicia sesión con Google (Supabase Auth)
 ## 7. Web
 En `site/premium/config.js`, la URL del proyecto y la clave **anon** (es pública; la protegen las reglas RLS). Nunca la clave de servicio. Netlify publica `site/` como siempre: la suscripción queda en `/premium/` y el panel en `/premium/admin.html`.
 
+## 7b. App
+La app lee la dirección del proyecto de `EXPO_PUBLIC_SUPABASE_URL` al compilar (variable de entorno de EAS o del workflow de APK). Sin ella no aparece «Iniciar sesión con Google». Al iniciar sesión, el id de Supabase pasa a ser el App User ID de RevenueCat (`Purchases.logIn`); por eso un pago web se ve en la app con la misma cuenta. La app no guarda tokens ni menciona la compra web.
+
 ## 8. Secretos y despliegue
 
 ```sh

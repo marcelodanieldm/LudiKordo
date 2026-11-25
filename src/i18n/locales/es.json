@@ -1,5 +1,16 @@
 {
   "ui": {
+    "account": {
+      "title": "Tu cuenta",
+      "body": "Inicia sesión para usar tu Premium en este y en tus otros dispositivos.",
+      "signIn": "Iniciar sesión con Google",
+      "signedAs": "Sesión iniciada: {{email}}",
+      "signOut": "Cerrar sesión",
+      "haveAccount": "Ya tengo cuenta: iniciar sesión",
+      "connecting": "Conectando tu cuenta…",
+      "done": "¡Listo, {{email}}!",
+      "error": "No se pudo iniciar sesión. Prueba de nuevo."
+    },
     "hands": {
       "pov": "Como la ves tú",
       "front": "De frente (espejo)",
